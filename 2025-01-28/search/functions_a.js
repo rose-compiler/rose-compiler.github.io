@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['makesinglestatementbodytoblock',['makeSingleStatementBodyToBlock',['../namespaceSageInterface.html#af0677142605a744f7adde2acbeba4bc8',1,'SageInterface']]],
+  ['manglemodifiertype',['mangleModifierType',['../namespaceSageInterface.html#a98f898b2ba0f922e39794f3252b4b980',1,'SageInterface']]],
+  ['manglescalartype',['mangleScalarType',['../namespaceSageInterface.html#a249414e87aebbc4c24b5f7c0c5643279',1,'SageInterface']]],
+  ['mangletype',['mangleType',['../namespaceSageInterface.html#a4bdabab3e7f975c465d6db6a13eb3d59',1,'SageInterface']]],
+  ['marknodetobeunparsed',['markNodeToBeUnparsed',['../namespaceSageInterface.html#a8a891e992cd98723e94c6076d2b4bfcb',1,'SageInterface']]],
+  ['marksubtreetobeunparsed',['markSubtreeToBeUnparsed',['../namespaceSageInterface.html#a6dea0b2930ba3c10775246d5f0e67c7a',1,'SageInterface']]],
+  ['marksubtreetobeunparsedtreetraversal',['markSubtreeToBeUnparsedTreeTraversal',['../namespaceSageInterface.html#a5618dbe8eeb21142d43497c6053eff30',1,'SageInterface']]],
+  ['memoryusage',['memoryUsage',['../sageInterface_8h.html#af01f773d21cb9476b5a6055384f6e1ac',1,'sageInterface.h']]],
+  ['mergeassignmentwithdeclaration',['mergeAssignmentWithDeclaration',['../namespaceSageInterface.html#afdef35cbca8c0974951659520f6ba6e6',1,'SageInterface']]],
+  ['mergedeclarationandassignment',['mergeDeclarationAndAssignment',['../namespaceSageInterface.html#a3870ad3a42e39262a054d93a02da89a9',1,'SageInterface']]],
+  ['mergedeclarationwithassignment',['mergeDeclarationWithAssignment',['../namespaceSageInterface.html#a73e6bdad0f6f35151d991d1e2ee5650f',1,'SageInterface']]],
+  ['movecommentstonewstatement',['moveCommentsToNewStatement',['../namespaceSageInterface.html#aa1f054b8fa9f1b00fcd1644483938b08',1,'SageInterface']]],
+  ['movedeclarationsbetweenscopes',['moveDeclarationsBetweenScopes',['../sageInterface_8C.html#a893b26cad4f3ec8a754c3b946e79f24a',1,'sageInterface.C']]],
+  ['movedeclarationtoassociatednamespace',['moveDeclarationToAssociatedNamespace',['../namespaceSageInterface.html#a8fc707026a643a189c9f9277404a4b5c',1,'SageInterface']]],
+  ['moveforstatementincrementintobody',['moveForStatementIncrementIntoBody',['../namespaceSageInterface.html#a8350cdaa61eb225618e5d32d1d6ead35',1,'SageInterface']]],
+  ['movepreprocessinginfo',['movePreprocessingInfo',['../namespaceSageInterface.html#ab6bc0e31d1ae1be2e221bb8ddbe1e098',1,'SageInterface::movePreprocessingInfo()'],['../sageInterface-v0_811_8145_8202_8dox.html#ad4c63b43951a73acbe853af1c656ab05',1,'movePreprocessingInfo():&#160;sageInterface-v0.11.145.202.dox']]],
+  ['movestatementsbetweenblocks',['moveStatementsBetweenBlocks',['../namespaceSageInterface.html#a360756e0f4eef8c18020bba3bdd41059',1,'SageInterface::moveStatementsBetweenBlocks(SgBasicBlock *sourceBlock, SgBasicBlock *targetBlock)'],['../namespaceSageInterface.html#a0dc22067c0a76ccd2c28907b52653b93',1,'SageInterface::moveStatementsBetweenBlocks(SgAdaPackageSpec *sourceBlock, SgNamespaceDefinitionStatement *targetBlock)'],['../namespaceSageInterface.html#a0239506a17619c222e744333eda50708',1,'SageInterface::moveStatementsBetweenBlocks(SgAdaPackageBody *sourceBlock, SgNamespaceDefinitionStatement *targetBlock)'],['../namespaceSageInterface.html#a9eac94a42658b74968d021359f53f846',1,'SageInterface::moveStatementsBetweenBlocks(SgNamespaceDefinitionStatement *sourceBlock, SgNamespaceDefinitionStatement *targetBlock)']]],
+  ['movestatementsbetweenscopes',['moveStatementsBetweenScopes',['../sageInterface_8C.html#acc4fe800f5c7e49d3ca568618667c3f1',1,'sageInterface.C']]],
+  ['movetosubdirectory',['moveToSubdirectory',['../namespaceSageInterface.html#ae348901720d34fdb3f333e552bcd5253',1,'SageInterface']]],
+  ['moveupinnerdanglingifendifdirective',['moveUpInnerDanglingIfEndifDirective',['../namespaceSageInterface.html#ab4dfcf2857b456cc3041785b576e00d8',1,'SageInterface']]],
+  ['moveuppreprocessinginfo',['moveUpPreprocessingInfo',['../namespaceSageInterface.html#a283532aef637c65f6d103afc09d5fd71',1,'SageInterface']]],
+  ['movevariabledeclaration',['moveVariableDeclaration',['../namespaceSageInterface.html#a2c042722af185d05ef11dc4648a18e2b',1,'SageInterface']]],
+  ['myremovestatement',['myRemoveStatement',['../namespaceSageInterface.html#af2a313ede41c7b731cb61c355d1c55e0',1,'SageInterface']]]
+];

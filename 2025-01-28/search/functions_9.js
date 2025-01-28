@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['language_5fmay_5fcontain_5fnondeclarations_5fin_5fscope',['language_may_contain_nondeclarations_in_scope',['../namespaceSageInterface.html#a17765dab79061cc1fa08cc814f5fa84f',1,'SageInterface']]],
+  ['lastfrontendspecificstatement',['lastFrontEndSpecificStatement',['../namespaceSageInterface.html#afb377b8eed49f2e0c109e582b5b720e5',1,'SageInterface']]],
+  ['laststatementofscopewithtokeninfo',['lastStatementOfScopeWithTokenInfo',['../namespaceSageInterface.html#ad422ea5a8745e7e573899be123d33060',1,'SageInterface']]],
+  ['listheaderfiles',['listHeaderFiles',['../namespaceSageInterface.html#a2a76eab6fff80f4ebf2d063a97886d12',1,'SageInterface']]],
+  ['logicalparentscope',['logicalParentScope',['../namespaceSageInterface_1_1Ada.html#a39a4f130d1bd62d54d7a8cf9b72dc78e',1,'SageInterface::Ada::logicalParentScope(const SgScopeStatement &amp;s)'],['../namespaceSageInterface_1_1Ada.html#a3c2c3e18d7f6b3a01a9a11be3ab6ec40',1,'SageInterface::Ada::logicalParentScope(const SgScopeStatement *s)']]],
+  ['lookupclasssymbolinparentscopes',['lookupClassSymbolInParentScopes',['../namespaceSageInterface.html#ae625875008ac39752d9c852508c8f3fc',1,'SageInterface']]],
+  ['lookupenumsymbolinparentscopes',['lookupEnumSymbolInParentScopes',['../namespaceSageInterface.html#a84ebfa7f10d6a4275ce43a8dbc559364',1,'SageInterface']]],
+  ['lookupfunctionsymbolinparentscopes',['lookupFunctionSymbolInParentScopes',['../namespaceSageInterface.html#a6b80b5f0834cc764d9901b93bb04efaf',1,'SageInterface::lookupFunctionSymbolInParentScopes(const SgName &amp;functionName, SgScopeStatement *currentScope=NULL)'],['../namespaceSageInterface.html#ab0c70da2e514f5a09fb38263a6e6656b',1,'SageInterface::lookupFunctionSymbolInParentScopes(const SgName &amp;functionName, const SgType *t, SgScopeStatement *currentScope=NULL)']]],
+  ['lookupnamedtypeinparentscopes',['lookupNamedTypeInParentScopes',['../namespaceSageInterface.html#afe3748299d9008415d4d0d9f586ab1ff',1,'SageInterface']]],
+  ['lookupnamespacesymbolinparentscopes',['lookupNamespaceSymbolInParentScopes',['../namespaceSageInterface.html#a9b0239cd55dc0479a53852b687f4f1ca',1,'SageInterface']]],
+  ['lookupnonrealsymbolinparentscopes',['lookupNonrealSymbolInParentScopes',['../namespaceSageInterface.html#a75e824b77b85ef9ce454f64236dbb533',1,'SageInterface']]],
+  ['lookupsymbolinparentscopes',['lookupSymbolInParentScopes',['../namespaceSageInterface.html#af7a0152a05159fba3e211b09640f6882',1,'SageInterface']]],
+  ['lookupsymbolinparentscopesignoringaliassymbols',['lookupSymbolInParentScopesIgnoringAliasSymbols',['../namespaceSageInterface.html#ac5a1d41203e867fffc29940f35ad2ed7',1,'SageInterface']]],
+  ['lookuptemplateclasssymbolinparentscopes',['lookupTemplateClassSymbolInParentScopes',['../namespaceSageInterface.html#a3ea0a02958b61ba533d52b4ac98d2d88',1,'SageInterface']]],
+  ['lookuptemplatefunctionsymbolinparentscopes',['lookupTemplateFunctionSymbolInParentScopes',['../namespaceSageInterface.html#a5593dcec6e685b39477b57f961e7bdfa',1,'SageInterface']]],
+  ['lookuptemplatememberfunctionsymbolinparentscopes',['lookupTemplateMemberFunctionSymbolInParentScopes',['../namespaceSageInterface.html#a6aa38bf7b76adfe9d813f508ad17941d',1,'SageInterface']]],
+  ['lookuptemplatevariablesymbolinparentscopes',['lookupTemplateVariableSymbolInParentScopes',['../namespaceSageInterface.html#a1c1638da9252e396cab3ecebd4b64d1a',1,'SageInterface']]],
+  ['lookuptypedefsymbolinparentscopes',['lookupTypedefSymbolInParentScopes',['../namespaceSageInterface.html#a8636d22fc614450e9a5ff4602a5917ae',1,'SageInterface']]],
+  ['lookupvariablesymbolinparentscopes',['lookupVariableSymbolInParentScopes',['../namespaceSageInterface.html#a15391a827a9c3912ed75740d5a6109e3',1,'SageInterface']]],
+  ['loopcollapsing',['loopCollapsing',['../namespaceSageInterface.html#a24056e0c6e133132c38f8c12aa3f848c',1,'SageInterface']]],
+  ['loopinterchange',['loopInterchange',['../namespaceSageInterface.html#a69c06c565033135bf031e02547d7ffd7',1,'SageInterface']]],
+  ['looptiling',['loopTiling',['../namespaceSageInterface.html#abf67276dd03b4d83fd53e8d17cfee342',1,'SageInterface']]],
+  ['loopunrolling',['loopUnrolling',['../namespaceSageInterface.html#a32c1cd741a34e12e81515e3e6e3ce6a1',1,'SageInterface']]]
+];

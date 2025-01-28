@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['decl',['decl',['../structSageInterface_1_1Ada_1_1ImportedUnitResult.html#a5a45443e72b324b93cddb2f19fb31439',1,'SageInterface::Ada::ImportedUnitResult']]],
+  ['declarationcontainsdependentdeclarations',['declarationContainsDependentDeclarations',['../sageInterface_8C.html#a4a74a336cbe40612ff35fb844cd2bff2',1,'sageInterface.C']]],
+  ['declarationlimit',['declarationLimit',['../namespaceSageInterface_1_1Ada.html#aaeb3b7461895a26772ec8737719e2ed6',1,'SageInterface::Ada::declarationLimit(SgStatementPtrList &amp;list)'],['../namespaceSageInterface_1_1Ada.html#aec3bb423de3e1ef1ea304e0a24c50434',1,'SageInterface::Ada::declarationLimit(SgBasicBlock &amp;block)'],['../namespaceSageInterface_1_1Ada.html#a626ed451dd8efa68f193757cb8b71cfd',1,'SageInterface::Ada::declarationLimit(SgBasicBlock *block)'],['../namespaceSageInterface_1_1Ada.html#a9517f507f8c6f4d9eb511363f75129db',1,'SageInterface::Ada::declarationLimit(const SgStatementPtrList &amp;list)'],['../namespaceSageInterface_1_1Ada.html#adc4e9d88a61d2f310c1ccb1ff8a43467',1,'SageInterface::Ada::declarationLimit(const SgBasicBlock &amp;block)'],['../namespaceSageInterface_1_1Ada.html#ac316da8d42270c47e7165f7b9b0ce74e',1,'SageInterface::Ada::declarationLimit(const SgBasicBlock *block)']]],
+  ['declarationpositionstring',['declarationPositionString',['../namespaceSageInterface.html#a322a03f1d6ed3713ed72abcedeb8a51d',1,'SageInterface']]],
+  ['declarationpreceedsdefinition',['declarationPreceedsDefinition',['../namespaceSageInterface.html#a2ad11c9bbccfc5c65ebd5a1e63df8457',1,'SageInterface']]],
+  ['declarationscope',['declarationScope',['../namespaceSageInterface_1_1Ada.html#aeab189505b5fe4d846f50ec48ced39a7',1,'SageInterface::Ada::declarationScope(const SgType *ty)'],['../namespaceSageInterface_1_1Ada.html#a45533985c2bc4071b5c4e46eaef3b980',1,'SageInterface::Ada::declarationScope(const SgType &amp;ty)']]],
+  ['declof',['declOf',['../namespaceSageInterface_1_1Ada.html#a1996f0b925ab7c494f5be9a840af0083',1,'SageInterface::Ada']]],
+  ['declsinpackage',['declsInPackage',['../namespaceSageInterface_1_1Ada.html#a238a5f41854aea8040ce63f778b63a76',1,'SageInterface::Ada::declsInPackage(SgGlobal &amp;globalScope, const std::string &amp;mainFile)'],['../namespaceSageInterface_1_1Ada.html#a92fe120df66ef58ee7b0b83709f9a87d',1,'SageInterface::Ada::declsInPackage(SgGlobal &amp;globalScope, const SgSourceFile &amp;mainFile)']]],
+  ['deepcopy',['deepCopy',['../namespaceSageInterface.html#a01e802b61a171693120e86c205ef1b73',1,'SageInterface']]],
+  ['deepcopynode',['deepCopyNode',['../namespaceSageInterface.html#a7f050f8fb172258054f73b1871207165',1,'SageInterface']]],
+  ['deepdelete',['deepDelete',['../namespaceSageInterface.html#a03bd60c658db463cfc3791a7bba5017a',1,'SageInterface']]],
+  ['deferredtransformation',['DeferredTransformation',['../structSageInterface_1_1DeferredTransformation.html#ae56404a0333f02257bafebcf8a8d721c',1,'SageInterface::DeferredTransformation::DeferredTransformation()'],['../structSageInterface_1_1DeferredTransformation.html#ab539512b4ff171bf71f4dc4b60194c41',1,'SageInterface::DeferredTransformation::DeferredTransformation(SgClassDefinition *class_definition, SgDeclarationStatement *target_class_member, SgDeclarationStatement *new_function_prototype)'],['../structSageInterface_1_1DeferredTransformation.html#aafb2115c164b9b5f5bac0878e3639e59',1,'SageInterface::DeferredTransformation::DeferredTransformation(const DeferredTransformation &amp;X)']]],
+  ['deleteallnodes',['deleteAllNodes',['../namespaceSageInterface.html#a5af2ba1d4870ee59b82642a5fcbb8ed1',1,'SageInterface']]],
+  ['deleteast',['deleteAST',['../namespaceSageInterface.html#a57437bbbb806858dda0cea7444fbafef',1,'SageInterface']]],
+  ['deleteexpressiontreewithoriginalexpressionsubtrees',['deleteExpressionTreeWithOriginalExpressionSubtrees',['../namespaceSageInterface.html#a062f0bab3b5deef80a101471d2bc0c0e',1,'SageInterface']]],
+  ['denotesrange',['denotesRange',['../namespaceSageInterface_1_1Ada.html#a1e11f4e61115045d8be775df8903a58d',1,'SageInterface::Ada::denotesRange(const SgExpression &amp;e)'],['../namespaceSageInterface_1_1Ada.html#ac26b8a5ee60d23d50210f64489862a7b',1,'SageInterface::Ada::denotesRange(const SgExpression *e)']]],
+  ['detectcycleintype',['detectCycleInType',['../namespaceSageInterface.html#a56dbf71bb4b01777c51331ba373a1a50',1,'SageInterface']]],
+  ['determinefiletype',['determineFileType',['../sageInterface_8h.html#a335d6f76b9197fefa4d538cd26675c37',1,'sageInterface.h']]],
+  ['dims',['dims',['../structSageInterface_1_1Ada_1_1FlatArrayType.html#adfe6e263776a8d21aedb448d48c3a70a',1,'SageInterface::Ada::FlatArrayType::dims() const'],['../structSageInterface_1_1Ada_1_1FlatArrayType.html#a2268f8c63dd8d4f30850db1f8de662b6',1,'SageInterface::Ada::FlatArrayType::dims()']]],
+  ['discriminant',['discriminant',['../structSageInterface_1_1Ada_1_1RecordField.html#a3ce36fc20e5893ece985e99b6f4b6734',1,'SageInterface::Ada::RecordField']]],
+  ['display',['display',['../structSageInterface_1_1DeferredTransformation.html#a5f9acffd1808c50572d51263a5078e99',1,'SageInterface::DeferredTransformation']]],
+  ['displayscope',['displayScope',['../namespaceSageInterface.html#a0e667c30c6a0f1e549273b93ee8fec25',1,'SageInterface']]],
+  ['doloopnormalization',['doLoopNormalization',['../namespaceSageInterface.html#a714c3bd1a8ad05aefd0a374f5449a975',1,'SageInterface']]],
+  ['dumpinfo',['dumpInfo',['../namespaceSageInterface.html#adb3bd3c96f7ee7b03abc333cf2d14d96',1,'SageInterface']]],
+  ['dumppreprocinfo',['dumpPreprocInfo',['../namespaceSageInterface.html#a8d27ee1ca1349f91dc8a18d1aa6cc403',1,'SageInterface']]]
+];
