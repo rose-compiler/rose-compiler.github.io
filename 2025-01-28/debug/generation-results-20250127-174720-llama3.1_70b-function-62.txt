@@ -1,0 +1,239 @@
+2025-01-27 18:14:06,787 - INFO - Start time: 2025-01-27 18:14:06
+2025-01-27 18:14:06,787 - INFO - Generating documents for a function with id : 62
+2025-01-27 18:14:06,787 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::isOverloaded ( SgFunctionDeclaration* functionDeclaration )
+   {
+  // This function looks for any other function that might overload the input function.
+  // for member functions we only look in the scope where the member function is defined.
+  // for non-member functions we look only in the scope where the function is declared.
+
+  // Note that there are scenarios where this approach of searching only these locations
+  // might not catch an overloaded function.
+  //     * member functions:
+  //         - overloaded functions might be declared in base classes
+  //     * non-member functions:
+  //         - function declarations might be friend functions in classes
+  //         - functions might be declared in differen namespace definitions
+  //              (SgNamespaceDefinitionStatement), since a namespace in re-entrant
+  //              and can have many namespace declarations and definitions.
+
+  // bool result = false;
+     int counter = 0;
+
+     SgMemberFunctionDeclaration* memberFunctionDeclaration = isSgMemberFunctionDeclaration(functionDeclaration);
+     if (memberFunctionDeclaration != NULL)
+        {
+       // This is a member function declaration
+
+       // DQ (10/11/2007): Fix this to NOT use the generateUniqueDeclaration() function.
+       // Generate a key to use for comparision (avoids false positives)
+       // SgMemberFunctionDeclaration* keyDeclaration = isSgMemberFunctionDeclaration(generateUniqueDeclaration(functionDeclaration));
+       // ROSE_ASSERT(keyDeclaration != NULL);
+
+          SgScopeStatement * scope = memberFunctionDeclaration->get_scope();
+          ROSE_ASSERT(scope != NULL);
+
+       // TV (09/17/2018): ROSE-1378
+          if (isSgDeclarationScope(scope)) {
+            printf("TODO SageInterface::isOverloaded case when scope is SgDeclarationScope. See ROSE-1378.\n");
+            return false;
+          }
+
+       // Get the class definition
+          SgClassDefinition* classDefinition =
+               isSgClassDefinition(memberFunctionDeclaration->get_scope());
+          ROSE_ASSERT(classDefinition != NULL);
+
+       // Get the class declaration associated with the class definition
+          SgClassDeclaration* classDeclaration = isSgClassDeclaration(classDefinition->get_declaration());
+          ROSE_ASSERT(classDeclaration != NULL);
+
+       // Get the list of member declarations in the class
+          SgDeclarationStatementPtrList & memberList = classDefinition->get_members();
+#if 0
+       // DQ (10/11/2007): Fix this function better by checking for more than one member function declaration in the class definition.
+          printf ("   memberList.size() = %" PRIuPTR " \n",memberList.size());
+#endif
+          for (SgDeclarationStatementPtrList::iterator i = memberList.begin(); i != memberList.end(); i++)
+             {
+#if 0
+               printf ("   counter = %d declaration = %p = %s \n",counter,*i,(*i)->class_name().c_str());
+#endif
+               SgMemberFunctionDeclaration* tempMemberFunction = isSgMemberFunctionDeclaration(*i);
+               SgTemplateDeclaration* tempTemplateDeclaration  = isSgTemplateDeclaration(*i);
+
+            // Member functions could be overloaded
+               if (tempMemberFunction != NULL)
+                  {
+#if 0
+                 // DQ (10/11/2007): This is a problem for where s member function prototype from outside the class is checked to be an ovverloaded function.
+                 // Check using the key declaration
+                    if ( keyDeclaration == generateUniqueDeclaration(tempMemberFunction) )
+                       {
+#if 0
+                         printf ("Skipping the case of keyDeclaration == generateUniqueDeclaration(tempMemberFunction) = %p \n",keyDeclaration);
+#endif
+                         continue;
+                       }
+#endif
+                    ROSE_ASSERT(tempMemberFunction->get_name() != "");
+#if 0
+                    printf ("      tempMemberFunction = (name) %s = (qualified) %s \n",
+                              tempMemberFunction->get_name().str(),
+                              tempMemberFunction->get_qualified_name().str());
+#endif
+                    if (tempMemberFunction->get_name() == memberFunctionDeclaration->get_name())
+                       {
+#if 0
+                         printf ("      Found a matching overloaded member function! \n");
+#endif
+                      // result = true;
+                         counter++;
+                       }
+                  }
+                 else
+                  {
+                 // Or templates could be overloaded, but nothing else.
+                    if (tempTemplateDeclaration != NULL)
+                       {
+                      // If this is a template declaration, it could be a template
+                      // declaration for an overloaded member function of the same name.
+#if 0
+                      // printf ("keyDeclaration->get_name() = %s \n",keyDeclaration->get_name().str());
+                         printf ("tempTemplateDeclaration->get_name() = %s \n",tempTemplateDeclaration->get_name().str());
+#endif
+                         if (memberFunctionDeclaration->get_name() == tempTemplateDeclaration->get_name())
+                            {
+#if 0
+                              printf ("      Found a matching overloaded member function! \n");
+#endif
+                           // result = true;
+                              counter++;
+                            }
+                       }
+                      else
+                       {
+                       // DQ (10/12/2007): Could friend functions defined in a class be overloaded?  Need to check this!
+                          if (functionDeclaration->variantT() == V_SgFunctionDeclaration)
+                             {
+                               printf ("In SageInterface::isOverloaded(): could friend functions be overloaded in a class? \n");
+                             }
+                       }
+                  }
+
+            // If we have detected two, so we have an overloaded function.
+               if (counter > 1)
+                    break;
+             }
+        }
+       else
+        {
+       // This is a non-member function declaration
+          printf ("In SageInterface::isOverloaded(): case of non-member function not yet implemented! \n");
+          ROSE_ABORT();
+        }
+
+  // DQ (10/11/2007): Fixup to use the counter and consider more than 1 function with the same name an overloaded member function.
+  // This might be a problem for friend functions, so test this separately.
+  // return result;
+     return (counter > 1);
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:14:38,453 - INFO - Response from llama3.1:70b for Function 62:
+2025-01-27 18:14:38,453 - INFO - /**
+ * @fn SageInterface::isOverloaded(SgFunctionDeclaration* functionDeclaration)
+ *
+ * @brief Checks if a given function declaration is overloaded.
+ *
+ * This function checks for any other function that might overload the input function.
+ * For member functions, it only looks in the scope where the member function is defined.
+ * For non-member functions, it looks only in the scope where the function is declared.
+ * Note that there are scenarios where this approach of searching only these locations
+ * might not catch an overloaded function. See notes below for details.
+ *
+ * @param functionDeclaration The input function declaration to be checked for overloading.
+ *
+ * @return True if the function is overloaded, false otherwise.
+ *
+ * @warning This function may not detect all cases of overloaded functions due to its limited search scope.
+ *          For member functions, it does not check base classes or friend functions in other classes.
+ *          For non-member functions, it does not check different namespace definitions or friend functions in classes.
+ *
+ * @pre The input function declaration is valid and not null.
+ *
+ * @post None
+ *
+ * @note This function uses a counter to detect overloaded functions. If more than one function with the same name is found,
+ *       it returns true, indicating that the function is overloaded.
+ *
+ * @note For member functions, this function checks if there are other member functions with the same name in the same class.
+ *       It does not check base classes or friend functions in other classes.
+ *
+ * @note For non-member functions, this function checks if there are other non-member functions with the same name in the same scope.
+ *       It does not check different namespace definitions or friend functions in classes.
+ *
+ * @example
+ *   // Create a sample function declaration
+ *   SgFunctionDeclaration* funcDecl = ...;
+ *
+ *   // Check if the function is overloaded
+ *   bool isOverloaded = SageInterface::isOverloaded(funcDecl);
+ *
+ *   // Print the result
+ *   std::cout << "Is function overloaded? " << (isOverloaded ? "Yes" : "No") << std::endl;
+ */
+2025-01-27 18:14:38,453 - INFO - End time: 2025-01-27 18:14:38
+2025-01-27 18:14:38,453 - INFO - Duration: 31.66646432876587

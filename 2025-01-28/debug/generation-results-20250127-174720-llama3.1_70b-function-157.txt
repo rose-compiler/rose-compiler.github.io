@@ -1,0 +1,126 @@
+2025-01-27 18:51:27,230 - INFO - Start time: 2025-01-27 18:51:27
+2025-01-27 18:51:27,230 - INFO - Generating documents for a function with id : 157
+2025-01-27 18:51:27,230 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::pastePreprocessingInfo (SgLocatedNode* dst_node, PreprocessingInfo::RelativePositionType pos, AttachedPreprocessingInfoType& save_buf)
+{
+  if (save_buf.size()==0) return;
+  // if front
+  AttachedPreprocessingInfoType* info = createInfoList (dst_node);
+  ROSE_ASSERT (info);
+
+  // DQ (9/26/2007): Commented out as part of move from std::list to std::vector
+  // printf ("Commented out front_inserter() as part of move from std::list to std::vector \n");
+  // copy (save_buf.rbegin (), save_buf.rend (), front_inserter (*info));
+
+  // Liao (10/3/2007), vectors can only be appended at the rear
+  if (pos==PreprocessingInfo::before)
+  {
+    for(AttachedPreprocessingInfoType::reverse_iterator i=save_buf.rbegin();i!=save_buf.rend();i++)
+      info->insert(info->begin(),*i);
+  }
+  // if back
+  else if (pos==PreprocessingInfo::after)
+    copy (save_buf.begin (), save_buf.end (), back_inserter (*info));
+  else if (pos==PreprocessingInfo::inside)
+  {
+    copy (save_buf.begin (), save_buf.end (), back_inserter (*info));
+    cerr<<"SageInterface::pastePreprocessingInfo() pos==PreprocessingInfo::inside is not supported."<<endl;
+    save_buf[0]->display("ttt");
+  }
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:51:59,510 - INFO - Response from llama3.1:70b for Function 157:
+2025-01-27 18:51:59,510 - INFO - /**
+ * @fn void SageInterface::pastePreprocessingInfo (SgLocatedNode* dst_node, PreprocessingInfo::RelativePositionType pos, AttachedPreprocessingInfoType& save_buf)
+ *
+ * @brief Pastes preprocessing information into a node.
+ *
+ * This function pastes the preprocessing information stored in save_buf
+ * into the destination node dst_node at a specified position. The position
+ * is relative to the existing preprocessing information attached to the node.
+ *
+ * The function first creates an info list for the destination node if it does not already exist.
+ * It then copies the preprocessing information from save_buf to the info list based on the specified position.
+ *
+ * @param dst_node The destination node where the preprocessing information is to be pasted.
+ *                 Must be a non-null pointer to a valid SgLocatedNode object.
+ *
+ * @param pos      The relative position where the preprocessing information is to be pasted.
+ *                 Can be one of PreprocessingInfo::before, PreprocessingInfo::after, or PreprocessingInfo::inside.
+ *
+ * @param save_buf The buffer containing the preprocessing information to be pasted.
+ *                  Must be a non-empty container of AttachedPreprocessingInfoType objects.
+ *
+ * @return None
+ *
+ * @warning If pos is PreprocessingInfo::inside, a warning message will be printed to cerr indicating that this position is not supported.
+ *
+ * @pre     dst_node must be a non-null pointer to a valid SgLocatedNode object.
+ * @pre     save_buf must be a non-empty container of AttachedPreprocessingInfoType objects.
+ * @post    The preprocessing information in save_buf will be pasted into the info list of dst_node at the specified position.
+ *
+ * @note   If pos is PreprocessingInfo::before, the preprocessing information will be inserted at the beginning of the info list.
+ *         If pos is PreprocessingInfo::after, the preprocessing information will be appended to the end of the info list.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgLocatedNode* node = ...; // obtain a valid SgLocatedNode object
+ *           AttachedPreprocessingInfoType save_buf; // create and populate the buffer with preprocessing information
+ *           SageInterface::pastePreprocessingInfo(node, PreprocessingInfo::before, save_buf);
+ *          @endcode
+ */
+2025-01-27 18:51:59,510 - INFO - End time: 2025-01-27 18:51:59
+2025-01-27 18:51:59,510 - INFO - Duration: 32.28056502342224

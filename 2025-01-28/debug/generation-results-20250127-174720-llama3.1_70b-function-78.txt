@@ -1,0 +1,214 @@
+2025-01-27 18:19:49,166 - INFO - Start time: 2025-01-27 18:19:49
+2025-01-27 18:19:49,166 - INFO - Generating documents for a function with id : 78
+2025-01-27 18:19:49,166 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::addMangledNameToCache( SgNode* astNode, const std::string & oldMangledName)
+   {
+#if DEBUG_SAGE_INTERFACE_ADD_MANGLED_TO_CACHE
+     printf ("In SageInterface::addMangledNameToCache(): TOP: astNode = %p = %s oldMangledName = %s \n",astNode,astNode->class_name().c_str(),oldMangledName.c_str());
+#endif
+
+//#define DEBUG_MANGLED_SHORTNAME 1
+#ifdef DEBUG_MANGLED_SHORTNAME
+     static std::unordered_map<uint64_t, std::string> mangledNameHashCollisionCheckMap;
+#endif
+
+
+#if 0
+     SgGlobal* globalScope = isSgGlobal(astNode);
+
+     if (globalScope == NULL && isSgFile(astNode) != NULL)
+        {
+          globalScope = isSgFile(astNode)->get_globalScope();
+          ROSE_ASSERT(globalScope != NULL);
+        }
+
+     if (globalScope == NULL && isSgProject(astNode) != NULL)
+        {
+       // Check to make sure that the SgFile can be uniquely determined
+          ROSE_ASSERT( isSgProject(astNode)->get_fileList()->size() == 1 );
+          globalScope = isSgProject(astNode)->get_fileList()->operator[](0)->get_globalScope();
+          ROSE_ASSERT(globalScope != NULL);
+        }
+
+     SgNode* temp = astNode;
+     while (temp->get_parent() != NULL && globalScope == NULL)
+        {
+          temp = temp->get_parent();
+          globalScope = isSgGlobal(temp);
+        }
+     ROSE_ASSERT(globalScope != NULL);
+#endif
+
+     std::map<SgNode*,std::string> & mangledNameCache   = SgNode::get_globalMangledNameMap();
+
+     std::string mangledName;
+
+     if (SgProject::get_mangled_noshortname() == false) {
+         std::map<std::string, uint64_t> & shortMangledNameCache = SgNode::get_shortMangledNameCache();
+
+         if (oldMangledName.size() > 40) {
+             std::map<std::string, uint64_t>::const_iterator shortMNIter = shortMangledNameCache.find(oldMangledName);
+             uint64_t idNumber = 0;
+             if (shortMNIter != shortMangledNameCache.end())
+                 {
+                     idNumber = shortMNIter->second;
+
+#ifdef DEBUG_MANGLED_SHORTNAME
+                   //Check for hash colisions, if we found an idNumber, but the long mangled name is different, we have a problem
+                   auto collisionIt = mangledNameHashCollisionCheckMap.find(idNumber);
+                   if(collisionIt != mangledNameHashCollisionCheckMap.end() &&
+                     oldMangledName != shortMNIter->first)
+                   {
+                     mlog[Sawyer::Message::Common::ERROR] <<" Got a short mangled name collision.  \n "<<
+                       oldMangledName << " and \n " << shortMNIter->first << " \n" <<
+                       "have the same idNumber of: " << Combinatorics::toBase62String(idNumber) << " " << shortMNIter->second << endl;
+                     exit(12);
+                   } else {
+                     mangledNameHashCollisionCheckMap[idNumber] = oldMangledName;
+                   }
+#endif //DEBUG_MANGLED_SHORTNAME
+
+                 }
+             else
+                 {
+                   Combinatorics::HasherSha256Builtin hasher;
+                   hasher.insert(oldMangledName);
+                   hasher.digest();
+                   idNumber = hasher.make64Bits();
+                   shortMangledNameCache.insert(std::pair<std::string, uint64_t>(oldMangledName, idNumber));
+                 }
+
+             std::ostringstream mn;
+             mn << 'L' << Combinatorics::toBase62String(idNumber) << 'R';
+             mangledName = mn.str();
+         } else {
+             mangledName = oldMangledName;
+         }
+      } else {
+
+  // DQ (7/24/2012): Note that using this option can cause some test codes using operators that have
+  // difficult names (conversion operators to user-defined types) to fail.  See test2004_141.C for example.
+  // The conversion operator "operator T&() const;" will fail because the character "&" will remain in
+  // mangled name.  The substring coding changes the strings for the mangled names and this effectively
+  // removes the special characters, but there could be cases where they might remain.
+
+  // DQ (3/27/2012): Use this as a mechanism to limit the I/O but still output a warning infrequently.
+     static unsigned long counter = 0;
+
+  // DQ (3/27/2012): Use this as a mechanism to limit the I/O but still output a warning infrequently.
+  // This supports debugging the new EDG 4.x interface...
+     if (counter++ % 500 == 0)
+        {
+          printf ("WARNING: In SageInterface::addMangledNameToCache(): Using longer forms of mangled names (can cause some function names with embedded special characters to fail; test2004_141.C) \n");
+        }
+     mangledName = oldMangledName;
+}
+
+  // DQ (6/26/2007): Output information useful for understanding Jeremiah's shortended name merge caching.
+  // std::cerr << "Changed MN " << oldMangledName << " to " << mangledName << std::endl;
+
+#if 0
+     printf ("Updating mangled name cache for node = %p = %s with mangledName = %s \n",astNode,astNode->class_name().c_str(),mangledName.c_str());
+#endif
+
+#ifdef ROSE_DEBUG_NEW_EDG_ROSE_CONNECTION
+     SgStatement* statement = isSgStatement(astNode);
+     if (statement != NULL && statement->hasExplicitScope() == true)
+        {
+          if (statement->get_scope() == NULL)
+             {
+               printf ("Warning: SageInterface::addMangledNameToCache(): In it might be premature to add this IR node and name to the mangledNameCache: statement = %p = %s oldMangledName = %s \n",
+                    statement,statement->class_name().c_str(),oldMangledName.c_str());
+             }
+        }
+#endif
+
+     mangledNameCache.insert(pair<SgNode*,string>(astNode,mangledName));
+
+#if DEBUG_SAGE_INTERFACE_ADD_MANGLED_TO_CACHE
+     printf ("In SageInterface::addMangledNameToCache(): returning mangledName = %s \n",mangledName.c_str());
+#endif
+
+     return mangledName;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:20:11,826 - INFO - Response from llama3.1:70b for Function 78:
+2025-01-27 18:20:11,826 - INFO - /**
+ * @fn std::string SageInterface::addMangledNameToCache( SgNode* astNode, const std::string & oldMangledName)
+ *
+ * @brief Adds a mangled name to the cache for a given node in the Abstract Syntax Tree (AST).
+ *
+ * This function is used to update the mangled name cache with a new or modified mangled name
+ * for a specific node in the AST. It takes into account whether short names are being used and
+ * performs necessary transformations, such as hashing or substring coding, if needed.
+ * The updated mangled name is then stored in the cache for future reference.
+ *
+ * @param astNode The node in the Abstract Syntax Tree (AST) for which to update the mangled name.
+ * @param oldMangledName The original mangled name associated with the given AST node.
+ * @return The updated mangled name after applying transformations, if any.
+ */
+
+/** 
+ * @details This function performs the following steps:
+ * - Checks whether short names are being used. If so, it applies hashing or substring coding to
+ *   shorten the mangled name while preserving its uniqueness.
+ * - Updates the mangled name cache with the new or modified mangled name for the given AST node.
+ * - Returns the updated mangled name after applying transformations, if any.
+ *
+ * @note This function is used internally by the SageInterface class and should not be called directly.
+ */
+2025-01-27 18:20:11,826 - INFO - End time: 2025-01-27 18:20:11
+2025-01-27 18:20:11,826 - INFO - Duration: 22.660374879837036

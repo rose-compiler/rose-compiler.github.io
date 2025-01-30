@@ -1,0 +1,242 @@
+2025-01-27 20:12:33,842 - INFO - Start time: 2025-01-27 20:12:33
+2025-01-27 20:12:33,842 - INFO - Generating documents for a function with id : 350
+2025-01-27 20:12:33,843 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::moveCommentsToNewStatement(SgStatement* sourceStatement, const vector<int> & indexList, SgStatement* destinationStatement , bool destinationStatementProceedsSourceStatement)
+   {
+     AttachedPreprocessingInfoType* comments = sourceStatement->getAttachedPreprocessingInfo();
+
+#if REMOVE_STATEMENT_DEBUG || 0
+     printf ("In moveCommentsToNewStatement(): destinationStatementProceedsSourceStatement = %s \n",destinationStatementProceedsSourceStatement ? "true" : "false");
+     printf (" --- sourceStatement = %p = %s name = %s \n",sourceStatement,sourceStatement->class_name().c_str(),get_name(sourceStatement).c_str());
+     printf (" --- destinationStatement = %p = %s name = %s \n",destinationStatement,destinationStatement->class_name().c_str(),get_name(destinationStatement).c_str());
+#endif
+     // Liao 2024/1/24
+     // There is a corner case: #if #endif may span very wide in the code. The lead #if may be moved without the matching #endif being found.
+     // A solution : pcounter++  whenever a leading #if #ifdef #ifndef is encountered.
+     //  pcounter -- if #endif is countered
+     //  Normally the final pcounter ==0, if pcounter>=1, a #endif is missing somewhere. We should patch it up.
+
+#if REMOVE_STATEMENT_DEBUG
+     printf ("Output the comments attached to sourceStatement: \n");
+     printOutComments(sourceStatement);
+     printf ("Output the comments attached to destinationStatement: \n");
+     printOutComments(destinationStatement);
+#endif
+
+  // Now add the entries from the captureList to the surroundingStatement and remove them from the targetStmt.
+     vector<int>::const_iterator j = indexList.begin();
+     PreprocessingInfo* prevTargetAnchorComment = NULL;
+     while (j != indexList.end())
+        {
+       // Add the captured comments to the new statement. Likely we need to make sure that the order is preserved.
+          ROSE_ASSERT(destinationStatement->get_file_info() != NULL);
+#if REMOVE_STATEMENT_DEBUG || 0
+          printf ("Attaching comments to destinationStatement = %p = %s on file = %s line %d \n",
+               destinationStatement,destinationStatement->class_name().c_str(),
+               destinationStatement->get_file_info()->get_filenameString().c_str(),
+               destinationStatement->get_file_info()->get_line());
+
+          printf ("(*comments)[*j]->getRelativePosition() = %s \n",PreprocessingInfo::relativePositionName((*comments)[*j]->getRelativePosition()).c_str());
+#endif
+
+          // Liao 2024/3/27: special handling when surrounding statement is SgGlobal
+          // It should not be treated as either before or after the source statement we want to move comments from
+          // SgGlobal should be treated as the enclosing scope of the source statement
+          // The comments of the source statements should be attached to inside position of SgGlobal.
+          // This is a variant of the before position (SgGlobal vs. source statement).
+          // We do not treate SgGlobal as the same as  if sgGlobal is preceeding source
+          // because the comments of source statement would be attached to ::after of SgGlobal and
+          // all comments will show up in the end of the file.
+          // The ::inside location relies on the unparser to properly handle them later.
+          if (destinationStatementProceedsSourceStatement == true || isSgGlobal(destinationStatement) != NULL )
+             {
+                 // dest
+                 // src // comments to be moved up: all before positions become after position
+                 //     // then append to dest's commments
+                 //     adjust relative position one by one
+                 auto commentPosition = (*comments)[*j]->getRelativePosition();
+                 if (commentPosition == PreprocessingInfo::before)
+                  {
+                 // Mark comments that were before the preceeding statement to be after the preceeding statement
+                    (*comments)[*j]->setRelativePosition(PreprocessingInfo::after);
+                  }
+               else if (commentPosition == PreprocessingInfo::after ||
+                        commentPosition == PreprocessingInfo::end_of)
+                  {
+                    // Leave position alone [Rasmussen 2023.01.09]
+                  }
+               else
+                  {
+                    ROSE_ASSERT(false && "Comment relative position neither, before, after, nor end_of");
+                  }
+
+                // special handling of inside position
+		          // The surrounding statement will accept the comments. It also preceeds the source statement providing the comments. 
+		          // If it is an enclosing scope statement, the comments should be attached to inside position, not before nor after.
+                // if (  isSgGlobal(destinationStatement) ||  isSgBasicBlock(destinationStatement) )  
+		          // Handle all SgScopeStatement variants. 
+                // We do this only for C/C++ language. Otherwise the code may break Jovial and other languages.
+                if (is_C_language() || is_C99_language() || is_Cxx_language() )
+                {
+                  if (SageInterface::isAncestor(destinationStatement, sourceStatement)) 
+                    (*comments)[*j]->setRelativePosition(PreprocessingInfo::inside);
+                }
+                destinationStatement->addToAttachedPreprocessingInfo((*comments)[*j]);
+
+             }
+            else // the target statement is after the source statment: we want to move comments from src to target
+             {
+                    //  src : comments  : before or after (when moved to dest, it should become before)
+                    //                    all should be prepend to dest's first comment
+                    //  dest: comments
+               //     adjust relative position one by one
+               if ((*comments)[*j]->getRelativePosition() == PreprocessingInfo::before)
+                  {
+                    // Leave the comments marked as being before the removed statement
+                    // as before the following statement
+                  }
+                 else
+                  {
+                 // If is is not before, I hope it can only be after. Sometimes it is end_of, e.g. gitlab-issue-186.jov
+                    ASSERT_require((*comments)[*j]->getRelativePosition() == PreprocessingInfo::after||
+		                   (*comments)[*j]->getRelativePosition() == PreprocessingInfo::end_of);
+                    (*comments)[*j]->setRelativePosition(PreprocessingInfo::before);
+                  }
+               AttachedPreprocessingInfoType* targetInfoList = destinationStatement->getAttachedPreprocessingInfo();
+               // source stmt has a list of comments c1, c2, c3
+               // we want to keep their order and prepend to target stmt's existing comments
+               // The solution is to define an anchor comment in target stmt
+               //    first time anchor is NULL, we prepend c1 to before the target stmt's first comment
+               //    after that, we insert after the anchor comment (previous anchor)
+               //    all anchor comments must come from source statement
+               if (targetInfoList==NULL)
+               {
+                   // we can just use append to the end. the same effect.
+                   destinationStatement->addToAttachedPreprocessingInfo((*comments)[*j]);
+               }
+               else
+               {
+                  // target stmt has comments
+                  // first time to grab thing
+                  if( prevTargetAnchorComment==NULL)
+                  {
+                     PreprocessingInfo * origFirstTargetComment  = *(targetInfoList->begin());
+                     // insert before this original first one
+                     destinationStatement->insertToAttachedPreprocessingInfo((*comments)[*j],origFirstTargetComment,false);
+                  }
+                  else
+                  {
+                   // now we have non null prev comment from target statement. insert after it!
+                   destinationStatement->insertToAttachedPreprocessingInfo((*comments)[*j],prevTargetAnchorComment ,true);
+                  }
+               }
+
+               prevTargetAnchorComment = (*comments)[*j];
+             }
+
+
+       // Remove them from the targetStmt. (set them to NULL and then remove them in a separate step).
+#if REMOVE_STATEMENT_DEBUG
+          printf ("Marking entry from comments list as NULL on sourceStatement = %p = %s \n",sourceStatement,sourceStatement->class_name().c_str());
+#endif
+         (*comments)[*j] = nullptr;// Why do we need to make it NULL??
+
+          j++;
+        }
+
+  // Now remove each NULL entries in the comments vector.
+  // Because of iterator invalidation we must reset the iterators after each call to erase (I think).
+     for (size_t n = 0; n < indexList.size(); n++)
+        {
+#if REMOVE_STATEMENT_DEBUG || 0
+          printf ("Erase entry from comments list on comments->size() %" PRIuPTR " \n",comments->size());
+#endif
+          bool modifiedList = false;
+          AttachedPreprocessingInfoType::iterator k = comments->begin();
+          while (k != comments->end() && modifiedList == false)
+             {
+            // Only modify the list once per iteration over the captureList
+                if (*k == nullptr)
+                {
+                    k = comments->erase(k);
+                    modifiedList = true;
+                    continue;
+                }
+                else
+                {
+                    k++;
+                }
+             }
+        }
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:12:46,835 - INFO - Response from llama3.1:70b for Function 350:
+2025-01-27 20:12:46,835 - INFO - /**
+ * @brief Removes the attached preprocessing info from a source statement and reattaches it to a destination statement.
+ *
+ * This function takes into account the relative position of the comments with respect to the statements.
+ * It handles different scenarios, such as when the destination statement is an ancestor of the source statement,
+ * or when the target statement is after the source statement. In this case, it adjusts the relative position
+ * of the comments and prepends them to the first comment of the destination statement.
+ *
+ * @param sourceStatement The statement from which the preprocessing info will be removed.
+ * @param destinationStatement The statement to which the preprocessing info will be reattached.
+ */
+void remove_and_reattach_comments(SgNode* sourceStatement, SgNode* destinationStatement) {
+    // ... (rest of the code remains the same)
+}
+2025-01-27 20:12:46,836 - INFO - End time: 2025-01-27 20:12:46
+2025-01-27 20:12:46,836 - INFO - Duration: 12.993295669555664

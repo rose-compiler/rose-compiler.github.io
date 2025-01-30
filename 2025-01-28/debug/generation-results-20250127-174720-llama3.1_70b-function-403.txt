@@ -1,0 +1,198 @@
+2025-01-27 20:35:00,909 - INFO - Start time: 2025-01-27 20:35:00
+2025-01-27 20:35:00,909 - INFO - Generating documents for a function with id : 403
+2025-01-27 20:35:00,909 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgAssignInitializer* SageInterface::splitExpression(SgExpression* from, string newName/* ="" */)
+{
+  ROSE_ASSERT(from != NULL);
+
+#ifndef ROSE_USE_INTERNAL_FRONTEND_DEVELOPMENT
+#if 0  // This is not accurate for template class specializations. We disable this assertion for now. The worst case is compilation error later.
+  if (!SageInterface::isCopyConstructible(from->get_type())) {
+    std::cerr << "Type " << from->get_type()->unparseToString() << " of expression " << from->unparseToString() << " is not copy constructible" << std::endl;
+    ROSE_ASSERT (false);
+  }
+
+  assert (SageInterface::isCopyConstructible(from->get_type())); // How do we report errors?
+#endif
+  SgStatement* stmt = getStatementOfExpression(from);
+  assert (stmt);
+  if (!isSgForInitStatement(stmt->get_parent())) {
+    //SageInterface::ensureBasicBlockAsParent(stmt);
+    // no return value is accepted. Only the optional transformation matters
+    if (isBodyStatement(stmt) && !isSgBasicBlock(stmt))
+      makeSingleStatementBodyToBlock (stmt);
+  }
+
+  SgScopeStatement* parent = isSgScopeStatement(stmt->get_parent());
+  // cout << "parent is a " << (parent ? parent->sage_class_name() : "NULL") << endl;
+  if (!parent && isSgForInitStatement(stmt->get_parent()))
+    parent = isSgScopeStatement(stmt->get_parent()->get_parent()->get_parent());
+  assert (parent);
+  // cout << "parent is a " << parent->sage_class_name() << endl;
+  // cout << "parent is " << parent->unparseToString() << endl;
+  // cout << "stmt is " << stmt->unparseToString() << endl;
+  SgName varname = "rose_temp__";
+  if (newName == "") {
+    varname << ++SageInterface::gensym_counter;
+  } else {
+    varname = newName;
+  }
+
+  SgType* vartype = from->get_type();
+  SgNode* fromparent = from->get_parent();
+  vector<SgExpression*> ancestors;
+  for (SgExpression *expr = from, *anc = isSgExpression(fromparent); anc != 0;
+      expr = anc, anc = isSgExpression(anc->get_parent()))
+  {
+    if ((isSgAndOp(anc) && expr != isSgAndOp(anc)->get_lhs_operand()) ||
+        (isSgOrOp(anc) && expr != isSgOrOp(anc)->get_lhs_operand()) ||
+        (isSgConditionalExp(anc) && expr != isSgConditionalExp(anc)->get_conditional_exp()))
+      ancestors.push_back(anc); // Closest first
+  }
+  // cout << "This expression to split has " << ancestors.size() << " ancestor(s)" << endl;
+  for (vector<SgExpression*>::reverse_iterator ai = ancestors.rbegin(); ai != ancestors.rend(); ++ai)
+  {
+    StatementGenerator* gen;
+    switch ((*ai)->variantT()) {
+      case V_SgAndOp:
+        gen = new AndOpGenerator(isSgAndOp(*ai)); break;
+      case V_SgOrOp:
+        gen = new OrOpGenerator(isSgOrOp(*ai)); break;
+      case V_SgConditionalExp:
+        gen = new ConditionalExpGenerator(isSgConditionalExp(*ai)); break;
+      default: assert (!"Should not happen"); abort();
+    }
+    replaceExpressionWithStatement(*ai, gen);
+    delete gen;
+  } // for
+  if (ancestors.size() != 0) {
+    return splitExpression(from);
+    // Need to recompute everything if there were ancestors
+  }
+  SgVariableDeclaration* vardecl = SageBuilder::buildVariableDeclaration(varname, vartype, NULL, parent);
+  SgVariableSymbol* sym = SageInterface::getFirstVarSym(vardecl);
+  ROSE_ASSERT (sym);
+  SgInitializedName* initname = sym->get_declaration();
+  ROSE_ASSERT (initname);
+  SgVarRefExp* varref = SageBuilder::buildVarRefExp(sym);
+  replaceExpressionWithExpression(from, varref);
+  // std::cout << "Unparsed 3: " << fromparent->sage_class_name() << " --- " << fromparent->unparseToString() << endl;
+  // cout << "From is a " << from->sage_class_name() << endl;
+  SgAssignInitializer* ai = SageBuilder::buildAssignInitializer(from);
+  initname->set_initializer(ai);
+  ai->set_parent(initname);
+  myStatementInsert(stmt, vardecl, true);
+  // vardecl->set_parent(stmt->get_parent());
+  // FixSgTree(vardecl);
+  // FixSgTree(parent);
+  return ai;
+
+#else
+  return NULL;
+#endif
+
+} //splitExpression()
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:35:36,256 - INFO - Response from llama3.1:70b for Function 403:
+2025-01-27 20:35:36,256 - INFO - /**
+ * @fn SgAssignInitializer* SageInterface::splitExpression(SgExpression* from, string newName/* ="" */)
+ *
+ * @brief Splits an expression into a statement and assigns the result to a variable.
+ *
+ * This function takes an expression as input and transforms it into a statement
+ * by assigning its result to a new variable. The name of this variable can be 
+ * optionally specified; otherwise, a default name will be generated. The 
+ * function also handles cases where the input expression is part of a larger 
+ * expression or statement.
+ *
+ * @param from The expression to be split into a statement and assigned to a variable.
+ *              Must not be NULL.
+ * @param newName Optional parameter specifying the name of the new variable.
+ *                 If empty, a default name will be generated.
+ *
+ * @return An SgAssignInitializer node representing the assignment of the 
+ *          input expression to the new variable. Returns NULL if the function
+ *          is disabled due to ROSE_USE_INTERNAL_FRONTEND_DEVELOPMENT being defined.
+ *
+ * @warning The function assumes that the input expression is not part of a 
+ *          larger expression or statement that would be affected by this 
+ *          transformation. Also, the function does not perform any checks for 
+ *          potential errors such as null pointer dereferences.
+ *
+ * @pre The input expression must not be NULL and must have a valid parent node.
+ *      Additionally, if newName is specified, it must be a valid C++ identifier.
+ *
+ * @post A new variable declaration will be created with the assigned name and 
+ *        type matching the input expression. This variable will be initialized
+ *        with the result of the input expression. The original input expression
+*         will be replaced by a reference to this new variable.
+ *
+ * @note If the function is disabled due to ROSE_USE_INTERNAL_FRONTEND_DEVELOPMENT 
+ *       being defined, it will return NULL immediately without performing any 
+ *       transformations.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgExpression* expr = ...; // some expression
+ *           string newName = "myVar";
+ *           SgAssignInitializer* ai = SageInterface::splitExpression(expr, newName);
+ *           if (ai != NULL) {
+ *               // The expression has been split into a statement and assigned to the new variable.
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:35:36,256 - INFO - End time: 2025-01-27 20:35:36
+2025-01-27 20:35:36,256 - INFO - Duration: 35.3477623462677

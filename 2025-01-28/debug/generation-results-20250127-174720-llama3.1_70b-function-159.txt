@@ -1,0 +1,132 @@
+2025-01-27 18:52:29,649 - INFO - Start time: 2025-01-27 18:52:29
+2025-01-27 18:52:29,649 - INFO - Generating documents for a function with id : 159
+2025-01-27 18:52:29,649 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::replaceMacroCallsWithExpandedStrings(SgPragmaDeclaration* target)
+{
+  // This is part of Wave support in ROSE.
+// #if CAN_NOT_COMPILE_WITH_ROSE != true
+// #if CAN_NOT_COMPILE_WITH_ROSE == 0
+#ifndef USE_ROSE
+  ROSE_ASSERT(target != NULL);
+  AttachedPreprocessingInfoType *info=  target->getAttachedPreprocessingInfo ();
+  if (info == NULL) return;
+  AttachedPreprocessingInfoType::iterator j;
+  for (j = info->begin (); j != info->end (); j++)
+  {
+    if ((*j)->getTypeOfDirective()==PreprocessingInfo::CMacroCall)
+    {
+#ifndef ROSE_SKIP_COMPILATION_OF_WAVE
+   // DQ (2/17/2016): The token_container type is not defined if Wave is not available.
+      std::ostringstream os;
+      token_container tc = (*j)->get_macro_call()->expanded_macro;
+      token_container::const_iterator iter;
+      for (iter=tc.begin(); iter!=tc.end(); iter++)
+        os<<(*iter).get_value();
+      //cout<<"Found a macro call: "<<(*j)->getString()<<
+      //"\nexpanding it to: "<<os.str()<<endl;
+      string pragmaText = target->get_pragma()->get_pragma();
+      string targetString = (*j)->getString();
+      string replacement = os.str();
+      // repeat until not found
+      size_t pos1 = pragmaText.find(targetString);
+      while (pos1 != string::npos)
+      {
+        pragmaText.replace(pos1, targetString.size(), replacement);
+        pos1 = pragmaText.find(targetString);
+      }
+       delete target->get_pragma();
+       target->set_pragma(buildPragma(pragmaText));
+#endif
+    } // end if
+  } // end for
+#endif
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:52:50,018 - INFO - Response from llama3.1:70b for Function 159:
+2025-01-27 18:52:50,018 - INFO - /**
+ * @fn void SageInterface::replaceMacroCallsWithExpandedStrings(SgPragmaDeclaration* target)
+ *
+ * @brief Replaces macro calls with their expanded strings in a given SgPragmaDeclaration.
+ *
+ * This function iterates over the attached preprocessing information of a given 
+ * SgPragmaDeclaration and replaces any macro calls found within its pragma text
+ * with their corresponding expanded strings. It utilizes the Wave library to expand
+ * the macros, if available.
+ *
+ * @param target The SgPragmaDeclaration for which the macro calls are to be replaced.
+ *                Must not be NULL.
+ *
+ * @return None
+ *
+ * @warning This function modifies the input SgPragmaDeclaration by replacing its 
+ *          pragma text with the modified version containing expanded macro calls.
+ *
+ * @pre The input SgPragmaDeclaration must have attached preprocessing information.
+ *
+ * @post The pragma text of the input SgPragmaDeclaration is modified to contain
+ *       expanded macro calls, if any were found and replaced.
+ *
+ * @note This function is part of Wave support in ROSE and may not be available or 
+ *       functional if the Wave library is not properly configured or compiled.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgPragmaDeclaration* pragmaDecl = ...; // obtain a valid SgPragmaDeclaration
+ *           SageInterface::replaceMacroCallsWithExpandedStrings(pragmaDecl);
+ *          @endcode
+ */
+2025-01-27 18:52:50,018 - INFO - End time: 2025-01-27 18:52:50
+2025-01-27 18:52:50,018 - INFO - Duration: 20.368457317352295

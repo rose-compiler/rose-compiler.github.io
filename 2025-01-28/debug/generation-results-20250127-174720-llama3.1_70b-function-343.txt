@@ -1,0 +1,141 @@
+2025-01-27 20:09:45,198 - INFO - Start time: 2025-01-27 20:09:45
+2025-01-27 20:09:45,198 - INFO - Generating documents for a function with id : 343
+2025-01-27 20:09:45,198 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::replaceSubexpressionWithStatement(SgExpression* from, StatementGenerator* to)
+   {
+
+#ifndef ROSE_USE_INTERNAL_FRONTEND_DEVELOPMENT
+     SgStatement* stmt = getStatementOfExpression(from);
+
+     if (isSgExprStatement(stmt))
+        {
+          SgExpression* top = getRootOfExpression(from);
+
+
+          if (top == from)
+             {
+               SgStatement* generated = to->generate(0);
+               isSgStatement(stmt->get_parent())->replace_statement(stmt, generated);
+               generated->set_parent(stmt->get_parent());
+               return;
+             }
+            else
+             {
+               if (isSgAssignOp(top) && isSgAssignOp(top)->get_rhs_operand() == from)
+                  {
+                    SgAssignOp* t = isSgAssignOp(top);
+                    SgStatement* generated = to->generate(t->get_lhs_operand());
+                    isSgStatement(stmt->get_parent())->replace_statement(stmt, generated);
+                    generated->set_parent(stmt->get_parent());
+                    return;
+                  }
+                 else
+                  {
+                 // printf ("In replaceSubexpressionWithStatement(): Statement not generated \n");
+                  }
+             }
+        }
+
+  // cout << "1: " << getStatementOfExpression(from)->unparseToString() << endl;
+     SgAssignInitializer* init = splitExpression(from);
+  // cout << "2: " << getStatementOfExpression(from)->unparseToString() << endl;
+     convertInitializerIntoAssignment(init);
+  // cout << "3: " << getStatementOfExpression(from)->unparseToString() << endl;
+  // cout << "3a: " << getStatementOfExpression(from)->get_parent()->unparseToString() << endl;
+     SgExprStatement* new_stmt = isSgExprStatement(getStatementOfExpression(from));
+     assert (new_stmt != NULL); // Should now have this form because of conversion
+     replaceAssignmentStmtWithStatement(new_stmt, to);
+
+  // printf ("In replaceSubexpressionWithStatement: new_stmt = %p = %s \n",new_stmt,new_stmt->class_name().c_str());
+  // cout << "4: " << getStatementOfExpression(from)->get_parent()->unparseToString() << endl;
+
+#endif
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:10:08,163 - INFO - Response from llama3.1:70b for Function 343:
+2025-01-27 20:10:08,163 - INFO - /**
+ * @fn void SageInterface::replaceSubexpressionWithStatement(SgExpression* from, StatementGenerator* to)
+ *
+ * @brief Replaces a subexpression with a statement in the AST.
+ *
+ * This function replaces a given SgExpression node (from) with a statement generated by
+ * the provided StatementGenerator object (to). It first tries to replace the expression
+ * directly if it is an assignment or has no parent. If not, it splits the expression into
+ * an initializer and converts it into an assignment, then replaces the resulting statement.
+ *
+ * @param from The SgExpression node to be replaced.
+ * @param to The StatementGenerator object that generates the replacement statement.
+ *
+ * @return None
+ *
+ * @warning This function modifies the AST by replacing nodes. Use with caution.
+ *
+ * @pre The input expression (from) must not be NULL and must have a valid parent in the AST.
+ *
+ * @post The original SgExpression node is replaced with a new statement generated by the StatementGenerator object.
+ *
+ * @note This function assumes that the input expression can be safely replaced without affecting
+ *       the correctness of the program. It does not perform any semantic checks on the replacement.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgExpression* expr = ...; // some expression node in the AST
+ *           StatementGenerator* stmtGen = new MyStatementGenerator(); // a custom statement generator
+ *           SageInterface::replaceSubexpressionWithStatement(expr, stmtGen);
+ *          @endcode
+ */
+2025-01-27 20:10:08,163 - INFO - End time: 2025-01-27 20:10:08
+2025-01-27 20:10:08,163 - INFO - Duration: 22.96561050415039

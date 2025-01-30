@@ -1,0 +1,225 @@
+2025-01-27 20:15:42,454 - INFO - Start time: 2025-01-27 20:15:42
+2025-01-27 20:15:42,454 - INFO - Generating documents for a function with id : 359
+2025-01-27 20:15:42,454 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    int SageInterface::fixVariableReferences(SgNode* root, bool cleanUnusedSymbols/*=true*/)
+{
+  ROSE_ASSERT(root);
+  int counter=0;
+  Rose_STL_Container<SgNode*> varList;
+
+  SgVarRefExp* varRef=NULL;
+  Rose_STL_Container<SgNode*> reflist = NodeQuery::querySubTree(root, V_SgVarRefExp);
+  for (Rose_STL_Container<SgNode*>::iterator i=reflist.begin();i!=reflist.end();i++)
+  {
+    varRef= isSgVarRefExp(*i);
+    ROSE_ASSERT(varRef->get_symbol());
+    SgInitializedName* initname= varRef->get_symbol()->get_declaration();
+
+    ROSE_ASSERT (initname != NULL);
+    if (initname->get_type()==SgTypeUnknown::createType())
+    {
+      SgName varName=initname->get_name();
+      SgSymbol* realSymbol = NULL;
+
+#if 1
+      // CH (5/7/2010): Before searching SgVarRefExp objects, we should first deal with class/structure
+      // members. Or else, it is possible that we assign the wrong symbol to those members if there is another
+      // variable with the same name in parent scopes. Those members include normal member referenced using . or ->
+      // operators, and static members using :: operators.
+      //
+      if (SgArrowExp* arrowExp = isSgArrowExp(varRef->get_parent()))
+      {
+        if (varRef == arrowExp->get_rhs_operand_i())
+        {
+            // make sure the lhs operand has been fixed
+            counter += fixVariableReferences(arrowExp->get_lhs_operand_i());
+            SgType* lhs_type = arrowExp->get_lhs_operand_i()->get_type() ;
+            lhs_type = lhs_type->stripType(SgType::STRIP_MODIFIER_TYPE | SgType::STRIP_REFERENCE_TYPE | SgType::STRIP_RVALUE_REFERENCE_TYPE | SgType::STRIP_TYPEDEF_TYPE);
+            SgPointerType* ptrType = isSgPointerType(lhs_type);
+            ROSE_ASSERT(ptrType);
+            SgClassType* clsType = isSgClassType(ptrType->get_base_type()-> stripType(SgType::STRIP_MODIFIER_TYPE | SgType::STRIP_REFERENCE_TYPE | SgType::STRIP_RVALUE_REFERENCE_TYPE | SgType::STRIP_TYPEDEF_TYPE));
+            ROSE_ASSERT(clsType);
+            SgClassDeclaration* decl = isSgClassDeclaration(clsType->get_declaration());
+            decl = isSgClassDeclaration(decl->get_definingDeclaration());
+            ROSE_ASSERT(decl);
+
+         // DQ (8/16/2013): We want to lookup variable symbols not just any symbol.
+         // realSymbol = lookupSymbolInParentScopes(varName, decl->get_definition());
+            realSymbol = lookupVariableSymbolInParentScopes(varName, decl->get_definition());
+        }
+        else
+        {
+         // DQ (8/16/2013): We want to lookup variable symbols not just any symbol.
+         // realSymbol = lookupSymbolInParentScopes(varName,getScope(varRef));
+            realSymbol = lookupVariableSymbolInParentScopes(varName, getScope(varRef));
+        }
+      }
+      else if (SgDotExp* dotExp = isSgDotExp(varRef->get_parent()))
+      {
+        if (varRef == dotExp->get_rhs_operand_i())
+        {
+            // make sure the lhs operand has been fixed
+            counter += fixVariableReferences(dotExp->get_lhs_operand_i());
+
+            SgType* lhs_type = dotExp->get_lhs_operand_i()->get_type() ;
+            lhs_type = lhs_type->stripType(SgType::STRIP_MODIFIER_TYPE | SgType::STRIP_REFERENCE_TYPE | SgType::STRIP_RVALUE_REFERENCE_TYPE | SgType::STRIP_TYPEDEF_TYPE);
+            SgClassType* clsType = isSgClassType(lhs_type);
+            ROSE_ASSERT(clsType);
+            SgClassDeclaration* decl = isSgClassDeclaration(clsType->get_declaration());
+            decl = isSgClassDeclaration(decl->get_definingDeclaration());
+            ROSE_ASSERT(decl);
+
+         // DQ (8/16/2013): We want to lookup variable symbols not just any symbol.
+         // realSymbol = lookupSymbolInParentScopes(varName, decl->get_definition());
+            realSymbol = lookupVariableSymbolInParentScopes(varName, decl->get_definition());
+        }
+        else
+         // DQ (8/16/2013): We want to lookup variable symbols not just any symbol.
+         // realSymbol = lookupSymbolInParentScopes(varName,getScope(varRef));
+            realSymbol = lookupVariableSymbolInParentScopes(varName, getScope(varRef));
+      }
+      else
+#endif
+      {
+         // DQ (8/16/2013): We want to lookup variable symbols not just any symbol.
+         // realSymbol = lookupSymbolInParentScopes(varName,getScope(varRef));
+            realSymbol = lookupVariableSymbolInParentScopes(varName, getScope(varRef));
+      }
+
+      // should find a real symbol at this final fixing stage!
+      // This function can be called any time, not just final fixing stage
+      if (realSymbol==NULL)
+      {
+        //cerr<<"Error: cannot find a symbol for "<<varName.getString()<<endl;
+        //ROSE_ASSERT(realSymbol);
+      }
+      else {
+        // release placeholder initname and symbol
+        ROSE_ASSERT(realSymbol!=(varRef->get_symbol()));
+#if 0
+        // CH (5/12/2010):
+        // To delete a symbol node, first check if there is any node in memory
+        // pool which points to this symbol node. Only if no such node exists,
+        // this symbol together with its initialized name can be deleted.
+        //
+        bool toDelete = true;
+
+        SgSymbol* symbolToDelete = varRef->get_symbol();
+        varRef->set_symbol(isSgVariableSymbol(realSymbol));
+        counter ++;
+
+        if (varList.empty())
+        {
+            VariantVector vv(V_SgVarRefExp);
+            varList = NodeQuery::queryMemoryPool(vv);
+        }
+
+        for (Rose_STL_Container<SgNode*>::iterator i = varList.begin();
+                i != varList.end(); ++i)
+        {
+            if (SgVarRefExp* var = isSgVarRefExp(*i))
+            {
+                if (var->get_symbol() == symbolToDelete)
+                {
+                    toDelete = false;
+                    break;
+                }
+            }
+        }
+        if (toDelete)
+        {
+            delete initname; // TODO deleteTree(), release File_Info nodes etc.
+            delete symbolToDelete;
+        }
+
+#else
+
+        // CH (2010/7/26): We cannot delete those initname and symbol here, since there may be other variable references
+        // which point to them. We will delay this clear just before AstTests.
+#if 0
+        delete initname; // TODO deleteTree(), release File_Info nodes etc.
+        delete (varRef->get_symbol());
+#endif
+
+        //std::cout << "Fixed variable reference: " << realSymbol->get_name().str() << std::endl;
+        varRef->set_symbol(isSgVariableSymbol(realSymbol));
+        counter ++;
+#endif
+      }
+    }
+  } // end for
+  // Liao 2/1/2013: delete unused initname and symbol, considering possible use by the current subtree from root node
+  if (cleanUnusedSymbols)
+    clearUnusedVariableSymbols(root);
+  return counter;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:15:51,896 - INFO - Response from llama3.1:70b for Function 359:
+2025-01-27 20:15:51,897 - INFO - /**
+ * @brief Fixes variable references in a given AST.
+ *
+ * This function takes an SgNode as input and fixes any variable references within it.
+ * It does this by looking up the symbol for each variable reference in the parent scopes
+ * of the node, and replacing the original symbol with the found one.
+ *
+ * @param root The root node of the AST to fix variable references in.
+ * @return The number of fixed variable references.
+ */
+int fixVariableReferences(SgNode* root) {
+  // ... rest of the function remains the same ...
+}
+2025-01-27 20:15:51,897 - INFO - End time: 2025-01-27 20:15:51
+2025-01-27 20:15:51,897 - INFO - Duration: 9.443019151687622

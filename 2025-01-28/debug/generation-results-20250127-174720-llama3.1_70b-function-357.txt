@@ -1,0 +1,142 @@
+2025-01-27 20:14:59,410 - INFO - Start time: 2025-01-27 20:14:59
+2025-01-27 20:14:59,410 - INFO - Generating documents for a function with id : 357
+2025-01-27 20:14:59,410 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::generateFunctionDefinitionsList(SgNode* node)
+   {
+  // DQ (3/20/2019): This function operates on the new file used to support outlined function definitions.
+  // We use a copy of the file where the code will be outlined FROM, so that if there are references to
+  // declarations in the outlined code we can support the outpiled code with those references.  This
+  // approach has the added advantage of also supporting the same include file tree as the original
+  // file where the outlined code is being taken from.
+
+     class FunctionDefinitionsTraversal : public AstSimpleProcessing
+        {
+          public:
+               std::vector<SgFunctionDeclaration*> functionList;
+               FunctionDefinitionsTraversal() {}
+
+               void visit (SgNode* node)
+                  {
+                    SgFunctionDeclaration* functionDeclaration = isSgFunctionDeclaration(node);
+                    if (functionDeclaration != NULL)
+                       {
+                      // This should have been set already.
+                      // ROSE_ASSERT(sourceFile != NULL);
+
+                         SgFunctionDeclaration* definingFunctionDeclaration = isSgFunctionDeclaration(functionDeclaration->get_definingDeclaration());
+                         if (functionDeclaration == definingFunctionDeclaration)
+                            {
+                           // Remove the defining declaration as a test.
+                              SgScopeStatement* functionDeclarationScope = isSgScopeStatement(functionDeclaration->get_parent());
+                              if (functionDeclarationScope != NULL)
+                                 {
+                                   functionList.push_back(functionDeclaration);
+                                 }
+                            }
+                       }
+                  }
+        };
+
+  // Now build the traveral object and call the traversal (preorder) on the AST subtree.
+     FunctionDefinitionsTraversal traversal;
+
+     traversal.traverseWithinFile(node, preorder);
+
+     std::vector<SgFunctionDeclaration*> & functionList = traversal.functionList;
+
+     return functionList;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:15:26,713 - INFO - Response from llama3.1:70b for Function 357:
+2025-01-27 20:15:26,713 - INFO - /**
+ * @fn std::vector<SgFunctionDeclaration*> SageInterface::generateFunctionDefinitionsList(SgNode* node)
+ *
+ * @brief Generates a list of function definitions from an AST subtree.
+ *
+ * This function traverses the Abstract Syntax Tree (AST) subtree rooted at the given SgNode and collects all function declarations. 
+ * It uses a preorder traversal to visit each node in the tree, checking if it is a function declaration. If so, it adds the declaration to the list of functions.
+ *
+ * The purpose of this function is to support outlined function definitions by generating a list of functions that can be used for outlining.
+ *
+ * @param node The root node of the AST subtree to traverse.
+ * 
+ * @return A vector of SgFunctionDeclaration pointers representing the function declarations found in the AST subtree.
+ * 
+ * @warning This function assumes that the input node is a valid SgNode and that the AST subtree rooted at this node has been properly constructed. 
+ *
+ * @pre The input node must be non-null and represent a valid SgNode in the AST.
+ *
+ * @post The returned vector will contain all function declarations found in the AST subtree rooted at the input node.
+ *
+ * @note This function uses a preorder traversal to visit each node in the AST subtree. 
+ *       It checks if each node is a function declaration and adds it to the list of functions if so.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *              // Create an instance of SageInterface
+ *              SageInterface sage;
+ * 
+ *              // Get the root node of the AST subtree
+ *              SgNode* rootNode = ...;  // Replace with actual code to get the root node
+ * 
+ *              // Generate the list of function definitions
+ *              std::vector<SgFunctionDeclaration*> functions = sage.generateFunctionDefinitionsList(rootNode);
+ * 
+ *              // Use the generated list of functions as needed
+ *          @endcode
+ */
+2025-01-27 20:15:26,714 - INFO - End time: 2025-01-27 20:15:26
+2025-01-27 20:15:26,714 - INFO - Duration: 27.303524017333984

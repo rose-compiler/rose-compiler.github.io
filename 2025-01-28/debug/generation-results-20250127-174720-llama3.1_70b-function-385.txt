@@ -1,0 +1,123 @@
+2025-01-27 20:26:18,220 - INFO - Start time: 2025-01-27 20:26:18
+2025-01-27 20:26:18,220 - INFO - Generating documents for a function with id : 385
+2025-01-27 20:26:18,220 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::collectReadOnlyVariables(SgStatement* stmt, std::set<SgInitializedName*>& readOnlyVars, bool coarseGrain/*=true*/)
+{
+  ROSE_ASSERT(stmt != NULL);
+  set<SgInitializedName*> readVars, writeVars;
+   // Only collect read only variables if collectReadWriteVariables() succeeded.
+  if (collectReadWriteVariables(stmt, readVars, writeVars, coarseGrain))
+  {
+    // read only = read - write
+    set_difference(readVars.begin(), readVars.end(),
+        writeVars.begin(), writeVars.end(),
+        std::inserter(readOnlyVars, readOnlyVars.begin()));
+  }
+  else // Qing's side effect analysis often fails, we do a simple type based read only variable collection, find all referenced variables of const type
+  {
+    RoseAst ast(stmt);
+
+    for(RoseAst::iterator i=ast.begin();i!=ast.end();++i) {
+      if (SgVarRefExp* v_ref = isSgVarRefExp(*i))
+      {
+        if (isConstType(v_ref->get_type()))
+          readOnlyVars.insert (v_ref->get_symbol()->get_declaration());
+      }
+    } // end for
+  } // end else
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:26:45,828 - INFO - Response from llama3.1:70b for Function 385:
+2025-01-27 20:26:45,829 - INFO - /**
+ * @fn void SageInterface::collectReadOnlyVariables(SgStatement* stmt, std::set<SgInitializedName*>& readOnlyVars, bool coarseGrain)
+ *
+ * @brief Collects read-only variables from a given statement.
+ *
+ * This function analyzes the given statement and collects the names of variables that are only read but not written. 
+ * It uses two approaches: (1) precise analysis by collecting read-write variables using collectReadWriteVariables() and then computing the difference between read and write sets, 
+ * or (2) a simple type-based approach if the first one fails.
+ *
+ * @param stmt The statement to be analyzed for read-only variables. Must not be NULL.
+ *
+ * @param readOnlyVars A set of SgInitializedName pointers that will store the names of read-only variables found in the given statement.
+ *
+ * @param coarseGrain Optional parameter indicating whether a coarse-grained analysis should be performed (default is true).
+ *
+ * @return None
+ *
+ * @warning If collectReadWriteVariables() fails, a simple type-based approach may not find all read-only variables.
+ *
+ * @pre stmt must not be NULL.
+ *
+ * @post readOnlyVars will contain the names of read-only variables found in the given statement.
+ *
+ * @note The function uses two approaches to collect read-only variables: precise analysis and simple type-based analysis. 
+ *       If the first approach fails, the second one is used as a fallback.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* stmt = ...; // some statement
+ *           std::set<SgInitializedName*> readOnlyVars;
+ *           SageInterface sageInterface;
+ *           sageInterface.collectReadOnlyVariables(stmt, readOnlyVars);
+ *           for (std::set<SgInitializedName*>::iterator i = readOnlyVars.begin(); i != readOnlyVars.end(); ++i) {
+ *             SgInitializedName* var = *i;
+ *             // do something with the read-only variable
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:26:45,829 - INFO - End time: 2025-01-27 20:26:45
+2025-01-27 20:26:45,829 - INFO - Duration: 27.60837697982788

@@ -1,0 +1,160 @@
+2025-01-27 20:21:28,153 - INFO - Start time: 2025-01-27 20:21:28
+2025-01-27 20:21:28,153 - INFO - Generating documents for a function with id : 374
+2025-01-27 20:21:28,153 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::reportModifiedStatements( const string & label, SgNode* node )
+   {
+  // DQ (10/23/2018): This reports the nodes in the AST that are marked as modified (isModified flag).
+  // It is useful for debugging the token-based unparsing.
+
+     printf ("\n\n##################################################### \n");
+     printf ("Report on modified statements: label = %s \n",label.c_str());
+
+     SgSourceFile* sourceFile = isSgSourceFile(node);
+     if (sourceFile != NULL)
+        {
+          printf ("   --- (SgSourceFile) filename = %s \n",sourceFile->getFileName().c_str());
+        }
+       else
+        {
+          SgGlobal* globalScope = isSgGlobal(node);
+          if (globalScope != NULL)
+             {
+               sourceFile = isSgSourceFile(globalScope->get_parent());
+               printf ("   --- (SgGlobal) filename = %s \n",sourceFile->getFileName().c_str());
+             }
+        }
+
+     ROSE_ASSERT(node != NULL);
+     std::set<SgStatement*> collection = collectModifiedStatements(node);
+
+#if 0
+     printf ("In reportModifiedStatements(): collection.size() = %zu \n",collection.size());
+#endif
+
+     std::set<SgStatement*>::iterator i = collection.begin();
+     while (i != collection.end())
+        {
+       // DQ (10/9/2019): Adding filename to debug output.
+          string filename = (*i)->get_file_info()->get_filename();
+
+       // DQ (10/14/2019): Get the best name possible.
+          if (filename == "transformation")
+             {
+#if 0
+               printf ("   --- filename == transformation: sourceFile = %p using physical filename \n",sourceFile);
+#endif
+            // filename = (*i)->get_file_info()->get_physical_filename();
+               SgSourceFile* sourceFile = TransformationSupport::getSourceFile(*i);
+               if (sourceFile != NULL)
+                  {
+                    filename = sourceFile->getFileName();
+                  }
+             }
+
+          printf ("   --- filename = %s modified statement = %p = %s \n",filename.c_str(),(*i),(*i)->class_name().c_str());
+
+          i++;
+        }
+
+#if 1
+  // DQ (6/8/2019): This helps track down where this is being called when are are cleaning up
+  // output spew else the message output at the top of this function will scroll off the screen.
+     printf ("########################################################## \n");
+     printf ("reportModifiedStatements(): Called using label = %s \n",label.c_str());
+#endif
+     printf ("########################################################## \n\n\n");
+
+#if 0
+     printf ("Exiting as a test! \n");
+     ROSE_ASSERT(false);
+#endif
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:21:50,515 - INFO - Response from llama3.1:70b for Function 374:
+2025-01-27 20:21:50,515 - INFO - /**
+ * @fn SageInterface::reportModifiedStatements( const string & label, SgNode* node )
+ *
+ * @brief Reports the nodes in the AST that are marked as modified (isModified flag).
+ *
+ * This function is useful for debugging the token-based unparsing. It prints out
+ * information about the modified statements, including their filenames and class names.
+ *
+ * The function first checks if the input node is an SgSourceFile or an SgGlobal node,
+ * and if so, it prints out the corresponding filename. Then it collects all the modified
+ * statements in the AST using the collectModifiedStatements() function and iterates over
+ * them to print out their filenames and class names.
+ *
+ * @param label A string label used for debugging purposes.
+ * @param node The input SgNode that may be an SgSourceFile or an SgGlobal node.
+ *
+ * @return None. This function does not return any value.
+ *
+ * @warning If the input node is NULL, this function will terminate with a ROSE_ASSERT failure.
+ *
+ * @pre The input node must be a valid SgNode in the AST.
+ *
+ * @post The function will print out information about the modified statements to the console.
+ *
+ * @note This function is primarily used for debugging purposes and should not be called
+ *       unnecessarily, as it may slow down the program execution.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SageInterface::reportModifiedStatements("MyLabel", someNode);
+ *          @endcode
+ */
+2025-01-27 20:21:50,515 - INFO - End time: 2025-01-27 20:21:50
+2025-01-27 20:21:50,515 - INFO - Duration: 22.362109661102295

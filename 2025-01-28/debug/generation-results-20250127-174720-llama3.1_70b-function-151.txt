@@ -1,0 +1,209 @@
+2025-01-27 18:49:15,930 - INFO - Start time: 2025-01-27 18:49:15
+2025-01-27 18:49:15,930 - INFO - Generating documents for a function with id : 151
+2025-01-27 18:49:15,930 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::insertHeader (SgStatement* stmt, PreprocessingInfo* newheader, bool asLastHeader)
+{
+  ROSE_ASSERT (stmt != NULL);
+  ROSE_ASSERT (newheader != NULL);
+
+#if 0
+  printf ("In SageInterface::insertHeader (SgStatement* stmt, PreprocessingInfo* newheader, bool asLastHeader) \n");
+#endif
+
+  PreprocessingInfo::RelativePositionType position ;
+
+  if (asLastHeader )
+    position = PreprocessingInfo::after;
+  else
+    position = PreprocessingInfo::before;
+
+
+  // Find existing first and last header.
+  AttachedPreprocessingInfoType *comments = stmt->getAttachedPreprocessingInfo ();
+
+  if (comments != NULL)
+  {
+    PreprocessingInfo * firstExistingHeader = NULL;
+    PreprocessingInfo * lastExistingHeader  = NULL;
+    PreprocessingInfo * firstExistingEndif  = NULL;
+
+ // DQ (10/27/2020): Fixed warning of unused variable by compiler.
+ // PreprocessingInfo * lastExistingEndif   = NULL;
+
+    AttachedPreprocessingInfoType::iterator i, firsti, lasti;
+    for (i = comments->begin (); i != comments->end (); i++)
+    {
+   // DQ (9/12/2020): this original code is not sufficent since when the final #include is enclosed in a
+   // #ifdef #endif the added include directive might not be visible in the generated file.
+   // This actually happened in the case of wget application: wget.c source file.
+#if 0
+   // Original version of code.
+      if ((*i)->getTypeOfDirective () == PreprocessingInfo::CpreprocessorIncludeDeclaration)
+         {
+        // Only set first header for the first time
+           if ((*i)->getTypeOfDirective () == PreprocessingInfo::CpreprocessorIncludeDeclaration)
+              {
+                if (firstExistingHeader == NULL)
+                   {
+                     firstExistingHeader = (*i);
+                     firsti = i;
+                   }
+             // always updates last header
+                lastExistingHeader = (*i);
+                lasti = i;
+             }
+        }
+#else
+   // DQ (9/12/2020): New version of code. Addresses insertion after last endif if it is after any #include.
+      if ( (*i)->getTypeOfDirective () == PreprocessingInfo::CpreprocessorIncludeDeclaration ||
+           (*i)->getTypeOfDirective () == PreprocessingInfo::CpreprocessorEndifDeclaration )
+      {
+        // Only set first header for the first time
+        if ((*i)->getTypeOfDirective () == PreprocessingInfo::CpreprocessorIncludeDeclaration)
+           {
+             if (firstExistingHeader == NULL)
+             {
+               firstExistingHeader = (*i);
+               firsti = i;
+             }
+           // always updates last header
+             lastExistingHeader = (*i);
+             lasti = i;
+           }
+        if ((*i)->getTypeOfDirective () == PreprocessingInfo::CpreprocessorEndifDeclaration)
+           {
+             if (firstExistingEndif == NULL)
+             {
+               firstExistingEndif = (*i);
+               firsti = i;
+             }
+          // always updates last header
+          // DQ (10/27/2020): Fixed warning of unused variable by compiler.
+          // lastExistingEndif = (*i);
+             lasti = i;
+           }
+      }
+#endif
+    }
+
+    // based on existing header positions, insert the new header
+    if (asLastHeader)
+    {
+      if (lastExistingHeader == NULL) // No last header at all, just append to after
+        stmt->addToAttachedPreprocessingInfo(newheader, PreprocessingInfo::after);
+      else
+      {
+        comments->insert (lasti+1, newheader);
+      }
+    }
+    else // add as the first header
+    {
+      if (firstExistingHeader == NULL) // no existing header at all, just append to after
+        stmt->addToAttachedPreprocessingInfo(newheader, PreprocessingInfo::after);
+      else
+      {
+        comments->insert (firsti, newheader);
+      }
+    }
+  }
+  else // No comments at all, first and last header mean the same, just attach to the located node
+    stmt->addToAttachedPreprocessingInfo(newheader, position);
+
+#if 0
+     printf ("Exiting as a test! \n");
+     ROSE_ASSERT(false);
+#endif
+
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:49:39,875 - INFO - Response from llama3.1:70b for Function 151:
+2025-01-27 18:49:39,875 - INFO - /**
+ * @fn void SageInterface::insertHeader (SgStatement* stmt, PreprocessingInfo* newheader, bool asLastHeader)
+ *
+ * @brief Inserts a preprocessing header into the given statement.
+ *
+ * This function inserts a preprocessing header into the given statement. The
+ * insertion position is determined by the value of the third parameter,
+ * asLastHeader. If true, the new header is inserted after any existing headers;
+ * otherwise, it is inserted before any existing headers.
+ *
+ * @param stmt The statement where the header will be inserted. Must not be NULL.
+ * @param newheader The preprocessing header to be inserted. Must not be NULL.
+ * @param asLastHeader Determines whether the new header should be inserted after
+ *                     (true) or before (false) any existing headers.
+ *
+ * @return None.
+ *
+ * @warning If the statement has no attached preprocessing information, the new
+ *          header will be appended to the end of the statement.
+ *
+ * @pre The statement and newheader parameters must not be NULL.
+ *
+ * @post The new header is inserted into the given statement according to the
+ *       specified position.
+ *
+ * @note This function modifies the attached preprocessing information of the
+ *       given statement. It does not modify the statement itself.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* stmt = ...; // obtain a statement pointer
+ *           PreprocessingInfo* newheader = ...; // create a preprocessing header
+ *           SageInterface::insertHeader(stmt, newheader, true);
+ *          @endcode
+ */
+2025-01-27 18:49:39,875 - INFO - End time: 2025-01-27 18:49:39
+2025-01-27 18:49:39,875 - INFO - Duration: 23.944870471954346

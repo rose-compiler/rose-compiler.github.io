@@ -1,0 +1,138 @@
+2025-01-27 18:54:57,459 - INFO - Start time: 2025-01-27 18:54:57
+2025-01-27 18:54:57,459 - INFO - Generating documents for a function with id : 165
+2025-01-27 18:54:57,459 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    int SageInterface::eraseNullPreprocessingInfo (SgLocatedNode* lnode)
+{
+   int retVal=0;
+   ROSE_ASSERT(lnode);
+
+   // collecting NULL entries
+   RoseAst ast(lnode);
+   RoseAst::iterator ast_i=ast.begin();
+
+   vector < pair< AttachedPreprocessingInfoType*, int> > empty_entries; // preprocessing info. to be erased, list vs. idx/offset
+   for(;ast_i!=ast.end();++ast_i) {
+       SgLocatedNode* current  = isSgLocatedNode(*ast_i);
+       if (current ==NULL ) // skip non located nodes
+         continue;
+
+       AttachedPreprocessingInfoType* infoList = current->getAttachedPreprocessingInfo();
+       if (infoList == NULL) continue;
+
+       int commentIndex=0;
+       for (Rose_STL_Container<PreprocessingInfo*>::iterator ci = (*infoList).begin(); ci != (*infoList).end(); ci++)
+       {
+           // fundamentally, we want to move individual PreprocessingInfo objects
+           // Or just duplicate them (easier)
+           PreprocessingInfo * info = *ci;
+           if (info==NULL)
+               empty_entries.push_back( make_pair (infoList, commentIndex) );
+           commentIndex++;
+     }
+  }
+
+   // using reverse iterator to remove from backwards
+   for (auto ki = empty_entries.rbegin(); ki != empty_entries.rend(); ki ++)
+   {
+     AttachedPreprocessingInfoType* infoList =  (*ki).first;
+     int cidx=  (*ki).second;
+
+     PreprocessingInfo* info = (*infoList)[cidx];
+     ROSE_ASSERT (info==NULL);
+
+     // erase start+offset
+     AttachedPreprocessingInfoType::iterator k = infoList->begin();
+     infoList->erase(k+cidx);
+//     cout<<"debugging: direct erasing: info@"<< infoList<< " idx="<<cidx<<endl;
+     retVal ++;
+   }
+  return retVal;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:55:17,642 - INFO - Response from llama3.1:70b for Function 165:
+2025-01-27 18:55:17,642 - INFO - /**
+ * @fn int SageInterface::eraseNullPreprocessingInfo(SgLocatedNode* lnode)
+ *
+ * @brief Erases NULL preprocessing info entries from a given SgLocatedNode.
+ *
+ * This function iterates over all attached preprocessing info of the input node,
+ * identifies and removes any NULL entries. It uses a reverse iterator to erase
+ * entries from the end to avoid invalidating iterators during removal.
+ *
+ * The function returns the number of erased entries.
+ *
+ * @param lnode The SgLocatedNode for which NULL preprocessing info entries are to be erased.
+ *              Must not be NULL.
+ *
+ * @return The number of erased NULL preprocessing info entries.
+ *
+ * @warning This function modifies the input node by removing attached preprocessing info.
+ *
+ * @pre The input node must not be NULL.
+ *
+ * @post The input node's attached preprocessing info will have all NULL entries removed.
+ *
+ * @note This function uses a recursive algorithm to traverse the abstract syntax tree (AST).
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgLocatedNode* node = ...; // obtain a valid SgLocatedNode instance
+ *           int erasedCount = SageInterface::eraseNullPreprocessingInfo(node);
+ *           cout << "Erased " << erasedCount << " NULL preprocessing info entries." << endl;
+ *          @endcode
+ */
+2025-01-27 18:55:17,642 - INFO - End time: 2025-01-27 18:55:17
+2025-01-27 18:55:17,642 - INFO - Duration: 20.18325972557068

@@ -1,0 +1,107 @@
+2025-01-27 19:59:37,555 - INFO - Start time: 2025-01-27 19:59:37
+2025-01-27 19:59:37,555 - INFO - Generating documents for a function with id : 319
+2025-01-27 19:59:37,556 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::insertStatementListBefore(SgStatement *targetStmt, const std::vector<SgStatement*>& newStmts)
+  {
+    insertStatementList(targetStmt,newStmts,true);
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:00:08,192 - INFO - Response from llama3.1:70b for Function 319:
+2025-01-27 20:00:08,192 - INFO - /**
+ * @fn void SageInterface::insertStatementListBefore(SgStatement* targetStmt, const std::vector<SgStatement*>& newStmts)
+ *
+ * @brief Inserts a list of statements before a specified statement in the AST.
+ *
+ * This function is used to insert a vector of SgStatement objects before a specific
+ * target statement in the Abstract Syntax Tree (AST). The insertion is performed by
+ * calling another overloaded version of this function with an additional boolean flag.
+ *
+ * @param targetStmt The statement object before which the new statements are to be inserted.
+ *                   Must not be NULL and must exist in the AST.
+ * @param newStmts   A vector of SgStatement objects representing the statements to be inserted.
+ *                  Must not contain any NULL elements. The order of the statements in this
+ *                  vector is preserved during insertion.
+ *
+ * @return None (void function)
+ *
+ * @warning This function does not perform any checks on the validity or correctness of the
+ *          input statements or their compatibility with the target statement. It is the
+ *          caller's responsibility to ensure that the inserted statements do not cause any
+ *          semantic errors in the AST.
+ *
+ * @pre The targetStmt must exist in the AST and must be a valid SgStatement object. The newStmts
+ *      vector must contain only valid SgStatement objects and must not be empty.
+ *
+ * @post After insertion, the new statements are placed immediately before the target statement
+ *       in the AST. The order of the new statements is preserved as per their original order in
+ *       the input vector.
+ *
+ * @note This function uses another overloaded version of itself to perform the actual insertion,
+ *       with an additional boolean flag set to true indicating that the insertion should occur before
+ *       the target statement.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* targetStmt = ...; // assume a valid target statement object
+ *           std::vector<SgStatement*> newStmts;
+ *           newStmts.push_back(...); // add statements to the vector as needed
+ *
+ *           SageInterface sageInterface;
+ *           sageInterface.insertStatementListBefore(targetStmt, newStmts);
+ *          @endcode
+ */
+2025-01-27 20:00:08,193 - INFO - End time: 2025-01-27 20:00:08
+2025-01-27 20:00:08,193 - INFO - Duration: 30.63725757598877

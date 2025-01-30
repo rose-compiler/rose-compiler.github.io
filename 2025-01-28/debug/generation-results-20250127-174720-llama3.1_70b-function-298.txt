@@ -1,0 +1,173 @@
+2025-01-27 19:51:09,096 - INFO - Start time: 2025-01-27 19:51:09
+2025-01-27 19:51:09,096 - INFO - Generating documents for a function with id : 298
+2025-01-27 19:51:09,096 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void
+SageInterface::deleteAllNodes()
+   {
+  // This function uses a memory pool traversal specific to the SgFile IR nodes
+
+  // We need to use this function to get all of the SgNodes.
+  // template <typename NodeType> std::vector<NodeType*> getSgNodeListFromMemoryPool()
+
+     class MyTraversal : public ROSE_VisitTraversal
+        {
+          public:
+               std::vector<SgNode*> resultlist;
+               void visit ( SgNode* node)
+                  {
+                    SgNode* result = dynamic_cast<SgNode*>(node);
+                    ROSE_ASSERT(result != NULL);
+#if 0
+                    printf ("In SageInterface::deleteAllNodes(): result = %p = %s \n",result,result->class_name().c_str());
+#endif
+#if 0
+                    if (result != NULL)
+                       {
+                         resultlist.push_back(result);
+                       }
+#else
+                    resultlist.push_back(result);
+#endif
+                  };
+
+           virtual ~MyTraversal() {}
+        };
+
+  // For debugging, recode the number of IR nodes before we delete the AST.
+     size_t numberOfNodes_before = numberOfNodes();
+
+     MyTraversal my_traversal;
+
+  // We need to visit all of the IR nodes, not just those of a specific class in ROSE.
+  // NodeType::traverseMemoryPoolNodes(my_traversal);
+     my_traversal.traverseMemoryPool();
+
+  // return my_traversal.resultlist;
+
+
+  // vector<SgNode*> nodeList = getSgNodeListFromMemoryPool<SgNode>();
+     vector<SgNode*> & nodeList = my_traversal.resultlist;
+
+     printf ("In SageInterface::deleteAllNodes(): get list of SgNode: nodeList.size() = %zu \n",nodeList.size());
+
+     vector<SgNode*>::iterator i = nodeList.begin();
+
+  // This loop will call the delete operator on all of the IR nodes in the AST.
+     while (i != nodeList.end())
+        {
+          SgNode* node = *i;
+#if 0
+       // It is an error to be calling get_name() while so many nodes are being deleted.
+       // printf (" --- calling delete (and thus the destructor) node = %p = %s name = %s \n",node,node->class_name().c_str(),SageInterface::get_name(node).c_str());
+          printf (" --- calling delete (and thus the destructor) node = %p = %s \n",node,node->class_name().c_str());
+#endif
+          delete node;
+          node = NULL;
+
+          i++;
+        }
+
+#if 0
+  // This demonstrates that this function only visits the specific IR node that is used as a template parameter.
+     vector<SgFunctionDeclaration*> functionDeclarationList = getSgNodeListFromMemoryPool<SgFunctionDeclaration>();
+     printf ("In SageInterface::deleteAllNodes(): get list of SgFunctionDeclaration: functionDeclarationList.size() = %zu \n",functionDeclarationList.size());
+#endif
+
+  // Now we need to delete the memory pools (implemented by ROSETTA).
+     AST_FILE_IO::clearAllMemoryPools();
+
+     size_t numberOfNodes_after = numberOfNodes();
+
+#if 1
+     printf ("Leaving SageInterface::deleteAllNodes(): numberOfNodes_before = %zu numberOfNodes_after = %zu \n",numberOfNodes_before,numberOfNodes_after);
+#endif
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:51:31,453 - INFO - Response from llama3.1:70b for Function 298:
+2025-01-27 19:51:31,453 - INFO - /**
+ * @fn void SageInterface::deleteAllNodes()
+ *
+ * @brief Deletes all nodes in the Abstract Syntax Tree (AST) managed by the SageInterface.
+ *
+ * This function is responsible for deleting all IR nodes in the AST, including those 
+ * that are not currently reachable from any SgNode pointer. It does this by traversing 
+ * the memory pool used to manage the IR nodes and calling the delete operator on each 
+ * node found. Additionally, it clears all memory pools after deletion.
+ *
+ * @param None
+ *
+ * @return None
+ *
+ * @warning This function will cause undefined behavior if any SgNode pointers are accessed 
+ *          after this function is called, as they will no longer be valid.
+ *
+ * @pre The SageInterface instance must have been properly initialized before calling this function.
+ *
+ * @post All IR nodes in the AST managed by the SageInterface will be deleted and their memory freed.
+ *       Any SgNode pointers previously obtained from the SageInterface will be invalid after this function is called.
+ *
+ * @note This function uses a custom traversal class, MyTraversal, to visit all IR nodes in the AST. 
+ *       It also calls the delete operator on each node found during traversal and clears all memory pools afterwards.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SageInterface sage;
+ *           // ... perform some operations on the AST ...
+ *           sage.deleteAllNodes();
+ *          @endcode
+ */
+2025-01-27 19:51:31,453 - INFO - End time: 2025-01-27 19:51:31
+2025-01-27 19:51:31,453 - INFO - Duration: 22.357609033584595

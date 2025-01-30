@@ -1,0 +1,115 @@
+2025-01-27 18:24:59,039 - INFO - Start time: 2025-01-27 18:24:59
+2025-01-27 18:24:59,039 - INFO - Generating documents for a function with id : 90
+2025-01-27 18:24:59,039 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::myRemoveStatement(SgStatement* stmt) {
+  // assert (LowLevelRewrite::isRemovableStatement(*i));
+  SgStatement* parent = isSgStatement(stmt->get_parent());
+  ROSE_ASSERT (parent);
+  SgBasicBlock* bb = isSgBasicBlock(parent);
+  SgForInitStatement* fis = isSgForInitStatement(parent);
+  if (bb || fis) {
+    ROSE_ASSERT (bb || fis);
+    SgStatementPtrList& siblings =
+      (bb ? bb->get_statements() : fis->get_init_stmt());
+    SgStatementPtrList::iterator j =
+      std::find(siblings.begin(), siblings.end(), stmt);
+    ROSE_ASSERT (j != siblings.end());
+    siblings.erase(j);
+    // LowLevelRewrite::remove(*i);
+  } else {
+    parent->replace_statement(stmt, new SgNullStatement(TRANS_FILE));
+  }
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:25:22,233 - INFO - Response from llama3.1:70b for Function 90:
+2025-01-27 18:25:22,234 - INFO - /**
+ * @fn void SageInterface::myRemoveStatement(SgStatement* stmt)
+ *
+ * @brief Removes a statement from an SgBasicBlock or SgForInitStatement.
+ *
+ * This function removes the given statement from either an SgBasicBlock
+ * or an SgForInitStatement. It does this by finding the parent of the
+ * statement, determining its type, and then removing it using the appropriate
+ * method (either erasing it from a list of statements in an SgBasicBlock
+ * or replacing it with a null statement in other cases).
+ *
+ * @param stmt The statement to be removed. Must have a valid parent that is
+ *             either an SgBasicBlock or an SgForInitStatement.
+ *
+ * @return None.
+ *
+ * @warning This function does not check whether the statement is actually
+ *          removable; it assumes this has already been verified elsewhere.
+ *
+ * @pre The given statement must have a valid parent that is either an
+ *      SgBasicBlock or an SgForInitStatement. It must also be possible to
+ *      remove the statement from its parent without causing any errors.
+ *
+ * @post The given statement will no longer appear in its parent's list of
+ *       statements, and may have been replaced with a null statement.
+ *
+ * @note This function does not perform any checks on whether it is safe to
+ *       remove the statement; this should be done before calling this
+ *       function.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* stmt = ...;
+ *           SageInterface::myRemoveStatement(stmt);
+ *          @endcode
+ */
+2025-01-27 18:25:22,234 - INFO - End time: 2025-01-27 18:25:22
+2025-01-27 18:25:22,234 - INFO - Duration: 23.194536685943604

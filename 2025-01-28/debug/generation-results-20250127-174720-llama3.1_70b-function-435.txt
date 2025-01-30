@@ -1,0 +1,116 @@
+2025-01-27 20:47:52,784 - INFO - Start time: 2025-01-27 20:47:52
+2025-01-27 20:47:52,784 - INFO - Generating documents for a function with id : 435
+2025-01-27 20:47:52,784 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    */
+    bool HasNoThrowConstructor(const SgType * const inputType){
+        //Strip typedef and array
+        SgType * type = inputType->stripType(SgType::STRIP_TYPEDEF_TYPE | SgType::STRIP_ARRAY_TYPE );
+        
+        if(HasTrivialConstructor(type))
+            return true;
+        
+        ENSURE_CLASS_TYPE(type, false);
+        vector<SgMemberFunctionDeclaration*> allMemberFunctions =  GetAllMemberFunctionsInClassHierarchy(type);
+#if DEBUG_QUADRATIC_BEHAVIOR
+        printf ("In HasNoThrowConstructor(): allMemberFunctions.size() = %zu \n",allMemberFunctions.size());
+#endif
+        foreach(SgMemberFunctionDeclaration* memberFunction,allMemberFunctions) {
+            if (memberFunction->get_specialFunctionModifier().isConstructor()){
+                // function must have no args
+                if(memberFunction->get_args().size() == 0) {
+                    //TODO: C++11 accepts noexcept expression which we need to check when we support it.
+                    if(memberFunction->get_functionModifier().isGnuAttributeNoThrow () == false)
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:48:15,046 - INFO - Response from llama3.1:70b for Function 435:
+2025-01-27 20:48:15,046 - INFO - /**
+ * @fn bool HasNoThrowConstructor(const SgType * const inputType)
+ *
+ * @brief Checks if a given type has a no-throw constructor.
+ *
+ * This function determines whether a given type has a constructor that does not throw any exceptions. 
+ * It recursively checks all constructors in the class hierarchy of the input type, ensuring they are either trivial or marked with the noexcept attribute.
+ *
+ * @param inputType A pointer to an SgType object representing the type to check for a no-throw constructor.
+ *                  Must be non-null and represent a valid type.
+ *
+ * @return True if the input type has a no-throw constructor, false otherwise.
+ *
+ * @warning This function assumes that the input type is properly initialized and represents a valid class or struct.
+ *
+ * @pre The input type must not be null and must represent a valid SgType object.
+ *
+ * @post If true is returned, it guarantees that the input type has at least one constructor that does not throw exceptions.
+ *
+ * @note This function only checks for constructors with no arguments. Constructors with arguments are not considered.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgType* myType = ...; // assume a valid type is obtained
+ *           if (HasNoThrowConstructor(myType)) {
+ *               std::cout << "The type has a no-throw constructor." << std::endl;
+ *           } else {
+ *               std::cout << "The type does not have a no-throw constructor." << std::endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:48:15,046 - INFO - End time: 2025-01-27 20:48:15
+2025-01-27 20:48:15,046 - INFO - Duration: 22.26148819923401

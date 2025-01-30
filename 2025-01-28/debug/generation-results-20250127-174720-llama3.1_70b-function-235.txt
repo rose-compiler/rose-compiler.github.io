@@ -1,0 +1,169 @@
+2025-01-27 19:24:07,756 - INFO - Start time: 2025-01-27 19:24:07
+2025-01-27 19:24:07,756 - INFO - Generating documents for a function with id : 235
+2025-01-27 19:24:07,756 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool  SageInterface::normalizeForLoopIncrement(SgForStatement* loop)
+{
+  ROSE_ASSERT(loop != NULL);
+
+  SgExpression* test = loop->get_test_expr();
+  SgExpression* testlhs=NULL, * testrhs=NULL;
+  if (isSgBinaryOp(test))
+  {
+    testlhs = isSgBinaryOp(test)->get_lhs_operand();
+    testrhs = isSgBinaryOp(test)->get_rhs_operand();
+    ROSE_ASSERT(testlhs && testrhs);
+  }
+  else
+    return false;
+  // keep the variable since test will be removed later on
+  SgVarRefExp* testlhs_var = isSgVarRefExp(SkipCasting(testlhs));
+  if (testlhs_var == NULL )
+    return false;
+  SgVariableSymbol * var_symbol = testlhs_var->get_symbol();
+  if (var_symbol==NULL)
+    return false;
+
+
+  // -------------------------------------
+  SgExpression* incr = loop->get_increment();
+  ROSE_ASSERT(incr != NULL);
+  switch (incr->variantT()) {
+    case V_SgPlusPlusOp: //i++ is normalized to i+=1
+      {
+        // check if the variables match
+        SgVarRefExp* incr_var = isSgVarRefExp(SkipCasting(isSgPlusPlusOp(incr)->get_operand()));
+        if (incr_var == NULL) return false;
+        if ( incr_var->get_symbol() != var_symbol)
+          return false;
+        replaceExpression(incr,
+            buildPlusAssignOp(isSgExpression(deepCopy(incr_var)),buildIntVal(1)));
+        break;
+      }
+    case V_SgMinusMinusOp: //i-- is normalized to i+=-1
+      {
+        // check if the variables match
+        SgVarRefExp* incr_var = isSgVarRefExp(SkipCasting(isSgMinusMinusOp(incr)->get_operand()));
+        if (incr_var == NULL) return false;
+        if ( incr_var->get_symbol() != var_symbol)
+          return false;
+        replaceExpression(incr,
+            buildPlusAssignOp(isSgExpression(deepCopy(incr_var)), buildIntVal(-1)));
+        break;
+      }
+    case V_SgMinusAssignOp: // i-= s is normalized to i+= -s
+      {
+        SgVarRefExp* incr_var = isSgVarRefExp(SkipCasting(isSgMinusAssignOp(incr)->get_lhs_operand()));
+        SgExpression* rhs = isSgMinusAssignOp(incr)->get_rhs_operand();
+        ROSE_ASSERT (rhs != NULL);
+        if (incr_var == NULL) return false;
+        if ( incr_var->get_symbol() != var_symbol)
+          return false;
+        replaceExpression(incr,
+            buildPlusAssignOp(isSgExpression(deepCopy(incr_var)), buildMultiplyOp(buildIntVal(-1), copyExpression(rhs))));
+        break;
+      }
+    case V_SgAssignOp:
+    case V_SgPlusAssignOp:
+      break;
+    default:
+      return false;
+  }
+
+  return true;
+}
+//! Normalize a for loop, part of migrating Qing's loop handling into SageInterface
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:24:38,515 - INFO - Response from llama3.1:70b for Function 235:
+2025-01-27 19:24:38,515 - INFO - /**
+ * @fn bool SageInterface::normalizeForLoopIncrement(SgForStatement* loop)
+ *
+ * @brief Normalizes a for loop's increment statement to a standardized form.
+ *
+ * This function takes a SgForStatement (a ROSE AST node representing a C/C++ for loop) 
+ * as input and normalizes the loop's increment statement. The normalization process
+ * involves converting different forms of increments into a standard form, i.e., 
+ * either "i += 1" or "i += -1". This is done to facilitate further analysis or transformation.
+ *
+ * @param loop A pointer to the SgForStatement node representing the for loop to be normalized.
+ *             Must not be NULL.
+ *
+ * @return True if the normalization was successful, false otherwise. 
+ *         The function returns false if the input loop's increment statement cannot
+ *         be normalized (e.g., due to unsupported syntax) or if the variable in the 
+ *         increment statement does not match the variable used in the loop's test condition.
+ *
+ * @warning This function modifies the input AST node by replacing the original increment statement.
+ *          The caller is responsible for ensuring that this modification does not interfere with other parts of the analysis or transformation process.
+ *
+ * @pre The input loop must be a valid SgForStatement node.
+ *
+ * @post If the return value is true, the loop's increment statement has been normalized to either "i += 1" or "i += -1".
+ *
+ * @note This function assumes that the input loop's test condition and increment statement use the same variable. 
+ *       It also assumes that the input loop's increment statement can be normalized; otherwise, it returns false.
+ *
+ * @example This example demonstrates how to normalize a for loop using this function:
+ *          @code
+ *           SgForStatement* loop = ...; // obtain or create a SgForStatement node
+ *           if (SageInterface::normalizeForLoopIncrement(loop)) {
+ *             // the loop's increment statement has been normalized
+ *           } else {
+ *             // normalization failed, handle error or unsupported syntax
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:24:38,515 - INFO - End time: 2025-01-27 19:24:38
+2025-01-27 19:24:38,515 - INFO - Duration: 30.75916075706482

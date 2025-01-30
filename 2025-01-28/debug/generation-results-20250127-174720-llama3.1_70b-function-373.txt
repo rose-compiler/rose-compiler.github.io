@@ -1,0 +1,109 @@
+2025-01-27 20:21:01,895 - INFO - Start time: 2025-01-27 20:21:01
+2025-01-27 20:21:01,895 - INFO - Generating documents for a function with id : 373
+2025-01-27 20:21:01,895 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::resetModifiedLocatedNodes(const std::set<SgLocatedNode*> & modifiedNodeSet)
+   {
+  // DQ (6/5/2019): Use a previously constructed set to reset the IR nodes to be marked as isModified.
+
+#if 0
+     printf ("In resetModifiedLocatedNodes(): modifiedNodeSet.size() = %zu \n",modifiedNodeSet.size());
+#endif
+
+     std::set<SgLocatedNode*>::const_iterator i = modifiedNodeSet.begin();
+     while (i != modifiedNodeSet.end())
+        {
+          SgLocatedNode* node = *i;
+#if 0
+          printf ("Marking node = %p = %s as modified \n",node,node->class_name().c_str());
+#endif
+          node->set_isModified(true);
+
+          i++;
+        }
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:21:28,152 - INFO - Response from llama3.1:70b for Function 373:
+2025-01-27 20:21:28,152 - INFO - /**
+ * @fn void SageInterface::resetModifiedLocatedNodes(const std::set<SgLocatedNode*> & modifiedNodeSet)
+ *
+ * @brief Resets the modification status of a set of located nodes in the IR.
+ *
+ * This function iterates over a given set of SgLocatedNode objects and marks each node as modified by setting its isModified flag to true. 
+ * The input set is expected to contain valid pointers to SgLocatedNode objects that are part of the Intermediate Representation (IR). 
+ * This operation is typically used to update the IR after modifications have been made to the source code.
+ *
+ * @param modifiedNodeSet A constant reference to a set of SgLocatedNode pointers representing the nodes to be marked as modified. The set must not contain null pointers or invalid node references.
+ *
+ * @return None
+ *
+ * @warning This function does not perform any checks on the validity of the input set or its contents. It assumes that the caller has ensured the correctness and consistency of the data being passed in.
+ *
+ * @pre The input set modifiedNodeSet must contain only valid pointers to SgLocatedNode objects that are part of the IR. 
+ *      The function also expects that the isModified flag of each node in the set is currently set to false, as this operation will overwrite any existing value.
+ *
+ * @post After executing this function, all nodes in the input set modifiedNodeSet will have their isModified flag set to true.
+ *
+ * @note This function has no side effects other than updating the modification status of the specified IR nodes. It does not modify any other part of the IR or external state.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           std::set<SgLocatedNode*> modifiedNodes;
+ *           // ... populate the set with valid SgLocatedNode pointers ...
+ *           SageInterface::resetModifiedLocatedNodes(modifiedNodes);
+ *          @endcode
+ */
+2025-01-27 20:21:28,152 - INFO - End time: 2025-01-27 20:21:28
+2025-01-27 20:21:28,152 - INFO - Duration: 26.25786018371582

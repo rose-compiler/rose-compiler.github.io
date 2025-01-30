@@ -1,0 +1,171 @@
+2025-01-27 19:56:43,384 - INFO - Start time: 2025-01-27 19:56:43
+2025-01-27 19:56:43,384 - INFO - Generating documents for a function with id : 312
+2025-01-27 19:56:43,384 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::prependStatement(SgStatement *stmt, SgScopeStatement* scope)
+   {
+     ROSE_ASSERT (stmt != NULL);
+
+#if 0
+     printf ("In SageInterface::prependStatement(): stmt = %p = %s scope = %p \n",stmt,stmt->class_name().c_str(),scope);
+#endif
+
+  // ROSE_ASSERT(findFirstSgCastExpMarkedAsTransformation(stmt,"testing prependStatement(): 2.2.6.1.2.1") == false);
+
+     if (scope == NULL)
+        {
+          scope = SageBuilder::topScopeStack();
+        }
+
+     ROSE_ASSERT(scope != NULL);
+  // TODO handle side effect like SageBuilder::appendStatement() does
+
+  // ROSE_ASSERT(findFirstSgCastExpMarkedAsTransformation(scope,"testing prependStatement(): 2.2.6.1.2.1a") == false);
+
+  // Must fix it before insert it into the scope,
+  // otherwise assertions in insertStatementInScope() would fail
+     fixStatement(stmt,scope);
+
+#if 0
+     printf ("In SageInterface::prependStatement(): stmt = %p = %s scope = %p = %s (resetInternalMapsForTargetStatement: stmt) \n",
+          stmt,stmt->class_name().c_str(),scope,scope->class_name().c_str());
+#endif
+
+  // ROSE_ASSERT(findFirstSgCastExpMarkedAsTransformation(stmt,"testing prependStatement(): 2.2.6.1.2.2") == false);
+
+  // DQ (12/1/2015): If this is a moved statement then cause it to update internal data structures
+  // to record it being moved (and thus the macroExpansions that it might be associated with having
+  // to force the macroExpansion's associated statements to be marked as a transformation.
+     resetInternalMapsForTargetStatement(stmt);
+
+#if 0
+     printf ("In SageInterface::prependStatement(): stmt = %p = %s scope = %p = %s (resetInternalMapsForTargetStatement: scope) \n",
+          stmt,stmt->class_name().c_str(),scope,scope->class_name().c_str());
+#endif
+
+  // ROSE_ASSERT(findFirstSgCastExpMarkedAsTransformation(stmt,"testing prependStatement(): 2.2.6.1.2.3") == false);
+
+  // DQ (12/1/2015): Also look at the statements on either side of the location where this statement
+  // is being inserted to make sure that they are not a part of a macro expansion. In the case of
+  // prepend, we only need to look at the scope.
+     resetInternalMapsForTargetStatement(scope);
+
+#if 0
+     printf ("Calling insertStatementInScope() \n");
+#endif
+
+  // ROSE_ASSERT(findFirstSgCastExpMarkedAsTransformation(stmt,"testing prependStatement(): 2.2.6.1.2.4") == false);
+  // ROSE_ASSERT(findFirstSgCastExpMarkedAsTransformation(scope,"testing prependStatement(): 2.2.6.1.2.4a") == false);
+
+     scope->insertStatementInScope(stmt,true);
+     stmt->set_parent(scope); // needed?
+
+  // ROSE_ASSERT(findFirstSgCastExpMarkedAsTransformation(scope,"testing prependStatement(): 2.2.6.1.2.5") == false);
+
+  // DQ (11/19/2012): If we are building the AST within the front-end then don't do this expensive
+  // fixup (we already set it properly in the AST construction within the frontend so we don't need
+  // this).  Also since this is only operating within a single scope it is likely too specific to C
+  // instead of addessing the details of C++ where functions can be placed in alternative scopes and
+  // use name qualification).
+  // update the links after insertion!
+     SourcePositionClassification scp = getSourcePositionClassificationMode();
+     if ( (scp != e_sourcePositionFrontendConstruction) && (isSgFunctionDeclaration(stmt) != NULL) )
+        {
+          updateDefiningNondefiningLinks(isSgFunctionDeclaration(stmt),scope);
+        }
+
+  // ROSE_ASSERT(findFirstSgCastExpMarkedAsTransformation(scope,"testing prependStatement(): 2.2.6.1.2.6") == false);
+
+#if 0
+     printf ("Leaving SageInterface::prependStatement() \n");
+#endif
+   } // prependStatement()
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:57:08,349 - INFO - Response from llama3.1:70b for Function 312:
+2025-01-27 19:57:08,350 - INFO - /**
+ * @fn void SageInterface::prependStatement(SgStatement* stmt, SgScopeStatement* scope)
+ *
+ * @brief Prepends a statement to the beginning of a given scope.
+ *
+ * This function inserts a given statement at the beginning of a specified scope. 
+ * It first checks if the input statement and scope are valid. If either is NULL, 
+ * it uses the top scope from the SageBuilder's stack or asserts an error. 
+ * Then it fixes the statement by resetting internal maps for the target statement 
+ * and its associated macro expansions. Finally, it prepends the fixed statement 
+ * to the beginning of the given scope.
+ *
+ * @param stmt The statement to be prepended to the scope. Must not be NULL.
+ * @param scope The scope into which the statement is to be inserted. If NULL, 
+ *              uses the top scope from SageBuilder's stack.
+ *
+ * @return None
+ *
+ * @warning This function does not handle side effects like appendStatement() does.
+ *
+ * @pre stmt != NULL, or it will assert an error.
+ * @post The statement has been successfully prepended to the beginning of the given scope.
+ *
+ * @note If this is a moved statement, internal data structures are updated to record 
+ *       it being moved and associated macro expansions are marked as transformations.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *              SgStatement* stmt = ...; // some statement
+ *              SgScopeStatement* scope = ...; // some scope
+ *              SageInterface::prependStatement(stmt, scope);
+ *          @endcode
+ */
+2025-01-27 19:57:08,350 - INFO - End time: 2025-01-27 19:57:08
+2025-01-27 19:57:08,350 - INFO - Duration: 24.965660572052002

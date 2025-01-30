@@ -1,0 +1,111 @@
+2025-01-27 19:32:02,133 - INFO - Start time: 2025-01-27 19:32:02
+2025-01-27 19:32:02,133 - INFO - Generating documents for a function with id : 254
+2025-01-27 19:32:02,133 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    vector<SgGotoStatement*> SageInterface::findGotoStmts(SgStatement* scope, SgLabelStatement* l) {
+ // DQ (9/25/2007): Moved from std::list to std::vector uniformally in ROSE.
+ // But we still need the copy since the return type is IR node specific.
+    Rose_STL_Container<SgNode*> allGotos = NodeQuery::querySubTree(scope, V_SgGotoStatement);
+
+    vector<SgGotoStatement*> result;
+    for (Rose_STL_Container<SgNode*>::const_iterator i = allGotos.begin(); i != allGotos.end(); ++i) {
+      if (isSgGotoStatement(*i)->get_label() == l) {
+        result.push_back(isSgGotoStatement(*i));
+      }
+    }
+    return result;
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:32:31,925 - INFO - Response from llama3.1:70b for Function 254:
+2025-01-27 19:32:31,925 - INFO - /**
+ * @fn vector<SgGotoStatement*> SageInterface::findGotoStmts(SgStatement* scope, SgLabelStatement* l)
+ *
+ * @brief Finds all goto statements within a given scope that target a specific label.
+ *
+ * This function traverses the abstract syntax tree (AST) rooted at the provided
+ * scope and identifies all SgGotoStatement nodes that have a label matching the
+ * specified SgLabelStatement. The search is performed using NodeQuery's querySubTree
+ * method, which returns a container of SgNode pointers representing the goto statements.
+ *
+ * @param scope The statement serving as the root of the AST subtree to be searched for goto statements.
+ *              Must not be NULL.
+ * @param l     The label statement that the sought goto statements must target.
+ *              Must not be NULL.
+ *
+ * @return A vector of SgGotoStatement pointers representing all goto statements found within
+ *          the specified scope that target the given label. If no matching goto statements
+ *          are found, an empty vector is returned.
+ *
+ * @warning The function does not perform any checks on the validity or existence of the provided
+ *          scope and label statement. It assumes they are both valid and exist within the AST.
+ *
+ * @pre The caller must ensure that the provided scope and label statement are valid and exist within the AST.
+ *
+ * @post The returned vector is guaranteed to contain only SgGotoStatement pointers that target the specified label.
+ *
+ * @note This function uses NodeQuery's querySubTree method, which may have performance implications for large ASTs.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *            // Assume 'scope' is a valid SgStatement pointer and 'labelStmt' is a valid SgLabelStatement pointer
+ *            vector<SgGotoStatement*> gotos = SageInterface::findGotoStmts(scope, labelStmt);
+ *
+ *            for (vector<SgGotoStatement*>::const_iterator i = gotos.begin(); i != gotos.end(); ++i) {
+ *              // Process the found goto statements as needed
+ *            }
+ *          @endcode
+ */
+2025-01-27 19:32:31,925 - INFO - End time: 2025-01-27 19:32:31
+2025-01-27 19:32:31,925 - INFO - Duration: 29.7923800945282

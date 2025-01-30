@@ -1,0 +1,273 @@
+2025-01-27 20:12:23,095 - INFO - Start time: 2025-01-27 20:12:23
+2025-01-27 20:12:23,095 - INFO - Generating documents for a function with id : 349
+2025-01-27 20:12:23,095 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::findSurroundingStatementFromSameFile(SgStatement* targetStmt, bool & surroundingStatementPreceedsTargetStatement)
+   {
+  // Note that if the return value is SgGlobal (global scope), then surroundingStatementPreceedsTargetStatement is false, but meaningless.
+  // This function can not return a NULL pointer.
+
+     ROSE_ASSERT(targetStmt != NULL);
+
+     SgStatement* surroundingStatement = targetStmt;
+     int surroundingStatement_fileId   = Sg_File_Info::BAD_FILE_ID; // No file id can have this value.
+
+#if REMOVE_STATEMENT_DEBUG || 0
+     printf ("TOP of findSurroundingStatementFromSameFile(): surroundingStatementPreceedsTargetStatement = %s \n",surroundingStatementPreceedsTargetStatement ? "true" : "false");
+#endif
+
+     std::set<SgStatement*> previousVisitedStatementSet;
+
+  // Only handle relocation for statements that exist in the file (at least for now while debugging).
+     if (targetStmt->get_file_info()->get_file_id() >= 0)
+        {
+          surroundingStatementPreceedsTargetStatement = true;
+
+#if REMOVE_STATEMENT_DEBUG
+          printf ("   targetStmt->get_file_info()->get_file_id()           = %d \n",targetStmt->get_file_info()->get_file_id());
+#endif
+#if REMOVE_STATEMENT_DEBUG
+          printf ("Before loop: surroundingStatement = %p = %s name = %s surroundingStatement_fileId = %d \n",surroundingStatement,
+                  surroundingStatement->class_name().c_str(),SageInterface::get_name(surroundingStatement).c_str(),surroundingStatement_fileId);
+#endif
+          bool returningNullSurroundingStatement = false;
+       // while (surroundingStatement->get_file_info()->get_file_id() != targetStmt->get_file_info()->get_file_id())
+          while ((returningNullSurroundingStatement == false) && (surroundingStatement != NULL) && surroundingStatement_fileId != targetStmt->get_file_info()->get_file_id())
+             {
+            // Start by going up in the source sequence.
+            // This is a declaration from the wrong file so go to the next statement.
+            // surroundingStatement = (insertBefore == true) ? getNextStatement(surroundingStatement) : getPreviousStatement(surroundingStatement);
+            // surroundingStatement = (insertBefore == true) ? getPreviousStatement(surroundingStatement) : getNextStatement(surroundingStatement);
+	    // Liao, 12/26/2024. We should not climb out the current scope when finding the previous statement
+	    // Otherwise, preprocessingInfo may be moved from a child stmt to its parent stmt, causing errors in AST. 
+               surroundingStatement = getPreviousStatement(surroundingStatement, false);
+
+#if REMOVE_STATEMENT_DEBUG
+               printf ("In loop: after getPreviousStatement(): surroundingStatement = %p = %s name = %s \n",surroundingStatement,
+                    surroundingStatement->class_name().c_str(),SageInterface::get_name(surroundingStatement).c_str());
+#endif
+
+               if (surroundingStatement == NULL)
+                  {
+                    surroundingStatement_fileId = Sg_File_Info::BAD_FILE_ID;
+#if REMOVE_STATEMENT_DEBUG
+                    printf ("   surroundingStatement_fileId set to Sg_File_Info::BAD_FILE_ID \n");
+#endif
+                  }
+                 else
+                  {
+                    surroundingStatement_fileId = surroundingStatement->get_file_info()->get_file_id();
+#if REMOVE_STATEMENT_DEBUG
+                    printf ("   surroundingStatement = %p = %s surroundingStatement->get_file_info()->get_file_id() = %d \n",
+                         surroundingStatement,surroundingStatement->class_name().c_str(),surroundingStatement->get_file_info()->get_file_id());
+#endif
+                  }
+
+#if REMOVE_STATEMENT_DEBUG
+               if (surroundingStatement != NULL)
+                  {
+                    printf ("Looping toward the top of the file for a statement to attach comments and CPP directives to: surroundingStatement = %p = %s file = %s file id = %d line = %d \n",
+                         surroundingStatement,surroundingStatement->class_name().c_str(),
+                         surroundingStatement->get_file_info()->get_filenameString().c_str(),
+                         surroundingStatement->get_file_info()->get_file_id(),
+                         surroundingStatement->get_file_info()->get_line());
+                  }
+                 else
+                  {
+                    printf ("surroundingStatement == NULL \n");
+                  }
+#endif
+
+            // DQ (11/15/2020): Eliminate the infinite loop that is possible when we iterate over a loop of statements.
+               if (previousVisitedStatementSet.find(surroundingStatement) != previousVisitedStatementSet.end())
+                 {
+                   printf ("This statement has been previously visited: surroundingStatement = %p = %s \n",surroundingStatement,surroundingStatement->class_name().c_str());
+
+                   printf ("ERROR: SageInterface::findSurroundingStatementFromSameFile(): cannot located surrounding statement from same file (return NULL) \n");
+
+                   surroundingStatement = NULL;
+                // break;
+                // return NULL;
+                 }
+               else
+                 {
+                   previousVisitedStatementSet.insert(surroundingStatement);
+                 }
+
+            // As a last resort restart and go down in the statement sequence.
+               if (surroundingStatement == NULL || isSgGlobal(surroundingStatement) != NULL)
+                  {
+                 // This is triggered by rose_inputloopUnrolling.C
+#if REMOVE_STATEMENT_DEBUG
+                    printf ("We just ran off the start (top) of the file... targetStmt = %p = %s \n",targetStmt,targetStmt->class_name().c_str());
+#endif
+#if 0
+                    ROSE_ABORT();
+#endif
+                 // A statement in the same file could not be identified, so this is false.
+                    surroundingStatementPreceedsTargetStatement = false;
+
+                 // Restart by going the other direction (down in the source sequence)
+                    surroundingStatement = targetStmt;
+                    SgStatement* previousStatement = surroundingStatement;
+                 // surroundingStatement = getNextStatement(surroundingStatement);
+                    surroundingStatement_fileId = Sg_File_Info::BAD_FILE_ID;
+
+                    std::set<SgStatement*> forwardVisitedStatementSet;
+
+                 // while ( (surroundingStatement != NULL) && (surroundingStatement->get_file_info()->get_file_id() != targetStmt->get_file_info()->get_file_id()) )
+                    while ( (surroundingStatement != NULL) && (surroundingStatement_fileId != targetStmt->get_file_info()->get_file_id()) )
+                       {
+                      // DQ (11/15/2020): Eliminate the infinite loop that is possible when we iterate over a loop of statements.
+                         if (forwardVisitedStatementSet.find(surroundingStatement) != forwardVisitedStatementSet.end())
+                            {
+                              printf ("This statement has been previously visited: surroundingStatement = %p = %s \n",surroundingStatement,surroundingStatement->class_name().c_str());
+
+                              printf ("ERROR: SageInterface::findSurroundingStatementFromSameFile(): cannot located surrounding statement from same file (return NULL) \n");
+
+                              surroundingStatement = NULL;
+                              break;
+                           // return NULL;
+                            }
+                           else
+                            {
+                              forwardVisitedStatementSet.insert(surroundingStatement);
+                            }
+
+                         previousStatement = surroundingStatement;
+                         surroundingStatement = getNextStatement(surroundingStatement);
+
+                         if (surroundingStatement == NULL)
+                            {
+                              surroundingStatement_fileId = Sg_File_Info::BAD_FILE_ID;
+#if REMOVE_STATEMENT_DEBUG
+                              printf ("We just ran off the end (bottom) of the file... \n");
+#endif
+#if 0
+                              ROSE_ABORT();
+#endif
+                              returningNullSurroundingStatement = true;
+                            }
+                           else
+                            {
+                              surroundingStatement_fileId = surroundingStatement->get_file_info()->get_file_id();
+#if REMOVE_STATEMENT_DEBUG
+                              printf ("Looping toward the bottom of the file for a statement to attach comments and CPP directives to: surroundingStatement = %p = %s file = %s file id = %d line = %d \n",
+                                   surroundingStatement,surroundingStatement->class_name().c_str(),
+                                   surroundingStatement->get_file_info()->get_filenameString().c_str(),
+                                   surroundingStatement->get_file_info()->get_file_id(),
+                                   surroundingStatement->get_file_info()->get_line());
+#endif
+                            }
+                       }
+
+                    if (surroundingStatement == NULL)
+                       {
+#if REMOVE_STATEMENT_DEBUG
+                         printf ("Resetting the surroundingStatement to the previousStatement = %p = %s \n",previousStatement,previousStatement->class_name().c_str());
+#endif
+                         surroundingStatement = previousStatement;
+
+                      // Check if this is the input statement we are removing (since the we have to attach comments to the global scope IR node.
+                         if (surroundingStatement == targetStmt)
+                            {
+                           // This can happen if there was only a single statement in a file and it was removed.
+                           // All associated comments would have to be relocated to the SgGlobal IR node.
+#if REMOVE_STATEMENT_DEBUG
+                              printf ("Setting the surroundingStatement to be global scope \n");
+#endif
+                              surroundingStatement = TransformationSupport::getGlobalScope(targetStmt);
+                            }
+                       }
+                  }
+             }
+
+          ROSE_ASSERT(surroundingStatement != NULL);
+        }
+       else
+        {
+          printf ("This is a special statement (not associated with the original source code, comment relocation is not supported for these statements) targetStmt file id = %d \n",targetStmt->get_file_info()->get_file_id());
+          surroundingStatement = NULL;
+        }
+
+#if REMOVE_STATEMENT_DEBUG
+     printf ("BOTTOM of findSurroundingStatementFromSameFile(): surroundingStatementPreceedsTargetStatement = %s surroundingStatement = %p \n",surroundingStatementPreceedsTargetStatement ? "true" : "false",surroundingStatement);
+     if (surroundingStatement != NULL)
+        {
+          printf ("surroundingStatement = %p = %s \n",surroundingStatement,surroundingStatement->class_name().c_str());
+        }
+#endif
+
+  // ROSE_ASSERT(surroundingStatement != NULL);
+
+     return surroundingStatement;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:12:33,842 - INFO - Response from llama3.1:70b for Function 349:
+2025-01-27 20:12:33,842 - INFO - /**
+ * @brief Finds a surrounding statement from the same file as the target statement.
+ *
+ * This function traverses the source sequence to find a statement in the same file
+ * that can be used to attach comments or CPP directives. It first tries to find a 
+ * preceding statement, and if none is found, it looks for a following statement.
+ *
+ * @param targetStmt The statement from which to start searching for a surrounding statement.
+ * @return A pointer to the surrounding statement, or NULL if no such statement exists.
+ */
+SgStatement* findSurroundingStatementFromSameFile(SgStatement* targetStmt) {
+    // ... function implementation ...
+}
+2025-01-27 20:12:33,842 - INFO - End time: 2025-01-27 20:12:33
+2025-01-27 20:12:33,842 - INFO - Duration: 10.746851444244385

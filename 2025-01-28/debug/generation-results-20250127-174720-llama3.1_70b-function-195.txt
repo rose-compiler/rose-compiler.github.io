@@ -1,0 +1,146 @@
+2025-01-27 19:07:10,884 - INFO - Start time: 2025-01-27 19:07:10
+2025-01-27 19:07:10,884 - INFO - Generating documents for a function with id : 195
+2025-01-27 19:07:10,884 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    //! Check if an expression is an array access (SgPntrArrRefExp) . If so, return its name and subscripts if requested. 
+  bool isArrayReference(SgExpression* ref, SgExpression** arrayName/*=NULL*/, vector<SgExpression*>** subscripts/*=NULL*/)
+  {
+    SgExpression* arrayRef=NULL;
+    if (ref->variantT() == V_SgPntrArrRefExp) {
+      if (subscripts != 0 || arrayName != 0) {
+        SgExpression* n = ref;
+        while (true) {
+          SgPntrArrRefExp *arr = isSgPntrArrRefExp(n);
+          if (arr == 0)
+            break;
+          n = arr->get_lhs_operand();
+          // store left hand for possible reference exp to array variable
+          if (arrayName!= 0)
+            arrayRef = n;
+          // right hand stores subscripts
+          if (subscripts != 0) // must insert to be the first here !! The last visited rhs will be the first dimension!!
+            (*subscripts)->insert( (*subscripts)->begin(),  arr->get_rhs_operand());
+        } // end while
+        if  (arrayName !=NULL)
+        {
+          *arrayName = arrayRef;
+#if 0 // we decided to delegate this to convertRefToInitializedName()
+          ROSE_ASSERT(arrayRef != NULL);
+          if (isSgVarRefExp(arrayRef))
+            *arrayName = isSgVarRefExp(arrayRef)->get_symbol()->get_declaration();
+          else if (isSgDotExp(arrayRef))
+          { // just return the parent object name for now 
+             // this may not be a good choice,but we do this for collect referenced top variables
+              // within outliner  
+            SgVarRefExp* lhs = NULL;
+            lhs = isSgVarRefExp(isSgDotExp(arrayRef)->get_lhs_operand());
+            ROSE_ASSERT(lhs != NULL);
+            *arrayName = lhs->get_symbol()->get_declaration();
+          }
+          else
+           {
+            cout<<"Unhandled case in isArrayReference():"<<arrayRef->class_name()<<" "
+            arrayRef->unparseToString()<<endl;
+            ROSE_ABORT();
+           }
+#endif 
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:07:44,166 - INFO - Response from llama3.1:70b for Function 195:
+2025-01-27 19:07:44,166 - INFO - /**
+ * @fn bool isArrayReference(SgExpression* ref, SgExpression** arrayName/*=NULL*/, vector<SgExpression*>** subscripts/*=NULL*/)
+ *
+ * @brief Checks if an expression is an array access (SgPntrArrRefExp) and returns its name and subscripts if requested.
+ *
+ * This function determines whether a given expression represents an array access. If it does, the function can optionally return the name of the array being accessed and the subscripts used to index into the array.
+ *
+ * The function uses a recursive approach to handle cases where the array access is nested inside other expressions.
+ *
+ * @param ref The expression to be checked for array access.
+ * @param arrayName A pointer to an SgExpression that will hold the name of the array being accessed, if requested. Defaults to NULL.
+ * @param subscripts A pointer to a vector of SgExpressions that will hold the subscripts used to index into the array, if requested. Defaults to NULL.
+ *
+ * @return True if the expression represents an array access, false otherwise.
+ *
+ * @warning If the input expression is not an array access, the function returns false and does not modify the output parameters.
+ *
+ * @pre The input expression must be a valid SgExpression object.
+ *
+ * @post If the function returns true, the output parameters will be modified to hold the name of the array being accessed and/or the subscripts used to index into the array, depending on which parameters were requested.
+ *
+ * @note This function uses a recursive approach to handle nested array accesses. It also checks for cases where the input expression is not an array access and returns false in such cases.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgExpression* ref = ...; // some expression
+ *           SgExpression* arrayName;
+ *           vector<SgExpression*>* subscripts;
+ *           if (isArrayReference(ref, &arrayName, &subscripts)) {
+ *             cout << "Array name: " << arrayName->unparseToString() << endl;
+ *             for (auto& subscript : *subscripts) {
+ *               cout << "Subscript: " << subscript->unparseToString() << endl;
+ *             }
+ *           } else {
+ *             cout << "Not an array access." << endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:07:44,166 - INFO - End time: 2025-01-27 19:07:44
+2025-01-27 19:07:44,166 - INFO - Duration: 33.282657623291016

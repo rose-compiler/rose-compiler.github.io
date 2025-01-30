@@ -1,0 +1,106 @@
+2025-01-27 19:34:39,747 - INFO - Start time: 2025-01-27 19:34:39
+2025-01-27 19:34:39,748 - INFO - Generating documents for a function with id : 260
+2025-01-27 19:34:39,748 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::getEnclosingSourceFile(SgNode* n,bool includingSelf) {
+    return getEnclosingNode<SgSourceFile>(n, includingSelf);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:35:11,376 - INFO - Response from llama3.1:70b for Function 260:
+2025-01-27 19:35:11,376 - INFO - /**
+ * @fn SgNode* SageInterface::getEnclosingSourceFile(SgNode* n, bool includingSelf)
+ *
+ * @brief Returns the enclosing source file of a given node.
+ *
+ * This function traverses the Abstract Syntax Tree (AST) to find the
+ * enclosing source file of a given node. It uses the SAGE compiler's
+ * infrastructure to navigate the AST and locate the source file.
+ *
+ * The search for the enclosing source file starts from the given node and
+ * moves upwards in the AST, considering all parent nodes until it finds
+ * an instance of SgSourceFile or reaches the root of the AST. If the
+ * includingSelf parameter is true, the function also considers the given
+ * node itself as a potential result.
+ *
+ * @param n The node for which to find the enclosing source file.
+ *          Must be a valid pointer to an instance of SgNode or one of its subclasses.
+ *
+ * @param includingSelf Whether to consider the given node itself as a potential result.
+ *                       If true, the function returns the given node if it is an instance
+ *                       of SgSourceFile. Otherwise, the function only considers parent nodes.
+ *
+ * @return A pointer to the enclosing source file of the given node, or nullptr if no such file exists.
+ *
+ * @warning The result may be nullptr if the given node does not have a parent that is an instance of SgSourceFile.
+ *          In this case, it is up to the caller to handle the situation accordingly.
+ *
+ * @pre n must be a valid pointer to an instance of SgNode or one of its subclasses.
+ *
+ * @post The result is either a valid pointer to an instance of SgSourceFile or nullptr.
+ *
+ * @note This function uses the SAGE compiler's infrastructure and may only work correctly
+ *       within the context of the SAGE compiler framework.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* node = ...; // obtain a node somehow
+ *           SgSourceFile* file = SageInterface::getEnclosingSourceFile(node, false);
+ *           if (file != nullptr) {
+ *               // do something with the source file
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:35:11,376 - INFO - End time: 2025-01-27 19:35:11
+2025-01-27 19:35:11,376 - INFO - Duration: 31.62855553627014

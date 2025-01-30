@@ -1,0 +1,145 @@
+2025-01-27 17:56:29,941 - INFO - Start time: 2025-01-27 17:56:29
+2025-01-27 17:56:29,941 - INFO - Generating documents for a function with id : 20
+2025-01-27 17:56:29,941 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::setSourcePositionPointersToNull(SgNode *node)
+   {
+  // DQ (1/24/2009): I think this should be renamed to be "setSourcePositionToNULL(SgNode *node)"
+  // However, if this is doen then the logic should be that it asserts that: (locatedNode->get_startOfConstruct() == NULL)
+  // so that we know when we are leaking memory.  Similarly, we should assert that:
+  // (locatedNode->get_endOfConstruct() == NULL).
+  // But then this function just asserts that everything is already NULL and is less about setting them to NULL.
+  // If (locatedNode->get_startOfConstruct() != NULL), should we delete the existing Sg_File_Info object?
+  // This function misses that step.
+
+     ROSE_ASSERT(node != NULL);
+
+     SgLocatedNode *    locatedNode = isSgLocatedNode(node);
+     SgExpression*      expression  = isSgExpression(node);
+     SgPragma*          pragma      = isSgPragma(node); // missed this one!! Liao, 1/30/2008
+     SgGlobal*          global      = isSgGlobal(node); // SgGlobal should have NULL endOfConstruct()
+
+  // DQ (1/24/2009): If the point is to set the source position to NULL pointers,
+  // why do we only handle the case when (get_startOfConstruct() == NULL)
+  // (i.e. when the start source postion is already NULL).
+
+     if (locatedNode != NULL)
+        {
+          if (locatedNode->get_startOfConstruct() != NULL)
+               printf ("WARNING: In SageInterface::setSourcePositionPointersToNull(): Memory leak of startOfConstruct Sg_File_Info object (setting Sg_File_Info pointers to NULL) \n");
+
+          locatedNode->set_startOfConstruct(NULL);
+
+       // Note that SgGlobal should have NULL endOfConstruct()
+          if (global == NULL)
+             {
+               if (locatedNode->get_endOfConstruct() != NULL)
+                    printf ("WARNING: In SageInterface::setSourcePositionPointersToNull(): Memory leak of endOfConstruct Sg_File_Info object (setting Sg_File_Info pointers to NULL) \n");
+
+               locatedNode->set_endOfConstruct(NULL);
+             }
+
+       // Only SgExpression IR nodes have a 3rd source position data structure.
+          if (expression != NULL)
+             {
+               if (expression->get_operatorPosition() != NULL)
+                    printf ("WARNING: In SageInterface::setSourcePositionPointersToNull(): Memory leak of operatorPosition Sg_File_Info object (setting Sg_File_Info pointers to NULL) \n");
+
+               expression->set_operatorPosition(NULL);
+             }
+        }
+       else
+        {
+          if ( (pragma != NULL) && (pragma->get_startOfConstruct() != NULL) )
+             {
+               printf ("WARNING: In SageInterface::setSourcePositionPointersToNull(): Memory leak of Sg_File_Info object (setting Sg_File_Info pointers to NULL) \n");
+
+               pragma->set_startOfConstruct(NULL);
+             }
+        }
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 17:56:51,240 - INFO - Response from llama3.1:70b for Function 20:
+2025-01-27 17:56:51,240 - INFO - /**
+ * @fn void SageInterface::setSourcePositionPointersToNull(SgNode *node)
+ *
+ * @brief Sets source position pointers to NULL for a given SgNode.
+ *
+ * This function sets the source position pointers of an SgNode and its derived classes (SgLocatedNode, 
+ * SgExpression, SgPragma, and SgGlobal) to NULL. It checks if the node is not NULL before proceeding. 
+ * If the start or end source positions are already set, it prints a warning message indicating a potential memory leak.
+ *
+ * @param node The SgNode for which the source position pointers are to be set to NULL.
+ *              Must not be NULL.
+ *
+ * @return None
+ *
+ * @warnings This function may print warning messages if the start or end source positions of the node 
+ *           or its derived classes are already set, indicating a potential memory leak.
+ *
+ * @preconditions The input node must not be NULL.
+ *
+ * @postconditions The source position pointers of the node and its derived classes will be set to NULL.
+ *
+ * @note This function does not delete any existing Sg_File_Info objects. It only sets their pointers to NULL.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* node = ...; // assuming a valid SgNode pointer
+ *           SageInterface::setSourcePositionPointersToNull(node);
+ *          @endcode
+ */
+2025-01-27 17:56:51,240 - INFO - End time: 2025-01-27 17:56:51
+2025-01-27 17:56:51,240 - INFO - Duration: 21.299723625183105

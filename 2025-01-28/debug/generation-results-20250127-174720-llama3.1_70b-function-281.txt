@@ -1,0 +1,163 @@
+2025-01-27 19:44:16,485 - INFO - Start time: 2025-01-27 19:44:16
+2025-01-27 19:44:16,485 - INFO - Generating documents for a function with id : 281
+2025-01-27 19:44:16,485 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::isMemberFunctionMemberReference(SgMemberFunctionRefExp* memberFunctionRefExp)
+   {
+  // DQ (2/17/2019): This may share a design in common with isDataMemberReference() below.
+
+#define DEBUG_IS_MEMBER_FUNCTION_MEMBER_REFERENCE 0
+
+     ROSE_ASSERT(memberFunctionRefExp != NULL);
+
+     bool returnValue = false;
+
+  // Check that this is a data member access (e.g. "X x; x.member;") and not just a reference to a data member (e.g. "X::member;")
+     SgNode* parent = memberFunctionRefExp->get_parent();
+
+     SgArrowExp* arrowExp = isSgArrowExp(parent);
+     SgDotExp*   dotExp   = isSgDotExp(parent);
+
+  // I don't know that the SgAddressOfOp is as relevant for the case of SgMemberFunctionRefExp, but I think
+  // it is because we would have to support membr pointeds to functions the same a member pointers to data.
+  // I need some examples test codes to verify that name qualification is important in this case.
+     SgAddressOfOp* addressOfOp = isSgAddressOfOp(parent);
+
+     if (arrowExp != NULL || dotExp != NULL || addressOfOp != NULL)
+        {
+       // Use a SgFunctionSymbol instead of a SgMemberFunctionSymbol for generality (I hope this works).
+          SgFunctionSymbol* symbol = memberFunctionRefExp->get_symbol();
+          ROSE_ASSERT(symbol != NULL);
+
+          SgFunctionDeclaration* functionDeclaration = symbol->get_declaration();
+          ROSE_ASSERT(functionDeclaration != NULL);
+
+       // Check if this is a statically declared variable.
+          if (functionDeclaration != NULL)
+             {
+               bool isStatic = functionDeclaration->get_declarationModifier().get_storageModifier().isStatic();
+#if DEBUG_IS_MEMBER_FUNCTION_MEMBER_REFERENCE
+               printf ("isStatic = %s \n",isStatic ? "true" : "false");
+#endif
+               if (isStatic == false)
+                  {
+                    SgScopeStatement* scope = functionDeclaration->get_scope();
+                    ROSE_ASSERT(scope != NULL);
+
+                    SgClassDefinition* classDefinition = isSgClassDefinition(scope);
+                    if (classDefinition != NULL)
+                       {
+                         returnValue = true;
+                       }
+                  }
+             }
+            else
+             {
+#if DEBUG_IS_MEMBER_FUNCTION_MEMBER_REFERENCE
+               printf ("In SageInterface::isMemberFunctionMemberReference(): memberFunctionRefExp is not associated with variableDeclaration (could not compute if it is static data member) \n");
+#endif
+             }
+        }
+       else
+        {
+#if DEBUG_IS_MEMBER_FUNCTION_MEMBER_REFERENCE
+          printf ("In SageInterface::isMemberFunctionMemberReference(): memberFunctionRefExp parent is not a is not SgArrowExp or SgDotExp expression \n");
+#endif
+        }
+
+#if DEBUG_IS_MEMBER_FUNCTION_MEMBER_REFERENCE
+     printf ("Leaving SageInterface::isMemberFunctionMemberReference(): returnValue = %s \n",returnValue ? "true" : "false");
+#endif
+
+     return returnValue;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:44:45,131 - INFO - Response from llama3.1:70b for Function 281:
+2025-01-27 19:44:45,131 - INFO - /**
+ * @fn bool SageInterface::isMemberFunctionMemberReference(SgMemberFunctionRefExp* memberFunctionRefExp)
+ *
+ * @brief Determines if a given SgMemberFunctionRefExp is a reference to a non-static member function of a class.
+ *
+ * This function checks whether the provided SgMemberFunctionRefExp refers to a non-static member function 
+ * of a class. It performs this check by examining the parent node of the SgMemberFunctionRefExp and verifying 
+ * that it is either an SgArrowExp or an SgDotExp, indicating a data member access. Additionally, it checks if 
+ * the symbol associated with the SgMemberFunctionRefExp is not statically declared.
+ *
+ * @param memberFunctionRefExp A pointer to the SgMemberFunctionRefExp to be checked. This parameter must not be NULL.
+ *
+ * @return True if the SgMemberFunctionRefExp refers to a non-static member function of a class, false otherwise.
+ *
+ * @warning The result may be incorrect if the provided SgMemberFunctionRefExp is not properly initialized or 
+ *          if the AST is not correctly constructed.
+ *
+ * @pre The input parameter memberFunctionRefExp must not be NULL and must point to a valid SgMemberFunctionRefExp object.
+ *
+ * @post None
+ *
+ * @note This function assumes that the provided SgMemberFunctionRefExp has already been parsed and is part of 
+ *       a valid AST. If this assumption does not hold, the result may be incorrect or undefined.
+ *
+ * @example The following example demonstrates how to use this function:
+ *          @code
+ *           // Assume 'memberFunctionRefExp' is a pointer to a SgMemberFunctionRefExp object
+ *           bool isNonStaticMember = SageInterface::isMemberFunctionMemberReference(memberFunctionRefExp);
+ *           if (isNonStaticMember)
+ *             {
+ *               printf("The member function reference refers to a non-static member function.\n");
+ *             }
+ *          @endcode
+ */
+2025-01-27 19:44:45,131 - INFO - End time: 2025-01-27 19:44:45
+2025-01-27 19:44:45,131 - INFO - Duration: 28.64600396156311

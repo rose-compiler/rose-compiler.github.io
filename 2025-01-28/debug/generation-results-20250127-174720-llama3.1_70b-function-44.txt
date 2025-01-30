@@ -1,0 +1,207 @@
+2025-01-27 18:07:47,420 - INFO - Start time: 2025-01-27 18:07:47
+2025-01-27 18:07:47,420 - INFO - Generating documents for a function with id : 44
+2025-01-27 18:07:47,420 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::fixupReferencesToSymbols( const SgScopeStatement* this_scope,  SgScopeStatement* copy_scope, SgCopyHelp & help )
+   {
+  // This function is called by the SageInterface::rebuildSymbolTable().
+  // It resets references to old symbols to the new symbols (just built).
+  // All pairs of old/new symbols are also saved in the object:
+  //    SgCopyHelp::copiedNodeMapType copiedNodeMap
+
+#ifndef ROSE_USE_INTERNAL_FRONTEND_DEVELOPMENT
+     ROSE_ASSERT(this_scope != NULL);
+     ROSE_ASSERT(copy_scope != NULL);
+
+#if 0
+     printf ("In fixupReferencesToSymbols(this_scope = %p = %s = %s, copy_scope = %p = %s = %s) \n",
+          this_scope,this_scope->class_name().c_str(),get_name(this_scope).c_str(),
+          copy_scope,copy_scope->class_name().c_str(),get_name(copy_scope).c_str());
+#endif
+
+     SgSymbolTable* this_symbolTable = this_scope->get_symbol_table();
+     SgSymbolTable* copy_symbolTable = copy_scope->get_symbol_table();
+#if 0
+     printf ("Before fixup: this scope = %p = %s this_symbolTable->get_table()->size() = %" PRIuPTR " \n",this_scope,this_scope->class_name().c_str(),this_symbolTable->get_table()->size());
+     printf ("Before fixup: copy scope = %p = %s copy_symbolTable->get_table()->size() = %" PRIuPTR " \n",copy_scope,copy_scope->class_name().c_str(),copy_symbolTable->get_table()->size());
+#endif
+
+  // DQ (3/4/2009): For now just output a warning, but this might be a more serious problem.
+  // Since the symbol table size of the copy is larger than that of the original it might
+  // be that a symbol is enterted twice by the copy mechanism.  If so I want to fix this.
+     if (this_symbolTable->get_table()->size() != copy_symbolTable->get_table()->size())
+        {
+          if (SgProject::get_verbose() > 0)
+              {
+               printf ("Before fixup: this scope = %p = %s this_symbolTable->get_table()->size() = %" PRIuPTR " \n",this_scope,this_scope->class_name().c_str(),this_symbolTable->get_table()->size());
+               printf ("Before fixup: copy scope = %p = %s copy_symbolTable->get_table()->size() = %" PRIuPTR " \n",copy_scope,copy_scope->class_name().c_str(),copy_symbolTable->get_table()->size());
+               printf ("Warning the symbols tables in these different scopes are different sizes \n");
+             }
+        }
+  // ROSE_ASSERT(this_symbolTable->get_table()->size() <= copy_symbolTable->get_table()->size());
+
+     SgSymbolTable::hash_iterator i = this_symbolTable->get_table()->begin();
+
+  // This is used to fixup the AST by resetting references to IR nodes (leveraged from AST merge).
+     std::map<SgNode*, SgNode*> replacementMap;
+     int counter = 0;
+     while (i != this_symbolTable->get_table()->end())
+        {
+          ROSE_ASSERT ( isSgSymbol( (*i).second ) != NULL );
+
+          SgName name     = (*i).first;
+       // SgSymbol* symbol = isSgSymbol((*i).second);
+          SgSymbol* symbol = (*i).second;
+          ROSE_ASSERT ( symbol != NULL );
+
+          SgSymbol* associated_symbol = NULL;
+#if 0
+          printf ("Symbol number: %d (pair.first (SgName) = %s) pair.second (SgSymbol) = %p sage_class_name() = %s \n",counter,i->first.str(),i->second,i->second->class_name().c_str());
+#endif
+       // Look for the associated symbol in the copy_scope's symbol table.
+          SgSymbolTable::hash_iterator associated_symbol_iterator = copy_symbolTable->get_table()->find(name);
+
+       // Note that this is a multi-map and for C++ a number of symbols can have the same name
+       // (though not the same type of symbol) so we have to iterator over the symbols of the
+       // same name so that we can identify the associated symbol.
+          while (associated_symbol_iterator != copy_symbolTable->get_table()->end() && associated_symbol_iterator->first == name)
+             {
+               if ( associated_symbol_iterator->second->variantT() == symbol->variantT() )
+                  {
+                    associated_symbol = associated_symbol_iterator->second;
+                  }
+
+               associated_symbol_iterator++;
+             }
+
+          if (associated_symbol != NULL)
+             {
+               ROSE_ASSERT ( associated_symbol != NULL );
+
+            // Check to make sure that this is correct
+               ROSE_ASSERT(copy_scope->symbol_exists(associated_symbol) == true);
+
+            // Add the SgGlobal referenece to the replacementMap
+            // replacementMap.insert(pair<SgNode*,SgNode*>(originalFileGlobalScope,scope));
+            // DQ (23/1/2009): Find the reference to symbol and replace it with associated_symbol.
+               replacementMap.insert(pair<SgNode*,SgNode*>(symbol,associated_symbol));
+
+            // DQ (3/1/2009): This is backwards
+            // replacementMap.insert(pair<SgNode*,SgNode*>(associated_symbol,symbol));
+
+            // DQ (3/2/2009): accumulate the symbol pair into the SgCopyHelp object (to support the outliner).
+            // Actually this should also improve the robustness of the outliner.
+               help.get_copiedNodeMap().insert(pair<const SgNode*,SgNode*>(symbol,associated_symbol));
+             }
+            else
+             {
+            // DQ (3/4/2009): This case was broken out because copytest2007_14.C fails here.
+               if (SgProject::get_verbose() > 0)
+                  {
+                    printf ("Warning: Symbol number: %d (pair.first (SgName) = %s) pair.second (SgSymbol) = %p sage_class_name() = %s \n",counter,i->first.str(),i->second,i->second->class_name().c_str());
+                    printf ("Warning: associated_symbol == NULL, need to investigate this (ignoring for now) \n");
+                  }
+             }
+
+          counter++;
+
+          i++;
+        }
+
+#if 0
+     printf ("\n\n************************************************************\n");
+     printf ("fixupReferencesToSymbols(this_scope = %p copy_scope = %p = %s = %s): calling Utils::edgePointerReplacement() \n",this_scope,copy_scope,copy_scope->class_name().c_str(),get_name(copy_scope).c_str());
+#endif
+
+     Rose::AST::Utility::edgePointerReplacement(copy_scope,replacementMap);
+
+#if 0
+     printf ("fixupReferencesToSymbols(): calling Utils::edgePointerReplacement(): DONE \n");
+     printf ("************************************************************\n\n");
+
+     printf ("\n\n After replacementMapTraversal(): intermediateDeleteSet: \n");
+     displaySet(intermediateDeleteSet,"After Utils::edgePointerReplacement");
+
+     printf ("After fixup: this_symbolTable->get_table()->size() = %" PRIuPTR " \n",this_symbolTable->get_table()->size());
+     printf ("After fixup: copy_symbolTable->get_table()->size() = %" PRIuPTR " \n",copy_symbolTable->get_table()->size());
+#endif
+
+  // DQ (3/1/2009): find a case where this code is tested.
+  // ROSE_ASSERT(this_symbolTable->get_table()->size() == 0);
+  // ROSE_ASSERT(isSgClassDefinition(copy_scope) == NULL);
+#endif
+
+#if 0
+     printf ("Exiting as a test in fixupReferencesToSymbols() \n");
+     ROSE_ABORT();
+#endif
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:07:57,671 - INFO - Response from llama3.1:70b for Function 44:
+2025-01-27 18:07:57,671 - INFO - /**
+ * @brief Fix up references to symbols in the given scope.
+ * 
+ * This function fixes up references to symbols in the given scope by replacing
+ * the original symbol with a new one from the copy scope. It uses an edge pointer
+ * replacement utility function to perform the replacement.
+ * 
+ * @param this_scope The original scope that needs to be fixed up.
+ * @param copy_scope The copied scope that contains the new symbols.
+ */
+void fixupReferencesToSymbols(SgScopeStatement* this_scope, SgScopeStatement* copy_scope) {
+    // ... (rest of the function remains the same)
+}
+2025-01-27 18:07:57,671 - INFO - End time: 2025-01-27 18:07:57
+2025-01-27 18:07:57,671 - INFO - Duration: 10.251211881637573

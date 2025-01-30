@@ -1,0 +1,93 @@
+2025-01-27 18:12:01,740 - INFO - Start time: 2025-01-27 18:12:01
+2025-01-27 18:12:01,741 - INFO - Generating documents for a function with id : 56
+2025-01-27 18:12:01,741 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::printAST(SgNode* node, const char* filename)
+{
+  printAST2TextFile(node, filename, true);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:12:20,135 - INFO - Response from llama3.1:70b for Function 56:
+2025-01-27 18:12:20,135 - INFO - /**
+ * @fn void SageInterface::printAST(SgNode* node, const char* filename)
+ *
+ * @brief Prints an Abstract Syntax Tree (AST) to a file.
+ *
+ * This function takes an SgNode representing the root of the AST and a filename,
+ * then prints the AST to the specified file. It utilizes the printAST2TextFile
+ * function internally, passing the node, filename, and a boolean flag set to true.
+ *
+ * @param node The root node of the Abstract Syntax Tree to be printed.
+ * @param filename The name of the file where the AST will be printed.
+ *
+ * @return None. This function does not return any value.
+ *
+ * @warnings If the file cannot be opened for writing, an error may occur.
+ *
+ * @preconditions A valid SgNode and a non-empty filename are provided.
+ *
+ * @postconditions The AST represented by the input node is printed to the specified file.
+ *
+ * @note This function relies on the implementation of printAST2TextFile for actual printing functionality.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* root = ...; // Assume a valid AST root node
+ *           const char* filename = "ast_output.txt";
+ *           SageInterface::printAST(root, filename);
+ *          @endcode
+ */
+2025-01-27 18:12:20,136 - INFO - End time: 2025-01-27 18:12:20
+2025-01-27 18:12:20,136 - INFO - Duration: 18.395251989364624

@@ -1,0 +1,168 @@
+2025-01-27 20:29:36,407 - INFO - Start time: 2025-01-27 20:29:36
+2025-01-27 20:29:36,407 - INFO - Generating documents for a function with id : 391
+2025-01-27 20:29:36,407 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::ReductionRecognition(SgForStatement* loop, std::set< std::pair <SgInitializedName*, OmpSupport::omp_construct_enum > > & results)
+{
+  //x. Collect variable references of scalar types as candidates, excluding loop index
+  SgInitializedName* loopindex;
+  if (!(isCanonicalForLoop(loop, &loopindex)))
+  {
+//    cerr<<"Skip reduction recognition for non-canonical for loop"<<endl;
+    return;
+  }
+  std::set<SgInitializedName*> candidateVars; // scalar variables used within the loop
+  //Store the references for each scalar variable
+  std::map <SgInitializedName*, vector<SgVarRefExp* > > var_references;
+
+  Rose_STL_Container<SgNode*> reflist = NodeQuery::querySubTree(loop, V_SgVarRefExp);
+  SgStatement* lbody= loop->get_loop_body();
+  ROSE_ASSERT(lbody != NULL);
+  Rose_STL_Container<SgNode*>::iterator iter = reflist.begin();
+  for (; iter!=reflist.end(); iter++)
+  {
+    SgVarRefExp* ref_exp = isSgVarRefExp(*iter);
+    SgInitializedName* initname= ref_exp->get_symbol()->get_declaration();
+    // candidates are of scalar types and are not the loop index variable
+    // And also should be live-in:
+    //        not declared locally (var_scope equal or lower than loop body )
+    //        or redefined (captured by ref count)
+    SgScopeStatement* var_scope = initname->get_scope();
+    ROSE_ASSERT(var_scope != NULL);
+    if ((isScalarType(initname->get_type())) &&(initname !=loopindex)
+        && !(SageInterface::isAncestor(lbody, var_scope)||(lbody==var_scope)))
+    {
+      candidateVars.insert(initname);
+      var_references[initname].push_back(ref_exp);
+    }
+  }
+
+  //Consider variables referenced at most twice
+  std::set<SgInitializedName*>::iterator niter=candidateVars.begin();
+  for (; niter!=candidateVars.end(); niter++)
+  {
+    SgInitializedName* initname = *niter;
+    bool isReduction = false;
+    OmpSupport::omp_construct_enum optype;
+    // referenced once only
+    if (var_references[initname].size()==1)
+    {
+      mlog[Sawyer::Message::Common::DEBUG] << "Debug: SageInterface::ReductionRecognition() A candidate used once:"<<initname->get_name().getString()<<endl;
+      SgVarRefExp* ref_exp = *(var_references[initname].begin());
+      if (isSingleAppearanceReduction (ref_exp, optype))
+        isReduction = true;
+    }
+    // referenced twice within a same statement
+    else if (var_references[initname].size()==2)
+    {
+      mlog[Sawyer::Message::Common::DEBUG] << "Debug: A candidate used twice:"<<initname->get_name().getString()<<endl;
+      SgVarRefExp* ref_exp1 = *(var_references[initname].begin());
+      SgVarRefExp* ref_exp2 = *(++var_references[initname].begin());
+      // TODO: recognize  maxV = array[i]>maxV? array[i]:maxV // this can be normalized to if () stmt
+      // TODO: recognize  maxV = max (maxV, array[i])
+      if (isAssignReduction (ref_exp1, ref_exp2, optype) || isIfReduction (ref_exp1, ref_exp2, optype) )
+      {
+        isReduction = true;
+      }
+
+    }// end referenced twice
+
+    if (isReduction)
+      results.insert(make_pair(initname,optype));
+  }// end for ()
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:30:09,157 - INFO - Response from llama3.1:70b for Function 391:
+2025-01-27 20:30:09,158 - INFO - /**
+ * @fn void SageInterface::ReductionRecognition(SgForStatement* loop, std::set< std::pair <SgInitializedName*, OmpSupport::omp_construct_enum > > & results)
+ *
+ * @brief Recognizes reduction patterns in a for loop.
+ *
+ * This function analyzes the given for loop to identify variables that are used
+ * as reductions. A reduction is recognized when a variable is assigned a value
+ * based on its previous value, typically using an operator such as '+', '*',
+ * 'min', or 'max'. The function returns a set of pairs containing the identified
+ * reduction variables and their corresponding OpenMP construct types.
+ *
+ * @param loop The for loop to analyze for reductions.
+ * @param results A set to store the recognized reduction variables and their
+ *                 corresponding OpenMP construct types.
+ *
+ * @return None. The results are stored in the 'results' parameter.
+ *
+ * @warning This function assumes that the input loop is a canonical for loop,
+ *          i.e., it has an initializer, a condition, and an incrementor. If the
+ *          loop does not meet this assumption, the function may produce incorrect
+ *          results or crash.
+ *
+ * @pre The input loop must be a valid SgForStatement node in the ROSE AST.
+ * @post The 'results' set contains all recognized reduction variables and their
+ *       corresponding OpenMP construct types.
+ *
+ * @note This function uses various heuristics to recognize reductions, including:
+ *       - Variables referenced at most twice within the loop body.
+ *       - Assignments to a variable based on its previous value using an operator.
+ *       - If statements that assign a value to a variable based on its previous value.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgForStatement* loop = ...; // obtain the for loop node from the ROSE AST
+ *           std::set< std::pair <SgInitializedName*, OmpSupport::omp_construct_enum > > results;
+ *           SageInterface::ReductionRecognition(loop, results);
+ *           // process the recognized reduction variables and their OpenMP construct types in 'results'
+ *          @endcode
+ */
+2025-01-27 20:30:09,158 - INFO - End time: 2025-01-27 20:30:09
+2025-01-27 20:30:09,158 - INFO - Duration: 32.7506422996521

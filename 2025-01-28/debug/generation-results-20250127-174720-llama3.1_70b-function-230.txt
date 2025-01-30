@@ -1,0 +1,208 @@
+2025-01-27 19:21:27,212 - INFO - Start time: 2025-01-27 19:21:27
+2025-01-27 19:21:27,212 - INFO - Generating documents for a function with id : 230
+2025-01-27 19:21:27,212 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::setLoopStride(SgNode* loop, SgExpression* stride)
+{
+  ROSE_ASSERT(loop != NULL);
+  ROSE_ASSERT(stride != NULL);
+  SgForStatement* forstmt = isSgForStatement(loop);
+  SgFortranDo * dostmt = isSgFortranDo (loop);
+  // ROSE_ASSERT(forstmt!= NULL);
+  if (dostmt != NULL)
+  {
+    dostmt->set_increment(stride);
+    stride->set_parent(dostmt);
+    //TODO delete original increment expression
+  }
+  else  if (forstmt != NULL)
+  {
+    // set stride expression
+    // case 1: i++ change to i+=stride
+    Rose_STL_Container<SgNode*> testList = NodeQuery::querySubTree( forstmt->get_increment(), V_SgPlusPlusOp);
+    if (testList.size()>0)
+    {
+      ROSE_ASSERT(testList.size() == 1); // should have only one
+      SgVarRefExp *loopvarexp = isSgVarRefExp(SageInterface::deepCopy
+          (isSgPlusPlusOp( *testList.begin())->get_operand()));
+      SgPlusAssignOp *plusassignop = buildPlusAssignOp(loopvarexp, stride);
+      forstmt->set_increment(plusassignop);
+    }
+
+    // case 1.5: i-- also changed to i+=stride
+    testList = NodeQuery::querySubTree(forstmt->get_increment(), V_SgMinusMinusOp);
+    if (testList.size()>0)
+    {
+      ROSE_ASSERT(testList.size()==1);// should have only one
+      SgVarRefExp *loopvarexp =isSgVarRefExp(SageInterface::deepCopy
+          (isSgMinusMinusOp(*testList.begin())->get_operand()));
+      SgPlusAssignOp *plusassignop = buildPlusAssignOp(loopvarexp, stride);
+      forstmt->set_increment(plusassignop);
+    }
+
+    // case 2: i+=X
+    testList = NodeQuery::querySubTree( forstmt->get_increment(), V_SgPlusAssignOp);
+    if (testList.size()>0)
+    {
+      ROSE_ASSERT(testList.size()==1);// should have only one
+      SgPlusAssignOp * assignop = isSgPlusAssignOp(*(testList.begin()));
+      ROSE_ASSERT(assignop!=NULL);
+      assignop->set_rhs_operand(stride);
+    }
+
+    // case 2.5: i-=X changed to i+=stride
+    testList = NodeQuery::querySubTree(forstmt->get_increment(), V_SgMinusAssignOp);
+    if (testList.size()>0)
+    {
+      ROSE_ASSERT(testList.size()==1);// should have only one
+      SgVarRefExp *loopvarexp =isSgVarRefExp(SageInterface::deepCopy
+          (isSgMinusAssignOp(*testList.begin())->get_lhs_operand()));
+      SgExprStatement* exprstmt = isSgExprStatement((*testList.begin())->get_parent());
+      ROSE_ASSERT(exprstmt !=NULL);
+      SgPlusAssignOp *plusassignop = buildPlusAssignOp(loopvarexp, stride);
+      exprstmt->set_expression(plusassignop);
+    }
+
+#if 0 // [Robb Matzke 2021-03-17]
+    // DQ (1/3/2007): I think this is a meaningless statement.
+    testList.empty();
+#endif
+    // case 3: i=i + X or i =X +i  i
+    // TODO; what if users use i*=,etc ??
+    //      send out a warning: not canonical FOR/DO loop
+    //      or do this in the real frontend. MUST conform to canonical form
+    testList = NodeQuery::querySubTree(forstmt->get_increment(), V_SgAddOp);
+    if (testList.size()>0)
+    {
+      ROSE_ASSERT(testList.size()==1);// should have only one ??
+      // consider only the top first one
+      SgAddOp * addop = isSgAddOp(*(testList.begin()));
+      ROSE_ASSERT(addop!=NULL);
+      string loopvar= (isSgVarRefExp(isSgAssignOp(addop->get_parent())->get_lhs_operand())->get_symbol()->get_name()).getString();
+      if (isSgVarRefExp(addop->get_rhs_operand())!=NULL)
+      {
+        if ((isSgVarRefExp(addop->get_rhs_operand())->get_symbol()->get_name()).getString() ==loopvar)
+          addop->set_lhs_operand(stride);
+        else
+          addop->set_rhs_operand(stride);
+      }
+      else
+        addop->set_rhs_operand(stride);
+    }
+
+    // case 3.5: i=i - X
+    testList = NodeQuery::querySubTree(forstmt->get_increment(), V_SgSubtractOp);
+    if (testList.size()>0)
+    {
+      ROSE_ASSERT(testList.size()==1);// should have only one ??
+      // consider only the top first one
+      SgSubtractOp * subtractop = isSgSubtractOp(*(testList.begin()));
+      ROSE_ASSERT(subtractop!=NULL);
+      SgVarRefExp *loopvarexp =isSgVarRefExp(SageInterface::deepCopy
+          (isSgSubtractOp(*testList.begin())->get_lhs_operand()));
+      SgAssignOp *assignop = isSgAssignOp((*testList.begin())->get_parent());
+      ROSE_ASSERT(assignop !=NULL);
+      SgPlusAssignOp *plusassignop = buildPlusAssignOp(loopvarexp, stride);
+      assignop->set_rhs_operand(plusassignop);
+    }
+  }
+  else
+  {
+    cerr<<"Error. SageInterface::setLoopStride(), illegal loop type:"<< loop->class_name()<<endl;
+    ROSE_ASSERT (false);
+
+  }
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:21:58,048 - INFO - Response from llama3.1:70b for Function 230:
+2025-01-27 19:21:58,048 - INFO - /**
+ * @fn void SageInterface::setLoopStride(SgNode* loop, SgExpression* stride)
+ *
+ * @brief Sets the stride of a loop in the abstract syntax tree (AST) to the given expression.
+ *
+ * This function updates the increment statement of a for/do loop with the provided stride expression.
+ * It supports various forms of increment statements and handles different types of loops.
+ *
+ * The supported forms of increment statements include:
+ *   - i++ or i-- (post-increment/decrement)
+ *   - i+=X or i-=X (addition/subtraction assignment)
+ *   - i=i+X or i=X+i (addition)
+ *   - i=i-X or i=X-i (subtraction)
+ *
+ * The function also handles Fortran DO loops and updates their increment statements accordingly.
+ *
+ * @param loop A pointer to the SgNode representing the loop in the AST. Must not be NULL.
+ * @param stride A pointer to the SgExpression representing the new stride value. Must not be NULL.
+ *
+ * @return None
+ *
+ * @warnings If the loop is not a for/do loop or a Fortran DO loop, an error message is printed and the function asserts false.
+ *
+ * @pre The input loop and stride must be valid and non-NULL.
+ * @post The increment statement of the loop is updated with the new stride expression.
+ *
+ * @example
+ *   // Create a for loop with an initial value of 0 and a final value of 10
+ *   SgForInitStatement* init = buildForInit(0, 10);
+ *   SgForLoop* loop = buildForLoop(init, buildExprStatement(buildAssignOp(buildVarRef("i"), buildAddOp(buildVarRef("i"), buildIntVal(1)))));
+ *
+ *   // Create a stride expression with the value of 2
+ *   SgExpression* stride = buildIntVal(2);
+ *
+ *   // Set the stride of the loop to the new value
+ *   setLoopStride(loop, stride);
+ */
+2025-01-27 19:21:58,048 - INFO - End time: 2025-01-27 19:21:58
+2025-01-27 19:21:58,048 - INFO - Duration: 30.835970401763916

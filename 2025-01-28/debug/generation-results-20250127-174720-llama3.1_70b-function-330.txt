@@ -1,0 +1,111 @@
+2025-01-27 20:04:35,629 - INFO - Start time: 2025-01-27 20:04:35
+2025-01-27 20:04:35,629 - INFO - Generating documents for a function with id : 330
+2025-01-27 20:04:35,629 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgNode* SageInterface::replaceWithPattern (SgNode * anchor, SgNode* new_pattern)
+{
+  SgExpression * anchor_exp = isSgExpression(anchor);
+  SgExpression * pattern_exp = isSgExpression(new_pattern);
+  ROSE_ASSERT (anchor_exp != NULL);
+  ROSE_ASSERT (pattern_exp != NULL);
+
+   // we replace all SgExpression within the pattern with copies of anchor
+   Rose_STL_Container<SgNode*> opaque_exp_list = NodeQuery::querySubTree(pattern_exp,V_SgExpression);
+   for (size_t i = 0; i<opaque_exp_list.size(); i++)
+   {
+     SgExpression* opaque_exp = isSgExpression(opaque_exp_list[i]);
+     ROSE_ASSERT (opaque_exp != NULL);
+     if (opaque_exp->variantT() == V_SgVariantExpression)
+     {
+       SgExpression * anchor_exp_copy = deepCopy(anchor_exp);
+       replaceExpression(opaque_exp, anchor_exp_copy);
+     }
+   }
+
+   // finally we replace anchor_exp with the pattern_exp
+   replaceExpression(anchor_exp, pattern_exp, false);
+  return new_pattern;
+}
+/** Generate a name that is unique in the current scope and any parent and children scopes.
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:04:59,750 - INFO - Response from llama3.1:70b for Function 330:
+2025-01-27 20:04:59,750 - INFO - /**
+ * @fn SgNode* SageInterface::replaceWithPattern (SgNode * anchor, SgNode* new_pattern)
+ *
+ * @brief Replaces a given anchor expression with a new pattern by replacing all occurrences of opaque expressions in the pattern with copies of the anchor.
+ *
+ * This function takes an anchor node and a new pattern node as input. It first checks if both nodes are valid SgExpression instances, then replaces all SgExpression within the pattern with copies of the anchor. Finally, it replaces the original anchor expression with the modified pattern expression.
+ *
+ * @param anchor The anchor node to be replaced. Must be a valid SgExpression instance.
+ * @param new_pattern The new pattern node that will replace the anchor. Must be a valid SgExpression instance.
+ *
+ * @return The new pattern node after replacement.
+ *
+ * @warning This function assumes that the input nodes are valid and does not perform extensive error checking. It also assumes that the replacement operation is valid in the context of the abstract syntax tree.
+ *
+ * @pre The anchor and new_pattern nodes must be valid SgExpression instances.
+ * @post The original anchor expression will be replaced with the modified pattern expression.
+ *
+ * @note This function uses a recursive approach to replace all occurrences of opaque expressions in the pattern. It also performs deep copying of the anchor expression to ensure that the replacement is done correctly.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* anchor = ...; // some valid SgExpression instance
+ *           SgNode* new_pattern = ...; // some valid SgExpression instance
+ *           SgNode* result = SageInterface::replaceWithPattern(anchor, new_pattern);
+ *          @endcode
+ */
+2025-01-27 20:04:59,750 - INFO - End time: 2025-01-27 20:04:59
+2025-01-27 20:04:59,750 - INFO - Duration: 24.12148880958557

@@ -1,0 +1,175 @@
+2025-01-27 19:49:07,150 - INFO - Start time: 2025-01-27 19:49:07
+2025-01-27 19:49:07,150 - INFO - Generating documents for a function with id : 293
+2025-01-27 19:49:07,150 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool
+SageInterface::scopeHasStatementsFromSameFile(SgScopeStatement* scope)
+   {
+  // DQ (5/9/2021): Adding support for detection of statements in a scope that must be unparsed.
+  // This function supports the token-based unparsing when used with unparsing of header files
+  // to know when the scope can be unparsed via it's token stream, even though a statement from
+  // a header file may contain a transformation.
+  //    returns true if there is a statement in the scope that has to be unparsed (is from the same file as the scope).
+  //    returns false if the scope is empty or contains only statements associated with one or more header files.
+  // When the scope has statements from the same file, then if there is a transformation contained in any of
+  // those statements then we have to unparse the scope one statement at a time when using the token-based
+  // unparsing.  If the scope has no statements from the same file, then the existance of any statement that
+  // contains a transformation does not case the statements to be unparsed individually.
+
+     ROSE_ASSERT(scope != NULL);
+     int scope_file_id = scope->get_file_info()->get_physical_file_id();
+
+     bool return_value = false;
+
+     if (scope->containsOnlyDeclarations() == true)
+        {
+          SgDeclarationStatementPtrList & declarationStatementList = scope->getDeclarationList();
+#if 1
+          printf ("In scopeHasStatementsFromSameFile(): DeclarationStatementList not implemented \n");
+#endif
+#if 1
+          printf ("declarationStatementList.size() = %zu \n",declarationStatementList.size());
+#endif
+          SgDeclarationStatementPtrList::iterator i = declarationStatementList.begin();
+
+          while (i != declarationStatementList.end() && return_value == false)
+             {
+               SgDeclarationStatement* statement = *i;
+               int statement_file_id = statement->get_file_info()->get_physical_file_id();
+
+               if (statement_file_id == scope_file_id)
+                 {
+                   return_value = true;
+                 }
+
+               i++;
+             }
+#if 0
+          printf ("Exiting as a test! \n");
+          ROSE_ASSERT(false);
+#endif
+        }
+       else
+        {
+          SgStatementPtrList & statementList = scope->getStatementList();
+#if 1
+          printf ("In scopeHasStatementsFromSameFile(): StatementList not implemented \n");
+#endif
+          SgStatementPtrList::iterator i = statementList.begin();
+
+          while (i != statementList.end() && return_value == false)
+             {
+               SgStatement* statement = *i;
+               int statement_file_id = statement->get_file_info()->get_physical_file_id();
+
+               if (statement_file_id == scope_file_id)
+                 {
+                   return_value = true;
+                 }
+
+               i++;
+             }
+        }
+
+     return return_value;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:49:42,987 - INFO - Response from llama3.1:70b for Function 293:
+2025-01-27 19:49:42,987 - INFO - /**
+ * @fn bool SageInterface::scopeHasStatementsFromSameFile(SgScopeStatement* scope)
+ *
+ * @brief Checks if a given scope contains statements from the same file.
+ *
+ * This function determines whether a scope has any statements that must be unparsed
+ * because they originate from the same file as the scope. It supports token-based
+ * unparsing when used with header files and helps identify when a statement from a
+ * header file may contain a transformation that requires individual unparsing of
+ * statements.
+ *
+ * @param scope The SgScopeStatement object to check for statements from the same file.
+ *              Must not be NULL. If the scope is empty or contains only declarations,
+ *              it will return false unless a statement with the same file ID is found.
+ *
+ * @return True if there is at least one statement in the scope that has to be unparsed
+ *         (i.e., originates from the same file as the scope), false otherwise. If the
+ *         scope contains only declarations or no statements, it will return false.
+ *
+ * @warning This function assumes that the input SgScopeStatement object is valid and
+ *          not NULL. Passing an invalid or NULL pointer may result in undefined behavior.
+ *
+ * @pre The input SgScopeStatement object must be a valid, non-NULL pointer to a scope.
+ *
+ * @post If the function returns true, it guarantees that there is at least one statement
+ *       in the scope with the same file ID as the scope. If it returns false, it does not
+ *       guarantee the absence of such statements but indicates that none were found.
+ *
+ * @note This function uses a recursive approach to check each statement in the scope.
+ *       It first checks if the scope contains only declarations and then iterates over
+ *       the declaration list or statement list accordingly. If it finds a statement with
+ *       the same file ID as the scope, it immediately returns true.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgScopeStatement* scope = ...; // obtain a valid SgScopeStatement object
+ *           bool has_same_file_statements = SageInterface::scopeHasStatementsFromSameFile(scope);
+ *           if (has_same_file_statements) {
+ *               std::cout << "The scope contains statements from the same file." << std::endl;
+ *           } else {
+ *               std::cout << "The scope does not contain statements from the same file." << std::endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:49:42,987 - INFO - End time: 2025-01-27 19:49:42
+2025-01-27 19:49:42,987 - INFO - Duration: 35.83719754219055

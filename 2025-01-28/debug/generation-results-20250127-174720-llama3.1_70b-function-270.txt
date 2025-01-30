@@ -1,0 +1,153 @@
+2025-01-27 19:39:12,797 - INFO - Start time: 2025-01-27 19:39:12
+2025-01-27 19:39:12,797 - INFO - Generating documents for a function with id : 270
+2025-01-27 19:39:12,797 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgScopeStatement* SageInterface::findEnclosingLoop(SgStatement* s, const std::string& label, bool stopOnSwitches) {
+  /* label can represent a fortran label or a java label provided as a label in a continue/break statement */
+  for (; s; s = isSgStatement(s->get_parent())) {
+    SgScopeStatement* sc = isSgScopeStatement(s);
+    // Need to check for empty label as for java we must detect the
+        // innermost labeled statement and skip everything in between
+    switch (s->variantT()) {
+      case V_SgDoWhileStmt: {
+          if (label.empty()) {
+                  return sc;
+          }
+          break;
+      }
+      case V_SgForStatement: {
+          if (label.empty()) {
+                  return sc;
+          }
+          break;
+      }
+      case V_SgFortranDo:
+      case V_SgFortranNonblockedDo: {
+        if (label.empty() ||
+                        label == isSgFortranDo(sc)->get_string_label()) {
+          return sc;
+        }
+        break;
+      }
+      case V_SgWhileStmt: {
+        if (label.empty() ||
+                        label == isSgWhileStmt(sc)->get_string_label()) {
+          return sc;
+        }
+        break;
+      }
+      case V_SgSwitchStatement: {
+        if (stopOnSwitches) return sc;
+        break;
+      }
+      case V_SgJavaForEachStatement: {
+          if (label.empty()) {
+                  return sc;
+          }
+          break;
+      }
+      case V_SgJavaLabelStatement: {
+          if (label.empty() ||
+                          label == isSgJavaLabelStatement(sc)->get_label().getString()) {
+            return sc;
+          }
+          break;
+      }
+      default: continue;
+    }
+  }
+  return NULL;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:39:45,128 - INFO - Response from llama3.1:70b for Function 270:
+2025-01-27 19:39:45,128 - INFO - /**
+ * @fn SgScopeStatement* SageInterface::findEnclosingLoop(SgStatement* s, const std::string& label, bool stopOnSwitches)
+ *
+ * @brief Finds the enclosing loop statement for a given statement in an Abstract Syntax Tree (AST).
+ *
+ * This function traverses up the AST from a given statement to find the first enclosing loop statement. 
+ * A loop statement is defined as any of the following: SgDoWhileStmt, SgForStatement, SgFortranDo, 
+ * SgFortranNonblockedDo, or SgWhileStmt. If the label parameter is not empty, it will only consider loop statements
+ * with a matching label. The stopOnSwitches parameter determines whether to stop at switch statements.
+ *
+ * @param s The statement from which to start searching for an enclosing loop statement.
+ *          Must be non-null and valid in the AST.
+ * @param label A string representing a Fortran or Java label that must match the label of the enclosing loop statement. 
+ *              If empty, will consider any loop statement.
+ * @param stopOnSwitches A boolean indicating whether to return immediately when encountering a switch statement.
+ *
+ * @return The first enclosing loop statement found in the AST, or NULL if none is found.
+ *
+ * @warning This function does not handle cycles in the AST. It assumes that the input statement is part of a valid AST.
+ *
+ * @pre s must be non-null and valid in the AST.
+ * @post If an enclosing loop statement is found, it will be returned; otherwise, NULL will be returned.
+ *
+ * @note This function uses a recursive approach to traverse up the AST. It may overflow the stack if the input statement
+ *       is deeply nested in the AST.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* stmt = ...; // some statement in the AST
+ *           std::string label = "my_label"; // a Fortran or Java label
+ *           bool stopOnSwitches = true;
+ *           SgScopeStatement* loopStmt = SageInterface::findEnclosingLoop(stmt, label, stopOnSwitches);
+ *           if (loopStmt != NULL) {
+ *               // do something with the enclosing loop statement
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:39:45,128 - INFO - End time: 2025-01-27 19:39:45
+2025-01-27 19:39:45,128 - INFO - Duration: 32.3307089805603

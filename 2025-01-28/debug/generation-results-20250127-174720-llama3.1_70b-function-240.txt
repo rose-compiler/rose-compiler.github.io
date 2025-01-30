@@ -1,0 +1,316 @@
+2025-01-27 19:26:15,723 - INFO - Start time: 2025-01-27 19:26:15
+2025-01-27 19:26:15,723 - INFO - Generating documents for a function with id : 240
+2025-01-27 19:26:15,723 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgExprListExp * SageInterface::loopCollapsing(SgForStatement* loop, size_t collapsing_factor)
+{
+#ifndef ROSE_USE_INTERNAL_FRONTEND_DEVELOPMENT
+  //Handle 0 and 1, which means no collapsing at all
+    if (collapsing_factor <= 1)
+        return NULL;
+
+    SgExprListExp * new_var_list = buildExprListExp();  //expression list contains all the SgVarRefExp * to variables that need to be added in the mapin clause
+
+    /*
+     *step 1: grab the target loops' header information
+     */
+    SgForStatement *& target_loop = loop;
+
+    // we use global scope to help generate unique variable name later
+    // local scope-based unique names may cause conflicts if the declarations are moved around (in OpenMP target data promotion)
+    SgGlobal* global_scope = getGlobalScope (loop);
+    ROSE_ASSERT (global_scope != NULL);
+    SgInitializedName** ivar = new SgInitializedName*[collapsing_factor];
+    SgExpression** lb = new SgExpression*[collapsing_factor];
+    SgExpression** ub = new SgExpression*[collapsing_factor];
+    SgExpression** step = new SgExpression*[collapsing_factor];
+    SgStatement** orig_body = new SgStatement*[collapsing_factor];
+
+    SgExpression** total_iters = new SgExpression*[collapsing_factor]; //Winnie, the real iteration counter in each loop level
+    SgExpression** interval = new SgExpression*[collapsing_factor]; //Winnie, this will be used to calculate i_nom_1_remainder
+    bool *isPlus = new bool[collapsing_factor]; //Winnie, a flag indicates incremental or decremental for loop
+
+
+    //Winnie, get loops info first
+    std::vector<SgForStatement* > loops= SageInterface::querySubTree<SgForStatement>(target_loop,V_SgForStatement);
+    ROSE_ASSERT(loops.size()>=collapsing_factor);
+
+    SgForStatement* temp_target_loop = NULL;
+    SgExpression* temp_range_exp = NULL; //Raw iteration range
+    SgExpression* temp_range_d_step_exp = NULL; //temp_range_exp / step[i]
+    SgExpression* temp_condition_1 = NULL; //Check whether temp_range_exp % step[i] == 0
+    SgExpression* temp_total_iter = NULL;
+    SgExpression* ub_exp = buildIntVal(1); //Winnie, upbound
+
+    /*
+    *    get lb, ub, step information for each level of the loops
+    *    ub_exp is the final iterantion range(starting from 0) after loop collapsing
+    *    total_iters[i], = (ub[i] - lb[i] + 1)/step[i]  is the total iter num in each level of loop before loop collapsing
+    */
+
+    SgStatement* parent =  isSgStatement(getScope(target_loop)->get_parent());        //Winnie, the scope that include target_loop
+    ROSE_ASSERT(getScope(target_loop)->get_parent()!= NULL);
+
+    SgScopeStatement* scope = isSgScopeStatement(parent);    //Winnie, the scope that include target_loop
+
+    while(scope == NULL)
+    {
+       parent = isSgStatement(parent->get_parent());
+       scope = isSgScopeStatement(parent);
+    }
+
+    SgStatement* insert_target = findLastDeclarationStatement(scope);
+    if (insert_target != NULL)
+        insert_target = getNextStatement(insert_target);
+    else
+        insert_target = getFirstStatement(scope);
+
+    ROSE_ASSERT(scope != NULL);
+
+
+    for(size_t i = 0; i < collapsing_factor; i ++)
+    {
+        temp_target_loop = loops[i];
+
+        // normalize the target loop first  // adjust to numbering starting from 0
+        forLoopNormalization(temp_target_loop);
+
+        if (!isCanonicalForLoop(temp_target_loop, &ivar[i], &lb[i], &ub[i], &step[i], &orig_body[i], &isPlus[i]))
+        {
+            cerr<<"Error in SageInterface::loopCollapsing(): target loop is not canonical."<<endl;
+            dumpInfo(target_loop);
+
+            // release memory
+            delete[] ivar;
+            delete[] lb;
+            delete[] ub;
+            delete[] step;
+            delete[] orig_body;
+            delete[] total_iters;
+            delete[] interval;
+            delete[] isPlus;
+
+            return NULL;
+        }
+
+        ROSE_ASSERT(ivar[i]&& lb[i] && ub[i] && step[i]);
+
+
+//Winnie, (ub[i]-lb[i]+1)%step[i] ==0?(ub[i]-lb[i]+1)/step[i]: (ub[i]-lb[i]+1)/step[i]+1; (need ceiling) total number of iterations in this level (ub[i] - lb[i] + 1)/step[i]
+        if(isPlus[i] == true)
+            temp_range_exp = buildAddOp(buildSubtractOp(copyExpression(ub[i]), copyExpression(lb[i])), buildIntVal(1));
+        else{
+            temp_range_exp = buildAddOp(buildSubtractOp(copyExpression(lb[i]), copyExpression(ub[i])), buildIntVal(1));
+            step[i] = buildMultiplyOp(step[i], buildIntVal(-1));
+        }
+        temp_range_d_step_exp = buildDivideOp(temp_range_exp,copyExpression(step[i]));//(ub[i]-lb[i]+1)/step[i]
+
+        temp_condition_1 = buildEqualityOp(buildModOp(copyExpression(temp_range_exp),copyExpression(step[i])),buildIntVal(0)); //(ub[i]-lb[i]+1)%step[i] ==0
+
+        temp_total_iter = buildConditionalExp(temp_condition_1,temp_range_d_step_exp, buildAddOp(copyExpression(temp_range_d_step_exp),buildIntVal(1)));
+
+        //build variables to store iteration numbers in each loop, simplify the calculation of "final_total_iters"
+        //insert the new variable (store real iteration number of each level of the loop) before the target loop
+        string iter_var_name= "_total_iters";
+        //iter_var_name = ivar[i]->get_name().getString() + iter_var_name + generateUniqueName(temp_total_iter, false);
+        iter_var_name = "__"+ivar[i]->get_name().getString() + iter_var_name+ generateUniqueVariableName (global_scope,"");
+        SgVariableDeclaration* total_iter = buildVariableDeclaration(iter_var_name, buildIntType(), buildAssignInitializer(temp_total_iter, buildIntType()), scope);
+        insertStatementBefore(insert_target, total_iter);
+        constantFolding (total_iter);
+        total_iters[i] = buildVarRefExp(iter_var_name, scope);
+        ub_exp = buildMultiplyOp(ub_exp, total_iters[i]);    //Winnie, build up the final iteration range
+    }
+
+
+    /*
+    * step 2: build new variables (new_index, final_total_iters, remainders...) for the new loop
+    */
+
+    /*Winnie, build another variable to store final total iteration counter of the loop after collapsing*/
+    //string final_iter_counter_name = "final_total_iters" + generateUniqueName(ub_exp, false);
+    string final_iter_counter_name = "__final_total_iters" + generateUniqueVariableName(global_scope,"");
+    SgVariableDeclaration * final_total_iter = buildVariableDeclaration(final_iter_counter_name, buildIntType(), buildAssignInitializer(copyExpression(ub_exp), buildIntType()), scope);
+    insertStatementBefore(insert_target, final_total_iter);
+    ub_exp = buildVarRefExp(final_iter_counter_name, scope);
+    new_var_list->append_expression(isSgVarRefExp(ub_exp));
+
+    /*Winnie, interval[i] will make the calculation of remainders simpler*/
+    for(unsigned int i = 0; i < collapsing_factor; i++)
+    {
+        interval[i] = buildIntVal(1);
+        for(unsigned int j = collapsing_factor - 1; j > i; j--)
+        {
+            interval[i] = buildMultiplyOp(total_iters[j], interval[i]);
+        }
+        //string interval_name = ivar[i]->get_name().getString() + "_interval" + generateUniqueName(interval[i], false);
+        string interval_name = "__"+ ivar[i]->get_name().getString() + "_interval" + generateUniqueVariableName (global_scope,"");
+        SgVariableDeclaration* temp_interval = buildVariableDeclaration(interval_name, buildIntType(), buildAssignInitializer(copyExpression(interval[i]), buildIntType()), scope);
+        insertStatementBefore(insert_target, temp_interval);
+        interval[i] = buildVarRefExp(interval_name, scope);
+        new_var_list->append_expression(isSgVarRefExp(interval[i]));
+    }
+
+
+   //Winnie, starting from here, we are dealing with variables inside loop, update scope
+      scope = getScope(target_loop);
+
+   //Winnie, init statement of the loop header, copy the lower bound, we are dealing with a range, the lower bound should always be "0"
+    //Winnie, declare a brand new var as the new index
+      string ivar_name = "__collapsed_index"+ generateUniqueVariableName (global_scope,"");
+      ROSE_ASSERT(insert_target != NULL);
+      SgVariableDeclaration* new_index_decl = buildVariableDeclaration(ivar_name, buildIntType(), NULL, insert_target->get_scope());
+      SgVariableSymbol * collapsed_index_symbol = getFirstVarSym (new_index_decl);
+      insertStatementBefore(insert_target, new_index_decl);
+      SgVarRefExp * clps_index_ref = buildVarRefExp(collapsed_index_symbol);
+      new_var_list->append_expression(clps_index_ref);
+
+//      SgVariableDeclaration* init_stmt = buildVariableDeclaration(ivar_name, buildIntType(), buildAssignInitializer(buildIntVal(0), buildIntType()), scope);
+
+
+     SgBasicBlock* body = isSgBasicBlock(deepCopy(temp_target_loop->get_loop_body())); // normalized loop has a BB body
+     ROSE_ASSERT(body != NULL);
+     SgExpression* new_exp = NULL;
+     SgExpression* remain_exp_temp = buildVarRefExp(ivar_name, scope);
+     std::vector<SgStatement*> new_stmt_list;
+
+     SgExprStatement* assign_stmt = NULL;
+
+     /*  Winnie
+     *   express old iterator variables (i_norm, j_norm ...)  with new_index,
+     *   new_exp, create new expression for each of the iterators
+     *   i_nom_1 = (_new_index / interval[0])*step[0] + lb[0]
+     *   i_nom_1_remain_value = (_new_index % interval[0])*step[0] + lb[0], create a new var to store remain value
+     *   create a new var to store total_iters[i]
+     */
+     for(unsigned int i = 0; i < collapsing_factor - 1; i ++)
+     {
+         if(isPlus[i] == true)
+             new_exp = buildAddOp(buildMultiplyOp(buildDivideOp(copyExpression(remain_exp_temp), copyExpression(interval[i])), step[i]), copyExpression(lb[i]));  //Winnie, (i_remain/interval[i])*step[i] + lb[i]
+         else
+             new_exp = buildAddOp(buildMinusOp(buildMultiplyOp(buildDivideOp(copyExpression(remain_exp_temp), copyExpression(interval[i])), step[i])), copyExpression(lb[i]));  //Winnie, -(i_remain/interval[i])*step[i] + lb[i], for decremental loop
+
+         assign_stmt = buildAssignStatement(buildVarRefExp(ivar[i], scope), copyExpression(new_exp));
+         new_stmt_list.push_back(assign_stmt);
+         remain_exp_temp = buildModOp((remain_exp_temp), copyExpression(interval[i]));
+
+         if(i != collapsing_factor - 2){ //Winnie, if this is the second last level of loop, no need to create new variable to hold the remain_value, or remove the original index variable declaration
+             string remain_var_name= "_remainder";
+             remain_var_name = "__"+ ivar[i]->get_name().getString() + remain_var_name;
+             SgVariableDeclaration* loop_index_decl = buildVariableDeclaration(remain_var_name, buildIntType(), buildAssignInitializer(remain_exp_temp, buildIntType()), scope);
+             remain_exp_temp = buildVarRefExp(remain_var_name, scope);
+             new_stmt_list.push_back(loop_index_decl);
+         }
+         new_exp = NULL;
+     }
+
+//Winnie, the inner most loop, iter
+    if(isPlus[collapsing_factor - 1] == true)
+        assign_stmt = buildAssignStatement(buildVarRefExp(ivar[collapsing_factor - 1], scope), buildAddOp(buildMultiplyOp(remain_exp_temp, step[collapsing_factor - 1]), lb[collapsing_factor - 1]));
+    else
+        assign_stmt = buildAssignStatement(buildVarRefExp(ivar[collapsing_factor - 1], scope), buildAddOp(buildMinusOp(buildMultiplyOp(remain_exp_temp, step[collapsing_factor - 1])), lb[collapsing_factor - 1]));
+     new_stmt_list.push_back(assign_stmt);
+     prependStatementList(new_stmt_list, body);
+
+    /*
+    * step 3: build the new loop, new step is always 1, disregard value of step[i]
+    */
+    SgExpression* incr_exp = buildPlusAssignOp(buildVarRefExp(ivar_name, scope), buildIntVal(1));
+
+    //Winnie, build the new conditional expression/ub
+    SgExprStatement* cond_stmt = NULL;
+    ub_exp = buildSubtractOp(ub_exp, buildIntVal(1));
+    cond_stmt = buildExprStatement(buildLessOrEqualOp(buildVarRefExp(ivar_name,scope),copyExpression(ub_exp)));
+    ROSE_ASSERT(cond_stmt != NULL);
+
+    SgForStatement* new_loop = buildForStatement(buildAssignStatement(clps_index_ref, buildIntVal(0)), cond_stmt,incr_exp, body);  //Winnie, add in the new block!
+    new_loop->set_parent(scope);  //TODO: what's the correct parent?
+
+    replaceStatement(target_loop, new_loop);
+
+    target_loop = new_loop; //Winnie, so that transOmpLoop() can work on the collapsed loop
+   // constant folding for the transformed AST
+   ConstantFolding::constantFoldingOptimization(scope->get_parent(),false);   //Winnie, "scope" is the scope that contains new_loop, this is the scope where we insert some new variables to store interation count and intervals
+
+    delete [] ivar;
+    delete [] lb;
+    delete [] ub;
+    delete [] step;
+    delete [] orig_body;
+    delete [] total_iters;
+    delete [] interval;
+    delete [] isPlus;
+
+    #endif
+
+    return new_var_list;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:26:25,571 - INFO - Response from llama3.1:70b for Function 240:
+2025-01-27 19:26:25,571 - INFO - /**
+ * @brief Collapses multiple loops into a single loop.
+ *
+ * This function takes in a for loop statement and collapses it into a single loop
+ * if possible. The new loop will have the same body as the original loop, but with
+ * a different iteration variable and step size.
+ *
+ * @param target_loop The for loop statement to be collapsed.
+ * @return A list of new variables that were created during the collapse process.
+ */
+SgNode* transOmpLoop(SgForStatement* target_loop)
+{
+    // ... (rest of the code remains the same)
+}
+2025-01-27 19:26:25,571 - INFO - End time: 2025-01-27 19:26:25
+2025-01-27 19:26:25,571 - INFO - Duration: 9.84824800491333

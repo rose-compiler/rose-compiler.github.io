@@ -1,0 +1,118 @@
+2025-01-27 19:40:32,674 - INFO - Start time: 2025-01-27 19:40:32
+2025-01-27 19:40:32,675 - INFO - Generating documents for a function with id : 273
+2025-01-27 19:40:32,675 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgInitializer* SageInterface::getInitializerOfExpression(SgExpression* n) {
+  assert(n);
+#if 0
+  std::cout << "Starting getInitializerOfExpression on 0x" << std::hex << (int)n << ", which has type " << n->sage_class_name() << std::endl;
+#endif
+  while (!isSgInitializer(n)) {
+    n = isSgExpression(n->get_parent());
+#if 0
+    std::cout << "Continuing getInitializerOfExpression on 0x" << std::hex << (int)n;
+    if (n) std::cout << ", which has type " << n->sage_class_name();
+    std::cout << std::endl;
+#endif
+    assert(n);
+  }
+  return isSgInitializer(n);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:41:01,730 - INFO - Response from llama3.1:70b for Function 273:
+2025-01-27 19:41:01,730 - INFO - /**
+ * @fn SgInitializer* SageInterface::getInitializerOfExpression(SgExpression* n)
+ *
+ * @brief Retrieves the initializer of a given expression.
+ *
+ * This function traverses the abstract syntax tree upwards from the input
+ * expression to find its corresponding initializer. It uses a while loop to
+ * recursively check the parent nodes until it encounters an SgInitializer node.
+ *
+ * @param n The input expression for which the initializer is to be retrieved.
+ *          Must not be NULL and must be of type SgExpression or one of its subclasses.
+ *
+ * @return A pointer to the initializer of the input expression, or NULL if no
+ *         initializer is found. It is guaranteed to be an instance of SgInitializer.
+ *
+ * @warning The function does not check whether the input expression has a valid
+ *          initializer; it only checks whether the node is an instance of
+ *          SgInitializer. If the input expression does not have a valid initializer,
+ *          the returned pointer may point to an invalid or unexpected location.
+ *
+ * @pre The input expression must be non-NULL and must be of type SgExpression or one
+ *      of its subclasses.
+ *
+ * @post The returned pointer is guaranteed to be either NULL or a valid instance
+ *       of SgInitializer. If the function returns NULL, it means that no initializer
+ *       was found for the input expression.
+ *
+ * @note This function uses assertions to check the validity of the input expression.
+ *       It also uses a while loop to recursively traverse the abstract syntax tree,
+ *       which may cause performance issues if the tree is very deep.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgExpression* expr = ...; // some expression
+ *           SgInitializer* initializer = SageInterface::getInitializerOfExpression(expr);
+ *           if (initializer != NULL) {
+ *               // do something with the initializer
+ *           } else {
+ *               // handle the case where no initializer is found
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:41:01,730 - INFO - End time: 2025-01-27 19:41:01
+2025-01-27 19:41:01,730 - INFO - Duration: 29.055915117263794

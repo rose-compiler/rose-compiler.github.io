@@ -1,0 +1,167 @@
+2025-01-27 18:34:09,460 - INFO - Start time: 2025-01-27 18:34:09
+2025-01-27 18:34:09,460 - INFO - Generating documents for a function with id : 113
+2025-01-27 18:34:09,460 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::lastStatementOfScopeWithTokenInfo (SgScopeStatement* scope, std::map<SgNode*,TokenStreamSequenceToNodeMapping*> & tokenStreamSequenceMap)
+   {
+  // Return the last statement in the associated scope that has token information.
+     SgStatement* lastStatement = NULL;
+
+     ROSE_ASSERT(scope != NULL);
+
+#if 0
+     printf ("In SageInterface::lastStatementOfScopeWithTokenInfo(): scope = %p = %s \n",scope,scope->class_name().c_str());
+#endif
+
+     SgIfStmt* ifStatement = isSgIfStmt(scope);
+     if (ifStatement != NULL)
+        {
+          lastStatement = ifStatement->get_false_body();
+          if (lastStatement == NULL || (tokenStreamSequenceMap.find(lastStatement) == tokenStreamSequenceMap.end() || tokenStreamSequenceMap[lastStatement] == NULL))
+             {
+               lastStatement = ifStatement->get_true_body();
+               if (lastStatement == NULL || (tokenStreamSequenceMap.find(lastStatement) == tokenStreamSequenceMap.end() || tokenStreamSequenceMap[lastStatement] == NULL))
+                  {
+                    lastStatement = NULL;
+                  }
+             }
+
+          printf ("Note: SgIfStmt scope in SageInterface::lastStatementOfScopeWithTokenInfo(): returning lastStatement = %p \n",lastStatement);
+          if (lastStatement != NULL)
+             {
+               printf ("   --- lastStatement = %p = %s \n",lastStatement,lastStatement->class_name().c_str());
+             }
+
+          return lastStatement;
+        }
+
+     SgStatementPtrList statementList = scope->generateStatementList();
+     if (statementList.rbegin() != statementList.rend())
+        {
+       // Find the last statement with token stream information.
+          SgStatementPtrList::reverse_iterator i = statementList.rbegin();
+
+          while (i != statementList.rend() && (tokenStreamSequenceMap.find(*i) == tokenStreamSequenceMap.end() || tokenStreamSequenceMap[*i] == NULL) )
+             {
+               i++;
+             }
+
+          if (i == statementList.rend())
+             {
+               lastStatement = NULL;
+             }
+            else
+             {
+               lastStatement = *i;
+             }
+        }
+
+     return lastStatement;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:34:44,602 - INFO - Response from llama3.1:70b for Function 113:
+2025-01-27 18:34:44,602 - INFO - /**
+ * @fn SageInterface::lastStatementOfScopeWithTokenInfo (SgScopeStatement* scope, std::map<SgNode*,TokenStreamSequenceToNodeMapping*> & tokenStreamSequenceMap)
+ *
+ * @brief Returns the last statement in the associated scope that has token information.
+ *
+ * This function traverses the statements within a given scope to find the last one
+ * that contains token stream information. It handles SgIfStmt scopes differently,
+ * examining both the true and false bodies before falling back to the general case.
+ *
+ * @param scope The SgScopeStatement representing the scope in which to search for the last statement with token information.
+ *              Must not be NULL.
+ * 
+ * @param tokenStreamSequenceMap A map of SgNode pointers to TokenStreamSequenceToNodeMapping pointers, used to determine
+ *                               whether a given statement has associated token stream information.
+ *
+ * @return The last statement in the scope that has token stream information. Returns NULL if no such statement is found.
+ *
+ * @warning If the input scope or tokenStreamSequenceMap is invalid, the behavior of this function is undefined.
+ *
+ * @pre The input scope must not be NULL.
+ *
+ * @post The returned statement will have associated token stream information, as indicated by its presence in the tokenStreamSequenceMap.
+ *
+ * 
+ * @note This function uses a recursive approach to traverse the statements within the given scope. It also handles
+ *       SgIfStmt scopes specially, examining both the true and false bodies before falling back to the general case.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create an instance of SageInterface
+ *           SageInterface sage;
+ *           
+ *           // Define a scope (e.g., a function body)
+ *           SgScopeStatement* scope = ...;
+ *           
+ *           // Create a map of statements to token stream information
+ *           std::map<SgNode*, TokenStreamSequenceToNodeMapping*> tokenStreamSequenceMap;
+ *           
+ *           // Call the function to find the last statement with token information in the scope
+ *           SgStatement* lastStatement = sage.lastStatementOfScopeWithTokenInfo(scope, tokenStreamSequenceMap);
+ *           
+ *           if (lastStatement != NULL)
+ *             {
+ *               printf("Last statement with token information: %p\n", lastStatement);
+ *             }
+ *           else
+ *             {
+ *               printf("No statements with token information found in the scope.\n");
+ *             }
+ *          @endcode
+ */
+2025-01-27 18:34:44,602 - INFO - End time: 2025-01-27 18:34:44
+2025-01-27 18:34:44,602 - INFO - Duration: 35.14251756668091

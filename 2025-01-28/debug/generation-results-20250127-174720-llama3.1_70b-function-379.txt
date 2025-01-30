@@ -1,0 +1,140 @@
+2025-01-27 20:23:31,752 - INFO - Start time: 2025-01-27 20:23:31
+2025-01-27 20:23:31,752 - INFO - Generating documents for a function with id : 379
+2025-01-27 20:23:31,752 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::printOutComments ( SgLocatedNode* locatedNode )
+   {
+  // Debugging function to print out comments in the statements (added by DQ)
+
+     ROSE_ASSERT(locatedNode != NULL);
+     AttachedPreprocessingInfoType* comments = locatedNode->getAttachedPreprocessingInfo();
+
+#if 0
+     curprint ("/* Inside of printOutComments() */");
+#endif
+
+     if (comments != NULL)
+        {
+#if 0
+          printf ("Found attached comments (at %p of type: %s): \n",locatedNode,locatedNode->class_name().c_str());
+          curprint ("/* Inside of printOutComments(): comments != NULL */");
+#endif
+
+          AttachedPreprocessingInfoType::iterator i;
+          for (i = comments->begin(); i != comments->end(); i++)
+             {
+               ROSE_ASSERT ( (*i) != NULL );
+               printf ("          Attached Comment (relativePosition=%s): %s \n",
+                 // DQ (2/11/2021): Fixed to report correct relative locations.
+                 // ((*i)->getRelativePosition() == PreprocessingInfo::before) ? "before" : "after",
+                    PreprocessingInfo::relativePositionName((*i)->getRelativePosition()).c_str(),
+                    (*i)->getString().c_str());
+               printf ("Comment/Directive getNumberOfLines = %d getColumnNumberOfEndOfString = %d \n",(*i)->getNumberOfLines(),(*i)->getColumnNumberOfEndOfString());
+            // curprint (string("/* Inside of printOutComments(): comments = ") +  (*i)->getString() + " */");
+
+#if 0
+               (*i)->get_file_info()->display("comment/directive location");
+#endif
+             }
+        }
+       else
+        {
+#if 0
+          printf ("In SageInterface::printOutComments(): No attached comments (at %p of type: %s): \n",locatedNode,locatedNode->class_name().c_str());
+#endif
+        }
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:24:01,936 - INFO - Response from llama3.1:70b for Function 379:
+2025-01-27 20:24:01,936 - INFO - /**
+ * @fn void SageInterface::printOutComments(SgLocatedNode* locatedNode)
+ *
+ * @brief Prints out comments attached to a given SgLocatedNode.
+ *
+ * This function is used for debugging purposes. It takes an SgLocatedNode as input and prints out any comments that are attached to it.
+ *
+ * The comments are retrieved using the getAttachedPreprocessingInfo() method of the SgLocatedNode class, which returns a pointer to an AttachedPreprocessingInfoType object. If this object is not NULL, the function iterates over its contents using an iterator and prints out each comment.
+ *
+ * For each comment, the function prints out its relative position (before or after) and its string value. Additionally, it prints out the number of lines in the comment and the column number of the end of the string.
+ *
+ * @param locatedNode The SgLocatedNode for which to print out comments. Must not be NULL.
+ *
+ * @return None
+ *
+ * @warning This function is intended for debugging purposes only and should not be used in production code.
+ *
+ * @pre The input SgLocatedNode must not be NULL.
+ *
+ * @post The function will have printed out any comments attached to the input SgLocatedNode.
+ *
+ * @note This function uses the ROSE_ASSERT macro to check that the input SgLocatedNode is not NULL and that each comment in the AttachedPreprocessingInfoType object is not NULL. If these assertions fail, the program will terminate.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create an SgLocatedNode object
+ *           SgLocatedNode* node = ...;
+ *
+ *           // Attach some comments to the node
+ *           AttachedPreprocessingInfoType* comments = new AttachedPreprocessingInfoType();
+ *           comments->add(new PreprocessingInfo("Comment 1", PreprocessingInfo::before));
+ *           comments->add(new PreprocessingInfo("Comment 2", PreprocessingInfo::after));
+ *           node->setAttachedPreprocessingInfo(comments);
+ *
+ *           // Print out the comments
+ *           SageInterface::printOutComments(node);
+ *          @endcode
+ */
+2025-01-27 20:24:01,936 - INFO - End time: 2025-01-27 20:24:01
+2025-01-27 20:24:01,936 - INFO - Duration: 30.184616327285767

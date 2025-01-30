@@ -1,0 +1,162 @@
+2025-01-27 20:28:19,328 - INFO - Start time: 2025-01-27 20:28:19
+2025-01-27 20:28:19,328 - INFO - Generating documents for a function with id : 389
+2025-01-27 20:28:19,328 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    LivenessAnalysis * SageInterface::call_liveness_analysis(SgProject* project, bool debug/*=false*/)
+{
+  // We expect this function to be called multiple times but always return the result generated from the first execution.
+  static LivenessAnalysis* liv = NULL; // one instance
+  if (liv!=NULL)
+    return liv;
+
+  static DFAnalysis * defuse = NULL; // only one instance
+  // Prepare def-use analysis
+  if (defuse==NULL)
+  {
+    ROSE_ASSERT(project != NULL);
+    defuse = new DefUseAnalysis(project);
+  }
+
+  ROSE_ASSERT(defuse != NULL);
+  defuse->run(debug);
+
+  if (debug)
+    defuse->dfaToDOT();
+
+  //Prepare variable liveness analysis
+  liv = new LivenessAnalysis(debug,(DefUseAnalysis*)defuse);
+  ROSE_ASSERT(liv != NULL);
+
+  std::vector <FilteredCFGNode < IsDFAFilter > > dfaFunctions;
+  NodeQuerySynthesizedAttributeType vars =
+          NodeQuery::querySubTree(project, V_SgFunctionDefinition);
+  NodeQuerySynthesizedAttributeType::const_iterator i;
+  bool abortme=false;
+     // run liveness analysis on each function body
+  for (i= vars.begin(); i!=vars.end();++i)
+  {
+    SgFunctionDefinition* func = isSgFunctionDefinition(*i);
+    ROSE_ASSERT(func != NULL);
+    if (debug)
+    {
+      std::string name = func->class_name();
+      string funcName = func->get_declaration()->get_qualified_name().str();
+      cout<< " .. running liveness analysis for function: " << funcName << endl;
+    }
+    FilteredCFGNode <IsDFAFilter> rem_source = liv->run(func,abortme);
+    // propagate results to statement level
+    liv->fixupStatementsINOUT(func);
+    if (rem_source.getNode()!=NULL)
+      dfaFunctions.push_back(rem_source);
+    if (abortme)
+      break;
+  } // end for ()
+  if(debug)
+  {
+    cout << "Writing out liveness analysis results into var.dot... " << endl;
+    std::ofstream f2("var.dot");
+    dfaToDot(f2, string("var"), dfaFunctions, (DefUseAnalysis*)defuse, liv);
+    f2.close();
+  }
+  if (abortme) {
+    cerr<<"Error: Liveness analysis is ABORTING ." << endl;
+    ROSE_ABORT();
+  }
+  return liv;
+  //return !abortme;
+}
+#endif
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:28:45,400 - INFO - Response from llama3.1:70b for Function 389:
+2025-01-27 20:28:45,400 - INFO - /**
+ * @fn LivenessAnalysis* SageInterface::call_liveness_analysis(SgProject* project, bool debug)
+ *
+ * @brief Performs liveness analysis on a given SgProject.
+ *
+ * This function performs liveness analysis on the input SgProject using
+ * the DefUseAnalysis class. It first checks if the analysis has already been performed,
+ * and if so, returns the cached result. Otherwise, it creates a new instance of LivenessAnalysis,
+ * runs the def-use analysis, and then performs liveness analysis on each function body in the project.
+ *
+ * @param project The SgProject to perform liveness analysis on. Must not be NULL.
+ * @param debug If true, enables debugging output. Defaults to false.
+ *
+ * @return A pointer to the LivenessAnalysis instance containing the results of the analysis.
+ *         Returns NULL if an error occurs during analysis.
+ *
+ * @warning The function may abort and exit the program if an error occurs during analysis.
+ *
+ * @pre The input project must not be NULL.
+ *
+ * @post The returned LivenessAnalysis instance will contain the results of the analysis.
+ *
+ *       If an error occurs during analysis, the function will abort and exit the program.
+ *
+ * @note This function uses a recursive algorithm to perform liveness analysis on each function body.
+ *       It also caches the result of the analysis to avoid redundant computation.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgProject* project = ...; // create or load an SgProject instance
+ *           LivenessAnalysis* liv = SageInterface::call_liveness_analysis(project, true);
+ *           if (liv != NULL) {
+ *             // use the results of the liveness analysis
+ *           } else {
+ *             // handle error
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:28:45,400 - INFO - End time: 2025-01-27 20:28:45
+2025-01-27 20:28:45,400 - INFO - Duration: 26.072133779525757

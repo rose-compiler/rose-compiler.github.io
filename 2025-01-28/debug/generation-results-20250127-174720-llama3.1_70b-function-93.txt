@@ -1,0 +1,111 @@
+2025-01-27 18:26:06,037 - INFO - Start time: 2025-01-27 18:26:06
+2025-01-27 18:26:06,037 - INFO - Generating documents for a function with id : 93
+2025-01-27 18:26:06,037 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool SageInterface::isCallToParticularFunction(SgFunctionDeclaration* decl,
+  SgExpression* e) {
+    SgFunctionCallExp* fc = isSgFunctionCallExp(e);
+    if (!fc) return false;
+    SgFunctionRefExp* fr = isSgFunctionRefExp(fc->get_function());
+    if (fr == NULL) return false;
+    return fr->get_symbol()->get_declaration() == decl;
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:26:33,000 - INFO - Response from llama3.1:70b for Function 93:
+2025-01-27 18:26:33,000 - INFO - /**
+ * @fn bool SageInterface::isCallToParticularFunction(SgFunctionDeclaration* decl,
+ *                                                     SgExpression* e)
+ *
+ * @brief Checks if an expression is a call to a particular function.
+ *
+ * This function determines whether a given expression represents a call
+ * to the specified function declaration. It does this by checking if the
+ * expression is a function call and then verifying that the called function
+ * matches the provided declaration.
+ *
+ * @param decl The SgFunctionDeclaration object representing the function to check for.
+ *             Must not be NULL.
+ * @param e    The SgExpression object representing the expression to analyze.
+ *             Must not be NULL.
+ *
+ * @return True if the expression is a call to the specified function, false otherwise.
+ *
+ * @warning This function assumes that the provided declaration and expression are
+ *          valid and properly initialized. Failure to meet these conditions may
+ *          result in undefined behavior.
+ *
+ * @pre The input parameters decl and e must not be NULL.
+ *
+ * @post None.
+ *
+ * @note This function uses the Sage++ AST library's isSgFunctionCallExp() and
+ *       isSgFunctionRefExp() functions to perform its checks. These functions may
+ *       have their own preconditions and postconditions that are beyond the scope
+ *       of this documentation.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgFunctionDeclaration* decl = ...; // Initialize with a valid function declaration
+ *           SgExpression* e = ...;         // Initialize with a valid expression
+ *           
+ *           if (isCallToParticularFunction(decl, e)) {
+ *               std::cout << "The expression is a call to the specified function." << std::endl;
+ *           } else {
+ *               std::cout << "The expression is not a call to the specified function." << std::endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 18:26:33,000 - INFO - End time: 2025-01-27 18:26:33
+2025-01-27 18:26:33,000 - INFO - Duration: 26.963437795639038

@@ -1,0 +1,250 @@
+2025-01-27 18:22:16,084 - INFO - Start time: 2025-01-27 18:22:16
+2025-01-27 18:22:16,084 - INFO - Generating documents for a function with id : 83
+2025-01-27 18:22:16,084 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    std::vector<SgNode*>
+SageInterface::astIntersection ( SgNode* original, SgNode* copy, SgCopyHelp* help )
+   {
+     std::vector<SgNode*> intersectionSet;
+
+  // Collect all the IR nodes for the original AST
+     std::vector<SgNode*> AST_original = NodeQuery::querySubTree (original,V_SgNode);
+     std::vector<SgNode*> AST_copy     = NodeQuery::querySubTree (copy,V_SgNode);
+
+     int AST_original_size = AST_original.size();
+     int AST_copy_size     = AST_copy.size();
+
+     if (SgProject::get_verbose() > 0)
+        {
+          printf ("Original AST size         = %d \n",AST_original_size);
+          printf ("Copy of original AST size = %d \n",AST_copy_size);
+        }
+
+     int differenceInSizes = AST_original_size - AST_copy_size;
+     if (differenceInSizes == 0)
+        {
+          if (SgProject::get_verbose() > 0)
+               printf ("Copied AST is the SAME size as the original (size = %d) \n",AST_original_size);
+        }
+       else
+        {
+          printf ("Warning: Copied AST and the original are DIFFERENT sizes (original size = %d copyied size = %d) \n",AST_original_size,AST_copy_size);
+        }
+
+  // Compute the intersection (reference in the copy that point to the origal AST).
+  // std::set<SgNode*> AST_set_original = AST_original;
+     std::set<SgNode*> AST_set_original;
+     for (int i = 0; i < AST_original_size; i++)
+        {
+          AST_set_original.insert(AST_original[i]);
+        }
+
+     std::set<SgNode*> AST_set_copy;
+     for (int i = 0; i < AST_copy_size; i++)
+        {
+          AST_set_copy.insert(AST_copy[i]);
+        }
+
+     int size = AST_original_size;
+     std::vector<SgNode*> intersectionList(size);
+
+  // Is there a better way to do this? Build scratch space and then use the different between begin() and end to build another vector.
+     std::vector<SgNode*>::iterator end = set_intersection(AST_set_original.begin(),AST_set_original.end(),AST_set_copy.begin(),AST_set_copy.end(),intersectionList.begin());
+
+  // Build a new vector from the relevant elements of the intersectionList scratch space.
+     std::vector<SgNode*> meaningIntersectionList = std::vector<SgNode*>(intersectionList.begin(),end);
+     std::vector<SgNode*> deleteList;
+     for (int i = 0; i < (int)meaningIntersectionList.size(); i++)
+        {
+          if (meaningIntersectionList[i] != nullptr && isSgType(meaningIntersectionList[i]) != nullptr)
+             {
+               deleteList.push_back(meaningIntersectionList[i]);
+             }
+        }
+
+  // Remove the types since they are allowed to be shared...
+     if (SgProject::get_verbose() > 0)
+          printf ("Remove the types that are allowed to be shared: deleteList.size() = %ld \n",(long)deleteList.size());
+
+     for (std::vector<SgNode*>::iterator i = deleteList.begin(); i != deleteList.end(); i++)
+        {
+          meaningIntersectionList.erase(find(meaningIntersectionList.begin(),meaningIntersectionList.end(),*i));
+        }
+
+     if (SgProject::get_verbose() > 0)
+          printf ("After removing the types there are meaningIntersectionList.size() = %ld \n",(long)meaningIntersectionList.size());
+
+     for (int i = 0; i < (int)meaningIntersectionList.size(); i++)
+        {
+          printf ("     meaningIntersectionList[%d] = %p = %s = %s \n",i,meaningIntersectionList[i],meaningIntersectionList[i]->class_name().c_str(),get_name(meaningIntersectionList[i]).c_str());
+        }
+
+     int unmatchedIRnodes = 0;
+     if (help != nullptr)
+        {
+          std::vector<SgNode*> tmp_AST_original; // = AST_original;
+          std::vector<SgNode*> tmp_AST_copy; //     = AST_copy;
+
+          int AST_original_size = AST_original.size();
+          for (int j = 0; j < AST_original_size; j++)
+             {
+               if (AST_original[j] != NULL && isSgType(AST_original[j]) == NULL)
+                  {
+                    tmp_AST_original.push_back(AST_original[j]);
+                  }
+             }
+
+          int AST_copy_size = AST_copy.size();
+          for (int j = 0; j < AST_copy_size; j++)
+             {
+               if (AST_copy[j] != NULL && isSgType(AST_copy[j]) == NULL)
+                  {
+                    tmp_AST_copy.push_back(AST_copy[j]);
+                  }
+             }
+
+          std::vector<SgNode*> deleteList_original;
+          std::vector<SgNode*> deleteList_copy;
+          for (int j = 0; j < (int)tmp_AST_original.size(); j++)
+             {
+            // printf ("     (before removing types) meaningIntersectionList[%d] = %p = %s \n",i,meaningIntersectionList[i],(meaningIntersectionList[i] != NULL) ? meaningIntersectionList[i]->class_name().c_str() : "NULL");
+               SgCopyHelp::copiedNodeMapTypeIterator i = help->get_copiedNodeMap().find(tmp_AST_original[j]);
+            // printf ("SgCopyHelp::copiedNodeMapTypeIterator i != help->get_copiedNodeMap().end() = %s \n",i != help->get_copiedNodeMap().end() ? "true" : "false");
+               if (i != help->get_copiedNodeMap().end())
+                  {
+                 // Matched up an original IR node with it's copy
+                    SgNode* associated_node_copy = i->second;
+                    ROSE_ASSERT(associated_node_copy != NULL);
+                    deleteList_original.push_back(tmp_AST_original[j]);
+                    deleteList_copy.push_back(associated_node_copy);
+#if 0
+                 // printf ("Original IR node = %p = %s copy = %p \n",tmp_AST_original[j],tmp_AST_original[j]->class_name().c_str(),associated_node_copy);
+                    SgTemplateInstantiationMemberFunctionDecl* templateMemberFunction = isSgTemplateInstantiationMemberFunctionDecl(tmp_AST_original[j]);
+                    SgTemplateInstantiationMemberFunctionDecl* templateMemberFunction_copy = isSgTemplateInstantiationMemberFunctionDecl(associated_node_copy);
+                    if (templateMemberFunction != NULL)
+                       {
+                         printf ("In SageInterface::astIntersection(): Found a SgTemplateInstantiationMemberFunctionDecl = %p copy = %p \n",templateMemberFunction,associated_node_copy);
+                      // templateMemberFunction->get_startOfConstruct()->display("original: debug");
+                      // templateMemberFunction_copy->get_startOfConstruct()->display("copy: debug");
+                       }
+#endif
+                  }
+             }
+
+          int deleteList_original_size = deleteList_original.size();
+          for (int j = 0; j < deleteList_original_size; j++)
+             {
+            // tmp_AST_original.erase(find(tmp_AST_original.begin(),tmp_AST_original.end(),deleteList_original[j]));
+               std::vector<SgNode*>::iterator k = find(tmp_AST_original.begin(),tmp_AST_original.end(),deleteList_original[j]);
+               if (k != tmp_AST_original.end())
+                  {
+                    tmp_AST_original.erase(k);
+                  }
+             }
+
+          if (SgProject::get_verbose() > 0)
+               printf ("IR nodes different between the original AST and the copy of the AST = %" PRIuPTR " \n",tmp_AST_original.size());
+
+          for (int j = 0; j < (int)tmp_AST_original.size(); j++)
+             {
+               printf ("non matched IR node = %p = %s = %s \n",tmp_AST_original[j],tmp_AST_original[j]->class_name().c_str(),get_name(tmp_AST_original[j]).c_str());
+            // tmp_AST_original[j]->get_startOfConstruct()->display("debug");
+             }
+
+          unmatchedIRnodes = (int)tmp_AST_original.size();
+        }
+
+  // DQ (11/2/2007): Make this an error now!
+     if (differenceInSizes != 0)
+        {
+          SgProject* originalProject = isSgProject(original);
+          if (originalProject != NULL)
+             {
+               printf ("In %s Copied AST and the original are DIFFERENT sizes (original size = %d copyied size = %d) IR nodes different = %d \n",
+                    (*originalProject)[0]->get_sourceFileNameWithoutPath().c_str(),AST_original_size,AST_copy_size,unmatchedIRnodes);
+             }
+
+          if (unmatchedIRnodes > 0)
+             {
+               printf ("Make this an error under stricter testing \n");
+               ROSE_ABORT();
+             }
+        }
+
+     return intersectionSet;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:22:36,545 - INFO - Response from llama3.1:70b for Function 83:
+2025-01-27 18:22:36,545 - INFO - /**
+ * @brief Returns a set of IR nodes that are common to both the original AST and the copy of the AST.
+ *
+ * This function takes two vectors of SgNode pointers, one for the original AST and one for the copy of the AST,
+ * and returns a vector of SgNode pointers representing the intersection of the two sets.
+ *
+ * The function first creates temporary vectors to hold the IR nodes from both the original AST and the copy of the AST.
+ * It then iterates over these vectors, removing any null or type nodes, and adds them to the temporary vectors.
+ * Next, it creates delete lists for both the original AST and the copy of the AST, and iterates over the temporary
+ * vectors, finding matched IR nodes between the two sets. The matched IR nodes are added to the delete lists.
+ * Finally, it removes the matched IR nodes from the temporary vectors, and returns the resulting vector as the intersection set.
+ *
+ * @param original A vector of SgNode pointers representing the original AST.
+ * @param copy A vector of SgNode pointers representing the copy of the AST.
+ * @return A vector of SgNode pointers representing the intersection of the two sets.
+ */
+std::vector<SgNode*> astIntersection(std::vector<SgNode*>& original, std::vector<SgNode*>& copy) {
+    // ... (function implementation remains the same)
+}
+2025-01-27 18:22:36,545 - INFO - End time: 2025-01-27 18:22:36
+2025-01-27 18:22:36,545 - INFO - Duration: 20.461029767990112

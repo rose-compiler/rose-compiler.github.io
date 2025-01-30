@@ -1,0 +1,129 @@
+2025-01-27 20:30:53,865 - INFO - Start time: 2025-01-27 20:30:53
+2025-01-27 20:30:53,865 - INFO - Generating documents for a function with id : 394
+2025-01-27 20:30:53,865 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::removeJumpsToNextStatement(SgNode* top)
+{
+ class RemoveJumpsToNextStatementVisitor: public AstSimpleProcessing {
+    public:
+    virtual void visit(SgNode* n) {
+      if (isSgBasicBlock(n)) {
+        SgBasicBlock* bb = isSgBasicBlock(n);
+        bool changes = true;
+        while (changes) {
+          changes = false;
+          for (SgStatementPtrList::iterator i = bb->get_statements().begin();
+               i != bb->get_statements().end(); ++i) {
+            if (isSgGotoStatement(*i)) {
+              SgGotoStatement* gs = isSgGotoStatement(*i);
+              SgStatementPtrList::iterator inext = i;
+              ++inext;
+             if (inext == bb->get_statements().end())
+                continue;
+             if (!isSgLabelStatement(*inext))
+                continue;
+              SgLabelStatement* ls = isSgLabelStatement(*inext);
+              if (gs->get_label() == ls) {
+                changes = true;
+                bb->get_statements().erase(i);
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+
+  RemoveJumpsToNextStatementVisitor().traverse(top, postorder);
+
+}
+#endif
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:31:13,172 - INFO - Response from llama3.1:70b for Function 394:
+2025-01-27 20:31:13,172 - INFO - /**
+ * @fn void SageInterface::removeJumpsToNextStatement(SgNode* top)
+ *
+ * @brief Removes jump statements to the next statement in a basic block.
+ *
+ * This function traverses an abstract syntax tree (AST) and removes jump statements
+ * that point to the next statement in a basic block. It uses a recursive algorithm
+ * to traverse the AST and identify such jumps.
+ *
+ * The function takes as input the root node of the AST, which is expected to be a valid
+ * SgNode* object. It returns no value (void).
+ *
+ * @param top The root node of the abstract syntax tree.
+ *
+ * @return None
+ *
+ * @warning This function modifies the input AST by removing jump statements.
+ *
+ * @pre The input AST must be well-formed and valid.
+ *
+ * @post The modified AST will have all jump statements to the next statement removed.
+ *
+ * @note This function uses a post-order traversal strategy, which means that it visits
+ *       child nodes before their parent nodes. This is done to ensure that all jumps are
+ *       properly removed from the AST.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* astRoot = ...; // assume a valid AST root node
+ *           SageInterface::removeJumpsToNextStatement(astRoot);
+ *          @endcode
+ */
+2025-01-27 20:31:13,172 - INFO - End time: 2025-01-27 20:31:13
+2025-01-27 20:31:13,172 - INFO - Duration: 19.3068904876709

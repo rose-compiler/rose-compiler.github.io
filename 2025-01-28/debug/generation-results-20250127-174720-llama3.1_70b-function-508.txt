@@ -1,0 +1,162 @@
+2025-01-27 21:11:47,610 - INFO - Start time: 2025-01-27 21:11:47
+2025-01-27 21:11:47,610 - INFO - Generating documents for a function with id : 508
+2025-01-27 21:11:47,610 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    static bool IsTrivial(const SgType * const inputType, bool checkTrivial){
+        SgType *type = inputType->stripType( SgType::STRIP_MODIFIER_TYPE|SgType::STRIP_TYPEDEF_TYPE | SgType::STRIP_ARRAY_TYPE);
+        
+        // Scalars or pointers are trivial types
+        if(isScalarType(type) || isPointerType(type))
+            return true;
+        
+        
+        ENSURE_CLASS_TYPE(type, false);
+        SgClassType * sgClassType = isSgClassType(type);
+        if (!sgClassType) {
+            //ROSE_ASSERT(0 && "IsTrivial requires a complete type");
+            return false;
+        }
+        SgClassDeclaration* decl = isSgClassDeclaration(sgClassType->get_declaration());
+        ROSE_ASSERT(decl);
+        SgClassDeclaration * definingDeclaration = isSgClassDeclaration(decl->get_definingDeclaration());
+        ROSE_ASSERT(definingDeclaration);
+        SgClassDefinition* classDef = definingDeclaration->get_definition();
+        ROSE_ASSERT(classDef);
+        
+        
+        if(!HasTrivialConstructor(type, /* checkPod = */ checkTrivial) ||
+           !HasTrivialCopy(type, /* checkPod = */ checkTrivial) ||
+           !HasTrivialDestructor(type, /* checkPod = */ checkTrivial) ||
+           !HasTrivialAssign(type, /* checkPod = */ checkTrivial)
+           /* || HasTrivialMove!!! */)
+            return false;
+        
+        
+        foreach(SgDeclarationStatement* memberDeclaration, classDef->get_members()) {
+            // No virtual functions
+            if (SgMemberFunctionDeclaration* memberFunction = isSgMemberFunctionDeclaration(memberDeclaration)) {
+                if (memberFunction->get_functionModifier().isVirtual())
+                    return false;
+            }
+            //has no non-static data members with brace- or equal- initializers.
+            if (SgVariableDeclaration* memberVariable = isSgVariableDeclaration(memberDeclaration)) {
+                
+                if (memberVariable->get_declarationModifier().get_storageModifier().isStatic())
+                    continue;
+                
+                // each variable must be Trivial and must not have initializers
+                foreach(SgInitializedName* name, memberVariable->get_variables ()) {
+                    if(name->get_initializer())
+                        return false;
+                    if(!IsTrivial(name->get_type()))
+                        return false;
+                }
+                
+            }
+        }
+        
+        // Base classes must be trivial too
+        foreach(SgBaseClass* baseClass, classDef->get_inheritances()) {
+            if(!IsTrivial(baseClass->get_base_class()->get_type()))
+                return false;
+        }
+        
+        return true;
+        
+    }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 21:12:17,306 - INFO - Response from llama3.1:70b for Function 508:
+2025-01-27 21:12:17,306 - INFO - /**
+ * @fn bool IsTrivial(const SgType * const inputType, bool checkTrivial)
+ *
+ * @brief Checks if a given type is trivial.
+ *
+ * This function determines whether a given type is considered trivial according to the C++ standard. 
+ * A trivial type is a scalar type or a class type that has no non-trivial default constructors, copy constructors, move constructors, assignment operators, or destructors. 
+ * Additionally, all base classes and members of the class must also be trivial.
+ *
+ * @param inputType The type to check for triviality.
+ * @param checkTrivial If true, perform additional checks for POD (Plain Old Data) types.
+ *
+ * @return True if the type is trivial; false otherwise.
+ *
+ * This function performs a series of checks on the given type:
+ * - Checks if the type is a scalar or pointer type.
+ * - Verifies that all members and base classes are trivial.
+ * - Ensures the class has no virtual functions, non-static data members with initializers, or non-trivial constructors, copy constructors, assignment operators, or destructors.
+ *
+ * @warning This function assumes that the input type is a valid SgType object. 
+ *          If the input type is invalid or ill-formed, undefined behavior may occur.
+ *
+ * @pre The input type must be a valid SgType object.
+ *
+ * @post None
+ *
+ * @note This function uses various ROSE assertions to ensure internal consistency and correctness. 
+ *       These assertions are enabled only in debug builds and do not affect the functionality of this function.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgType* myType = ...; // assume a valid SgType object
+ *           bool isTrivial = IsTrivial(myType, true);
+ *           if (isTrivial) {
+ *               std::cout << "The type is trivial." << std::endl;
+ *           } else {
+ *               std::cout << "The type is not trivial." << std::endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 21:12:17,306 - INFO - End time: 2025-01-27 21:12:17
+2025-01-27 21:12:17,306 - INFO - Duration: 29.696123123168945

@@ -1,0 +1,204 @@
+2025-01-27 20:18:53,596 - INFO - Start time: 2025-01-27 20:18:53
+2025-01-27 20:18:53,596 - INFO - Generating documents for a function with id : 367
+2025-01-27 20:18:53,596 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::fixFunctionDeclaration(SgFunctionDeclaration* stmt, SgScopeStatement* scope)
+   {
+ // DQ (3/5/2012): Added test.
+    ROSE_ASSERT(scope != NULL);
+
+ // fix function type table's parent edge
+ // Liao 5/4/2010
+    SgFunctionTypeTable * fTable = SgNode::get_globalFunctionTypeTable();
+    ROSE_ASSERT(fTable != NULL);
+
+    if (fTable->get_parent() == NULL)
+       {
+      // DQ (3/5/2012): This is a problem for test2012_13.C (test code taken from test2004_42.C).
+      // fTable->set_parent(getGlobalScope(scope));
+#if 0
+         printf ("WARNING: Skip setting the scope of the SgFunctionTypeTable scope = %p = %s \n",scope,scope->class_name().c_str());
+#endif
+         fTable->set_parent(getGlobalScope(scope));
+       }
+
+#if 0
+     printf ("In SageInterface::fixStatement(): stmt = %p = %s \n",stmt,stmt->class_name().c_str());
+#endif
+
+  // Liao 4/23/2010,  Fix function symbol
+  // This could happen when users copy a function, then rename it (func->set_name()), and finally insert it to a scope
+  // Added SgProgramHeaderStatement [Rasmussen, 2020.01.19]
+     SgFunctionDeclaration               * func         = isSgFunctionDeclaration(stmt);
+     SgMemberFunctionDeclaration         * mfunc        = isSgMemberFunctionDeclaration(stmt);
+     SgTemplateFunctionDeclaration       * tfunc        = isSgTemplateFunctionDeclaration(stmt);
+     SgTemplateMemberFunctionDeclaration * tmfunc       = isSgTemplateMemberFunctionDeclaration(stmt);
+     SgProcedureHeaderStatement          * procfunc     = isSgProcedureHeaderStatement(stmt);
+     SgProgramHeaderStatement            * progfunc     = isSgProgramHeaderStatement(stmt);
+
+     if (tmfunc != NULL)
+       assert(tmfunc->variantT() == V_SgTemplateMemberFunctionDeclaration);
+     else if (mfunc != NULL)
+       assert(mfunc->variantT() == V_SgMemberFunctionDeclaration || mfunc->variantT() == V_SgTemplateInstantiationMemberFunctionDecl);
+     else if (tfunc != NULL)
+       assert(tfunc->variantT() == V_SgTemplateFunctionDeclaration);
+     else if (procfunc != NULL)
+        assert(procfunc->variantT() == V_SgProcedureHeaderStatement);
+     else if (progfunc != NULL)
+        assert(progfunc->variantT() == V_SgProgramHeaderStatement);
+     else if (func != NULL)
+       assert(func->variantT() == V_SgFunctionDeclaration || func->variantT() == V_SgTemplateInstantiationFunctionDecl);
+     else ROSE_ABORT();
+
+#if 0
+     printf ("In SageInterface::fixStatement(): scope = %p = %s \n",scope,scope->class_name().c_str());
+     printf ("In SageInterface::fixStatement(): stmt->get_scope() = %p \n",stmt->get_scope());
+#endif
+
+  // DQ (12/3/2011): This is a scary piece of code, but I think it is OK now!
+  // It is an error to put the symbol for a function into the current scope if the function's scope
+  // is explicitly set to be different.  So this should be allowed only if the function's scope is
+  // not explicitly set, or if the scopes match.  This is an example of something different for C++
+  // than for C or other simpler languages.
+  // If the scope of the function is not set, or if it matches the current scope then allow this step.
+     if (stmt->get_scope() == NULL || scope == stmt->get_scope())
+        {
+#if 0
+          printf ("Looking up the function symbol using name = %s and type = %p = %s \n",func->get_name().str(),func->get_type(),func->get_type()->class_name().c_str());
+#endif
+          SgFunctionSymbol* func_symbol = NULL;
+
+       // DQ (7/31/2013): Fixing API to use functions that now require template parameters and template specialization arguments.
+       // In this case these are unavailable from this point.
+          if (tmfunc != NULL)
+          {
+            SgTemplateParameterPtrList & templateParameterList = tmfunc->get_templateParameters();
+         // func_symbol = scope->lookup_template_member_function_symbol (func->get_name(), func->get_type());
+         // func_symbol = scope->lookup_template_member_function_symbol (func->get_name(), func->get_type(),NULL);
+            func_symbol = scope->lookup_template_member_function_symbol (func->get_name(), func->get_type(),&templateParameterList);
+          }
+          else if (mfunc != NULL)
+          {
+            SgTemplateInstantiationMemberFunctionDecl* templateInstantiationMemberFunctionDecl = isSgTemplateInstantiationMemberFunctionDecl(mfunc);
+            SgTemplateArgumentPtrList* templateArgumentList = (templateInstantiationMemberFunctionDecl != NULL) ? &(templateInstantiationMemberFunctionDecl->get_templateArguments()) : NULL;
+         // func_symbol = scope->lookup_nontemplate_member_function_symbol (func->get_name(), func->get_type(),NULL);
+            func_symbol = scope->lookup_nontemplate_member_function_symbol (func->get_name(), func->get_type(),templateArgumentList);
+          }
+          else if (tfunc != NULL)
+          {
+            SgTemplateParameterPtrList & templateParameterList = tfunc->get_templateParameters();
+#if 0
+            printf ("In SageInterface::fixStatement(): templateParameterList.size() = %" PRIuPTR " \n",templateParameterList.size());
+#endif
+         // func_symbol = scope->lookup_template_function_symbol (func->get_name(), func->get_type());
+         // func_symbol = scope->lookup_template_function_symbol (func->get_name(), func->get_type(),NULL);
+            func_symbol = scope->lookup_template_function_symbol (func->get_name(), func->get_type(),&templateParameterList);
+          }
+          else if (procfunc != NULL)
+          {
+#if 0
+            printf ("In SageInterface::fixStatement(): procfunc->get_name() = %s calling lookup_function_symbol() \n",procfunc->get_name().str());
+#endif
+            func_symbol = scope->lookup_function_symbol (procfunc->get_name(), procfunc->get_type());
+            assert(func_symbol != NULL);
+          }
+          else if (progfunc != NULL)
+          {
+            func_symbol = scope->lookup_function_symbol (progfunc->get_name(), progfunc->get_type());
+            assert(func_symbol != NULL);
+          }
+          else if (func != NULL)
+          {
+#if 0
+            printf ("In SageInterface::fixStatement(): func->get_name() = %s calling lookup_function_symbol() \n",func->get_name().str());
+#endif
+            SgTemplateInstantiationFunctionDecl* templateInstantiationFunctionDecl = isSgTemplateInstantiationFunctionDecl(func);
+            SgTemplateArgumentPtrList* templateArgumentList = (templateInstantiationFunctionDecl != NULL) ? &(templateInstantiationFunctionDecl->get_templateArguments()) : NULL;
+         // func_symbol = scope->lookup_function_symbol (func->get_name(), func->get_type(),NULL);
+            func_symbol = scope->lookup_function_symbol (func->get_name(), func->get_type(),templateArgumentList);
+
+         // DQ (8/23/2013): Adding support for when the symbol is not present.  This can happen when building a new function as a copy of an existing
+         // function the symantics of the copy is that it will not add the symbol (since it does not know the scope). So this function is the first
+         // opportunity to fixup the function to have a symbol in the scope's symbol table.
+            if (func_symbol == NULL)
+               {
+              // scope->print_symboltable("In SageInterface::fixStatement()");
+                 func_symbol = new SgFunctionSymbol(func);
+                 scope->insert_symbol(func->get_name(), func_symbol);
+               }
+          }
+          else
+          {
+            ROSE_ABORT();
+          }
+#if 0
+          printf ("In SageInterface::fixStatement(): func_symbol = %p \n",func_symbol);
+#endif
+          assert(func_symbol != NULL);
+        }
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:19:00,535 - INFO - Response from llama3.1:70b for Function 367:
+2025-01-27 20:19:00,535 - INFO - /**
+ * @brief This function fixes a statement by resolving symbols and inserting them into the scope's symbol table.
+ *
+ * @param statement The statement to be fixed.
+ * @param scope The scope in which the statement is defined.
+ */
+void fixStatement(SgNode* statement, SgScopeStatement* scope) {
+    // ... rest of the function remains the same ...
+}
+2025-01-27 20:19:00,535 - INFO - End time: 2025-01-27 20:19:00
+2025-01-27 20:19:00,535 - INFO - Duration: 6.939720153808594

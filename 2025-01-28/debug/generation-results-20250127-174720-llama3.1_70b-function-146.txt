@@ -1,0 +1,171 @@
+2025-01-27 18:46:46,461 - INFO - Start time: 2025-01-27 18:46:46
+2025-01-27 18:46:46,461 - INFO - Generating documents for a function with id : 146
+2025-01-27 18:46:46,461 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool
+SageInterface::isPrototypeInScope ( SgScopeStatement* scope, SgFunctionDeclaration* functionDeclaration, SgDeclarationStatement* startingAtDeclaration )
+   {
+  // DQ (11/3/2007): Look for an existing previously inserted (or existing) template member function declaration and only add one if we can't find it.
+
+     bool foundExistingPrototype = false;
+
+     ROSE_ASSERT(scope != NULL);
+     ROSE_ASSERT(functionDeclaration != NULL);
+     ROSE_ASSERT(startingAtDeclaration != NULL);
+
+  // TV (09/17/2018): ROSE-1378
+     if (isSgDeclarationScope(scope)) {
+       printf("TODO: SgDeclarationScope handling in SageInterface::isPrototypeInScope see ROSE-1378\n");
+       return false;
+     }
+
+  // These are the scopes for which get_declarationList() is properly defined.
+     ROSE_ASSERT(scope->containsOnlyDeclarations() == true);
+
+  // Note that this is only defined for certain scopes, but we only want it for THOSE scopes
+     SgDeclarationStatementPtrList & declarationList = scope->getDeclarationList();
+
+  // This is a simple way to restrict the evaluation (still linear, but jumps to initial position to start search).
+     SgDeclarationStatementPtrList::iterator startingLocation = find(declarationList.begin(),declarationList.end(),startingAtDeclaration);
+
+     if (startingLocation != declarationList.end())
+        {
+#if 0
+          printf ("startingLocation = %p = %s = %s \n",*startingLocation,(*startingLocation)->class_name().c_str(),SageInterface::get_name(*startingLocation).c_str());
+#endif
+       // printf ("Found the startingLocation is the global scope, now check if we need to add a new declaration \n");
+          SgDeclarationStatementPtrList::iterator i = startingLocation;
+          SgScopeStatement* targetScope = functionDeclaration->get_scope();
+          SgName targetName = functionDeclaration->get_name();
+
+          while (i != declarationList.end())
+             {
+            // printf ("i = %p = %s = %s \n",*i,(*i)->class_name().c_str(),SageInterface::get_name(*i).c_str());
+
+            // Look for a prototype like what we want to insert, if we find it then we don't need to add a second one!
+               SgTemplateInstantiationMemberFunctionDecl* templateMemberFunction = isSgTemplateInstantiationMemberFunctionDecl(*i);
+               if (templateMemberFunction != nullptr)
+                  {
+                 // Check the name and the scope
+                    if (targetScope == templateMemberFunction->get_scope())
+                       {
+                         if (targetName == templateMemberFunction->get_name())
+                            {
+                           // Don't count the defining declaration which may be at the end of the global scope.
+                              if (templateMemberFunction->isForward() == true)
+                                 {
+                                   foundExistingPrototype = true;
+
+                                // Exit the loop (optimization)
+                                   break;
+                                 }
+                            }
+                       }
+                  }
+
+               i++;
+             }
+        }
+
+     return foundExistingPrototype;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:47:27,185 - INFO - Response from llama3.1:70b for Function 146:
+2025-01-27 18:47:27,185 - INFO - /**
+ * @fn bool SageInterface::isPrototypeInScope ( SgScopeStatement* scope, SgFunctionDeclaration* functionDeclaration, SgDeclarationStatement* startingAtDeclaration )
+ *
+ * @brief Checks if a prototype of a given template member function declaration is already present in the specified scope.
+ *
+ * This function searches for an existing previously inserted (or existing) template member function declaration 
+ * within the provided scope and returns true if found, indicating that there's no need to add another one. 
+ * The search starts from the specified startingAtDeclaration position in the scope's declaration list.
+ *
+ * @param scope The SgScopeStatement object representing the scope where the prototype is to be searched for.
+ * @param functionDeclaration The SgFunctionDeclaration object representing the template member function declaration to be searched for.
+ * @param startingAtDeclaration The SgDeclarationStatement object representing the position in the scope's declaration list 
+ *                             from which the search should start.
+ *
+ * @return True if a prototype of the given template member function declaration is already present in the specified scope, false otherwise.
+ *
+ * @warning This function assumes that the input parameters are valid and not null. It does not perform any error checking on them.
+ *
+ * @pre The scope parameter must be non-null and represent a valid SgScopeStatement object.
+ * @pre The functionDeclaration parameter must be non-null and represent a valid SgFunctionDeclaration object.
+ * @pre The startingAtDeclaration parameter must be non-null and represent a valid SgDeclarationStatement object.
+ *
+ * @post If the function returns true, it means that a prototype of the given template member function declaration 
+ *       is already present in the specified scope, and there's no need to add another one. If the function returns false, 
+ *       it means that no such prototype was found, and a new one can be added if needed.
+ *
+ * @note This function uses the get_declarationList() method of SgScopeStatement class which is only properly defined for certain scopes.
+ * @note The search performed by this function starts from the specified startingAtDeclaration position in the scope's declaration list 
+ *       and proceeds linearly until the end of the list. If a match is found, the loop exits early to optimize performance.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgScopeStatement* scope = ...; // Initialize scope object
+ *           SgFunctionDeclaration* functionDeclaration = ...; // Initialize function declaration object
+ *           SgDeclarationStatement* startingAtDeclaration = ...; // Initialize starting declaration object
+ *
+ *           bool foundExistingPrototype = SageInterface::isPrototypeInScope(scope, functionDeclaration, startingAtDeclaration);
+ *
+ *           if (foundExistingPrototype)
+ *             {
+ *               printf("A prototype of the given template member function declaration is already present in the specified scope.\n");
+ *             }
+ *          @endcode
+ */
+2025-01-27 18:47:27,185 - INFO - End time: 2025-01-27 18:47:27
+2025-01-27 18:47:27,186 - INFO - Duration: 40.72431206703186

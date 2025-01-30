@@ -1,0 +1,149 @@
+2025-01-27 18:48:12,984 - INFO - Start time: 2025-01-27 18:48:12
+2025-01-27 18:48:12,984 - INFO - Generating documents for a function with id : 149
+2025-01-27 18:48:12,984 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    PreprocessingInfo * SageInterface::findHeader(SgSourceFile * source_file, const std::string & header_file_name, bool isSystemHeader)
+{
+  string header_key;
+  if (isSystemHeader)
+    header_key="<"+header_file_name+">";
+  else
+    header_key="\""+header_file_name+"\"";
+
+  if (fileHeaderDict.count(source_file) && fileHeaderDict[source_file].count(header_key))
+    return fileHeaderDict[source_file][header_key];
+
+  vector<SgLocatedNode*> candidates;
+  // do a fresh check. we only check global scope's declarations since we insert header into global scope
+  // check SgGlobal
+  SgGlobal* global= source_file -> get_globalScope();
+
+  candidates.push_back(global);
+
+  //check declarations within the global scope
+  SgDeclarationStatementPtrList decl_stmt_list = global->get_declarations();
+  for (SgDeclarationStatementPtrList::iterator iter= decl_stmt_list.begin(); iter!=decl_stmt_list.end(); iter++)
+    candidates.push_back(*iter);
+
+  bool found = false;
+  for (size_t ci=0; ci<candidates.size(); ci++)
+  {
+    SgLocatedNode* locatedNode= candidates[ci];
+    AttachedPreprocessingInfoType *comments = locatedNode->getAttachedPreprocessingInfo ();
+
+    if (comments == NULL) continue;
+    AttachedPreprocessingInfoType::iterator i;
+    for (i = comments->begin (); i != comments->end (); i++)
+    {
+      if ((*i)->getTypeOfDirective () != PreprocessingInfo::CpreprocessorIncludeDeclaration) continue;
+      string content = (*i)->getString ();
+      if (content.find(header_key) != string::npos)
+      {
+        fileHeaderDict[source_file][header_key] = *i;
+        found =true;
+        break;
+      }
+
+    } // each comment
+
+    if (found) break;
+  } // each node
+
+  if (found)
+    return fileHeaderDict[source_file][header_key];
+  return NULL;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:48:40,233 - INFO - Response from llama3.1:70b for Function 149:
+2025-01-27 18:48:40,233 - INFO - /**
+ * @fn PreprocessingInfo * SageInterface::findHeader(SgSourceFile * source_file, const std::string & header_file_name, bool isSystemHeader)
+ *
+ * @brief Finds the preprocessing information for a given header file in a source file.
+ *
+ * This function searches for the preprocessing information of a specified header file 
+ * within a given source file. It checks if the header file has been included in the source 
+ * file and returns the corresponding preprocessing information if found.
+ *
+ * The search is performed by iterating over all declarations in the global scope of the 
+ * source file and checking their attached preprocessing information for include directives.
+ *
+ * @param source_file The source file to search for the header file inclusion.
+ * @param header_file_name The name of the header file to search for.
+ * @param isSystemHeader A boolean indicating whether the header file is a system header or not.
+ *
+ * @return The preprocessing information for the given header file if found, otherwise NULL.
+ *
+ * @warning If the header file has been included multiple times in the source file, this function 
+ *          returns the preprocessing information of the first occurrence.
+ *
+ * @pre The source file and header file name must be valid and not empty.
+ *
+ * @post The returned preprocessing information is valid only if the header file was found in the source file.
+ *
+ * @note This function uses a cache (fileHeaderDict) to store the results of previous searches for performance optimization.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *            SgSourceFile* source_file = ...; // initialize source file
+ *            std::string header_file_name = "my_header.h";
+ *            bool isSystemHeader = false;
+ *            PreprocessingInfo* info = SageInterface::findHeader(source_file, header_file_name, isSystemHeader);
+ *            if (info != NULL) {
+ *              // process the preprocessing information
+ *            }
+ *          @endcode
+ */
+2025-01-27 18:48:40,233 - INFO - End time: 2025-01-27 18:48:40
+2025-01-27 18:48:40,234 - INFO - Duration: 27.24981713294983

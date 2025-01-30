@@ -1,0 +1,98 @@
+2025-01-27 19:36:56,720 - INFO - Start time: 2025-01-27 19:36:56
+2025-01-27 19:36:56,720 - INFO - Generating documents for a function with id : 265
+2025-01-27 19:36:56,720 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgFunctionDefinition* SageInterface::getEnclosingProcedure(SgNode* n, bool includingSelf)
+{
+  return getEnclosingFunctionDefinition(n,includingSelf);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:37:20,540 - INFO - Response from llama3.1:70b for Function 265:
+2025-01-27 19:37:20,540 - INFO - /**
+ * @fn SgFunctionDefinition* SageInterface::getEnclosingProcedure(SgNode* n, bool includingSelf)
+ *
+ * @brief Retrieves the enclosing procedure of a given node in the abstract syntax tree.
+ *
+ * This function traverses the abstract syntax tree to find the nearest enclosing procedure
+ * (function or method) for a given node. The search can optionally include the input node itself.
+ *
+ * The implementation uses a recursive approach, starting from the input node and moving up the AST
+ * until it finds a procedure that encloses the node.
+ *
+ * @param n The node in the abstract syntax tree for which to find the enclosing procedure.
+ * @param includingSelf Flag indicating whether to include the input node itself in the search.
+ *
+ * @return A pointer to the SgFunctionDefinition representing the enclosing procedure, or NULL if none is found.
+ *
+ * @warning If the input node is not part of a valid abstract syntax tree, this function may return incorrect results.
+ *
+ * @pre The input node must be a valid SgNode instance and part of an abstract syntax tree.
+ *
+ * @post The returned SgFunctionDefinition pointer will remain valid until the underlying AST is modified or deleted.
+ *
+ * @note This function is used internally by the SageInterface to support various code analysis and transformation tasks.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* node = ...; // some node in the abstract syntax tree
+ *           bool includeSelf = true;
+ *           SgFunctionDefinition* enclosingProc = SageInterface::getEnclosingProcedure(node, includeSelf);
+ *           if (enclosingProc != NULL) {
+ *             // do something with the enclosing procedure
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:37:20,540 - INFO - End time: 2025-01-27 19:37:20
+2025-01-27 19:37:20,540 - INFO - Duration: 23.82003164291382

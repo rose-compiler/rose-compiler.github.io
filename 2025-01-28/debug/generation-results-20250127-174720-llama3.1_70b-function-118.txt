@@ -1,0 +1,162 @@
+2025-01-27 18:36:15,613 - INFO - Start time: 2025-01-27 18:36:15
+2025-01-27 18:36:15,613 - INFO - Generating documents for a function with id : 118
+2025-01-27 18:36:15,613 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::markSubtreeToBeUnparsedTreeTraversal(SgNode* root, int physical_file_id)
+   {
+  // DQ (7/13/2021): This function marks nodes in a subtree to be a transformation, but avoids marking subtrees of the SgCastExp.
+  // This is important because currently the marking of an implicit cast will cause it to be unparsed, even though it is marked
+  // as implicit.  This detail of precedence of implicit flags over transformation flags needs to be fixed seperated.
+  // This function has been implemented as part of debugging this issue.
+
+     class InheritedAttribute
+        {
+          public:
+               int physical_file_id;
+               bool isCastSubtree;
+               InheritedAttribute(int file_id): physical_file_id(file_id), isCastSubtree(false) {}
+               InheritedAttribute(const InheritedAttribute & X)
+                  {
+                    isCastSubtree    = X.isCastSubtree;
+                    physical_file_id = X.physical_file_id;
+                  }
+        };
+
+// DQ (7/21/21): This code construction does not work with the GNU 4.9.x compilers.
+// #if !( ( (__GNUC__ == 4) && (__GNUC_MINOR__ <= 9) ) || (__GNUC__ < 4))
+#if (__GNUC__ > 4)
+
+     class SubtreeTraversal : public SgTopDownProcessing<InheritedAttribute>
+        {
+          public:
+               InheritedAttribute evaluateInheritedAttribute ( SgNode* node, InheritedAttribute inheritedAttribute)
+                  {
+                    InheritedAttribute returnAttribute(inheritedAttribute);
+
+                    SgCastExp* castExpression = isSgCastExp(node);
+                    if (castExpression != NULL)
+                       {
+                         returnAttribute.isCastSubtree = true;
+                       }
+
+                    if (returnAttribute.isCastSubtree == true)
+                       {
+                      // Nothing to do, unless we want to fixup the physical node id.
+#if 0
+                         printf ("In markSubtreeToBeUnparsedTreeTraversal(): subtree of a SgCastExp: node = %p = %s physical_file_id = %d \n",
+                              node,node->class_name().c_str(),inheritedAttribute.physical_file_id);
+#endif
+                       }
+                      else
+                       {
+#if 0
+                         printf ("In markSubtreeToBeUnparsedTreeTraversal(): Calling markNodeToBeUnparsed(): node = %p = %s physical_file_id = %d \n",
+                              node,node->class_name().c_str(),inheritedAttribute.physical_file_id);
+#endif
+                      // This logic will cause the SgCastExp node to NOT be marked as a transformation (not just its children).
+                         markNodeToBeUnparsed(node,inheritedAttribute.physical_file_id);
+                       }
+
+                    return returnAttribute;
+                  }
+        };
+
+     InheritedAttribute inheritedAttribute(physical_file_id);
+
+  // Now buid the traveral object and call the traversal (preorder) on the AST subtree.
+     SubtreeTraversal traversal;
+
+#if 0
+     printf ("\nIn markSubtreeToBeUnparsedTreeTraversal(): calling traverse \n");
+#endif
+
+     traversal.traverse(root, inheritedAttribute);
+#else
+     printf ("This function does not compile with GNU 4.9 or older compilers (part of ROSE used only with more modern compilers) \n");
+#endif
+
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:36:39,155 - INFO - Response from llama3.1:70b for Function 118:
+2025-01-27 18:36:39,155 - INFO - /**
+ * @fn void SageInterface::markSubtreeToBeUnparsedTreeTraversal(SgNode* root, int physical_file_id)
+ *
+ * @brief Marks nodes in a subtree to be unparsed during tree traversal, avoiding subtrees of SgCastExp.
+ *
+ * This function is used to mark nodes in a subtree as transformations, but avoids marking subtrees of SgCastExp nodes. 
+ * This is important because currently the marking of an implicit cast will cause it to be unparsed, even though it is marked
+ * as implicit.  This detail of precedence of implicit flags over transformation flags needs to be fixed separately.
+ *
+ * @param root The root node of the subtree to be traversed and marked.
+ * @param physical_file_id The physical file ID associated with the subtree.
+ *
+ * @return None.
+ *
+ * @warning This function does not compile with GNU 4.9 or older compilers, as part of ROSE used only with more modern compilers.
+ *
+ * @pre The input SgNode* root is a valid node in the abstract syntax tree (AST).
+ * @post The subtree rooted at the input node has been marked to be unparsed during tree traversal.
+ *
+ * @note This function is part of debugging an issue related to implicit casts and transformations.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* root = ...; // obtain a valid SgNode*
+ *           int physical_file_id = ...; // obtain a valid physical file ID
+ *           markSubtreeToBeUnparsedTreeTraversal(root, physical_file_id);
+ *          @endcode
+ */
+2025-01-27 18:36:39,155 - INFO - End time: 2025-01-27 18:36:39
+2025-01-27 18:36:39,155 - INFO - Duration: 23.541834592819214

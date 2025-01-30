@@ -1,0 +1,110 @@
+2025-01-27 19:16:28,168 - INFO - Start time: 2025-01-27 19:16:28
+2025-01-27 19:16:28,168 - INFO - Generating documents for a function with id : 218
+2025-01-27 19:16:28,168 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::changeContinuesToGotos(SgStatement* stmt, SgLabelStatement* label)
+   {
+#ifndef ROSE_USE_INTERNAL_FRONTEND_DEVELOPMENT
+     std::vector<SgContinueStmt*> continues = SageInterface::findContinueStmts(stmt);
+     for (std::vector<SgContinueStmt*>::iterator i = continues.begin(); i != continues.end(); ++i)
+        {
+          SgGotoStatement* gotoStatement = SageBuilder::buildGotoStatement(label);
+       // printf ("Building gotoStatement #1 = %p \n",gotoStatement);
+#ifndef _MSC_VER
+          LowLevelRewrite::replace(*i, make_unit_list( gotoStatement ) );
+#else
+          ROSE_ABORT();
+#endif
+        }
+#else
+          printf ("Not supported in mode: ROSE_USE_INTERNAL_FRONTEND_DEVELOPMENT (LowLevelRewrite::replace() is unavailable)");
+          ROSE_ABORT();
+#endif
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:16:48,108 - INFO - Response from llama3.1:70b for Function 218:
+2025-01-27 19:16:48,108 - INFO - /**
+ * @fn void SageInterface::changeContinuesToGotos(SgStatement* stmt, SgLabelStatement* label)
+ *
+ * @brief Replaces continue statements with goto statements in the given statement.
+ *
+ * This function iterates over all continue statements within the provided statement
+ * and replaces each one with a corresponding goto statement that targets the specified label.
+ *
+ * The replacement is performed using the LowLevelRewrite mechanism, which ensures that the
+ * resulting code is semantically equivalent to the original.
+ *
+ * @param stmt The statement in which to replace continue statements. Must not be NULL.
+ * @param label The target label for the goto statements. Must not be NULL.
+ *
+ * @return None
+ *
+ * @warning This function may modify the original statement and its children.
+ *
+ * @pre The provided statement and label must not be NULL.
+ *
+ * @post All continue statements within the given statement have been replaced with goto statements targeting the specified label.
+ *
+ * @note This function is only available when ROSE_USE_INTERNAL_FRONTEND_DEVELOPMENT is not defined. Otherwise, it will print an error message and abort.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* stmt = ...; // obtain a statement
+ *           SgLabelStatement* label = ...; // obtain a label
+ *           SageInterface::changeContinuesToGotos(stmt, label);
+ *          @endcode
+ */
+2025-01-27 19:16:48,108 - INFO - End time: 2025-01-27 19:16:48
+2025-01-27 19:16:48,108 - INFO - Duration: 19.940858840942383

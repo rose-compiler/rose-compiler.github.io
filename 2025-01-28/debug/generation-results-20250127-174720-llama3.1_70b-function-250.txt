@@ -1,0 +1,139 @@
+2025-01-27 19:30:06,899 - INFO - Start time: 2025-01-27 19:30:06
+2025-01-27 19:30:06,899 - INFO - Generating documents for a function with id : 250
+2025-01-27 19:30:06,899 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgStatement* SageInterface::findLastDeclarationStatement(SgScopeStatement * scope, bool includePragma/* = false */ )
+{
+  SgStatement* rt = NULL;
+  ROSE_ASSERT (scope != NULL);
+
+  SgStatementPtrList stmt_list = scope->generateStatementList ();
+
+  for (size_t i = 0; i<stmt_list.size(); i++)
+  {
+    SgStatement* cur_stmt = stmt_list[i];
+    // We should exclude pragma decl. We don't want to insert things after pragmas.
+    if (isSgDeclarationStatement(cur_stmt))
+    {
+      if (isSgPragmaDeclaration (cur_stmt))
+      {
+        if (includePragma)
+          rt = cur_stmt;
+      }
+      else
+        rt = cur_stmt;
+    }
+    //if (isSgImplicitStatement(cur_stmt)) || isSgFortranIncludeLine(cur_stmt) || isSgDeclarationStatement
+  }
+
+  return rt;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:30:42,696 - INFO - Response from llama3.1:70b for Function 250:
+2025-01-27 19:30:42,696 - INFO - /**
+ * @fn SgStatement* SageInterface::findLastDeclarationStatement(SgScopeStatement * scope, bool includePragma/* = false */ )
+ *
+ * @brief Finds the last declaration statement within a given scope.
+ *
+ * This function searches for the last declaration statement in the provided
+ * scope. It iterates through all statements in the scope and returns the last
+ * encountered declaration statement, excluding pragmas unless specified otherwise.
+ *
+ * The search is performed by generating a list of all statements in the scope
+ * and then iterating through this list from start to finish. The first declaration
+ * statement found (excluding pragmas if includePragma is false) sets the return value,
+ * which remains unchanged until the end of the iteration, thus ensuring that the last
+ * encountered declaration statement is returned.
+ *
+ * @param scope The scope within which to search for the last declaration statement.
+ *              Must not be NULL. This parameter defines the boundaries of the search.
+ *
+ * @param includePragma A boolean flag indicating whether to include pragma declarations
+ *                      in the search (default is false). If true, pragmas are considered valid
+ *                      declaration statements and can be returned as the result.
+ *
+ * @return The last declaration statement found within the specified scope. Returns NULL if no
+ *         declaration statements were found or if an error occurred during the search.
+ *
+ * @warning This function may return a pragma declaration statement if includePragma is true.
+ *          The caller should handle this possibility accordingly.
+ *
+ * @pre The provided scope must not be NULL, and it must contain at least one statement.
+ *
+ * @post The returned statement will be a valid declaration statement within the given scope,
+ *       or NULL if no such statement was found. The function does not modify the input scope.
+ *
+ * @note This function uses an iterative approach to find the last declaration statement,
+ *       which may have performance implications for large scopes.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create a sample scope with some statements
+ *           SgScopeStatement* myScope = new SgScopeStatement();
+ *           
+ *           // Add some statements to the scope, including at least one declaration statement
+ *           myScope->appendStatement(new SgVariableDeclaration());
+ *           
+ *           // Find the last declaration statement in the scope
+ *           SgStatement* lastDeclStmt = SageInterface::findLastDeclarationStatement(myScope);
+ *           
+ *           // Use or process the found declaration statement as needed
+ *           if (lastDeclStmt != NULL) {
+ *               // Process the declaration statement here...
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:30:42,696 - INFO - End time: 2025-01-27 19:30:42
+2025-01-27 19:30:42,696 - INFO - Duration: 35.79707622528076

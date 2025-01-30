@@ -1,0 +1,102 @@
+2025-01-27 20:36:37,093 - INFO - Start time: 2025-01-27 20:36:37
+2025-01-27 20:36:37,093 - INFO - Generating documents for a function with id : 407
+2025-01-27 20:36:37,093 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgBasicBlock* SageInterface::ensureBasicBlockAsBodyOfFor(SgForStatement* fs)
+{
+  SgStatement* b = fs->get_loop_body();
+  if (!isSgBasicBlock(b)) {
+    b = SageBuilder::buildBasicBlock(b);
+    fs->set_loop_body(b);
+    b->set_parent(fs);
+
+ // DQ (1/21/2015): Save the SgBasicBlock that has been added so that we can undo this transformation later.
+    recordNormalizations(b);
+  }
+  ROSE_ASSERT (isSgBasicBlock(b));
+  return isSgBasicBlock(b);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:36:56,956 - INFO - Response from llama3.1:70b for Function 407:
+2025-01-27 20:36:56,957 - INFO - /**
+ * @fn SgBasicBlock* SageInterface::ensureBasicBlockAsBodyOfFor(SgForStatement* fs)
+ *
+ * @brief Ensures that the body of a for statement is a basic block.
+ *
+ * This function takes a for statement as input and ensures that its body is a basic block. 
+ * If the body is not already a basic block, it creates a new basic block containing the original body statements
+ * and updates the for statement to use this new basic block as its body.
+ *
+ * @param fs The for statement whose body needs to be ensured to be a basic block.
+ *
+ * @return A pointer to the basic block that is now the body of the input for statement.
+ *
+ * @warning If the input for statement is null, the function will not work correctly.
+ *
+ * @pre The input for statement must not be null.
+ *
+ * @post The body of the input for statement is guaranteed to be a basic block after this function returns.
+ *
+ * @note This function modifies the input AST and records the added SgBasicBlock for potential future undo operations.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgForStatement* fs = ...; // obtain a for statement from somewhere
+ *           SgBasicBlock* bb = SageInterface::ensureBasicBlockAsBodyOfFor(fs);
+ *           ROSE_ASSERT(isSgBasicBlock(bb));
+ *          @endcode
+ */
+2025-01-27 20:36:56,957 - INFO - End time: 2025-01-27 20:36:56
+2025-01-27 20:36:56,957 - INFO - Duration: 19.863396883010864

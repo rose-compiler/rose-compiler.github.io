@@ -1,0 +1,177 @@
+2025-01-27 19:21:58,048 - INFO - Start time: 2025-01-27 19:21:58
+2025-01-27 19:21:58,048 - INFO - Generating documents for a function with id : 231
+2025-01-27 19:21:58,048 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool SageInterface::normalizeForLoopInitDeclaration(SgForStatement* loop)
+{
+  ROSE_ASSERT(loop!=NULL);
+
+  SgStatementPtrList &init = loop ->get_init_stmt();
+  if (init.size() !=1) // We only handle one statement case
+    return false;
+
+  SgStatement* init1 = init.front();
+  SgVariableDeclaration* decl = isSgVariableDeclaration(init1);
+  if (decl == NULL) // we only handle for (int i=0; ...)
+    return true;    // the return value is ambiguous: if not int i=0; it is already normalized
+
+  SgVariableSymbol* osymbol = getFirstVarSym(decl);
+  SgInitializedName* ivarname = decl->get_variables().front();
+  SgExpression* lbast = NULL; // the lower bound, initial state
+  ROSE_ASSERT(ivarname != NULL);
+  SgInitializer * initor = ivarname->get_initializer();
+  if (isSgAssignInitializer(initor))
+  {
+    lbast = isSgAssignInitializer(initor)->get_operand();
+  }
+  else
+  { //SgConstructorInitializer etc.
+    // other complex declaration statements, such as Decomposition::Iterator ditr(&decomp) should be skipped
+    // they cause a loop to be non-canonical.
+    return false;
+  }
+
+  // add a new statement like int i; and insert it to the enclosing function
+  // There are multiple choices about where to insert this statement:
+  //  global scope: max name pollution,
+  //  right before the loop: mess up perfectly nested loops
+  //  So we prepend the statement to the enclosing function's body
+  SgFunctionDefinition* funcDef =  getEnclosingFunctionDefinition(loop);
+  ROSE_ASSERT(funcDef!=NULL);
+  SgBasicBlock* funcBody = funcDef->get_body();
+  ROSE_ASSERT(funcBody!=NULL);
+  //TODO a better name
+  std::ostringstream os;
+  os<<ivarname->get_name().getString();
+
+  // keep the original variable name if possible
+  SgSymbol * visibleSym = NULL;
+  visibleSym = lookupVariableSymbolInParentScopes(ivarname->get_name(), funcBody);
+  if (visibleSym != NULL) // if there is a name collision, add suffix to the variable name
+  {
+    os<<"_nom_";
+    os<<++gensym_counter;
+  }
+
+  SgVariableDeclaration* ndecl = buildVariableDeclaration(os.str(),ivarname->get_type(), NULL, funcBody);
+  prependStatement(ndecl, funcBody);
+  SgVariableSymbol* nsymbol = getFirstVarSym(ndecl);
+
+  // replace variable ref to the new symbol
+  Rose_STL_Container<SgNode*> varRefs = NodeQuery::querySubTree(loop,V_SgVarRefExp);
+  for (Rose_STL_Container<SgNode *>::iterator i = varRefs.begin(); i != varRefs.end(); i++)
+  {
+    SgVarRefExp *vRef = isSgVarRefExp((*i));
+    if (vRef->get_symbol()==osymbol)
+      vRef->set_symbol(nsymbol);
+  }
+  // replace for (int i=0;) with for (i=0;)
+  SgExprStatement* ninit = buildAssignStatement(buildVarRefExp(nsymbol),deepCopy(lbast));
+  removeStatement(decl); //any side effect to the symbol? put after symbol replacement anyway
+  init.push_back(ninit);
+  ROSE_ASSERT (loop->get_for_init_stmt () != NULL);
+  // ninit->set_parent(loop);
+  ninit->set_parent(loop->get_for_init_stmt ());
+
+  // keep record of this normalization
+  // We may undo it later on.
+  trans_records.forLoopInitNormalizationTable[loop] = true;
+  trans_records.forLoopInitNormalizationRecord[loop] = make_pair (decl, ndecl) ;
+
+  return true;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:22:34,320 - INFO - Response from llama3.1:70b for Function 231:
+2025-01-27 19:22:34,320 - INFO - /**
+ * @fn bool SageInterface::normalizeForLoopInitDeclaration(SgForStatement* loop)
+ *
+ * @brief Normalizes a for-loop initialization declaration by separating variable declarations from the loop condition.
+ *
+ * This function transforms a for-loop with an initialization declaration into a standard form where the variable declaration 
+ * is moved outside of the loop and only the assignment part remains in the loop. For example, it converts "for (int i = 0; ...)"
+ * to "int i; for (i = 0; ...)". This transformation helps to improve code readability and maintainability.
+ *
+ * @param loop The input SgForStatement node representing the for-loop that needs normalization.
+ *             It must not be NULL. If it is, a ROSE_ASSERT will fail.
+ *
+ * @return True if the normalization was successful, false otherwise. 
+ *         A return value of true means the function has modified the input AST (Abstract Syntax Tree). 
+ *         The original variable declaration statement is replaced with an assignment statement and a new variable declaration
+ *         statement is prepended to the enclosing function's body.
+ *
+ * @warning This normalization may potentially cause name pollution if the newly introduced variable declaration collides with existing variables in the same scope. It also assumes that the loop initialization does not have any side effects other than assigning values to variables.
+ *
+ * @pre The input SgForStatement node must be valid and non-NULL.
+ *      The function has write access to the input AST.
+ *
+ * @post If true is returned, the input AST has been modified. 
+ *       A new variable declaration statement has been prepended to the enclosing function's body.
+ *       The original variable declaration statement in the loop initialization has been replaced with an assignment statement.
+ *
+ * @note This normalization does not handle cases where the loop initialization contains complex declarations such as Decomposition::Iterator ditr(&decomp).
+ *       Such loops are considered non-canonical and this normalization will not be applied to them.
+ *
+ * @example An example usage of this function:
+ *          @code
+ *           SgForStatement* loop = ...; // assume a valid for-loop statement is created or retrieved from the AST
+ *           if (SageInterface::normalizeForLoopInitDeclaration(loop)) {
+ *             // the input loop has been normalized and its AST modified accordingly
+ *           } else {
+ *             // normalization failed, likely due to complex declarations in the loop initialization
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:22:34,320 - INFO - End time: 2025-01-27 19:22:34
+2025-01-27 19:22:34,320 - INFO - Duration: 36.271864891052246

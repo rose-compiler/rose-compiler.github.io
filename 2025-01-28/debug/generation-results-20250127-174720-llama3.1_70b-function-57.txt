@@ -1,0 +1,119 @@
+2025-01-27 18:12:20,136 - INFO - Start time: 2025-01-27 18:12:20
+2025-01-27 18:12:20,136 - INFO - Generating documents for a function with id : 57
+2025-01-27 18:12:20,136 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::printAST2TextFile(SgNode* node, const char* filename, bool printType/*=true*/)
+{
+  ostringstream oss;
+  string prefix;
+  string label="";
+  serialize(node, prefix, false, oss, label);
+  ofstream textfile;
+  textfile.open(filename, ios::out);
+  textfile<<oss.str();
+
+  if (printType)
+  {
+    // append type information also
+    textfile<<"Types encountered ...."<<endl;
+    ostringstream oss2;
+    VariantVector vv(V_SgType);
+    Rose_STL_Container<SgNode*> tnodes= NodeQuery::queryMemoryPool(vv);
+    for (Rose_STL_Container<SgNode*>::const_iterator i = tnodes.begin(); i != tnodes.end(); ++i)
+    {
+      serialize (*i, prefix, false, oss2, label);
+    }
+    textfile<<oss2.str();
+  }
+
+  textfile.close();
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:12:42,418 - INFO - Response from llama3.1:70b for Function 57:
+2025-01-27 18:12:42,418 - INFO - /**
+ * @fn void SageInterface::printAST2TextFile(SgNode* node, const char* filename, bool printType/*=true*/)
+ *
+ * @brief Prints an Abstract Syntax Tree (AST) to a text file.
+ *
+ * This function takes an AST represented as an SgNode and prints it to a specified
+ * text file. The output includes the serialized representation of the AST nodes,
+ * with optional type information appended if requested.
+ *
+ * The serialization is performed using a recursive approach, traversing the AST
+ * and generating a string representation of each node. The resulting string is then
+ * written to the specified output file.
+ *
+ * @param node The root node of the AST to be printed.
+ * @param filename The name of the text file where the AST will be printed.
+ * @param printType Optional parameter indicating whether type information should be included in the output (default: true).
+ *
+ * @return None
+ *
+ * @warning If the specified file cannot be opened for writing, an error may occur.
+ *
+ * @pre The input node is a valid SgNode representing an AST.
+ * @post The contents of the AST have been written to the specified text file.
+ *
+ * @note This function assumes that the input AST is well-formed and does not contain any cycles.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *            SgNode* astRoot = ...; // assume a valid AST root node
+ *            const char* filename = "ast_output.txt";
+ *            SageInterface::printAST2TextFile(astRoot, filename);
+ *          @endcode
+ */
+2025-01-27 18:12:42,418 - INFO - End time: 2025-01-27 18:12:42
+2025-01-27 18:12:42,418 - INFO - Duration: 22.282090663909912

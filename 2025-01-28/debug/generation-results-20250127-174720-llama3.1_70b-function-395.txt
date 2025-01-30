@@ -1,0 +1,121 @@
+2025-01-27 20:31:13,172 - INFO - Start time: 2025-01-27 20:31:13
+2025-01-27 20:31:13,172 - INFO - Generating documents for a function with id : 395
+2025-01-27 20:31:13,172 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::removeUnusedLabels(SgNode* top, bool keepChild/* =false */) {
+
+  SgLabelStatementPtrSet unused = findUnusedLabels(top);
+
+  for (SgLabelStatementPtrSet::iterator i = unused.begin();
+      i != unused.end(); ++i) {
+
+    SgLabelStatement* l_stmt = *i;
+    // std::cout << "Removing unused label " << (*i)->get_label().str() << std::endl;
+    if (keepChild)
+    {
+        SgStatement* child= l_stmt->get_statement();
+//        l_stmt->set_parent(NULL);
+        l_stmt->set_statement(NULL);
+        replaceStatement (l_stmt, child);
+    }
+    else
+      myRemoveStatement(*i);
+  }
+}
+#endif
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:31:38,243 - INFO - Response from llama3.1:70b for Function 395:
+2025-01-27 20:31:38,243 - INFO - /**
+ * @fn void SageInterface::removeUnusedLabels(SgNode* top, bool keepChild)
+ *
+ * @brief Removes unused labels from an abstract syntax tree (AST).
+ *
+ * This function traverses the AST rooted at the given node and identifies
+ * labels that are not referenced anywhere in the code. It then removes these
+ * unused labels to simplify the AST.
+ *
+ * The removal process can be customized based on whether child statements of
+ * the removed label should be preserved or not. If keepChild is true, the function
+ * replaces each removed label with its corresponding child statement; otherwise,
+ * it simply deletes the entire label statement.
+ *
+ * @param top The root node of the AST to be processed. Must not be NULL.
+ * @param keepChild Optional flag indicating whether child statements should be preserved during removal (default: false).
+ *
+ * @return None
+ *
+ * @warning This function modifies the input AST in-place.
+ *
+ * @pre The input AST is valid and well-formed.
+ *
+ * @post All unused labels have been removed from the AST, and child statements are either preserved or deleted accordingly based on the keepChild flag.
+ *
+ * @note This function assumes that the findUnusedLabels() method has already identified and returned a set of SgLabelStatement pointers representing the unused labels to be removed.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create an instance of SageInterface and a sample AST
+ *           SageInterface sage;
+ *           SgNode* ast = ...;  // assume some initialization code here
+ *
+ *           // Remove unused labels from the AST, preserving child statements
+ *           sage.removeUnusedLabels(ast, true);
+ *
+ *           // Alternatively, remove unused labels without preserving child statements
+ *           sage.removeUnusedLabels(ast, false);
+ *          @endcode
+ */
+2025-01-27 20:31:38,243 - INFO - End time: 2025-01-27 20:31:38
+2025-01-27 20:31:38,243 - INFO - Duration: 25.070928812026978

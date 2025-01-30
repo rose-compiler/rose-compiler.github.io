@@ -1,0 +1,282 @@
+2025-01-27 18:54:46,849 - INFO - Start time: 2025-01-27 18:54:46
+2025-01-27 18:54:46,849 - INFO - Generating documents for a function with id : 164
+2025-01-27 18:54:46,849 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    int SageInterface::moveUpInnerDanglingIfEndifDirective(SgLocatedNode* lnode)
+{
+    int retVal=0;
+    ROSE_ASSERT(lnode);
+
+// algorithm: using a queue (vector to simulate it)
+// queue <PreProcessingInfo* >  q;
+//  start from 2nd node: ignore the first root node
+//  if  start preprocessing info: (if, ifndef, ifdef), push to the end of q
+//  if  end of preprocessing info. (endif),  neturalize possible end p info at the end of q, otherwise push it to the end
+//
+//  the queue in the end may contain mixed  preprocessing info.   #endif #endif ... #if   #ifndef
+//  They cannot neutralize each other.
+//  They should be attached to be after lnode !
+   RoseAst ast(lnode);
+   RoseAst::iterator ast_i=ast.begin();
+   ++ast_i; // skip the root node itself
+
+  // we store both the container and the element's index within the container. so later we can easily remove elements from containers
+   vector < pair< AttachedPreprocessingInfoType*, int> > keepers; // preprocessing info. to be kept
+   // for the middle directives like #else or #elif, sometimes their status (balanced or not) is directly associatd with its preceeding begin directive
+   // it is not always an independent decision.
+   // Note : the association is between individual preprocessing info. however, to faciliate removing them, the second part uses  InfoList vs offset
+   unordered_map < PreprocessingInfo * , vector< pair<AttachedPreprocessingInfoType*, int>> > associated_directives;
+
+   // store the associated middle directives what should be erased in the end
+   // we have to store this separatedly since the begin diretive pinfo becomes NULL after they have been erased!
+   // associated_directives[BeginInfo] will not retrieve them!
+   vector< pair<AttachedPreprocessingInfoType*, int>> associated_erase;
+
+   // Two steps here
+   // Step 1: We build the list first, then go through them to neutralize them
+   //    to simplify the problem: we exclude comments attached to the current located node, only consider things inside
+   //
+   // The list must provide the following information
+   //   infoList (container), index of the directive, PreprocessingInfo* itself
+   vector<PreprocessingInfo*> candidateInfoList;
+   // recursively search all directives, preserving original order in AST, consider attachment locations: before, inside and after.
+   preOrderCollectPreprocessingInfo (lnode, candidateInfoList, 0);
+   // now we have both candidateInfoList and infoMap.
+
+   for (auto candidate: candidateInfoList)
+   {
+     // fundamentally, we want to move individual PreprocessingInfo objects
+     // Or just duplicate them (easier)
+     PreprocessingInfo * info = candidate;
+
+     // we skip candidate that is attached to a node with depth of 0 (root node of the subtree)
+     if (infoMap[info].depth ==0)
+          continue;
+
+     int commentIndex = infoMap[info].index;
+     AttachedPreprocessingInfoType* infoList = infoMap[info].container;
+
+     // begin directives
+     if ( isBeginDirective(info) == 1)
+     {
+       keepers.push_back(make_pair (infoList,commentIndex));
+     }
+     // the middle #else, #elif,
+     else if (isBeginDirective(info) == 2)
+     {
+       // two situtations for immediate decision of unbalanced status
+       //1. empty stack, or
+       // 2.  top of stack is not one of #if #ifdef #ifndef. This is an unbalanced directive (keeper)
+       if (keepers.size()==0)
+         keepers.push_back(make_pair (infoList, commentIndex));
+       else if (isBeginDirective( (*(keepers.back().first))[keepers.back().second]  )!=1 ) // not empty , top of the stack is not beginning
+       {
+         keepers.push_back(make_pair (infoList,commentIndex));
+       }
+       else if(isBeginDirective( (*(keepers.back().first))[keepers.back().second] )==1 ) // top of the stack is a beginning,
+       {
+         PreprocessingInfo* begin_info = (*(keepers.back().first))[keepers.back().second];
+         // we associated this middle directive with the beginning directive
+         associated_directives[begin_info].push_back(make_pair (infoList,commentIndex));
+       }
+     }
+     // end directive
+     else if ( isBeginDirective(info) == -1)
+     {
+       bool neutralized = false;
+       // neutralize an internall matched pair, if any
+       if (keepers.size()>0)
+       {
+         AttachedPreprocessingInfoType* comments = keepers.back().first;
+         int idx = keepers.back().second;
+
+         if(isBeginDirective( (*comments)[idx] )==1)
+         {
+           keepers.pop_back();
+           neutralized = true;
+         }
+       }
+
+       if (!neutralized)
+         keepers.push_back(make_pair (infoList,commentIndex));
+     }
+
+   }
+
+#if 0 // old and wrong linear search of directives
+
+   // Then we go through the list, extract keepers, neutralize anything else.
+   for(;ast_i!=ast.end();++ast_i) {
+       SgLocatedNode* current  = isSgLocatedNode(*ast_i);
+       if (current ==NULL ) // skip non located nodes
+         continue;
+
+       AttachedPreprocessingInfoType* infoList = current->getAttachedPreprocessingInfo();
+       if (infoList == NULL) continue;
+
+       int commentIndex=0;
+       for (Rose_STL_Container<PreprocessingInfo*>::iterator ci = (*infoList).begin(); ci != (*infoList).end(); ci++)
+       {
+           ROSE_ASSERT(*ci != NULL);
+           // fundamentally, we want to move individual PreprocessingInfo objects
+           // Or just duplicate them (easier)
+           PreprocessingInfo * info = *ci;
+
+           // begin directives
+           if ( isBeginDirective(info) == 1)
+           {
+               keepers.push_back(make_pair (infoList,commentIndex));
+           }
+           // the middle #else, #elif,
+           else if (isBeginDirective(info) == 2)
+           {
+               // two situtations for immediate decision of unbalanced status
+               //1. empty stack, or
+               // 2.  top of stack is not one of #if #ifdef #ifndef. This is an unbalanced directive (keeper)
+               if (keepers.size()==0)
+                    keepers.push_back(make_pair (infoList,commentIndex));
+               else if (isBeginDirective( (*(keepers.back().first))[keepers.back().second]  )!=1 ) // not empty , top of the stack is not beginning
+               {
+                  keepers.push_back(make_pair (infoList,commentIndex));
+               }
+               else if(isBeginDirective( (*(keepers.back().first))[keepers.back().second] )==1 ) // top of the stack is a beginning,
+               {
+                       PreprocessingInfo* begin_info = (*(keepers.back().first))[keepers.back().second];
+                  // we associated this middle directive with the beginning directive
+                  associated_directives[begin_info].push_back(make_pair (infoList,commentIndex));
+               }
+           }
+           // end directive
+           else if ( isBeginDirective(info) == -1)
+           {
+              bool neutralized = false;
+               // neutralize an internall matched pair, if any
+               if (keepers.size()>0)
+               {
+                  AttachedPreprocessingInfoType* comments = keepers.back().first;
+                  int idx = keepers.back().second;
+
+                  if(isBeginDirective( (*comments)[idx] )==1)
+                  {
+                      keepers.pop_back();
+                      neutralized = true;
+                  }
+                }
+
+               if (!neutralized)
+                   keepers.push_back(make_pair (infoList,commentIndex));
+           }
+           commentIndex++;
+       }
+   }
+#endif
+// TODO this variable is not used in the end.
+   set <AttachedPreprocessingInfoType*> relatedInfoList; // containers with comments to be moved
+   // now we go through the keepers: those to be moved to the new location!! They are also the ones to be erased from original location!
+   // move from old containers, and add into lnode's after position
+   for (auto ki = keepers.begin(); ki != keepers.end(); ki ++)
+   {
+     AttachedPreprocessingInfoType* infoList =  (*ki).first;
+     int cidx=  (*ki).second;
+     // TODO replace the code block below with moveInofListToNewPlace()
+     relatedInfoList.insert (infoList);
+
+     PreprocessingInfo* info = (*infoList)[cidx];
+     // rewrite relative position
+     info->setRelativePosition(PreprocessingInfo::after);
+
+     // insert after lnode
+     lnode->addToAttachedPreprocessingInfo (info);
+     retVal++;
+
+     // we additionally process the associated directives, if any, TODO: reverse processing also??
+     if (associated_directives.count (info)!=0)
+     {
+        vector<pair<AttachedPreprocessingInfoType*,int>> a_list_vec =  associated_directives[info];
+        for (auto vec_i  = a_list_vec.rbegin(); vec_i != a_list_vec.rend(); vec_i ++  )
+        {
+           AttachedPreprocessingInfoType* a_infoList =  (*vec_i).first;
+           int aidx=  (*vec_i).second;
+           moveInofListToNewPlace (a_infoList, aidx, relatedInfoList, lnode, retVal);
+           associated_erase.push_back(make_pair (a_infoList, aidx));
+        }
+     } // each begin directive may associate multiple other middle directives
+
+     // Doing this after the associated directives are processed.
+     // zero out from original list, Note this element slot is NULL now!
+     (*infoList)[cidx]= NULL;
+
+   }
+    eraseNullPreprocessingInfo (lnode);
+    return retVal;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:54:57,459 - INFO - Response from llama3.1:70b for Function 164:
+2025-01-27 18:54:57,459 - INFO - /**
+ * @brief Move preprocessing information from a list of containers to the attached preprocessing info of a given node.
+ *
+ * This function iterates over a list of containers with preprocessing information and moves certain directives
+ * (begin, middle, end) to the attached preprocessing info of a given node. The moved directives are also erased
+ * from their original location.
+ *
+ * @param[in] lnode The node to which the preprocessing information will be moved.
+ * @return The number of preprocessing information objects that were moved.
+ */
+int movePreprocessingInfoToNode(SgNode* lnode)
+{
+    // ... (rest of the code remains the same)
+}
+2025-01-27 18:54:57,459 - INFO - End time: 2025-01-27 18:54:57
+2025-01-27 18:54:57,459 - INFO - Duration: 10.610390663146973

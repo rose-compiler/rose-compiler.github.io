@@ -1,0 +1,126 @@
+2025-01-27 18:04:18,622 - INFO - Start time: 2025-01-27 18:04:18
+2025-01-27 18:04:18,622 - INFO - Generating documents for a function with id : 36
+2025-01-27 18:04:18,622 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::lookupTemplateClassSymbolInParentScopes (const SgName &  name, SgTemplateParameterPtrList* templateParameterList, SgTemplateArgumentPtrList* templateArgumentList, SgScopeStatement *cscope)
+   {
+  // DQ (5/7/2011): This is similar to lookupClassSymbolInParentScopes().
+     SgTemplateClassSymbol* symbol = NULL;
+     if (cscope == NULL)
+          cscope = SageBuilder::topScopeStack();
+     ROSE_ASSERT(cscope != NULL);
+
+     while ((cscope != NULL) && (symbol == NULL))
+        {
+       // DQ (7/31/2013): Fixing API to use functions that now require template parameters and template specialization arguments.
+       // In this case these are unavailable from this point.
+       // I think this will resolve SgAliasSymbols to be a SgClassSymbol where the alias is of a SgClassSymbol.
+       // symbol = cscope->lookup_template_symbol(name);
+          symbol = cscope->lookup_template_class_symbol(name,templateParameterList,templateArgumentList);
+#if 0
+          printf ("In lookupTemplateSymbolInParentScopes(): Searching scope = %p = %s name = %s symbol = %p \n",cscope,cscope->class_name().c_str(),name.str(),symbol);
+#endif
+          if (cscope->get_parent() != NULL) // avoid calling get_scope when parent is not set
+               cscope = isSgGlobal(cscope) ? NULL : cscope->get_scope();
+            else
+               cscope = NULL;
+        }
+
+     return symbol;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:04:49,264 - INFO - Response from llama3.1:70b for Function 36:
+2025-01-27 18:04:49,264 - INFO - /**
+ * @fn SageInterface::lookupTemplateClassSymbolInParentScopes (const SgName &  name, SgTemplateParameterPtrList* templateParameterList, SgTemplateArgumentPtrList* templateArgumentList, SgScopeStatement *cscope)
+ *
+ * @brief Searches for a template class symbol in the parent scopes of a given scope.
+ *
+ * This function traverses the parent scopes of a given scope to find a template class
+ * symbol that matches the provided name and template parameters. It uses a recursive
+ * approach to search through all parent scopes until it finds a match or reaches the
+ * global scope.
+ *
+ * @param name The name of the template class symbol to be searched for.
+ * @param templateParameterList A list of template parameters associated with the symbol.
+ * @param templateArgumentList A list of template arguments associated with the symbol.
+ * @param cscope The scope in which to start searching for the symbol. If NULL, the top
+ *               scope stack is used as the starting point.
+ *
+ * @return The found template class symbol, or NULL if no matching symbol is found.
+ *
+ * @warning This function may return a NULL pointer if no matching symbol is found.
+ *
+ * @pre The provided scope must not be NULL. If it is, the top scope stack will be used
+ *      as the starting point for the search.
+ *
+ * @post The returned symbol will either be a valid SgTemplateClassSymbol or NULL.
+ *
+ * @note This function uses a recursive approach to traverse the parent scopes. It
+ *       may cause a stack overflow if the scope hierarchy is very deep.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Search for a template class symbol in the parent scopes of the current scope
+ *           SgTemplateClassSymbol* symbol = lookupTemplateClassSymbolInParentScopes(name, &templateParameterList, &templateArgumentList, cscope);
+ *
+ *           if (symbol != NULL) {
+ *               printf("Found template class symbol: %s\n", symbol->get_name().c_str());
+ *           } else {
+ *               printf("No matching symbol found.\n");
+ *           }
+ *          @endcode
+ */
+2025-01-27 18:04:49,264 - INFO - End time: 2025-01-27 18:04:49
+2025-01-27 18:04:49,264 - INFO - Duration: 30.64203929901123

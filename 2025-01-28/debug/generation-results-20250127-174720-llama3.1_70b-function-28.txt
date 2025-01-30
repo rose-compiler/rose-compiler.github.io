@@ -1,0 +1,125 @@
+2025-01-27 18:00:06,084 - INFO - Start time: 2025-01-27 18:00:06
+2025-01-27 18:00:06,084 - INFO - Generating documents for a function with id : 28
+2025-01-27 18:00:06,084 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::lookupFunctionSymbolInParentScopes(const SgName & functionName, SgScopeStatement* currentScope )
+   {
+  // DQ (11/24/2007): This function can return NULL.  It returns NULL when the function symbol is not found.
+  // This can happen when a function is referenced before it it defined (no prototype mechanism in Fortran is required).
+
+  // enable default search from top of StackScope, Liao, 1/24/2008
+     SgFunctionSymbol* functionSymbol = NULL;
+     if (currentScope == NULL)
+          currentScope = SageBuilder::topScopeStack();
+     ROSE_ASSERT(currentScope != NULL);
+
+     SgScopeStatement* tempScope = currentScope;
+     while ((functionSymbol == NULL) && (tempScope != NULL))
+        {
+          functionSymbol = tempScope->lookup_function_symbol(functionName);
+#if 0
+          printf ("In lookupFunctionSymbolInParentScopes(): Searching scope = %p = %s functionName = %s functionSymbol = %p \n",tempScope,tempScope->class_name().c_str(),functionName.str(),functionSymbol);
+#endif
+          if (tempScope->get_parent()!=NULL) // avoid calling get_scope when parent is not set in middle of translation
+               tempScope = isSgGlobal(tempScope) ? NULL : tempScope->get_scope();
+            else
+               tempScope = NULL;
+        }
+     return functionSymbol;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:00:33,028 - INFO - Response from llama3.1:70b for Function 28:
+2025-01-27 18:00:33,028 - INFO - Here are the generated Doxygen-style comments for the given C++ function:
+
+/**
+ * @fn SgFunctionSymbol* SageInterface::lookupFunctionSymbolInParentScopes(const SgName & functionName, SgScopeStatement* currentScope)
+ *
+ * @brief Searches for a function symbol in parent scopes.
+ *
+ * This function searches for a function symbol with the given name in the
+ * current scope and its parent scopes. It returns a pointer to the found
+ * function symbol or NULL if not found.
+ *
+ * The search starts from the given current scope and traverses up the scope
+ * hierarchy until it finds the function symbol or reaches the global scope.
+ *
+ * @param functionName The name of the function symbol to be searched for.
+ * @param currentScope The current scope to start searching from. If NULL, the top scope on the stack is used.
+ *
+ * @return A pointer to the found function symbol or NULL if not found.
+ *
+ * @warning This function can return NULL if the function symbol is not found.
+ *          It returns NULL when the function symbol is not defined in any of the parent scopes.
+ *
+ * @pre The current scope must be non-NULL, unless it is explicitly set to NULL to use the top scope on the stack.
+ *
+ * @post If a function symbol is found, its pointer is returned. Otherwise, NULL is returned.
+ *
+ * @note This function uses a recursive algorithm to traverse the scope hierarchy.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgName functionName = "myFunction";
+ *           SgScopeStatement* currentScope = SageBuilder::topScopeStack();
+ *           SgFunctionSymbol* functionSymbol = SageInterface::lookupFunctionSymbolInParentScopes(functionName, currentScope);
+ *           if (functionSymbol != NULL) {
+ *               // Function symbol found
+ *           } else {
+ *               // Function symbol not found
+ *           }
+ *          @endcode
+ */
+2025-01-27 18:00:33,028 - INFO - End time: 2025-01-27 18:00:33
+2025-01-27 18:00:33,028 - INFO - Duration: 26.944175004959106

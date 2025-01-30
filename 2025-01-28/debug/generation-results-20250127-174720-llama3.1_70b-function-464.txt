@@ -1,0 +1,119 @@
+2025-01-27 20:59:04,566 - INFO - Start time: 2025-01-27 20:59:04
+2025-01-27 20:59:04,566 - INFO - Generating documents for a function with id : 464
+2025-01-27 20:59:04,566 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgClassDeclaration *SageInterface::findOrImportJavaClass(SgProject *project, SgClassDefinition *package_definition, string class_name) {
+    ROSE_ASSERT(package_definition);
+    SgClassSymbol *class_symbol = package_definition -> lookup_class_symbol(class_name);
+    SgClassDeclaration *class_declaration = (class_symbol == NULL
+                                                  ? NULL
+                                                  : isSgClassDeclaration(class_symbol -> get_declaration() -> get_definingDeclaration()));
+    if ((! class_declaration) || (! class_declaration -> attributeExists("complete"))) { // class not available in the scope
+        string qualified_name = package_definition -> get_qualified_name().getString() + "." + class_name;
+        preprocessImport(project, qualified_name);
+        class_symbol = package_definition -> lookup_class_symbol(class_name);
+    }
+
+    class_declaration = (class_symbol == NULL
+                                       ? NULL
+                                       : isSgClassDeclaration(class_symbol -> get_declaration() -> get_definingDeclaration()));
+
+    return class_declaration;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:59:36,484 - INFO - Response from llama3.1:70b for Function 464:
+2025-01-27 20:59:36,484 - INFO - /**
+ * @fn SgClassDeclaration *SageInterface::findOrImportJavaClass(SgProject *project, SgClassDefinition *package_definition, string class_name)
+ *
+ * @brief Finds or imports a Java class declaration from a given package definition.
+ *
+ * This function searches for a Java class declaration in the given package definition. If the class is not found,
+ * it attempts to import it using the preprocessImport() function. The search is performed by looking up the class
+ * symbol and checking if its declaration is an SgClassDeclaration. If the class is not available in the current scope,
+ * the function pre-processes the import statement for the qualified name of the class.
+ *
+ * @param project The Sage project to work with.
+ * @param package_definition The package definition that contains the Java class to be found or imported.
+ * @param class_name The name of the Java class to find or import.
+ *
+ * @return A pointer to the SgClassDeclaration if found, otherwise NULL. If the class is not available in the current
+ *         scope and cannot be imported, the function returns NULL.
+ *
+ * @warning This function assumes that the package definition is valid and contains the necessary information for
+ *          importing Java classes.
+ *
+ * @pre The project and package_definition parameters must be non-NULL. The class_name parameter must be a valid string.
+ *
+ * @post If the function returns a non-NULL pointer, it guarantees that the returned SgClassDeclaration is complete
+ *       (i.e., has the "complete" attribute).
+ *
+ * @note This function uses the preprocessImport() function to import Java classes. The implementation of this function
+ *       is not shown here.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgProject project = ...; // assume a valid Sage project
+ *           SgClassDefinition package_definition = ...; // assume a valid package definition
+ *           string class_name = "MyJavaClass";
+ *           SgClassDeclaration* class_declaration = findOrImportJavaClass(project, package_definition, class_name);
+ *           if (class_declaration != NULL) {
+ *               // use the found or imported class declaration
+ *           } else {
+ *               // handle the case where the class cannot be found or imported
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:59:36,484 - INFO - End time: 2025-01-27 20:59:36
+2025-01-27 20:59:36,484 - INFO - Duration: 31.918232679367065

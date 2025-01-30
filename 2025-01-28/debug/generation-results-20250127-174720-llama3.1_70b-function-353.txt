@@ -1,0 +1,136 @@
+2025-01-27 20:13:22,149 - INFO - Start time: 2025-01-27 20:13:22
+2025-01-27 20:13:22,149 - INFO - Generating documents for a function with id : 353
+2025-01-27 20:13:22,149 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::wrapAllTemplateInstantiationsInAssociatedNamespaces(SgProject* root)
+   {
+  // DQ (8/18/2015): This function is called from the tests/nonsmoke/functional/testTemplates translator.
+
+  // DQ (7/19/2015): This function can't use an iterator since it will be
+  // doing transformations on the AST and will cause iterator invalidation errors.
+
+     std::vector<SgDeclarationStatement*> templateInstantiationVector;
+
+  // DQ (9/24/2015): This feature is not available yet in CMake (Markus is adding the library support for this feature).
+#ifndef USE_CMAKEx
+     RoseAst ast(root);
+
+     for (RoseAst::iterator i= ast.begin(); i!= ast.end(); ++i)
+        {
+          if (isTemplateInstantiationNode(*i))
+             {
+            // markNodeToBeUnparsed(*i);
+               SgDeclarationStatement* declaration = isSgDeclarationStatement(*i);
+               if (declaration != NULL)
+                  {
+                    templateInstantiationVector.push_back(declaration);
+                  }
+                 else
+                  {
+                 // I think it is OK that not all are a SgDeclarationStatement.
+                  }
+             }
+       }
+#else
+     std::cerr << "This feature for now is available with autotools only!" << std::endl;
+     ROSE_ABORT();
+#endif
+
+     std::vector<SgDeclarationStatement*>::iterator j = templateInstantiationVector.begin();
+     while (j != templateInstantiationVector.end())
+        {
+          moveDeclarationToAssociatedNamespace(*j);
+          j++;
+        }
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:13:45,250 - INFO - Response from llama3.1:70b for Function 353:
+2025-01-27 20:13:45,250 - INFO - /**
+ * @fn void SageInterface::wrapAllTemplateInstantiationsInAssociatedNamespaces(SgProject* root)
+ *
+ * @brief Wraps all template instantiations in their associated namespaces.
+ *
+ * This function traverses the Abstract Syntax Tree (AST) of a given SgProject and 
+ * identifies all template instantiations. It then moves each instantiation into its 
+ * associated namespace, effectively wrapping it.
+ *
+ * The function uses a recursive approach to traverse the AST, checking each node for 
+ * template instantiations. If an instantiation is found, it is added to a vector of 
+ * SgDeclarationStatement pointers. After traversing the entire AST, the function then 
+ * iterates over this vector and moves each declaration into its associated namespace.
+ *
+ * @param root The root node of the SgProject's Abstract Syntax Tree (AST).
+ *
+ * @return None
+ *
+ * @warning This function modifies the input AST by moving template instantiations 
+ *          into their associated namespaces. Use with caution.
+ *
+ * @pre The input SgProject must be valid and have a properly constructed AST.
+ *
+ * @post All template instantiations in the input SgProject's AST will be wrapped in 
+ *       their associated namespaces.
+ *
+ * @note This function is not available when using CMake due to limitations in the 
+ *       current implementation. It is only available when using autotools.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgProject* project = ...; // Initialize a valid SgProject instance
+ *           SageInterface::wrapAllTemplateInstantiationsInAssociatedNamespaces(project);
+ *          @endcode
+ */
+2025-01-27 20:13:45,250 - INFO - End time: 2025-01-27 20:13:45
+2025-01-27 20:13:45,250 - INFO - Duration: 23.10190200805664

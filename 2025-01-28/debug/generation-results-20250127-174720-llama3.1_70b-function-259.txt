@@ -1,0 +1,286 @@
+2025-01-27 19:34:28,097 - INFO - Start time: 2025-01-27 19:34:28
+2025-01-27 19:34:28,097 - INFO - Generating documents for a function with id : 259
+2025-01-27 19:34:28,097 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    template <typename NodeType>
+NodeType* getEnclosingNode(const SgNode* astNode, const bool includingSelf = false)
+   {
+#define DEBUG_GET_ENCLOSING_NODE 0
+
+#if 1 /* TOP_LEVEL_IF */
+  // DQ (12/31/2019): This version does not detect a cycle that Robb's version detects in processing Cxx11_tests/test2016_23.C.
+  // This will have to be investigated seperately from the issue I am working on currently.
+
+  // DQ (10/20/2012): This is the older version of this implementation.  Until I am sure that
+  // the newer version (below) is what we want to use I will resolve this conflict by keeping
+  // the previous version in place.
+
+     if (nullptr == astNode)
+        {
+          return nullptr;
+        }
+
+     if ( (includingSelf ) && (dynamic_cast<const NodeType*>(astNode)) )
+        {
+          return const_cast<NodeType*>(dynamic_cast<const NodeType*> (astNode));
+        }
+
+  // DQ (3/5/2012): Check for reference to self...
+     ROSE_ASSERT(astNode->get_parent() != astNode);
+
+     SgNode* parent = astNode->get_parent();
+
+  // DQ (3/5/2012): Check for loops that will cause infinite loops.
+     SgNode* previouslySeenParent = parent;
+     bool foundCycle = false;
+     int counter = 0;
+
+#if DEBUG_GET_ENCLOSING_NODE
+     printf ("In getEnclosingNode(): previouslySeenParent = %p = %s \n",previouslySeenParent,previouslySeenParent->class_name().c_str());
+#endif
+
+     while ( (foundCycle == false) && (parent != nullptr) && (!dynamic_cast<const NodeType*>(parent)) )
+        {
+          ROSE_ASSERT(parent->get_parent() != parent);
+
+#if DEBUG_GET_ENCLOSING_NODE
+          printf (" --- parent = %p = %s \n",parent,parent->class_name().c_str());
+          printf (" --- --- parent->get_parent() = %p = %s \n",parent->get_parent(),parent->get_parent()->class_name().c_str());
+#endif
+
+#if 1
+       // DQ (1/8/2020): ROSE-82 (on RZ) This limit needs to be larger and increasing it to 500 was enough
+       // for a specific code with a long chain of if-then-else nesting, So to make this sufficent for more
+       // general code we have increased the lomit to 100,000.  Note that 50 was not enough for real code,
+       // but was enough for our regression tests.
+       // DQ (12/30/2019): This is added to support detection of infinite loops over parent pointers.
+       // if (counter >= 500)
+          if (counter >= 100000)
+             {
+               printf ("Exiting: In getEnclosingNode(): loop limit exceeded: counter = %d \n",counter);
+               ROSE_ABORT();
+             }
+#endif
+          parent = parent->get_parent();
+
+       // DQ (3/5/2012): Check for loops that will cause infinite loops.
+       // ROSE_ASSERT(parent != previouslySeenParent);
+          if (parent == previouslySeenParent)
+             {
+               foundCycle = true;
+             }
+          counter++;
+
+        }
+
+#if DEBUG_GET_ENCLOSING_NODE
+     printf ("previouslySeenParent = %p = %s \n",previouslySeenParent,previouslySeenParent->class_name().c_str());
+#endif
+
+     parent = previouslySeenParent;
+
+     SgDeclarationStatement* declarationStatement = isSgDeclarationStatement(parent);
+     if (declarationStatement != nullptr)
+        {
+#if 0
+          printf ("Found a SgDeclarationStatement \n");
+#endif
+          SgDeclarationStatement* definingDeclaration         = declarationStatement->get_definingDeclaration();
+          SgDeclarationStatement* firstNondefiningDeclaration = declarationStatement->get_firstNondefiningDeclaration();
+
+#if 0
+          printf (" --- declarationStatement         = %p \n",declarationStatement);
+          printf (" --- definingDeclaration          = %p \n",definingDeclaration);
+          if (definingDeclaration != NULL && definingDeclaration->get_parent() != NULL)
+               printf (" --- definingDeclaration ->get_parent()         = %p = %s \n",definingDeclaration->get_parent(),definingDeclaration->get_parent()->class_name().c_str());
+          printf (" --- firstNondefiningDeclaration  = %p \n",firstNondefiningDeclaration);
+          if (firstNondefiningDeclaration != NULL && firstNondefiningDeclaration->get_parent() != NULL)
+               printf (" --- firstNondefiningDeclaration ->get_parent() = %p = %s \n",firstNondefiningDeclaration->get_parent(),firstNondefiningDeclaration->get_parent()->class_name().c_str());
+#endif
+          if (definingDeclaration != nullptr && declarationStatement != firstNondefiningDeclaration)
+             {
+#if 0
+               printf ("Found a nondefining declaration so use the non-defining declaration instead \n");
+#endif
+            // DQ (10/19/2012): Use the defining declaration instead.
+            // parent = firstNondefiningDeclaration;
+               parent = definingDeclaration;
+             }
+        }
+
+#if 0
+     printf ("reset: previouslySeenParent = %p = %s \n",previouslySeenParent,previouslySeenParent->class_name().c_str());
+#endif
+
+  // DQ (10/19/2012): This branch is just to document the cycle that was previously detected, it is for
+  // debugging only. Thus it ony make sense for it to be executed when "(foundCycle == true)".  However,
+  // this will have to be revisited later since it appears clear that it is a problem for the binary analysis
+  // work when it is visited for this case.  Since the cycle is detected, but there is no assertion on the
+  // cycle, we don't exit when a cycle is identified (which is the point of the code below).
+  // Note also that I have fixed the code (above and below) to only chase pointers through defining
+  // declarations (where they exist), this is important since non-defining declarations can be almost
+  // anywhere (and thus chasing them can make it appear that there are cycles where there are none
+  // (I think); test2012_234.C demonstrates an example of this.
+  // DQ (10/9/2012): Robb has suggested this change to fix the binary analysis work.
+  // if (foundCycle == true)
+     if (foundCycle == false)
+        {
+
+
+          while ( (parent != nullptr) && (!dynamic_cast<const NodeType*>(parent)) )
+             {
+               ROSE_ASSERT(parent->get_parent() != parent);
+#if 0
+               printf ("In getEnclosingNode() (2nd try): parent = %p = %s \n",parent,parent->class_name().c_str());
+               if (parent->get_file_info() != NULL)
+                    parent->get_file_info()->display("In getEnclosingNode() (2nd try): debug");
+#endif
+               SgDeclarationStatement* declarationStatement = isSgDeclarationStatement(parent);
+               if (declarationStatement != nullptr)
+                  {
+#if DEBUG_GET_ENCLOSING_NODE
+                    printf ("Found a SgDeclarationStatement \n");
+#endif
+                    SgDeclarationStatement* definingDeclaration         = declarationStatement->get_definingDeclaration();
+                    SgDeclarationStatement* firstNondefiningDeclaration = declarationStatement->get_firstNondefiningDeclaration();
+                    if (definingDeclaration != nullptr && declarationStatement != firstNondefiningDeclaration)
+                       {
+#if 0
+                         printf ("Found a nondefining declaration so use the firstNondefining declaration instead \n");
+#endif
+                      // DQ (10/19/2012): Use the defining declaration instead.
+                      // parent = firstNondefiningDeclaration;
+                         parent = definingDeclaration;
+                       }
+                  }
+
+               parent = parent->get_parent();
+
+#if 1
+            // DQ (3/5/2012): Check for loops that will cause infinite loops.
+               ROSE_ASSERT(parent != previouslySeenParent);
+#else
+               printf ("WARNING::WARNING::WARNING commented out assertion for parent != previouslySeenParent \n");
+               if (parent == previouslySeenParent)
+                    break;
+#endif
+             }
+        }
+
+     return const_cast<NodeType*>(dynamic_cast<const NodeType*> (parent));
+#else /* TOP_LEVEL_IF */
+  // DQ (10/20/2012): Using Robb's newer version with my modification to use the definingDeclaration rather than firstNondefiningDeclaration (below).
+
+       // Find the parent of specified type, but watch out for cycles in the ancestry (which would cause an infinite loop).
+       // Cast away const because isSg* functions aren't defined for const node pointers; and our return is not const.
+       SgNode *node = const_cast<SgNode*>(!astNode || includingSelf ? astNode : astNode->get_parent());
+       std::set<const SgNode*> seen; // nodes we've seen, in order to detect cycles
+       while (node) {
+           if (NodeType *found = dynamic_cast<NodeType*>(node))
+               return found;
+
+        // FIXME: Cycle detection could be moved elsewhere so we don't need to do it on every call. [RPM 2012-10-09]
+        // DQ (12/30/2019): Provide more detail in error message.
+           if (seen.insert(node).second == false)
+             {
+               printf ("Error: node is already in set and defines a cycle: node = %p = %s \n",node,node->class_name().c_str());
+               std::set<const SgNode*>::const_iterator i = seen.begin();
+               while (i != seen.end())
+                 {
+                   const SgNode* element = *i;
+                   printf (" --- seen element: element = %p = %s \n",element,element->class_name().c_str());
+                   i++;
+                 }
+
+               printf ("Exiting after error! \n");
+               ROSE_ABORT();
+             }
+           // ROSE_ASSERT(seen.insert(node).second);
+
+           // Traverse to parent (declaration statements are a special case)
+           if (SgDeclarationStatement *declarationStatement = isSgDeclarationStatement(node)) {
+               SgDeclarationStatement *definingDeclaration = declarationStatement->get_definingDeclaration();
+               SgDeclarationStatement *firstNondefiningDeclaration = declarationStatement->get_firstNondefiningDeclaration();
+               if (definingDeclaration && firstNondefiningDeclaration && declarationStatement != firstNondefiningDeclaration) {
+                // DQ (10/19/2012): Use the defining declaration instead.
+                // node = firstNondefiningDeclaration;
+                   node = definingDeclaration;
+               }
+           } else {
+               node = node->get_parent();
+           }
+       }
+       return NULL;
+#endif /* TOP_LEVEL_IF */
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:34:39,747 - INFO - Response from llama3.1:70b for Function 259:
+2025-01-27 19:34:39,747 - INFO - c
+/**
+ * @brief Gets the enclosing node of a specified type.
+ *
+ * This function traverses up the AST from the given node until it finds a parent of the specified type. It handles cycles in the ancestry to prevent infinite loops. If no such parent is found, it returns NULL.
+ *
+ * @param astNode The starting node for the traversal.
+ * @param includingSelf Whether to consider the starting node itself as a potential match.
+ * @return A pointer to the first ancestor of the specified type, or NULL if none is found.
+ */
+template <typename NodeType>
+NodeType* getEnclosingNode(SgNode* astNode, bool includingSelf = false) {
+  // ... (function implementation remains the same)
+}
+```
+2025-01-27 19:34:39,747 - INFO - End time: 2025-01-27 19:34:39
+2025-01-27 19:34:39,747 - INFO - Duration: 11.650123596191406

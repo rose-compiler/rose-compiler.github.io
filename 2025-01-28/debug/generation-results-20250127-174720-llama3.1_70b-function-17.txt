@@ -1,0 +1,237 @@
+2025-01-27 17:55:25,132 - INFO - Start time: 2025-01-27 17:55:25
+2025-01-27 17:55:25,132 - INFO - Generating documents for a function with id : 17
+2025-01-27 17:55:25,132 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::setSourcePosition(SgNode* node)
+   {
+  // Check the mode and build the correct type of source code position.
+     SourcePositionClassification scp = getSourcePositionClassificationMode();
+
+  // DQ (2/17/2013): Note that the SourcePositionClassification will be e_sourcePositionFrontendConstruction
+  // during construction of the AST from the EDG frontend.
+
+#if 0
+     printf ("In SageInterface::setSourcePosition(): SourcePositionClassification scp = %s \n",display(scp).c_str());
+#endif
+
+     switch(scp)
+        {
+          case e_sourcePositionError: // Error value for enum.
+             {
+               printf ("Error: error value e_sourcePositionError in SageInterface::setSourcePosition() \n");
+               ROSE_ABORT();
+             }
+
+          case e_sourcePositionDefault: // Default source position.
+             {
+#if 0
+               printf ("e_sourcePositionDefault in SageInterface::setSourcePosition() \n");
+#endif
+               SgLocatedNode* locatedNode = isSgLocatedNode(node);
+               if (locatedNode != NULL)
+                  {
+                    setSourcePositionToDefault(locatedNode);
+                  }
+                 else
+                  {
+                 // This is not supported (not clear if it need be).
+                    printf ("Error: can't call setSourcePosition() in mode e_sourcePositionDefault with non SgLocatedNode (node = %p = %s) \n",node,node->class_name().c_str());
+                    ROSE_ABORT();
+                  }
+               break;
+             }
+
+          case e_sourcePositionTransformation:       // Classify as a transformation.
+             {
+#if 0
+               printf ("e_sourcePositionTransformation in SageInterface::setSourcePosition() \n");
+#endif
+            // setSourcePositionAtRootAndAllChildrenAsTransformation(node);
+               setSourcePositionAsTransformation(node);
+               break;
+             }
+
+          case e_sourcePositionCompilerGenerated:    // Classify as compiler generated code (e.g. template instantiation).
+             {
+               printf ("e_sourcePositionCompilerGenerated in SageInterface::setSourcePosition() \n");
+
+               printf ("Sorry, not implemented \n");
+               ROSE_ABORT();
+             }
+
+          case e_sourcePositionNullPointers:         // Set pointers to Sg_File_Info objects to NULL.
+             {
+            // DQ (2/17/2013): We want to move to this mode as the one used for EDG/ROSE connection so that we can
+            // avoid building and rebuilding source position information.
+#if 0
+               printf ("e_sourcePositionNullPointers in SageInterface::setSourcePosition() \n");
+#endif
+               setSourcePositionPointersToNull(node);
+               break;
+             }
+
+          case e_sourcePositionFrontendConstruction: // Specify as source position to be filled in as part of AST construction in the front-end.
+             {
+            // DQ (2/17/2013): The setSourcePositionToDefault() function is called a lot, so it might be a performance issue.
+            // All IR nodes built by the Build Interface are assighed source position information
+            // using this function and then reset afterward as we use information within EDG to
+            // reset the source position information.  Ideally, the EDG/ROSE connection would
+            // use NULL pointers as the behavior for the front-end mode.  We can move to that
+            // later to make the source position handling more efficient.
+
+            // This function builds an empty Sg_File_Info entry (valid object but filled with default values; must be reset in front-end processing).
+#if 0
+               printf ("e_sourcePositionFrontendConstruction in SageInterface::setSourcePosition() \n");
+#endif
+               SgLocatedNode* locatedNode = isSgLocatedNode(node);
+               if (locatedNode != NULL)
+                  {
+                 // setSourcePositionAtRootAndAllChildrenAsDefault(locatedNode);
+                    setSourcePositionToDefault(locatedNode);
+                  }
+                 else
+                  {
+                 // This is not supported (not clear if it need be).
+                    SgPragma* pragma = isSgPragma(node);
+                    if (pragma != NULL)
+                       {
+                         setSourcePositionToDefault(pragma);
+                       }
+                      else
+                       {
+                      // printf ("Error: can't call setSourcePosition() in mode e_sourcePositionFrontendConstruction with non SgLocatedNode (node = %p = %s) \n",node,node->class_name().c_str());
+                      // ROSE_ASSERT(false);
+                         SgType* type = isSgType(node);
+                         if (type != NULL)
+                            {
+                           // Ignore this case, OK.
+                            }
+                           else
+                            {
+                              SgFunctionParameterTypeList* functionParameterTypeList = isSgFunctionParameterTypeList(node);
+                              if (functionParameterTypeList != NULL)
+                                 {
+                                // Ignore this case, OK.
+                                 }
+                                else
+                                 {
+                                   printf ("Error: can't call setSourcePosition() in mode e_sourcePositionFrontendConstruction with non SgLocatedNode (node = %p = %s) \n",node,node->class_name().c_str());
+                                   ROSE_ABORT();
+                                 }
+                            }
+                       }
+                  }
+
+               break;
+             }
+
+
+          case e_sourcePosition_last:
+             {
+               printf ("Error: error value e_sourcePositionError in SageInterface::setSourcePosition() \n");
+               ROSE_ABORT();
+             }
+
+          default:
+             {
+               printf ("Error: default reached in SageInterface::setSourcePosition() \n");
+               break;
+             }
+        }
+
+#if 0
+     if (node->get_file_info() != NULL)
+        {
+          node->get_file_info()->display("Leaving SageInterface::setSourcePosition()");
+        }
+#endif
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 17:55:51,475 - INFO - Response from llama3.1:70b for Function 17:
+2025-01-27 17:55:51,475 - INFO - /**
+ * @fn SageInterface::setSourcePosition(SgNode* node)
+ *
+ * @brief Sets the source position of a given SgNode based on the current SourcePositionClassification mode.
+ *
+ * This function determines the source position classification mode and sets the source position
+ * of the given SgNode accordingly. The source position classification mode can be one of several
+ * predefined values, including e_sourcePositionDefault, e_sourcePositionTransformation,
+ * e_sourcePositionCompilerGenerated, e_sourcePositionNullPointers, or e_sourcePositionFrontendConstruction.
+ *
+ * Depending on the mode, this function may set the source position to a default value, classify it as
+ * a transformation, mark it as compiler-generated code, set pointers to Sg_File_Info objects to NULL,
+ * or specify it to be filled in during AST construction in the front-end.
+ *
+ * @param node The SgNode for which the source position is to be set. Must not be NULL.
+ *
+ * @return None
+ *
+ * @warning This function may abort if an error occurs while setting the source position.
+ *
+ * @pre The input node must not be NULL.
+ * @post The source position of the input node has been set according to the current SourcePositionClassification mode.
+ *
+ * @note The behavior of this function depends on the current SourcePositionClassification mode, which can
+ *       be changed using the getSourcePositionClassificationMode() and setSourcePositionClassificationMode()
+ *       functions.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* node = ...; // Create or obtain an SgNode
+ *           SageInterface::setSourcePosition(node); // Set the source position of the node
+ *          @endcode
+ */
+2025-01-27 17:55:51,475 - INFO - End time: 2025-01-27 17:55:51
+2025-01-27 17:55:51,475 - INFO - Duration: 26.343815565109253

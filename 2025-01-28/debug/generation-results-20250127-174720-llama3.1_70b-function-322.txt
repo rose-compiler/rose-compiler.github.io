@@ -1,0 +1,114 @@
+2025-01-27 20:00:57,346 - INFO - Start time: 2025-01-27 20:00:57
+2025-01-27 20:00:57,346 - INFO - Generating documents for a function with id : 322
+2025-01-27 20:00:57,346 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::insertStatementAfterLastDeclaration(SgStatement* stmt, SgScopeStatement* scope)
+  {
+    ROSE_ASSERT (stmt != NULL);
+    ROSE_ASSERT (scope != NULL);
+    // Insert to be the declaration after current declaration sequence, if any
+    SgStatement* l_stmt = findLastDeclarationStatement (scope);
+    if (l_stmt)
+      insertStatementAfter(l_stmt,stmt);
+    else
+      prependStatement(stmt, scope);
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:01:22,474 - INFO - Response from llama3.1:70b for Function 322:
+2025-01-27 20:01:22,474 - INFO - /**
+ * @fn void SageInterface::insertStatementAfterLastDeclaration(SgStatement* stmt, SgScopeStatement* scope)
+ *
+ * @brief Inserts a statement after the last declaration in a given scope.
+ *
+ * This function inserts a new statement after the last declaration statement
+ * within a specified scope. If no declarations exist within the scope,
+ * the new statement is prepended to the beginning of the scope.
+ *
+ * The insertion is performed by first locating the last declaration statement
+ * using the findLastDeclarationStatement() function. If such a statement exists,
+ * the new statement is inserted immediately after it using insertStatementAfter().
+ * Otherwise, the new statement is prepended to the scope using prependStatement().
+ *
+ * @param stmt The statement to be inserted into the scope.
+ *             Must not be NULL.
+ *
+ * @param scope The scope within which the insertion will take place.
+ *              Must not be NULL.
+ *
+ * @return None
+ *
+ * @warning If the input parameters are invalid (i.e., either stmt or scope is NULL),
+ *          this function will terminate with an assertion failure.
+ *
+ * @pre stmt and scope must not be NULL.
+ *
+ * @post The statement pointed to by stmt has been inserted into the scope pointed to by scope,
+ *       either immediately after the last declaration statement if one exists, or at the beginning
+ *       of the scope otherwise.
+ *
+ * @note This function modifies the abstract syntax tree (AST) in-place.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create a sample scope and statement
+ *           SgScopeStatement* scope = ...;
+ *           SgStatement* stmt = ...;
+ *
+ *           // Insert the statement into the scope after the last declaration
+ *           SageInterface::insertStatementAfterLastDeclaration(stmt, scope);
+ *          @endcode
+ */
+2025-01-27 20:01:22,474 - INFO - End time: 2025-01-27 20:01:22
+2025-01-27 20:01:22,474 - INFO - Duration: 25.12804675102234

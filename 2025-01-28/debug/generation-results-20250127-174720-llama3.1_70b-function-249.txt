@@ -1,0 +1,118 @@
+2025-01-27 19:29:39,021 - INFO - Start time: 2025-01-27 19:29:39
+2025-01-27 19:29:39,021 - INFO - Generating documents for a function with id : 249
+2025-01-27 19:29:39,021 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgFunctionDeclaration* SageInterface::findMain(SgNode* n) {
+  if (!n) return 0;
+  if (isMain(n))
+  {
+    return isSgFunctionDeclaration(n);
+  }
+  vector<SgNode*> children = n->get_traversalSuccessorContainer();
+  for (vector<SgNode*>::const_iterator i = children.begin();
+  i != children.end(); ++i) {
+
+    SgFunctionDeclaration* mainDecl = findMain(*i);
+    if (mainDecl)
+      if (mainDecl->get_definingDeclaration() == mainDecl) // skip non-defining main() declaration, Liao 8/27/2010
+      return mainDecl;
+  }
+  return 0;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:30:06,898 - INFO - Response from llama3.1:70b for Function 249:
+2025-01-27 19:30:06,898 - INFO - /**
+ * @fn SgFunctionDeclaration* SageInterface::findMain(SgNode* n)
+ *
+ * @brief Finds the main function declaration in an Abstract Syntax Tree (AST).
+ *
+ * This function recursively traverses the AST rooted at node 'n' to find the
+ * main function declaration. It checks each node's successor container and
+ * uses a helper function isMain() to verify if a node represents the main
+ * function.
+ *
+ * @param n The root node of the AST to search for the main function declaration.
+ *          If NULL, the function returns immediately with a value of 0.
+ *
+ * @return A pointer to the SgFunctionDeclaration representing the main function,
+ *         or 0 if no main function is found in the AST. The returned
+ *         SgFunctionDeclaration must be checked for its defining declaration to
+ *         ensure it's not a non-defining main() declaration.
+ *
+ * @warning This function performs recursive traversal of the AST, which may lead
+ *          to stack overflow for very deep trees.
+ *
+ * @pre The input node 'n' is a valid SgNode in an AST.
+ *
+ * @post If a main function declaration is found, its defining declaration is
+ *       verified and returned; otherwise, 0 is returned.
+ *
+ * @note This function uses the isMain() helper function to identify the main
+ *       function node. The implementation of isMain() is not shown here but it's
+ *       assumed to correctly identify the main function based on some criteria.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* root = ...; // assume 'root' points to a valid AST node
+ *           SgFunctionDeclaration* mainDecl = SageInterface::findMain(root);
+ *           if (mainDecl) {
+ *             cout << "Found main function declaration!" << endl;
+ *           } else {
+ *             cout << "No main function found in the AST." << endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:30:06,898 - INFO - End time: 2025-01-27 19:30:06
+2025-01-27 19:30:06,898 - INFO - Duration: 27.877204418182373

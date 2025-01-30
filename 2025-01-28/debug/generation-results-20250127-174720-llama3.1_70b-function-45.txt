@@ -1,0 +1,143 @@
+2025-01-27 18:07:57,672 - INFO - Start time: 2025-01-27 18:07:57
+2025-01-27 18:07:57,672 - INFO - Generating documents for a function with id : 45
+2025-01-27 18:07:57,672 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::getDefaultDestructor( SgClassDeclaration* classDeclaration )
+   {
+     SgMemberFunctionDeclaration* defaultDestructor = NULL;
+
+     ROSE_ASSERT(classDeclaration != NULL);
+     SgDeclarationStatement* definingDeclaration = classDeclaration->get_definingDeclaration();
+     if (definingDeclaration != NULL)
+        {
+          ROSE_ASSERT(definingDeclaration != NULL);
+          SgClassDeclaration* definingClassDeclaration = isSgClassDeclaration(definingDeclaration);
+
+       // Note that not all class declarations have to have a defining declaration (e.g. "~int()"
+       // would be associated with a class declaration but no definition would exist).
+          if (definingClassDeclaration != NULL)
+             {
+               SgClassDefinition* classDefinition = definingClassDeclaration->get_definition();
+               ROSE_ASSERT(classDefinition != NULL);
+
+               SgDeclarationStatementPtrList::iterator i = classDefinition->get_members().begin();
+               while ( i != classDefinition->get_members().end() )
+                  {
+                 // Check the parent pointer to make sure it is properly set
+                    SgNode* i_parent = (*i)->get_parent();
+                    ROSE_ASSERT(i_parent != NULL);
+
+                 // DQ (11/1/2005): Note that a template instantiation can have a parent which is the
+                 // variable which forced it's instantiation.  Since it does not really exist in the
+                 // source code explicitly (it is compiler generated) this is as reasonable as anything else.
+                    if ( i_parent != classDefinition )
+                       {
+                         printf ("Error: (*i)->get_parent() = %p = %s \n",i_parent,i_parent->class_name().c_str());
+                         printf ("(*i) = %p = %s = %s \n",*i,(*i)->class_name().c_str(),(*i)->unparseToString().c_str());
+                         (*i)->get_file_info()->display("Called from SageInterface::getDefaultDestructor: debug");
+                       }
+                    ROSE_ASSERT( i_parent == classDefinition);
+
+                    SgMemberFunctionDeclaration* memberFunction = isSgMemberFunctionDeclaration(*i);
+                    if (memberFunction != NULL)
+                       {
+                         if ( memberFunction->get_specialFunctionModifier().isDestructor() == true )
+                            defaultDestructor = memberFunction;
+                       }
+
+                 // iterate through the class members
+                    i++;
+                  }
+             }
+        }
+
+     return defaultDestructor;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:08:22,894 - INFO - Response from llama3.1:70b for Function 45:
+2025-01-27 18:08:22,894 - INFO - /**
+ * @fn SgMemberFunctionDeclaration* SageInterface::getDefaultDestructor(SgClassDeclaration* classDeclaration)
+ *
+ * @brief Retrieves the default destructor of a given class declaration.
+ *
+ * This function searches for the default destructor within the members of a class definition. 
+ * It iterates through each member and checks if it is a member function declaration with a special 
+ * function modifier that indicates it is a destructor. If such a function is found, it is returned as 
+ * the default destructor.
+ *
+ * @param classDeclaration The SgClassDeclaration for which to retrieve the default destructor.
+ *                          Must not be NULL and should have a defining declaration.
+ *
+ * @return A pointer to the SgMemberFunctionDeclaration representing the default destructor of the given class declaration, or NULL if no such destructor is found.
+ *
+ * @warning If the input class declaration does not have a defining declaration, this function may not work as expected.
+ *
+ * @note This function performs assertions on its inputs and may terminate the program if they are invalid.
+ *
+ * @pre The input class declaration must be valid and should have a defining declaration.
+ *
+ * @post The returned default destructor is guaranteed to be a member of the given class declaration, but may be NULL if no such destructor exists.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgClassDeclaration* classDecl = ...; // obtain a valid SgClassDeclaration object
+ *           SgMemberFunctionDeclaration* defaultDestructor = SageInterface::getDefaultDestructor(classDecl);
+ *           if (defaultDestructor != NULL) {
+ *             printf("Default destructor found: %s\n", defaultDestructor->unparseToString().c_str());
+ *           }
+ *          @endcode
+ */
+2025-01-27 18:08:22,894 - INFO - End time: 2025-01-27 18:08:22
+2025-01-27 18:08:22,894 - INFO - Duration: 25.222455739974976

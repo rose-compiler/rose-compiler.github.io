@@ -1,0 +1,294 @@
+2025-01-27 20:09:20,658 - INFO - Start time: 2025-01-27 20:09:20
+2025-01-27 20:09:20,658 - INFO - Generating documents for a function with id : 341
+2025-01-27 20:09:20,658 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::replaceExpression(SgExpression* oldExp, SgExpression* newExp, bool keepOldExp/*=false*/) {
+  SgExpression* parentExp;
+
+  ROSE_ASSERT(oldExp);
+  ROSE_ASSERT(newExp);
+  if (oldExp==newExp) return;
+
+  if (isSgVarRefExp(newExp))
+    newExp->set_need_paren(true); // enclosing new expression with () to be safe
+
+  SgNode* parent = oldExp->get_parent();
+  ROSE_ASSERT(parent!=NULL);
+  newExp->set_parent(parent);
+
+  // set lvalue when necessary
+  if (oldExp->get_lvalue() == true) newExp->set_lvalue(true);
+
+  if (isSgExprStatement(parent)) {
+    isSgExprStatement(parent)->set_expression(newExp);
+  } else if (isSgForStatement(parent)) {
+    ROSE_ASSERT (isSgForStatement(parent)->get_increment() == oldExp);
+    isSgForStatement(parent)->set_increment(newExp);
+    // TODO: any other cases here??
+  } else if(SgMatlabForStatement *matlabFor = isSgMatlabForStatement(parent)) {
+    if(matlabFor->get_index() == oldExp)
+      matlabFor->set_index(newExp);
+    else if(matlabFor->get_range() == oldExp)
+      matlabFor->set_range(newExp);
+    else
+      ROSE_ASSERT(!"sub-expression not found");
+  } else if(SgJovialForThenStatement *jovFor = isSgJovialForThenStatement(parent)) {
+    if(jovFor->get_initialization() == oldExp)
+      jovFor->set_initialization(newExp);
+    else if(jovFor->get_while_expression() == oldExp)
+      jovFor->set_while_expression(newExp);
+    else if(jovFor->get_by_or_then_expression() == oldExp)
+      jovFor->set_by_or_then_expression(newExp);
+    else
+      ROSE_ASSERT(!"sub-expression not found");
+  } else if (SgRangeExp* rngexp = isSgRangeExp(parent)) {
+    if (rngexp->get_start() == oldExp)
+      rngexp->set_start(newExp);
+    else if (rngexp->get_end() == oldExp)
+      rngexp->set_end(newExp);
+    else if (rngexp->get_stride() == oldExp)
+      rngexp->set_stride(newExp);
+    else
+      ROSE_ASSERT(!"sub-expression not found");
+  } else if (isSgReturnStmt(parent)) {
+    isSgReturnStmt(parent)->set_expression(newExp);
+  } else  if (isSgBinaryOp(parent)!=NULL) {
+    if (oldExp==isSgBinaryOp(parent)->get_lhs_operand()) {
+      isSgBinaryOp(parent)->set_lhs_operand(newExp);
+    } else if (oldExp==isSgBinaryOp(parent)->get_rhs_operand()) {
+      isSgBinaryOp(parent)->set_rhs_operand(newExp);
+    } else {
+      ROSE_ABORT();
+    }
+  } else if (isSgUnaryOp(parent)!=NULL){
+      if (oldExp==isSgUnaryOp(parent)->get_operand_i())
+           isSgUnaryOp(parent)->set_operand_i(newExp);
+      else
+        ROSE_ABORT();
+  } else if (isSgConditionalExp(parent) != NULL) {
+     SgConditionalExp* expparent = isSgConditionalExp(parent); //get explicity type parent
+     if (oldExp==expparent->get_conditional_exp())
+        expparent->set_conditional_exp(newExp);
+     else if (oldExp==expparent->get_true_exp())
+        expparent->set_true_exp(newExp);
+     else if (oldExp==expparent->get_false_exp())
+        expparent->set_false_exp(newExp);
+     else
+        ROSE_ABORT();
+  } else if (isSgExprListExp(parent) != NULL) {
+    SgExpressionPtrList& explist = isSgExprListExp(parent)->get_expressions();
+    for (Rose_STL_Container<SgExpression*>::iterator i=explist.begin();i!=explist.end();i++) {
+      if (isSgExpression(*i)==oldExp) {
+        SgExprListExp* parentExpListExp = isSgExprListExp(parent);
+        parentExpListExp->replace_expression(oldExp,newExp);
+       // break; //replace the first occurrence only??
+      }
+    }
+  } else if (isSgValueExp(parent)) {
+      // For compiler generated code, this could happen.
+      // We can just ignore this function call since it will not appear in the final AST.
+      return;
+  } else if (SgActualArgumentExpression* actexp = isSgActualArgumentExpression(parent)) {
+    ROSE_ASSERT(oldExp == actexp->get_expression());
+    actexp->set_expression(newExp);
+  } else if (SgAdaAttributeExp* attrexp = isSgAdaAttributeExp(parent)) {
+    if (oldExp == attrexp->get_object()) {
+      attrexp->set_object(newExp);
+    } else if (oldExp == attrexp->get_args()) {
+      SgExprListExp* newLst = isSgExprListExp(newExp);
+      ASSERT_not_null(newLst);
+
+      attrexp->set_args(newLst);
+    } else {
+      ROSE_ABORT();
+    }
+  /**** ALL expressions must be handled before the next line *****/
+  } else if ((parentExp=isSgExpression(parent)) != NULL) {
+    int worked = parentExp->replace_expression(oldExp, newExp);
+    // ROSE_DEPRECATED_FUNCTION
+    ROSE_ASSERT (worked);
+  } else if (isSgInitializedName(parent)) {
+    SgInitializedName* initializedNameParent = isSgInitializedName(parent);
+    if (oldExp == initializedNameParent->get_initializer()) {
+      //We can only replace an initializer expression with another initializer expression
+      ROSE_ASSERT(isSgInitializer(newExp));
+      initializedNameParent->set_initializer(isSgInitializer(newExp));
+    } else {
+      //What other expressions can be children of an SgInitializedname?
+      ROSE_ABORT();
+    }
+  } else if (isSgCaseOptionStmt(parent)) {
+    SgCaseOptionStmt * case_stmt = isSgCaseOptionStmt(parent);
+    if (oldExp == case_stmt->get_key()) {
+      case_stmt->set_key(newExp);
+    } else if(oldExp == case_stmt->get_key_range_end()) {
+      case_stmt->set_key_range_end(newExp);
+    } else {
+      ROSE_ABORT();
+    }
+  } else if (isSgProcessControlStatement(parent)) {
+    SgProcessControlStatement * ctrl_stmt = (SgProcessControlStatement*)parent;
+    if (oldExp == ctrl_stmt->get_quiet()) {
+      ctrl_stmt->set_quiet(newExp);
+    } else if (oldExp == ctrl_stmt->get_code()) {
+      ctrl_stmt->set_code(newExp);
+    } else {
+      ROSE_ABORT();
+    }
+  } else if (isSgFortranDo(parent)) {
+    SgFortranDo* fortranDo = isSgFortranDo(parent);
+    if (oldExp == fortranDo->get_initialization()) {
+      fortranDo->set_initialization(newExp);
+    } else if(oldExp == fortranDo->get_bound()) {
+      fortranDo->set_bound(newExp);
+    } else if (oldExp == fortranDo->get_increment()) {
+      fortranDo->set_increment(newExp);
+    } else {
+      ROSE_ABORT();
+    }
+  }
+  else if (SgAdaExitStmt* stm = isSgAdaExitStmt(parent)) {
+    ROSE_ASSERT(oldExp == stm->get_condition());
+    stm->set_condition(newExp);
+  }
+  else if (SgAdaModularType* ptype = isSgAdaModularType(parent)) {
+    ROSE_ASSERT(oldExp == ptype->get_modexpr());
+    ptype->set_modexpr(newExp);
+  }
+  else if (SgAdaDelayStmt* stm = isSgAdaDelayStmt(parent)) {
+    ROSE_ASSERT(oldExp == stm->get_time());
+    stm->set_time(newExp);
+  } else if (SgAdaAttributeClause* clause = isSgAdaAttributeClause(parent)) {
+    ROSE_ASSERT(oldExp == clause->get_size());
+    clause->set_size(newExp);
+  } else if (SgAdaRenamingDecl* dcl = isSgAdaRenamingDecl(parent)) {
+    ROSE_ASSERT(oldExp == dcl->get_renamed());
+    dcl->set_renamed(newExp);
+  } else if (SgAdaEntryDecl* dcl = isSgAdaEntryDecl(parent)) {
+    ROSE_ASSERT(oldExp == dcl->get_entryBarrier());
+    dcl->set_entryBarrier(newExp);
+  } else if (SgAdaSelectAlternativeStmt* stm = isSgAdaSelectAlternativeStmt(parent)) {
+    ROSE_ASSERT(oldExp == stm->get_guard());
+    stm->set_guard(newExp);
+  } else if (SgAdaDeltaConstraint* delc = isSgAdaDeltaConstraint(parent)) {
+    ROSE_ASSERT(oldExp == delc->get_delta());
+    delc->set_delta(newExp);
+  } else if (SgAdaDigitsConstraint* digc = isSgAdaDigitsConstraint(parent)) {
+    ROSE_ASSERT(oldExp == digc->get_digits());
+    digc->set_digits(newExp);
+  } else if (SgAdaDiscriminantConstraint* disc = isSgAdaDiscriminantConstraint(parent)) {
+    replaceExpressionInSgExpressionPtrList(oldExp, newExp, disc->get_discriminants());
+  } else if (SgAdaRangeConstraint* rngc = isSgAdaRangeConstraint(parent)) {
+    ROSE_ASSERT(oldExp == rngc->get_range());
+    rngc->set_range(newExp);
+  } else if (SgAdaIndexConstraint* idxc = isSgAdaIndexConstraint(parent)) {
+    replaceExpressionInSgExpressionPtrList(oldExp, newExp, idxc->get_indexRanges());
+  } else if (SgAdaVariantDecl* vtdcl = isSgAdaVariantDecl(parent)) {
+    ROSE_ASSERT(oldExp == vtdcl->get_discriminant());
+    vtdcl->set_discriminant(newExp);
+  } else if (SgAdaRepresentationClause* clause = isSgAdaRepresentationClause(parent)) {
+    ROSE_ASSERT(oldExp == clause->get_alignment());
+    clause->set_alignment(newExp);
+  } else if (SgAdaVariantWhenStmt* vtwhen = isSgAdaVariantWhenStmt(parent)) {
+    SgExprListExp* newLst = isSgExprListExp(newExp);
+    if (newLst && (oldExp == vtwhen->get_choices()))
+      vtwhen->set_choices(newLst);
+    else
+      ROSE_ABORT();
+  } else if (SgAdaComponentClause* clause = isSgAdaComponentClause(parent)) {
+    if (oldExp == clause->get_offset())
+      clause->set_offset(newExp);
+    else if (oldExp == clause->get_range() && isSgRangeExp(newExp))
+      clause->set_range(isSgRangeExp(newExp));
+    else if (oldExp == clause->get_component() && isSgVarRefExp(newExp))
+      clause->set_component(isSgVarRefExp(newExp));
+    else
+      ROSE_ABORT();
+  } else if (SgAdaFunctionRenamingDecl* rendcl = isSgAdaFunctionRenamingDecl(oldExp->get_parent())) {
+    if (oldExp == rendcl->get_renamed_function())
+      rendcl->set_renamed_function(newExp);
+    else
+      ROSE_ABORT();
+  } else {
+    cerr<<"SageInterface::replaceExpression(). Unhandled parent expression type of SageIII enum value: " <<parent->class_name()<<endl;
+    ROSE_ABORT();
+  }
+
+  if (!keepOldExp) {
+    deepDelete(oldExp); // avoid dangling node in memory pool
+  } else {
+    oldExp->set_parent(NULL);
+  }
+
+} //replaceExpression()
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:09:32,965 - INFO - Response from llama3.1:70b for Function 341:
+2025-01-27 20:09:32,965 - INFO - /**
+ * @brief Replaces an old expression with a new one in a given parent node.
+ *
+ * This function takes three parameters: the old expression to be replaced,
+ * the new expression to replace it with, and the parent node where the replacement
+ * should occur. It traverses the AST of the parent node to find all occurrences
+ * of the old expression and replaces them with the new one.
+ *
+ * @param oldExp The old expression to be replaced.
+ * @param newExp The new expression to replace it with.
+ * @param parent The parent node where the replacement should occur.
+ */
+void replaceExpression(SgExpression* oldExp, SgExpression* newExp, SgNode* parent) {
+  // ... (rest of the function remains the same)
+}
+2025-01-27 20:09:32,965 - INFO - End time: 2025-01-27 20:09:32
+2025-01-27 20:09:32,965 - INFO - Duration: 12.307440042495728

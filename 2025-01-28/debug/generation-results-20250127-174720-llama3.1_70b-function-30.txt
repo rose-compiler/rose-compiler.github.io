@@ -1,0 +1,129 @@
+2025-01-27 18:01:08,417 - INFO - Start time: 2025-01-27 18:01:08
+2025-01-27 18:01:08,417 - INFO - Generating documents for a function with id : 30
+2025-01-27 18:01:08,417 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::lookupTemplateFunctionSymbolInParentScopes(const SgName & functionName, SgFunctionType * ftype, SgTemplateParameterPtrList * tplparams, SgScopeStatement* currentScope )
+   {
+  // DQ (11/24/2007): This function can return NULL.  It returns NULL when the function symbol is not found.
+  // This can happen when a function is referenced before it it defined (no prototype mechanism in Fortran is required).
+
+  // enable default search from top of StackScope, Liao, 1/24/2008
+     SgFunctionSymbol* functionSymbol = NULL;
+     if (currentScope == NULL)
+          currentScope = SageBuilder::topScopeStack();
+     ROSE_ASSERT(currentScope != NULL);
+
+     SgScopeStatement* tempScope = currentScope;
+     while ((functionSymbol == NULL) && (tempScope != NULL))
+        {
+          functionSymbol = tempScope->lookup_template_function_symbol(functionName, ftype, tplparams);
+#if 0
+          printf ("In lookupTemplateFunctionSymbolInParentScopes(): Searching scope = %p = %s functionName = %s functionSymbol = %p \n",tempScope,tempScope->class_name().c_str(),functionName.str(),functionSymbol);
+#endif
+          if (tempScope->get_parent()!=NULL) // avoid calling get_scope when parent is not set in middle of translation
+               tempScope = isSgGlobal(tempScope) ? NULL : tempScope->get_scope();
+            else
+               tempScope = NULL;
+        }
+     return functionSymbol;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:01:41,704 - INFO - Response from llama3.1:70b for Function 30:
+2025-01-27 18:01:41,704 - INFO - /**
+ * @fn SageInterface::lookupTemplateFunctionSymbolInParentScopes(const SgName & functionName, SgFunctionType * ftype, SgTemplateParameterPtrList * tplparams, SgScopeStatement* currentScope)
+ *
+ * @brief Searches for a template function symbol in the parent scopes of the given scope.
+ *
+ * This function searches for a template function symbol with the given name and type
+ * in the parent scopes of the provided scope. It traverses up the scope hierarchy until
+ * it finds the symbol or reaches the topmost scope (global scope).
+ *
+ * @param functionName The name of the function to search for.
+ * @param ftype The type of the function to search for.
+ * @param tplparams The template parameters of the function to search for.
+ * @param currentScope The scope in which to start searching. If NULL, the topmost
+ *          scope on the stack is used as the starting point.
+ *
+ * @return A pointer to the found function symbol, or NULL if not found.
+ *
+ * @warning This function can return NULL if the function symbol is not found.
+ *          This can happen when a function is referenced before it is defined (no
+ *          prototype mechanism in Fortran is required).
+ *
+ * @pre The provided scope must be valid and non-NULL, unless the default search from
+ *          top of StackScope is desired.
+ *
+ * @post If the function symbol is found, its pointer is returned. Otherwise, NULL is returned.
+ *
+ * @note This function uses a recursive approach to traverse up the scope hierarchy.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgName functionName = "myFunction";
+ *           SgFunctionType* ftype = ...; // define the function type
+ *           SgTemplateParameterPtrList* tplparams = ...; // define the template parameters
+ *           SgScopeStatement* currentScope = ...; // define the starting scope
+ *
+ *           SgFunctionSymbol* functionSymbol = SageInterface::lookupTemplateFunctionSymbolInParentScopes(functionName, ftype, tplparams, currentScope);
+ *
+ *           if (functionSymbol != NULL) {
+ *               printf("Found function symbol: %s\n", functionSymbol->get_name().c_str());
+ *           } else {
+ *               printf("Function symbol not found.\n");
+ *           }
+ *          @endcode
+ */
+2025-01-27 18:01:41,704 - INFO - End time: 2025-01-27 18:01:41
+2025-01-27 18:01:41,704 - INFO - Duration: 33.28667950630188

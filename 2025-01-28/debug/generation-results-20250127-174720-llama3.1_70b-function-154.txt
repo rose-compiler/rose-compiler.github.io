@@ -1,0 +1,102 @@
+2025-01-27 18:50:16,528 - INFO - Start time: 2025-01-27 18:50:16
+2025-01-27 18:50:16,529 - INFO - Generating documents for a function with id : 154
+2025-01-27 18:50:16,529 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::moveUpPreprocessingInfo(SgStatement * stmt_dst, SgStatement * stmt_src,
+      PreprocessingInfo::RelativePositionType src_position/*=PreprocessingInfo::undef*/,
+      PreprocessingInfo::RelativePositionType dst_position/*=PreprocessingInfo::undef*/,
+      bool usePrepend /*= false */)
+   {
+     movePreprocessingInfo (stmt_src, stmt_dst, src_position, dst_position, usePrepend);
+   } // moveUpPreprocessingInfo()
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:50:47,111 - INFO - Response from llama3.1:70b for Function 154:
+2025-01-27 18:50:47,111 - INFO - /**
+ * @fn void SageInterface::moveUpPreprocessingInfo(SgStatement * stmt_dst, SgStatement * stmt_src, PreprocessingInfo::RelativePositionType src_position/*=PreprocessingInfo::undef*/, PreprocessingInfo::RelativePositionType dst_position/*=PreprocessingInfo::undef*/, bool usePrepend /*= false */)
+ *
+ * @brief Moves preprocessing information from one statement to another.
+ *
+ * This function moves the preprocessing information associated with stmt_src
+ * to stmt_dst. The movement is based on the relative positions specified by 
+ * src_position and dst_position. If usePrepend is true, the preprocessing info is prepended;
+ * otherwise, it is appended.
+ *
+ * @param stmt_dst The destination statement where the preprocessing information will be moved to.
+ *                 Must not be NULL.
+ * @param stmt_src The source statement from which the preprocessing information will be moved.
+ *                 Must not be NULL and must be different from stmt_dst.
+ * @param src_position The relative position of the preprocessing info in stmt_src. Defaults to PreprocessingInfo::undef.
+ * @param dst_position The relative position where the preprocessing info will be placed in stmt_dst. Defaults to PreprocessingInfo::undef.
+ * @param usePrepend If true, the preprocessing info is prepended; otherwise, it is appended. Defaults to false.
+ *
+ * @return None
+ *
+ * @warning This function does not check if the source and destination statements are valid or if they belong to the same translation unit.
+ *
+ * @pre stmt_dst and stmt_src must be non-NULL and different from each other.
+ *
+ * @post The preprocessing information associated with stmt_src is moved to stmt_dst based on the specified relative positions and usePrepend flag.
+ *
+ * @note This function calls movePreprocessingInfo() internally, which performs the actual movement of preprocessing information.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* src_stmt = ...; // source statement with preprocessing info
+ *           SgStatement* dst_stmt = ...; // destination statement where preprocessing info will be moved
+ *           SageInterface::moveUpPreprocessingInfo(dst_stmt, src_stmt);
+ *          @endcode
+ */
+2025-01-27 18:50:47,111 - INFO - End time: 2025-01-27 18:50:47
+2025-01-27 18:50:47,111 - INFO - Duration: 30.58262825012207

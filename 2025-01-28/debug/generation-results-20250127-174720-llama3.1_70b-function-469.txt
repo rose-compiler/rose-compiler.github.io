@@ -1,0 +1,166 @@
+2025-01-27 21:01:35,521 - INFO - Start time: 2025-01-27 21:01:35
+2025-01-27 21:01:35,521 - INFO - Generating documents for a function with id : 469
+2025-01-27 21:01:35,521 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    template < class T >
+bool isTemplateInstantiationFromTemplateDeclarationSatisfyingFilter (SgFunctionDeclaration* function, T* filter )
+   {
+  // DQ (9/1/2016): This function is called in the Call graph generation to avoid filtering out EDG normalized
+  // function template instnatiations (which come from normalized template functions and member functions).
+  // Note that because of the EDG normailzation the membr function is moved outside of the class, and
+  // thus marked as compiler generated.  However the template instantiations are always marked as compiler
+  // generated (if not specializations) and so we want to include a template instantiation that is marked
+  // as compiler generated, but is from a template declaration that satisfyied a specific user defined filter.
+  // The complexity of this detection is isolated here, but knowing that it must be called is more complex.
+  // This function is call in the CG.C file of tests/nonsmoke/functional/roseTests/programAnalysisTests/testCallGraphAnalysis.
+
+     bool retval = false;
+
+#define DEBUG_TEMPLATE_NORMALIZATION_DETECTION 0
+
+#if DEBUG_TEMPLATE_NORMALIZATION_DETECTION
+     printf ("In isNormalizedTemplateInstantiation(): function = %p = %s = %s \n",function,function->class_name().c_str(),function->get_name().str());
+#endif
+
+  // Test for this to be a template instantation (in which case it was marked as
+  // compiler generated but we may want to allow it to be used in the call graph,
+  // if it's template was a part was defined in the current directory).
+     SgTemplateInstantiationFunctionDecl*       templateInstantiationFunction       = isSgTemplateInstantiationFunctionDecl(function);
+     SgTemplateInstantiationMemberFunctionDecl* templateInstantiationMemberFunction = isSgTemplateInstantiationMemberFunctionDecl(function);
+
+     if (templateInstantiationFunction != NULL)
+        {
+       // When the defining function has been normalized by EDG, only the non-defining declaration will have a source position.
+          templateInstantiationFunction = isSgTemplateInstantiationFunctionDecl(templateInstantiationFunction->get_firstNondefiningDeclaration());
+          SgTemplateFunctionDeclaration* templateFunctionDeclaration = templateInstantiationFunction->get_templateDeclaration();
+          if (templateFunctionDeclaration != NULL)
+             {
+               retval = filter->operator()(templateFunctionDeclaration);
+             }
+            else
+             {
+             // Assume false.
+             }
+
+#if DEBUG_TEMPLATE_NORMALIZATION_DETECTION
+          printf ("   --- case of templateInstantiationFunction: retval = %s \n",retval ? "true" : "false");
+#endif
+        }
+       else
+        {
+          if (templateInstantiationMemberFunction != NULL)
+             {
+            // When the defining function has been normalized by EDG, only the non-defining declaration will have a source position.
+               templateInstantiationMemberFunction = isSgTemplateInstantiationMemberFunctionDecl(templateInstantiationMemberFunction->get_firstNondefiningDeclaration());
+               SgTemplateMemberFunctionDeclaration* templateMemberFunctionDeclaration = templateInstantiationMemberFunction->get_templateDeclaration();
+               if (templateMemberFunctionDeclaration != NULL)
+                  {
+                    retval = filter->operator()(templateMemberFunctionDeclaration);
+                  }
+                 else
+                  {
+                 // Assume false.
+                  }
+
+#if DEBUG_TEMPLATE_NORMALIZATION_DETECTION
+               printf ("   --- case of templateInstantiationMemberFunction: retval = %s \n",retval ? "true" : "false");
+#endif
+             }
+        }
+
+     return retval;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 21:02:08,372 - INFO - Response from llama3.1:70b for Function 469:
+2025-01-27 21:02:08,372 - INFO - /**
+ * @fn bool isTemplateInstantiationFromTemplateDeclarationSatisfyingFilter(SgFunctionDeclaration* function, T* filter)
+ *
+ * @brief Checks if a given SgFunctionDeclaration represents a template instantiation that satisfies a user-defined filter.
+ *
+ * This function determines whether the input SgFunctionDeclaration is a template instantiation and 
+ * checks if its template declaration satisfies the condition specified by the provided filter. 
+ * The check involves recursively traversing the declaration tree to find the original template declaration, 
+ * which may be hidden due to EDG normalization. If the original template declaration is found, 
+ * the function applies the user-defined filter to it and returns true if the filter condition is met.
+ *
+ * @param function A pointer to an SgFunctionDeclaration object representing a function in the abstract syntax tree (AST).
+ * @param filter A pointer to an object of type T that defines the filter condition. The object must overload the operator() 
+ *                to apply the filter condition to an SgTemplateFunctionDeclaration or SgTemplateMemberFunctionDeclaration object.
+ *
+ * @return True if the input function declaration represents a template instantiation and its original template declaration satisfies the filter condition; false otherwise.
+ *
+ * @warning This function assumes that the input function declaration is valid and well-formed. If the input is invalid, 
+ *          the behavior of this function is undefined.
+ *
+ * @pre The input function declaration must be non-null and represent a valid SgFunctionDeclaration object in the AST.
+ * @post None
+ *
+ * @note This function is designed to handle cases where EDG normalization has modified the original template declarations. 
+ *       It recursively traverses the declaration tree to find the original template declaration, which may be hidden due to EDG normalization.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgFunctionDeclaration* funcDecl = ...; // obtain a valid SgFunctionDeclaration object
+ *           MyFilter filter; // define an instance of the filter class
+ *           bool result = isTemplateInstantiationFromTemplateDeclarationSatisfyingFilter(funcDecl, &filter);
+ *           if (result) {
+ *               // The template instantiation satisfies the filter condition.
+ *           } else {
+ *               // The template instantiation does not satisfy the filter condition.
+ *           }
+ *          @endcode
+ */
+2025-01-27 21:02:08,372 - INFO - End time: 2025-01-27 21:02:08
+2025-01-27 21:02:08,372 - INFO - Duration: 32.85082769393921

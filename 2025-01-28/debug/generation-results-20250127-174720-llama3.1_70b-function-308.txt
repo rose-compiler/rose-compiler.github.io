@@ -1,0 +1,291 @@
+2025-01-27 19:55:06,323 - INFO - Start time: 2025-01-27 19:55:06
+2025-01-27 19:55:06,323 - INFO - Generating documents for a function with id : 308
+2025-01-27 19:55:06,323 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::appendStatement(SgStatement *stmt, SgScopeStatement* scope)
+   {
+  // DQ (4/3/2012): Simple globally visible function to call (used for debugging in ROSE).
+     void testAstForUniqueNodes ( SgNode* node );
+
+#if 0
+     printf ("In SageInterface::appendStatement(): stmt = %p = %s scope = %p \n",stmt,stmt->class_name().c_str(),scope);
+#endif
+
+  // DQ (6/19/2012): Exit as a test...
+  // ROSE_ASSERT(isSgClassDeclaration(stmt) == NULL);
+
+     if (scope == NULL)
+        {
+#if 0
+          printf ("   --- scope was not specified as input! \n");
+#endif
+          scope = SageBuilder::topScopeStack();
+        }
+
+     ROSE_ASSERT(stmt  != NULL);
+     ROSE_ASSERT(scope != NULL);
+
+#if 0
+     printf ("In SageInterface::appendStatement(): stmt = %p = %s scope = %p = %s \n",stmt,stmt->class_name().c_str(),scope,scope->class_name().c_str());
+#endif
+
+#if 0
+  // DQ (2/2/2010): This fails in the projects/OpenMP_Translator "make check" tests.
+  // DQ (1/2/2010): Introducing test that are enforced at lower levels to catch errors as early as possible.
+     SgDeclarationStatement* declarationStatement = isSgDeclarationStatement(stmt);
+     if (declarationStatement != NULL)
+        {
+          ROSE_ASSERT(declarationStatement->get_firstNondefiningDeclaration() != NULL);
+          ROSE_ASSERT(declarationStatement->get_definingDeclaration() != NULL);
+        }
+#endif
+
+#if 0
+    // This fix breaks other transformations.
+    // It is better to do this explicitly as needed before calling appendStatement();
+    // Liao 10/19/2010
+    // In rare cases, we are moving the statement from its original scope to another scope
+    // We have to remove it from its original scope before append it to the new scope
+    SgNode* old_parent=  stmt->get_parent();
+    if (old_parent)
+       {
+         removeStatement(stmt);
+       }
+#endif
+
+#if 0
+  // catch-all for statement fixup
+  // Must fix it before insert it into the scope,
+     fixStatement(stmt,scope);
+
+  //-----------------------
+  // append the statement finally
+  // scope->append_statement (stmt);
+     scope->insertStatementInScope(stmt,false);
+     stmt->set_parent(scope); // needed?
+#else
+  // DQ (7/12/2012): Skip adding when this is a non-autonomous type declaration.
+     bool skipAddingStatement = false;
+     SgClassDeclaration* classDeclaration = isSgClassDeclaration(stmt);
+     if (classDeclaration != NULL)
+        {
+       // DQ (7/9/2012): We only skip the attachment of the class declaration to the scope if it is NOT and autonomous declaration.
+#if 0
+          if (classDeclaration->get_parent() != NULL)
+             {
+               printf ("Since the parent of this SgClassDeclaration is set, it must have been previously added to the AST: classDeclaration = %p = %s \n",classDeclaration,classDeclaration->class_name().c_str());
+             }
+#endif
+
+#if 1
+       // DQ (6/9/2013): This is the original code...
+          skipAddingStatement = (classDeclaration->get_isAutonomousDeclaration() == false);
+#else
+       // DQ (6/9/2013): We have no other way to detect if the SgClassDeclaration has previously been added to the AST (short of searching the AST directly).
+       // This fails to add enough statements to the AST.
+          skipAddingStatement = (classDeclaration->get_isAutonomousDeclaration() == false) || (classDeclaration->get_parent() != NULL);
+#endif
+
+       // DQ (6/26/2013): Don't just check for SgTemplateInstantiationDecl, but also for SgClassDeclaration.
+       // DQ (6/9/2013): Check if this is a SgTemplateInstantiationDecl, since it might be appearing
+       // twice as a result of a template argument being instantiated and we only want to add it into
+       // the scope once.  This happens for test2013_198.C and I can't find a better solution.
+          if (classDeclaration != NULL && scope->containsOnlyDeclarations() == true)
+             {
+            // Check if this instnatiated template has already been added to the scope.
+
+            // DQ (6/26/2013): This is a newer alternative to test for an existing statement in a scope.
+            // const SgDeclarationStatementPtrList & declarationList = scope->getDeclarationList();
+            // SgDeclarationStatementPtrList::const_iterator existingDeclaration = find(declarationList.begin(),declarationList.end(),classDeclaration);
+               bool statementAlreadyExistsInScope = scope->statementExistsInScope(classDeclaration);
+               if (statementAlreadyExistsInScope == true)
+                  {
+                    if (isSgTemplateInstantiationDecl(classDeclaration) != NULL)
+                       {
+// DQ (9/13/2014): Clean up this output when not printing developer warnings.
+// #if 1
+#if PRINT_DEVELOPER_WARNINGS
+                         printf ("RARE ISSUE #1: In SageInterface::appendStatement(): This template instantiation has previously been added to the scope, so avoid doing so again (see test2013_198.C): classDeclaration = %p = %s scope = %p = %s \n",
+                              classDeclaration,classDeclaration->class_name().c_str(),scope,scope->class_name().c_str());
+#endif
+                       }
+#if 1
+                      else
+                       {
+#if 1
+                         printf ("RARE ISSUE #2: In SageInterface::appendStatement(): This statement has previously been added to the scope, so avoid doing so again (see rose.h): stmt = %p = %s scope = %p = %s \n",
+                              stmt,stmt->class_name().c_str(),scope,scope->class_name().c_str());
+#endif
+                       }
+#endif
+                    skipAddingStatement = true;
+                  }
+             }
+        }
+       else
+        {
+          SgEnumDeclaration* enumDeclaration = isSgEnumDeclaration(stmt);
+          if (enumDeclaration != NULL)
+             {
+            // DQ (7/12/2012): We only skip the attachment of the class declaration to the scope if it is NOT and autonomous declaration.
+               skipAddingStatement = (enumDeclaration->get_isAutonomousDeclaration() == false);
+             }
+        }
+
+#if 0
+  // DQ (6/26/2013): This is an attempt to support better testing of possible redundant statements
+  // that would be inserted into the current scope. This is however a bit expensive so we are using
+  // this as a way to also debug the new cases where this happens.
+     bool statementAlreadyExistsInScope = scope->statementExistsInScope(stmt);
+     if (skipAddingStatement == false && statementAlreadyExistsInScope == true)
+        {
+#if 0
+          printf ("RARE ISSUE #2: In SageInterface::appendStatement(): This statement has previously been added to the scope, so avoid doing so again (see rose.h): stmt = %p = %s scope = %p = %s \n",
+               stmt,stmt->class_name().c_str(),scope,scope->class_name().c_str());
+#endif
+#if 0
+          printf ("Exiting as a test! \n");
+          ROSE_ABORT();
+#endif
+          skipAddingStatement = true;
+        }
+#endif
+
+#if 0
+     printf ("   --- skipAddingStatement = %s \n",skipAddingStatement ? "true" : "false");
+#endif
+
+     if (skipAddingStatement == false)
+        {
+       // catch-all for statement fixup
+       // Must fix it before insert it into the scope,
+       // printf ("In appendStatementList(): Calling fixStatement() \n");
+          fixStatement(stmt,scope);
+       // printf ("DONE: In appendStatementList(): Calling fixStatement() \n");
+
+       //-----------------------
+       // append the statement finally
+       // scope->append_statement (stmt);
+#if 0
+          printf ("   --- calling insertStatementInScope(): scope = %p = %s stmt = %p = %s \n",scope,scope->class_name().c_str(),stmt,stmt->class_name().c_str());
+#endif
+          scope->insertStatementInScope(stmt,false);
+
+       // DQ (6/9/2013): Added comment only: This is needed because some declaration have to have the
+       // setting of there paremtn pointes delayed until now based on if they appear nested inside of
+       // other declarations (e.g. "typedef struct { int x; } y;").
+          stmt->set_parent(scope); // needed?
+        }
+#endif
+
+  // DQ (11/19/2012): If we are building the AST within the front-end then don't do this expensive
+  // fixup (we already set it properly in the AST construction within the frontend so we don't need
+  // this).  Also since this is only operating within a single scope it is likely too specific to C
+  // instead of addressing the details of C++ where functions can be placed in alternative scopes and
+  // use name qualification).
+  // update the links after insertion!
+     SourcePositionClassification scp = getSourcePositionClassificationMode();
+     if ( (scp != e_sourcePositionFrontendConstruction) && (isSgFunctionDeclaration(stmt) != NULL) )
+        {
+          updateDefiningNondefiningLinks(isSgFunctionDeclaration(stmt),scope);
+        }
+
+#if 0
+  // DQ (6/26/2013): Turn on this test for debugging ROSE compiling rose.h header file.
+  // Note that this is a stronger AST subtree test and not the weaker test for a redundant
+  // statement in a single scope.
+  // DQ (9/1/2012): this is a debugging mode that we need to more easily turn on and off.
+  // DQ (4/3/2012): Added test to make sure that the pointers are unique.
+     testAstForUniqueNodes(scope);
+#else
+  // printf ("In SageInterface::appendStatement(): Skipping test for unique statements in subtree \n");
+#endif
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:55:21,965 - INFO - Response from llama3.1:70b for Function 308:
+2025-01-27 19:55:21,965 - INFO - /**
+ * @file SageInterface.cpp
+ * @author Your Name
+ * @date Today's Date
+ * @brief Implementation of the SageInterface class.
+ */
+
+#include "SageInterface.h"
+
+// ... rest of the code ...
+
+void appendStatement(SgNode* stmt, SgScopeStatement* scope) {
+    // ... existing code ...
+    
+#if 0
+    printf ("In SageInterface::appendStatement(): This statement has previously been added to the scope, so avoid doing so again (see rose.h): stmt = %p = %s scope = %p = %s \n",
+                              stmt,stmt->class_name().c_str(),scope,scope->class_name().c_str());
+#endif
+    // ... rest of the code ...
+}
+
+// ... rest of the code ...
+
+void testAstForUniqueNodes(SgNode* node) {
+    // ... existing code ...
+    
+#if 0
+    printf ("Exiting as a test! \n");
+    ROSE_ABORT();
+#endif
+    // ... rest of the code ...
+}
+2025-01-27 19:55:21,965 - INFO - End time: 2025-01-27 19:55:21
+2025-01-27 19:55:21,965 - INFO - Duration: 15.641692399978638

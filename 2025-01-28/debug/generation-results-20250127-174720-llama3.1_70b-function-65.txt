@@ -1,0 +1,126 @@
+2025-01-27 18:15:37,511 - INFO - Start time: 2025-01-27 18:15:37
+2025-01-27 18:15:37,511 - INFO - Generating documents for a function with id : 65
+2025-01-27 18:15:37,511 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void
+SageInterface::initializeWhileStatement(SgWhileStmt* whileStatement, SgStatement *  condition, SgStatement *body, SgStatement *else_body)
+   {
+     ROSE_ASSERT(whileStatement);
+
+  // Rasmussen (3/22/2020): Fixed setting case insensitivity
+     if (is_language_case_insensitive())
+          whileStatement->setCaseInsensitive(true);
+
+     if (whileStatement->get_condition() == nullptr)
+          whileStatement->set_condition(condition);
+     if (whileStatement->get_body() == nullptr)
+          whileStatement->set_body(body);
+
+  // Python support.
+     if (whileStatement->get_else_body() == nullptr)
+          whileStatement->set_else_body(else_body);
+
+     setOneSourcePositionNull(whileStatement);
+     if (condition) condition->set_parent(whileStatement);
+     if (body) body->set_parent(whileStatement);
+
+  // DQ (8/10/2011): This is added by Michael to support a Python specific feature.
+     if (else_body != nullptr)
+        {
+          whileStatement->set_else_body(else_body);
+          else_body->set_parent(whileStatement);
+        }
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:16:01,731 - INFO - Response from llama3.1:70b for Function 65:
+2025-01-27 18:16:01,731 - INFO - /**
+ * @fn void SageInterface::initializeWhileStatement(SgWhileStmt* whileStatement, SgStatement *  condition, SgStatement *body, SgStatement *else_body)
+ *
+ * @brief Initializes a while statement with the given condition and body.
+ *
+ * This function initializes a while statement by setting its condition and body,
+ * as well as optionally setting an else body if provided. It also sets the
+ * parent-child relationships between the statements and ensures case insensitivity
+ * if the language requires it.
+ *
+ * @param whileStatement The while statement to be initialized. Must not be null.
+ * @param condition The condition of the while statement. May be null.
+ * @param body The body of the while statement. May be null.
+ * @param else_body The else body of the while statement, if any. May be null.
+ *
+ * @return None
+ *
+ * @warning If the language is case insensitive, this function will set the while
+ *          statement to be case insensitive as well.
+ *
+ * @pre The whileStatement parameter must not be null.
+ *
+ * @post The condition and body of the while statement will be set if provided,
+ *       and the parent-child relationships between the statements will be established.
+ *
+ * @note This function also supports Python-specific features, such as setting an
+ *       else body for the while statement.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgWhileStmt* whileStatement = ...;
+ *           SgStatement* condition = ...;
+ *           SgStatement* body = ...;
+ *           SgStatement* else_body = ...;
+ *           SageInterface::initializeWhileStatement(whileStatement, condition, body, else_body);
+ *          @endcode
+ */
+2025-01-27 18:16:01,731 - INFO - End time: 2025-01-27 18:16:01
+2025-01-27 18:16:01,731 - INFO - Duration: 24.220313787460327

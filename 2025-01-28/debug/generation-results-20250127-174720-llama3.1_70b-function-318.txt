@@ -1,0 +1,108 @@
+2025-01-27 19:59:09,018 - INFO - Start time: 2025-01-27 19:59:09
+2025-01-27 19:59:09,018 - INFO - Generating documents for a function with id : 318
+2025-01-27 19:59:09,018 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::insertStatementBefore(SgStatement *targetStmt, SgStatement* newStmt, bool autoMovePreprocessingInfo /*= true */)
+  {
+    insertStatement(targetStmt,newStmt,true, autoMovePreprocessingInfo);
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:59:37,555 - INFO - Response from llama3.1:70b for Function 318:
+2025-01-27 19:59:37,555 - INFO - /**
+ * @fn void SageInterface::insertStatementBefore(SgStatement* targetStmt, SgStatement* newStmt, bool autoMovePreprocessingInfo)
+ *
+ * @brief Inserts a statement before another statement in the AST.
+ *
+ * This function inserts a given statement (newStmt) immediately before
+ * another statement (targetStmt) in the Abstract Syntax Tree (AST).
+ * It provides an option to automatically move preprocessing information,
+ * which is enabled by default.
+ *
+ * The insertion is performed by calling the insertStatement function,
+ * passing the target statement, new statement, and a boolean flag indicating
+ * whether the insertion should be done before or after the target statement.
+ * In this case, the flag is set to true, meaning the new statement will be inserted
+ * before the target statement.
+ *
+ * @param targetStmt The statement before which the new statement will be inserted.
+ *                   Must not be NULL.
+ * @param newStmt    The statement to be inserted before the target statement.
+ *                  Must not be NULL.
+ * @param autoMovePreprocessingInfo Whether preprocessing information should
+ *                                   automatically be moved. Defaults to true.
+ *
+ * @return None (void function)
+ *
+ * @warning If the target statement is not found in the AST, or if the new statement
+ *          cannot be inserted for any reason, this function may throw an exception.
+ *
+ * @pre The target statement and new statement must both exist in the AST.
+ *      The target statement must not be NULL, and the new statement must not be NULL.
+ *
+ * @post The new statement will have been inserted before the target statement
+ *       in the AST, unless an exception was thrown.
+ *
+ * @note This function calls insertStatement with the before flag set to true.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* stmt1 = ...; // some existing statement in the AST
+ *           SgStatement* stmt2 = ...; // a new statement to be inserted
+ *           SageInterface sage;
+ *           sage.insertStatementBefore(stmt1, stmt2);
+ *          @endcode
+ */
+2025-01-27 19:59:37,555 - INFO - End time: 2025-01-27 19:59:37
+2025-01-27 19:59:37,555 - INFO - Duration: 28.536953687667847

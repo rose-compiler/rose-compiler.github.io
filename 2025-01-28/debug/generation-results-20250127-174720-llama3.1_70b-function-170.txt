@@ -1,0 +1,204 @@
+2025-01-27 18:57:01,802 - INFO - Start time: 2025-01-27 18:57:01
+2025-01-27 18:57:01,802 - INFO - Generating documents for a function with id : 170
+2025-01-27 18:57:01,802 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    // Is a type default constructible?  This may not quite work properly.
+  bool isDefaultConstructible(SgType* type) {
+    switch (type->variantT()) {
+      case V_SgArrayType:
+        return isDefaultConstructible(isSgArrayType(type)->get_base_type());
+        break;
+
+      case V_SgModifierType:
+        return isDefaultConstructible(isSgModifierType(type)->get_base_type()); 
+        break;
+
+      case V_SgClassType: {
+        SgClassDeclaration* decl =
+          isSgClassDeclaration(isSgClassType(type)->get_declaration());
+        assert (decl);
+        decl= isSgClassDeclaration(decl->get_definingDeclaration ());
+        assert (decl);
+        SgClassDefinition* defn = decl->get_definition();
+        assert (defn);
+        bool hasDefaultConstructor = false, hasAnyConstructor = false;
+        // Look for user-defined constructors
+        SgDeclarationStatementPtrList& classMembers = defn->get_members();
+        for (SgDeclarationStatementPtrList::iterator i = classMembers.begin();
+            i != classMembers.end(); ++i) {
+          if (isSgFunctionDeclaration(*i)) {
+            SgFunctionDeclaration* fundecl = isSgFunctionDeclaration(*i);
+            bool thisIsAConstructor = 
+              fundecl->get_specialFunctionModifier().isConstructor();
+            if (thisIsAConstructor)
+              hasAnyConstructor = true;
+            bool allArgsAreDefaulted = 
+              acceptsArguments(fundecl, std::list<SgType*>());
+            if (thisIsAConstructor && allArgsAreDefaulted &&
+                (*i)->get_declarationModifier().get_accessModifier().isPublic())
+              hasDefaultConstructor = true;
+          }
+        }
+        if (hasDefaultConstructor) return true;
+        if (hasAnyConstructor) return false;
+        // Return true if all non-static data members are default constructible
+        for (SgDeclarationStatementPtrList::iterator i = classMembers.begin();
+            i != classMembers.end(); ++i) {
+          if (isSgVariableDeclaration(*i)) {
+            SgVariableDeclaration* decl = isSgVariableDeclaration(*i);
+            if (decl->get_declarationModifier().get_storageModifier().isStatic())
+              continue;
+            SgInitializedNamePtrList& vars = decl->get_variables();
+            for (SgInitializedNamePtrList::iterator j = vars.begin();
+                j != vars.end(); ++j) {
+              if (isDefaultConstructible((*j)->get_type()))
+                return true;
+            }
+          }
+        }
+        return false;
+      }
+        break;
+
+      case V_SgTypedefType:
+        return isDefaultConstructible(isSgTypedefType(type)->get_base_type());
+        break;
+
+      case V_SgReferenceType:
+        return false;
+        break;
+
+   // DQ (9/7/2016): Added support for new type now referenced as a result of using new automated generation of builtin functions for ROSE.
+      case V_SgTypeSigned128bitInteger:
+
+        // DQ (8/27/2006): Changed name of SgComplex to make it more consistant with other 
+        // type names and added SgTypeImaginary IR node (for C99 complex support).
+      case V_SgTypeComplex:
+      case V_SgTypeImaginary:
+      case V_SgEnumType:
+      case V_SgPointerType:
+      case V_SgPointerMemberType:
+      case V_SgTypeBool:
+      case V_SgTypeChar:
+      case V_SgTypeDefault:
+      case V_SgTypeDouble:
+      case V_SgTypeFloat:
+      case V_SgTypeGlobalVoid:
+      case V_SgTypeInt:
+      case V_SgTypeLong:
+      case V_SgTypeLongDouble:
+      case V_SgTypeLongLong:
+      case V_SgTypeShort:
+      case V_SgTypeSignedChar:
+      case V_SgTypeSignedInt:
+      case V_SgTypeSignedLong:
+      case V_SgTypeSignedShort:
+      case V_SgTypeString:
+      case V_SgTypeUnsignedChar:
+      case V_SgTypeUnsignedInt:
+      case V_SgTypeUnsignedLong:
+      case V_SgTypeUnsignedLongLong:
+      case V_SgTypeUnsignedShort:
+      case V_SgTypeVoid:
+      case V_SgTypeWchar:
+
+   // DQ (2/16/2018): Adding support for char16_t and char32_t (C99 and C++11 specific types).
+      case V_SgTypeChar16:
+      case V_SgTypeChar32:
+
+        return true;
+        break;
+
+      default:
+        assert (!"Unknown type in isDefaultConstructible()");
+        return true;
+    }
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:57:25,155 - INFO - Response from llama3.1:70b for Function 170:
+2025-01-27 18:57:25,155 - INFO - /**
+ * @fn bool isDefaultConstructible(SgType* type)
+ *
+ * @brief Determines if a given SgType is default constructible.
+ *
+ * This function checks whether a type can be default constructed, 
+ * i.e., whether it has a default constructor or all its non-static data members are default constructible.
+ *
+ * It recursively traverses the type hierarchy and examines the type's declaration to make this determination.
+ *
+ * @param type The SgType to check for default constructibility. Must not be NULL.
+ *
+ * @return True if the type is default constructible, false otherwise.
+ *
+ * @warning This function may return incorrect results for certain types (e.g., V_SgArrayType) due to limitations in its implementation.
+ *
+ * @pre The input type must be a valid SgType pointer.
+ *
+ * @post The function returns true if the type has a default constructor or all its non-static data members are default constructible, false otherwise.
+ *
+ * @note This function uses a recursive approach to traverse the type hierarchy and may cause stack overflows for deeply nested types.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgType* myType = ...; // Initialize myType to some SgType pointer
+ *           if (isDefaultConstructible(myType)) {
+ *             cout << "The type is default constructible." << endl;
+ *           } else {
+ *             cout << "The type is not default constructible." << endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 18:57:25,155 - INFO - End time: 2025-01-27 18:57:25
+2025-01-27 18:57:25,155 - INFO - Duration: 23.35319709777832

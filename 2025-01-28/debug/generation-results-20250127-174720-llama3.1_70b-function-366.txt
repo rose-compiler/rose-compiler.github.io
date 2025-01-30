@@ -1,0 +1,115 @@
+2025-01-27 20:18:29,734 - INFO - Start time: 2025-01-27 20:18:29
+2025-01-27 20:18:29,734 - INFO - Generating documents for a function with id : 366
+2025-01-27 20:18:29,734 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    int  SageInterface::suggestNextNumericLabel(SgFunctionDefinition* func_def)
+{
+  int result =10;
+  ROSE_ASSERT (func_def != NULL);
+  ROSE_ASSERT (SageInterface::is_Fortran_language()== true);
+  std::set<SgNode*> symbols = func_def->get_symbol_table()->get_symbols();
+
+  // find the max label value, +10 to be the suggested next label value
+  std::set<SgNode*>::iterator iter ;
+  for (iter=symbols.begin(); iter !=symbols.end(); iter++)
+  {
+    SgLabelSymbol * l_symbol = isSgLabelSymbol(*iter);
+    if (l_symbol)
+    {
+      int cur_val = l_symbol->get_numeric_label_value();
+      if (result <=cur_val)
+        result = cur_val +10;
+    }
+  }
+
+  ROSE_ASSERT (result <= 99999); // max 5 digits for F77 label
+  return result;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:18:53,595 - INFO - Response from llama3.1:70b for Function 366:
+2025-01-27 20:18:53,595 - INFO - /**
+ * @fn int SageInterface::suggestNextNumericLabel(SgFunctionDefinition* func_def)
+ *
+ * @brief Suggests a numeric label value for a Fortran 77 function.
+ *
+ * This function scans the symbol table of the given function definition to
+ * find the maximum numeric label value used and suggests a new label value by
+ * adding 10 to the maximum found. The suggested label is ensured to be within the
+ * valid range for Fortran 77 labels (i.e., not exceeding 5 digits).
+ *
+ * @param func_def A pointer to an SgFunctionDefinition object representing the
+ *                 function for which a numeric label value is to be suggested.
+ *                 Must not be NULL. The function must also be in Fortran language.
+ *
+ * @return A suggested numeric label value, at least 10 greater than the maximum
+ *         existing label value found in the function's symbol table.
+ *
+ * @warning If no labels are found in the function's symbol table, a default value of 10 is returned.
+ *
+ * @pre The input SgFunctionDefinition object must not be NULL and must represent a Fortran language function.
+ *
+ * @post The returned label value will be at least 10 greater than any existing label value in the function's symbol table.
+ *
+ * @note This function assumes that the input function definition is valid and has been parsed correctly.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgFunctionDefinition* func_def = ...; // assume a valid function definition
+ *           int next_label = SageInterface::suggestNextNumericLabel(func_def);
+ *           cout << "Suggested next label: " << next_label << endl;
+ *          @endcode
+ */
+2025-01-27 20:18:53,595 - INFO - End time: 2025-01-27 20:18:53
+2025-01-27 20:18:53,595 - INFO - Duration: 23.86102533340454

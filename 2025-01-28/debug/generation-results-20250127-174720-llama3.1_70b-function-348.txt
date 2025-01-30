@@ -1,0 +1,143 @@
+2025-01-27 20:11:56,597 - INFO - Start time: 2025-01-27 20:11:56
+2025-01-27 20:11:56,597 - INFO - Generating documents for a function with id : 348
+2025-01-27 20:11:56,597 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::moveToSubdirectory ( std::string directoryName, SgFile* file )
+   {
+  // This support makes use of the new SgDirectory IR node.  It causes the unparser to
+  // generate a subdirectory and unparse the file into the subdirectory.  It works
+  // by internally calling the system function "system()" to call "mkdir directoryName"
+  // and then chdir()" to change the current directory.  These steps are handled by the
+  // unparser.
+
+  // This function just does the transformation to insert a SgDirectory IR node between
+  // the referenced SgFile and it's project (fixing up parents and file lists etc.).
+
+  // Add a directory and unparse the code (to the new directory)
+     SgDirectory* directory = new SgDirectory(directoryName);
+
+     SgFileList* parentFileList = isSgFileList(file->get_parent());
+     ROSE_ASSERT(parentFileList != NULL);
+     directory->set_parent(file->get_parent());
+
+     SgProject* project           = NULL;
+     SgDirectory* parentDirectory = isSgDirectory(parentFileList->get_parent());
+
+     if (parentDirectory != NULL)
+        {
+       // Add a directory to the list in the SgDirectory node.
+          parentDirectory->get_directoryList()->get_listOfDirectories().push_back(directory);
+
+       // Erase the reference to the file in the project's file list.
+       // parentDirectory->get_fileList().erase(find(parentDirectory->get_fileList().begin(),parentDirectory->get_fileList().end(),file));
+        }
+       else
+        {
+          project = isSgProject(parentFileList->get_parent());
+          ROSE_ASSERT(project != NULL);
+
+       // Add a directory to the list in the SgProject node.
+          project->get_directoryList()->get_listOfDirectories().push_back(directory);
+
+       // Erase the reference to the file in the project's file list.
+       // project->get_fileList().erase(find(project->get_fileList().begin(),project->get_fileList().end(),file));
+        }
+
+  // Put the file into the new directory.
+     directory->get_fileList()->get_listOfFiles().push_back(file);
+
+  // Erase the reference to the file in the project's file list.
+     parentFileList->get_listOfFiles().erase(find(parentFileList->get_listOfFiles().begin(),parentFileList->get_listOfFiles().end(),file));
+
+     file->set_parent(directory);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:12:23,095 - INFO - Response from llama3.1:70b for Function 348:
+2025-01-27 20:12:23,095 - INFO - /**
+ * @fn void SageInterface::moveToSubdirectory(std::string directoryName, SgFile* file)
+ *
+ * @brief Moves a file to a subdirectory in the project.
+ *
+ * This function transforms the abstract syntax tree (AST) by inserting a new SgDirectory node
+ * between the given SgFile and its parent. It updates the parents and file lists accordingly,
+ * effectively moving the file to the specified subdirectory when unparsed.
+ *
+ * The transformation is done in three steps:
+ * 1. A new SgDirectory node is created with the given directory name.
+ * 2. The SgDirectory node is inserted between the SgFile and its parent (either an SgProject or another SgDirectory).
+ * 3. The file is moved to the new subdirectory by updating the parents and file lists.
+ *
+ * @param directoryName The name of the subdirectory where the file will be moved.
+ * @param file The SgFile node representing the file to be moved.
+ *
+ * @return None
+ *
+ * @warning This function modifies the AST, which may affect the behavior of other functions that operate on the same AST.
+ *
+ * @pre The given SgFile node must exist in the project and have a valid parent (either an SgProject or another SgDirectory).
+ * @post The file is moved to the specified subdirectory, and the parents and file lists are updated accordingly.
+ *
+ * @note This function uses the ROSE_ASSERT macro to ensure that the preconditions are met. If the assertions fail, it indicates a programming error.
+ *
+ * @example
+ * @code
+ *   SageInterface sage;
+ *   SgFile* file = ...; // assume a valid SgFile node
+ *   std::string directoryName = "new_subdirectory";
+ *   sage.moveToSubdirectory(directoryName, file);
+ * @endcode
+ */
+2025-01-27 20:12:23,095 - INFO - End time: 2025-01-27 20:12:23
+2025-01-27 20:12:23,095 - INFO - Duration: 26.498059272766113

@@ -1,0 +1,127 @@
+2025-01-27 19:21:02,585 - INFO - Start time: 2025-01-27 19:21:02
+2025-01-27 19:21:02,586 - INFO - Generating documents for a function with id : 229
+2025-01-27 19:21:02,586 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::setLoopUpperBound(SgNode* loop, SgExpression* ub)
+{
+  ROSE_ASSERT(loop != NULL);
+  ROSE_ASSERT(ub != NULL);
+  SgForStatement* forstmt = isSgForStatement(loop);
+  //  ROSE_ASSERT(forstmt!= NULL);
+  SgFortranDo* dostmt = isSgFortranDo(loop);
+  if (forstmt != NULL)
+  {
+    // set upper bound expression
+    SgBinaryOp * binop= isSgBinaryOp(isSgExprStatement(forstmt->get_test())->get_expression());
+    ROSE_ASSERT(binop != NULL);
+    binop->set_rhs_operand(ub);
+    ub->set_parent(binop);
+  }
+  else if (dostmt != NULL)
+  {
+    dostmt->set_bound(ub);
+    ub->set_parent(dostmt);
+    //TODO delete the original bound expression
+  }
+  else
+  {
+    cerr<<"Error. SageInterface::setLoopUpperBound(), illegal loop type:"<< loop->class_name()<<endl;
+    ROSE_ASSERT (false);
+  }
+
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:21:27,212 - INFO - Response from llama3.1:70b for Function 229:
+2025-01-27 19:21:27,212 - INFO - /**
+ * @fn void SageInterface::setLoopUpperBound(SgNode* loop, SgExpression* ub)
+ *
+ * @brief Sets the upper bound of a loop statement.
+ *
+ * This function updates the upper bound expression of a given loop statement.
+ * It supports both Fortran-style DO loops and C-style FOR loops. The new upper
+ * bound expression is set as the right-hand side operand of the loop's test
+ * expression, or as the bound attribute of the DO statement, depending on the
+ * type of loop.
+ *
+ * @param loop A pointer to the SgNode representing the loop statement.
+ *             Must not be NULL and must represent a valid loop statement.
+ *
+ * @param ub   A pointer to the SgExpression representing the new upper bound.
+ *             Must not be NULL.
+ *
+ * @return None
+ *
+ * @warning This function does not perform any semantic checks on the input
+ *          parameters. It is up to the caller to ensure that the loop statement
+ *          and upper bound expression are valid and compatible.
+ *
+ * @pre The input loop statement must be a valid SgForStatement or SgFortranDo node.
+ *
+ * @post The upper bound expression of the loop statement is updated according
+ *       to the input parameters.
+ *
+ * @note This function modifies the abstract syntax tree (AST) in place. It does
+ *       not create a new AST.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* loop = ...; // obtain a pointer to a loop statement node
+ *           SgExpression* ub = ...; // obtain a pointer to an expression node
+ *           SageInterface sage;
+ *           sage.setLoopUpperBound(loop, ub);
+ *          @endcode
+ */
+2025-01-27 19:21:27,212 - INFO - End time: 2025-01-27 19:21:27
+2025-01-27 19:21:27,212 - INFO - Duration: 24.626462697982788

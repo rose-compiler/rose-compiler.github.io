@@ -1,0 +1,107 @@
+2025-01-27 19:14:08,740 - INFO - Start time: 2025-01-27 19:14:08
+2025-01-27 19:14:08,740 - INFO - Generating documents for a function with id : 212
+2025-01-27 19:14:08,740 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgFunctionType* SageInterface::findFunctionType (SgType* return_type, SgFunctionParameterTypeList* typeList)
+{
+  ROSE_ASSERT(return_type != NULL);
+  ROSE_ASSERT(typeList != NULL);
+  SgFunctionTypeTable * fTable = SgNode::get_globalFunctionTypeTable();
+  ROSE_ASSERT(fTable);
+
+  // This function make clever use of a static member function which can't be built
+  // for the case of a SgMemberFunctionType (or at least not without more work).
+  SgName typeName = SgFunctionType::get_mangled(return_type, typeList);
+  SgFunctionType* funcType = isSgFunctionType(fTable->lookup_function_type(typeName));
+
+  return funcType;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:14:33,744 - INFO - Response from llama3.1:70b for Function 212:
+2025-01-27 19:14:33,747 - INFO - /**
+ * @fn SgFunctionType* SageInterface::findFunctionType (SgType* return_type, SgFunctionParameterTypeList* typeList)
+ *
+ * @brief Finds a function type in the global function type table based on the given return type and parameter types.
+ *
+ * This function searches for a matching function type in the global function type table
+ * using the provided return type and parameter types. It utilizes a static member function to
+ * construct a mangled name, which is then used to look up the corresponding function type in the table.
+ *
+ * @param return_type The return type of the function to be found. Must not be NULL.
+ *
+ * @param typeList The list of parameter types for the function to be found. Must not be NULL.
+ *
+ * @return A pointer to the matching SgFunctionType if found, otherwise NULL.
+ *
+ * @warning This function assumes that the global function type table has been properly initialized and populated.
+ *
+ * @pre The return_type and typeList parameters must not be NULL.
+ *
+ * @post The returned function type is valid and corresponds to the given return type and parameter types.
+ *
+ * @note This function relies on the static member function SgFunctionType::get_mangled() to construct a mangled name for the lookup.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgType* returnType = ...; // obtain return type
+ *           SgFunctionParameterTypeList* paramTypes = ...; // obtain parameter types
+ *           SgFunctionType* funcType = SageInterface::findFunctionType(returnType, paramTypes);
+ *           if (funcType != NULL) {
+ *             // use the found function type
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:14:33,748 - INFO - End time: 2025-01-27 19:14:33
+2025-01-27 19:14:33,748 - INFO - Duration: 25.00758981704712

@@ -1,0 +1,130 @@
+2025-01-27 19:22:58,301 - INFO - Start time: 2025-01-27 19:22:58
+2025-01-27 19:22:58,301 - INFO - Generating documents for a function with id : 233
+2025-01-27 19:22:58,301 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool SageInterface::forLoopNormalization(SgForStatement* loop, bool foldConstant /*= true*/)
+{
+  ROSE_ASSERT(loop != NULL);
+  // Normalize initialization statement of the for loop
+  // -------------------------------------
+  // for (int i=0;... ) becomes int i; for (i=0;..)
+  // Only roughly check here, isCanonicalForLoop() should be called to have a stricter check
+  if (!normalizeForLoopInitDeclaration(loop))
+    return false;
+
+  // Normalized the test expressions
+  if (!normalizeForLoopTest(loop))
+    return false;
+
+ // Normalize the increment expression
+  if (!normalizeForLoopIncrement(loop))
+    return false;
+
+  // Normalize the loop body: ensure there is a basic block
+  SgBasicBlock* body = ensureBasicBlockAsBodyOfFor(loop);
+  ROSE_ASSERT(body!=NULL);
+   // Liao, 9/22/2009
+   // folding entire loop may cause decreased accuracy for floating point operations
+   // we only want to fold the loop controlling expressions
+  if (foldConstant)
+  {
+    //constantFolding(loop->get_parent());
+    constantFolding(loop->get_test());
+    constantFolding(loop->get_increment());
+  }
+
+  return true;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:23:21,190 - INFO - Response from llama3.1:70b for Function 233:
+2025-01-27 19:23:21,190 - INFO - /**
+ * @fn bool SageInterface::forLoopNormalization(SgForStatement* loop, bool foldConstant /*= true*/)
+ *
+ * @brief Normalizes a for loop by rearranging its components to conform to a standard form.
+ *
+ * This function normalizes the initialization statement, test expressions, and increment
+ * expression of a given for loop. It also ensures that the loop body is contained within
+ * a basic block. Additionally, it performs constant folding on the loop controlling
+ * expressions if requested.
+ *
+ * @param loop The SgForStatement node representing the for loop to be normalized.
+ *             Must not be NULL.
+ * @param foldConstant A boolean flag indicating whether to perform constant folding
+ *                     on the loop controlling expressions. Defaults to true.
+ *
+ * @return True if the normalization is successful, false otherwise.
+ *
+ * @warning The function may modify the original AST.
+ *
+ * @pre The input SgForStatement node must not be NULL.
+ *
+ * @post The for loop will be normalized and its components rearranged to conform
+ *       to a standard form. The loop body will be contained within a basic block.
+ *       If constant folding is requested, it will be performed on the loop controlling
+ *       expressions.
+ *
+ * @note This function assumes that the input SgForStatement node represents a valid for loop.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SageInterface sage;
+ *           SgForStatement* loop = ...; // obtain a for loop statement node
+ *           if (!sage.forLoopNormalization(loop)) {
+ *             // handle error
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:23:21,190 - INFO - End time: 2025-01-27 19:23:21
+2025-01-27 19:23:21,190 - INFO - Duration: 22.88934898376465

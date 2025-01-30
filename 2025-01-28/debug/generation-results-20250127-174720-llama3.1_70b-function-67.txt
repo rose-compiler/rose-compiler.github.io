@@ -1,0 +1,132 @@
+2025-01-27 18:16:24,546 - INFO - Start time: 2025-01-27 18:16:24
+2025-01-27 18:16:24,546 - INFO - Generating documents for a function with id : 67
+2025-01-27 18:16:24,546 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool SageInterface::isMain(const SgNode* n)
+{
+   bool result = false;
+   // Liao 1/5/2010, handle Fortran main entry: SgProgramHeaderStatement
+   if (SageInterface::is_Fortran_language()) {
+      if (isSgProgramHeaderStatement(n)) {
+         result = true;
+      }
+   }
+   else {
+      if (isSgFunctionDeclaration(n) != nullptr) {
+         bool either = false;
+         if (SageInterface::is_Java_language()) {
+            either = true;
+         }
+         else {
+            const SgStatement* stmnt = isSgStatement(n);
+            ROSE_ASSERT(stmnt != nullptr);
+            if (isSgGlobal(stmnt->get_scope())) {
+               either = true;
+            }
+         }
+         if (either) {
+            const SgFunctionDeclaration* funcDefn = isSgFunctionDeclaration(n);
+            ROSE_ASSERT(funcDefn != nullptr);
+            if (funcDefn->get_name() == "main") {
+               result = true;
+            }
+         }
+      }
+   }
+   return result;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:16:49,392 - INFO - Response from llama3.1:70b for Function 67:
+2025-01-27 18:16:49,392 - INFO - /**
+ * @fn bool SageInterface::isMain(const SgNode* n)
+ *
+ * @brief Checks if a given node represents the main entry point of a program.
+ *
+ * This function determines whether a provided SgNode represents the main entry
+ * point of a program, considering both C/C++ and Fortran languages. It examines
+ * various properties of the node to make this determination, including its type,
+ * scope, and name.
+ *
+ * @param n The SgNode to check for being the main entry point.
+ *
+ * @return True if the node represents the main entry point, false otherwise.
+ *
+ * @warning This function assumes that the input node is valid and not null.
+ *
+ * @pre The input node must be a valid SgNode instance.
+ *
+ * @post The return value will indicate whether the node represents the main entry
+ *       point of a program.
+ *
+ * @note This function uses language-specific checks to determine if the node
+ *       represents the main entry point. For Fortran, it specifically looks for
+ *       an SgProgramHeaderStatement, while for other languages (including C/C++
+ *       and Java), it checks for an SgFunctionDeclaration with the name "main"
+ *       within a global scope.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *             // Create an SgNode representing a main entry point
+ *             const SgNode* node = ...;
+ *
+ *             // Check if the node represents the main entry point
+ *             bool isMainEntry = SageInterface::isMain(node);
+ *
+ *             // Print the result
+ *             std::cout << "Is main entry: " << (isMainEntry ? "true" : "false") << std::endl;
+ *          @endcode
+ */
+2025-01-27 18:16:49,392 - INFO - End time: 2025-01-27 18:16:49
+2025-01-27 18:16:49,392 - INFO - Duration: 24.846230268478394

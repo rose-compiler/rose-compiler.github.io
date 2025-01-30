@@ -1,0 +1,177 @@
+2025-01-27 20:33:30,004 - INFO - Start time: 2025-01-27 20:33:30
+2025-01-27 20:33:30,004 - INFO - Generating documents for a function with id : 400
+2025-01-27 20:33:30,004 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool SageInterface::mergeDeclarationWithAssignment(SgVariableDeclaration* decl, SgExprStatement* assign_stmt)
+{
+  bool rt= true;
+
+  // Sanity check of assign statement: must be a form of var = xxx;
+  ROSE_ASSERT(assign_stmt != NULL);
+  SgAssignOp * assign_op = isSgAssignOp (assign_stmt->get_expression());
+  if (assign_op == NULL)
+    return false;
+  SgVarRefExp* assign_op_var = isSgVarRefExp(assign_op->get_lhs_operand());
+  if (assign_op_var == NULL)
+    return false;
+
+  // Sanity check of the variable declaration: it should not have an existing initializer
+  ROSE_ASSERT(decl != NULL);
+  SgInitializedName * decl_var = SageInterface::getFirstInitializedName (decl);
+  if (decl_var->get_initptr()!= NULL)
+     return false;
+
+  // check if two variables match
+  // In translation, it is possible the declaration has not yet been inserted into its scope.
+  // finding its symbol can return NULL.
+  // But we still want to do the merge.
+  ROSE_ASSERT(decl_var != NULL);
+  SgSymbol* decl_var_symbol = decl_var->get_symbol_from_symbol_table();
+  if (decl_var_symbol != NULL) {
+    // DQ (3/25/2017): Fixed Clang warning: warning: implicit conversion of NULL constant to 'bool' [-Wnull-conversion]
+    if (assign_op_var->get_symbol() != decl_var_symbol)
+       return false;
+  }
+  else
+  { // fallback to comparing variable names instead
+    // DQ (3/25/2017): Fixed Clang warning: warning: implicit conversion of NULL constant to 'bool' [-Wnull-conversion]
+    if (assign_op_var->get_symbol()->get_name() != decl_var ->get_name())
+       return false;
+  }
+
+  // Everything looks fine now. Do the merge.
+  // It is implemented by
+  // 1. copy rhs to the decl's rhs,
+  // 2. then move the decl to the place of the assignment,
+  // 3. then remove the assignment
+  //
+  // Copy rhs to be initializer
+  SgExpression * rhs_copy = SageInterface::copyExpression(assign_op->get_rhs_operand());
+  SgAssignInitializer * initor = SageBuilder::buildAssignInitializer (rhs_copy);
+  decl_var->set_initptr(initor);
+  initor->set_parent(decl_var);
+
+  // move proprocessing info. attached before decl to its next statement's front, using prepending to preserve the original order
+  SgStatement* next_stmt = SageInterface::getNextStatement (decl);
+  SageInterface::movePreprocessingInfo(decl, next_stmt, PreprocessingInfo::before, PreprocessingInfo::before, true);
+
+  // removeStatement() does not support removing a statement which is not inside a container.
+  // But sometimes we do need to remove such a statement and replace it with a new one.
+  // As a workaround, we allow users to optionally disabling removing here and handle the removal on their own.
+  // TODO: improve removeStatement() which uses low level rewritting.
+
+  // Now move the declaration to a new position, right before the assignment statement
+  SageInterface::removeStatement (decl);
+  SageInterface::insertStatementBefore(assign_stmt, decl, false);
+
+  // preserve preprocessing info. attached to assign_stmt before removing it  , using append (last false)
+  SageInterface::movePreprocessingInfo(assign_stmt, decl, PreprocessingInfo::before, PreprocessingInfo::before, false);
+
+  // Original assignment statement should be removed
+  SageInterface::removeStatement (assign_stmt);
+  //  SageInterface::deepDelete (decl);
+
+  return rt;
+}
+// Split a variable declaration with an rhs assignment into two statements: a declaration and an assignment.
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:34:05,175 - INFO - Response from llama3.1:70b for Function 400:
+2025-01-27 20:34:05,175 - INFO - /**
+ * @fn bool SageInterface::mergeDeclarationWithAssignment(SgVariableDeclaration* decl, SgExprStatement* assign_stmt)
+ *
+ * @brief Merges a variable declaration with an assignment statement into a single declaration.
+ *
+ * This function takes a variable declaration and an assignment statement as input,
+ * checks if they can be merged, and performs the merge operation. The merge is done
+ * by copying the right-hand side of the assignment to the initializer of the variable
+ * declaration, moving the declaration to the position of the assignment, and removing
+ * the original assignment statement.
+ *
+ * @param decl A pointer to an SgVariableDeclaration object representing the variable declaration.
+ *             Must not be NULL. The declaration should not have an existing initializer.
+ * @param assign_stmt A pointer to an SgExprStatement object representing the assignment statement.
+ *                    Must not be NULL and must be a form of var = xxx;. The left-hand side
+ *                    operand of the assignment must match the variable being declared.
+ *
+ * @return True if the merge was successful, false otherwise. The function may return false
+ *         if the input statements do not meet the required conditions or if an error occurs during
+ *         the merge operation.
+ *
+ * @warning This function modifies the input statements and their parent nodes in the AST.
+ *          It also moves preprocessing information attached to the original statements.
+ *          Users should exercise caution when using this function, especially if they have
+ *          already processed the AST or rely on the original statement structure.
+ *
+ * @pre The input statements must meet the required conditions specified above. The function
+ *      assumes that the input statements are valid and well-formed.
+ * @post If the merge is successful, the variable declaration will be modified to include an initializer,
+ *       and the assignment statement will be removed from the AST.
+ *
+ * @note This function does not perform any semantic checks on the merged statement. Users should
+ *       verify that the resulting code is semantically correct.
+ *
+ * @example The following example demonstrates how to use this function:
+ *          @code
+ *           SgVariableDeclaration* decl = ...; // create a variable declaration
+ *           SgExprStatement* assign_stmt = ...; // create an assignment statement
+ *           if (SageInterface::mergeDeclarationWithAssignment(decl, assign_stmt)) {
+ *             // the merge was successful
+ *           } else {
+ *             // the merge failed
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:34:05,175 - INFO - End time: 2025-01-27 20:34:05
+2025-01-27 20:34:05,175 - INFO - Duration: 35.17133808135986

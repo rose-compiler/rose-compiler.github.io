@@ -1,0 +1,220 @@
+2025-01-27 20:12:46,836 - INFO - Start time: 2025-01-27 20:12:46
+2025-01-27 20:12:46,836 - INFO - Generating documents for a function with id : 351
+2025-01-27 20:12:46,836 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::moveDeclarationToAssociatedNamespace ( SgDeclarationStatement* declarationStatement )
+   {
+  // Relocate the declaration to be explicitly represented in its associated namespace (required for some backend compilers to process template instantiations).
+
+  // DQ (7/19/2015): This is required to support general unparsing of template instantations for the GNU g++
+  // compiler which does not permit name qualification to be used to support the expression of the namespace
+  // where a template instantiatoon would be places.  Such name qualification would also sometimes require
+  // global qualification which is also not allowed by the GNU g++ compiler.  These issues appear to be
+  // specific to the GNU compiler versions, at least versions 4.4 through 4.8.
+
+  // Find the previous statement in this scope so that we can close off the namepsace and start a new one.
+     SgStatement* previousDeclarationStatement = getPreviousStatement(declarationStatement);
+     SgStatement* nextDeclarationStatement     = getNextStatement(declarationStatement);
+
+#if 0
+     printf ("In SageInterface::moveDeclarationToAssociatedNamespace(): declarationStatement = %p = %s \n",declarationStatement,declarationStatement->class_name().c_str());
+     printf ("   --- previousDeclarationStatement = %p = %s \n",previousDeclarationStatement,previousDeclarationStatement != NULL ? previousDeclarationStatement->class_name().c_str() : "null");
+     printf ("   --- nextDeclarationStatement     = %p      \n",nextDeclarationStatement);
+     printf ("   --- nextDeclarationStatement     = %p = %s \n",nextDeclarationStatement,    nextDeclarationStatement != NULL     ? nextDeclarationStatement->class_name().c_str() : "null");
+#endif
+
+  // DQ (7/19/2015): Initial error handling to allow us to focuse on the most common case.
+     if (previousDeclarationStatement != NULL)
+        {
+       // printf ("previousDeclarationStatement = %p = %s \n",previousDeclarationStatement,previousDeclarationStatement->class_name().c_str());
+        }
+       else
+        {
+          printf ("There is no previous statement so there is no namespace to close off! \n");
+
+       // Handle this corner case after we have the most general case working!
+          printf ("Exiting as a test! \n");
+          ROSE_ABORT();
+        }
+
+  // DQ (7/19/2015): Initial error handling to allow us to focuse on the most common case.
+     if (nextDeclarationStatement != NULL)
+        {
+       // printf ("nextDeclarationStatement = %p = %s \n",nextDeclarationStatement,nextDeclarationStatement->class_name().c_str());
+        }
+       else
+        {
+#if 0
+          printf ("There is no next statement so there is no namespace to reopen! \n");
+#endif
+#if 0
+       // Handle this corner case after we have the most general case working!
+          printf ("Exiting as a test! \n");
+          ROSE_ABORT();
+#endif
+        }
+
+     if (previousDeclarationStatement != NULL && nextDeclarationStatement != NULL)
+        {
+       // DQ (7/19/2015): This is the most common case!
+#if 0
+          printf ("Identified the most common case... \n");
+#endif
+       // Identify the associated namespace
+          //SgScopeStatement* declarationScope = declarationStatement->get_scope();
+#if 0
+          printf ("declarationScope = %p = %s \n",declarationScope,declarationScope->class_name().c_str());
+#endif
+#if 0
+       // Handle this corner case after we have the most general case working!
+          printf ("Exiting as a test! \n");
+          ROSE_ABORT();
+#endif
+        }
+       else
+        {
+          if (previousDeclarationStatement != NULL && nextDeclarationStatement == NULL)
+             {
+            // This is the case for the last template instantiaton in global scope (so it too is a common case)!
+#if 0
+               printf ("Found 2nd most common case: previousDeclarationStatement != NULL && nextDeclarationStatement == NULL \n");
+#endif
+#if 0
+            // Handle this corner case after we have the most general case working!
+               printf ("Exiting as a test! \n");
+               ROSE_ABORT();
+#endif
+             }
+            else
+             {
+               if (previousDeclarationStatement == NULL && nextDeclarationStatement == NULL)
+                  {
+                    printf ("This case should require no special handling, unless we are still in the wrong namespace \n");
+
+                 // Handle this corner case after we have the most general case working!
+                    printf ("Exiting as a test! \n");
+                    ROSE_ABORT();
+                  }
+                 else
+                  {
+                    printf ("This case should have been caught above! \n");
+
+                 // Handle this corner case after we have the most general case working!
+                    printf ("Exiting as a test! \n");
+                    ROSE_ABORT();
+                  }
+             }
+        }
+
+     SgScopeStatement* declarationParent = isSgScopeStatement(declarationStatement->get_parent());
+     if (declarationParent == NULL)
+        {
+#if 0
+          printf ("declarationStatement->get_parent() = %p = %s \n",declarationStatement->get_parent(), (declarationStatement->get_parent() != NULL) ? declarationStatement->get_parent()->class_name().c_str() : "null");
+#endif
+        }
+  // This can be a SgTemplateInstantiationDirectiveStatement (bug we want to skip over this case for now).
+  // ROSE_ASSERT(declarationParent != NULL);
+
+     if (declarationParent != NULL)
+        {
+          SgScopeStatement* declarationScope = declarationStatement->get_scope();
+          ROSE_ASSERT(declarationScope != NULL);
+
+          SgNamespaceDefinitionStatement* namespaceDefinition = isSgNamespaceDefinitionStatement(declarationScope);
+          if (namespaceDefinition != NULL)
+             {
+               SgNamespaceDeclarationStatement* namespaceDeclaration = namespaceDefinition->get_namespaceDeclaration();
+               ROSE_ASSERT(namespaceDeclaration != NULL);
+#if 0
+               printf ("The declaration has been identified to be associuated with a valid namespace = %p = %s \n",namespaceDeclaration,namespaceDeclaration->get_name().str());
+               printf ("   --- declarationParent = %p = %s \n",declarationParent,declarationParent->class_name().c_str());
+               printf ("   --- Move declaration from scope = %p = %s to namespace = %p = %s \n",declarationParent,declarationParent->class_name().c_str(),namespaceDeclaration,namespaceDeclaration->get_name().str());
+#endif
+#if 0
+               printf ("Exiting as a test! \n");
+               ROSE_ABORT();
+#endif
+             }
+            else
+             {
+#if 0
+               printf ("declaration is not associated with a namespace, so we don't have to wrap it: declarationScope = %p = %s \n",declarationScope,declarationScope->class_name().c_str());
+#endif
+             }
+        }
+       else
+        {
+#if 0
+          printf ("Warning: declarationParent == NULL: declarationStatement->get_parent() = %p = %s \n",declarationStatement->get_parent(), (declarationStatement->get_parent() != NULL) ? declarationStatement->get_parent()->class_name().c_str() : "null");
+#endif
+       // ROSE_ASSERT(declarationParent != NULL);
+        }
+
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:12:59,221 - INFO - Response from llama3.1:70b for Function 351:
+2025-01-27 20:12:59,222 - INFO - /**
+ * @fn void SageInterface::moveTemplateInstantiationToValidNamespace(SgNode* node)
+ * @brief Moves a template instantiation to a valid namespace if it is not already in one.
+ *
+ * This function checks if the given SgNode (which should be a template instantiation) is inside a valid namespace. 
+ * If it's not, then it tries to move it into the correct namespace by wrapping it with the necessary directives.
+ *
+ * @param node The SgNode that represents the template instantiation to be moved.
+ */
+void SageInterface::moveTemplateInstantiationToValidNamespace(SgNode* node)
+2025-01-27 20:12:59,222 - INFO - End time: 2025-01-27 20:12:59
+2025-01-27 20:12:59,222 - INFO - Duration: 12.38588261604309

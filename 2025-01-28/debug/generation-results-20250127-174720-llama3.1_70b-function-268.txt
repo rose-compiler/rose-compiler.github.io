@@ -1,0 +1,107 @@
+2025-01-27 19:38:19,489 - INFO - Start time: 2025-01-27 19:38:19
+2025-01-27 19:38:19,489 - INFO - Generating documents for a function with id : 268
+2025-01-27 19:38:19,489 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgSwitchStatement* SageInterface::findEnclosingSwitch(SgStatement* s) {
+  while (s && !isSgSwitchStatement(s)) {
+    s = isSgStatement(s->get_parent());
+  }
+  ROSE_ASSERT (s);
+  return isSgSwitchStatement(s);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:38:46,306 - INFO - Response from llama3.1:70b for Function 268:
+2025-01-27 19:38:46,306 - INFO - /**
+ * @fn SgSwitchStatement* SageInterface::findEnclosingSwitch(SgStatement* s)
+ *
+ * @brief Finds the enclosing switch statement of a given statement in an abstract syntax tree.
+ *
+ * This function traverses up the parent nodes of the input statement until it finds a node that represents a switch statement. 
+ * It uses the ROSE compiler infrastructure's abstract syntax tree (AST) data structure to navigate the AST and perform the search.
+ *
+ * @param s The input statement for which the enclosing switch statement is to be found. Must not be NULL.
+ *
+ * @return A pointer to the SgSwitchStatement node that encloses the input statement, or NULL if no such node exists.
+ *
+ * @note This function assumes that the input statement is part of a valid AST and that the ROSE compiler infrastructure has been properly initialized.
+ *
+ * @warning If the input statement does not have a parent node that represents a switch statement, this function will return NULL. 
+ *          It is up to the caller to handle this situation accordingly.
+ *
+ * @pre The input statement must be non-NULL and part of a valid AST.
+ *
+ * @post The returned SgSwitchStatement pointer will either point to a valid node in the AST or be NULL.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create an instance of SageInterface
+ *           SageInterface sage;
+ *           
+ *           // Assume we have a statement that is part of an AST
+ *           SgStatement* statement = ...;
+ *           
+ *           // Find the enclosing switch statement
+ *           SgSwitchStatement* enclosingSwitch = sage.findEnclosingSwitch(statement);
+ *           
+ *           // Check if an enclosing switch statement was found
+ *           if (enclosingSwitch != NULL) {
+ *               // Do something with the enclosing switch statement
+ *           } else {
+ *               // Handle the case where no enclosing switch statement was found
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:38:46,306 - INFO - End time: 2025-01-27 19:38:46
+2025-01-27 19:38:46,306 - INFO - Duration: 26.816898345947266

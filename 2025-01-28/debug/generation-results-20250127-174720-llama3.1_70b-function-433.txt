@@ -1,0 +1,120 @@
+2025-01-27 20:47:08,372 - INFO - Start time: 2025-01-27 20:47:08
+2025-01-27 20:47:08,372 - INFO - Generating documents for a function with id : 433
+2025-01-27 20:47:08,372 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool HasNoThrowAssign(const SgType * const inputType){
+        //Strip typedef and array
+        SgType * type = inputType->stripType(SgType::STRIP_TYPEDEF_TYPE | SgType::STRIP_ARRAY_TYPE );
+        
+        if (isConstType(type))
+            return false;
+        
+        if (isReferenceType(type))
+            return false;
+        
+        if(HasTrivialAssign(type))
+            return true;
+        
+        ENSURE_CLASS_TYPE(type, false);
+        vector<SgMemberFunctionDeclaration*> allMemberFunctions =  GetAllMemberFunctionsInClassHierarchy(type);
+#if DEBUG_QUADRATIC_BEHAVIOR
+        printf ("In HasNoThrowAssign(): allMemberFunctions.size() = %zu \n",allMemberFunctions.size());
+#endif
+        foreach(SgMemberFunctionDeclaration* memberFunction,allMemberFunctions) {
+            if (memberFunction->get_specialFunctionModifier().isOperator() && memberFunction->get_name().getString()=="operator="){
+                // check if the function has nothrow attribute
+                //TODO: C++11 accepts noexcept expression which we need to check when we support it.
+                if(memberFunction->get_functionModifier ().isGnuAttributeNoThrow () == false)
+                    return false;
+            }
+        }
+        return true;
+    }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:47:31,612 - INFO - Response from llama3.1:70b for Function 433:
+2025-01-27 20:47:31,612 - INFO - /**
+ * @fn bool HasNoThrowAssign(const SgType * const inputType)
+ *
+ * @brief Checks if a given type has an assignment operator with no throw guarantee.
+ *
+ * This function determines whether the assignment operator of a given type
+ * guarantees not to throw any exceptions. It recursively checks all member
+ * functions in the class hierarchy, looking for an assignment operator with
+ * the noexcept attribute (or its GNU equivalent).
+ *
+ * @param inputType The SgType object representing the type to be checked.
+ *
+ * @return True if the assignment operator of the given type guarantees not to throw any exceptions; false otherwise.
+ *
+ * @warning This function does not support C++11's noexcept expressions yet. It only checks for the GNU attribute nothrow.
+ *
+ * @pre The inputType parameter must not be null.
+ *
+ * @post The return value indicates whether the assignment operator of the given type guarantees not to throw any exceptions.
+ *
+ * @note This function uses a recursive approach to check all member functions in the class hierarchy. It may exhibit quadratic behavior for large class hierarchies.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgType* myType = ...; // Initialize myType with some type
+ *           if (HasNoThrowAssign(myType)) {
+ *               std::cout << "Assignment operator of " << myType->get_name().getString() << " has no throw guarantee." << std::endl;
+ *           } else {
+ *               std::cout << "Assignment operator of " << myType->get_name().getString() << " may throw exceptions." << std::endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:47:31,612 - INFO - End time: 2025-01-27 20:47:31
+2025-01-27 20:47:31,612 - INFO - Duration: 23.240750551223755

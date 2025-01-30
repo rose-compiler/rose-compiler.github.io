@@ -1,0 +1,176 @@
+2025-01-27 20:14:32,903 - INFO - Start time: 2025-01-27 20:14:32
+2025-01-27 20:14:32,903 - INFO - Generating documents for a function with id : 356
+2025-01-27 20:14:32,903 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::replaceDefiningFunctionDeclarationWithFunctionPrototype ( SgFunctionDeclaration* functionDeclaration )
+   {
+     SgFunctionDeclaration* nondefiningFunctionDeclaration = NULL;
+     ROSE_ASSERT(functionDeclaration != NULL);
+
+#if 0
+     printf ("****************************************************************** \n");
+     printf ("Attached comments and CPP directives: defining functionDeclaration \n");
+     SageInterface::printOutComments (functionDeclaration);
+     printf ("****************************************************************** \n");
+#endif
+
+  // DQ (10/15/2019): Find the file_id associated with the current file, and make the transformation with the same file_id value so that it will be unparsed.
+
+     nondefiningFunctionDeclaration = buildFunctionPrototype(functionDeclaration);
+
+  // DQ (12/17/2020): This is a required fix that was only caught as an issue by some customer code.
+     if (nondefiningFunctionDeclaration != NULL)
+        {
+       // DQ (11/22/2020): These can't be the same list else we will have a case of iterator invalidation.
+       // This is a bug in the support for building a new prototype from a defining function declaration
+       // and caused this problem. This assertion will prevent this sort of error from happening again.
+          ROSE_ASSERT(functionDeclaration->getAttachedPreprocessingInfo() == NULL ||
+                      functionDeclaration->getAttachedPreprocessingInfo() != nondefiningFunctionDeclaration->getAttachedPreprocessingInfo());
+         }
+
+     SgTemplateInstantiationFunctionDecl* templateInstantiationFunctionDecl = isSgTemplateInstantiationFunctionDecl(functionDeclaration);
+
+     if (templateInstantiationFunctionDecl == NULL)
+        {
+          if (nondefiningFunctionDeclaration != NULL)
+             {
+            // DQ (10/29/2020): Match the associated declaration modifiers.
+               nondefiningFunctionDeclaration->get_declarationModifier() = functionDeclaration->get_declarationModifier();
+
+            // DQ (11/11/2020): Match the associated other kinds of modifiers.
+               nondefiningFunctionDeclaration->get_functionModifier()        = functionDeclaration->get_functionModifier();
+               nondefiningFunctionDeclaration->get_specialFunctionModifier() = functionDeclaration->get_specialFunctionModifier();
+
+               nondefiningFunctionDeclaration->set_linkage( functionDeclaration->get_linkage() );
+               nondefiningFunctionDeclaration->set_externBrace( functionDeclaration->get_externBrace() );
+
+               ROSE_ASSERT(nondefiningFunctionDeclaration->get_forward() == true);
+
+            // DQ (10/15/2019): Set the physical_file_id of the transformation to match that of the original defining declaration.
+               int file_id = functionDeclaration->get_file_info()->get_physical_file_id();
+               nondefiningFunctionDeclaration->get_file_info()->set_physical_file_id(file_id);
+
+            // Likely we should build a new nondefining function declaration instead of reusing the existing non-defining declaration.
+            // removeStatement(functionDeclaration);
+            // DQ (11/22/2020): Note that this step will move the comments and CPP directives to the new statement
+            // (better in this step than in the copy of the pointer to the list above, which cause an iterator invalidation error).
+            // DQ (10/21/2020): I think we may want to return the orignal defining function declaration.
+            // DQ (12/2/2019): Need to support member functions which can't be declared when outside of their class.
+            // DQ (11/15/2020): Note that the default is false, and we need true.
+               bool movePreprocessingInfo = true;
+               replaceStatement(functionDeclaration,nondefiningFunctionDeclaration,movePreprocessingInfo);
+
+            // DQ (11/25/2020): This is the cause of a problem in the outliner caught in the resetParentPointer.C (definingDeclaration->get_parent() != __null).
+            // DQ (11/24/2020): Maybe we should set the parent of the functionDeclaration to NULL, so that we will know to set it properly later.
+            // This is the cause of a name qualification bug when the functionDeclaration is inserted into global scope and the name qualification
+            // is not computed correctly (since the parent was still the namespace scope where it was originally.
+               ROSE_ASSERT(nondefiningFunctionDeclaration->get_parent() != NULL);
+             }
+        }
+       else
+        {
+       // DQ (7/12/2019): Template instantiations are not directly from the source code, so we don't have to move them.
+          nondefiningFunctionDeclaration = NULL;
+        }
+
+  // Check that static declaration is preserved.
+     if (functionDeclaration->get_declarationModifier().get_storageModifier().isStatic() == true)
+        {
+          ROSE_ASSERT(nondefiningFunctionDeclaration->get_declarationModifier().get_storageModifier().isStatic() == true);
+        }
+
+  // DQ (10/27/2020): Added return value so that we can access the new function prototype.
+     return nondefiningFunctionDeclaration;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:14:59,410 - INFO - Response from llama3.1:70b for Function 356:
+2025-01-27 20:14:59,410 - INFO - /**
+ * @fn SageInterface::replaceDefiningFunctionDeclarationWithFunctionPrototype ( SgFunctionDeclaration* functionDeclaration )
+ *
+ * @brief Replaces a defining function declaration with a non-defining function prototype.
+ *
+ * This function takes a defining function declaration as input and returns the corresponding 
+ * non-defining function prototype. It performs various operations such as building a new function 
+ * prototype, matching associated modifiers, setting linkage and extern brace, and moving comments 
+ * and preprocessing directives. The function also handles template instantiations and preserves 
+ * static declarations.
+ *
+ * @param functionDeclaration A pointer to the defining function declaration to be replaced.
+ *          Must not be NULL.
+ *
+ * @return A pointer to the non-defining function prototype if successful, otherwise NULL.
+ *
+ * @warning This function modifies the input function declaration and its associated comments and preprocessing directives.
+ * 
+ * @pre The input function declaration must be valid and not NULL.
+ * 
+ * @post The returned non-defining function prototype will have the same properties as the input defining function declaration,
+ *        except for being a non-defining prototype. Any comments or preprocessing directives attached to the original
+ *        function declaration will be moved to the new prototype.
+ *
+ * @note This function is used in the ROSE compiler infrastructure and may not be suitable for general use.
+ *
+ * 
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgFunctionDeclaration* definingDecl = ...; // assume a valid defining function declaration
+ *           SgFunctionDeclaration* nonDefiningProto = SageInterface::replaceDefiningFunctionDeclarationWithFunctionPrototype(definingDecl);
+ *           if (nonDefiningProto != NULL) {
+ *               // use the new non-defining prototype
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:14:59,410 - INFO - End time: 2025-01-27 20:14:59
+2025-01-27 20:14:59,410 - INFO - Duration: 26.50683283805847

@@ -1,0 +1,115 @@
+2025-01-27 20:24:01,937 - INFO - Start time: 2025-01-27 20:24:01
+2025-01-27 20:24:01,937 - INFO - Generating documents for a function with id : 380
+2025-01-27 20:24:01,937 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::skipTranslateToUseCppDeclaration( PreprocessingInfo* currentPreprocessingInfo )
+   {
+     bool returnValue = false;
+
+     ROSE_ASSERT(currentPreprocessingInfo != NULL);
+
+     PreprocessingInfo::DirectiveType directive = currentPreprocessingInfo->getTypeOfDirective();
+
+     if (directive == PreprocessingInfo::C_StyleComment ||
+         directive == PreprocessingInfo::CplusplusStyleComment ||
+         directive == PreprocessingInfo::FortranStyleComment ||
+         directive == PreprocessingInfo::CpreprocessorBlankLine ||
+         directive == PreprocessingInfo::ClinkageSpecificationStart ||
+         directive == PreprocessingInfo::ClinkageSpecificationEnd)
+       {
+         returnValue = true;
+       }
+
+     return returnValue;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:24:24,941 - INFO - Response from llama3.1:70b for Function 380:
+2025-01-27 20:24:24,941 - INFO - /**
+ * @fn bool SageInterface::skipTranslateToUseCppDeclaration(PreprocessingInfo* currentPreprocessingInfo)
+ *
+ * @brief Determines whether to skip translation of a preprocessing directive.
+ *
+ * This function evaluates the type of preprocessing directive and decides
+ * whether it should be skipped during translation. It checks for specific types
+ * of directives such as C-style comments, C++-style comments, Fortran-style 
+ * comments, blank lines, and linkage specifications.
+ *
+ * @param currentPreprocessingInfo A pointer to the PreprocessingInfo object containing information about the current directive.
+ *                                  Must not be NULL. The function will assert if this parameter is NULL.
+ *
+ * @return True if the translation of the preprocessing directive should be skipped; false otherwise.
+ *
+ * @warning This function does not handle cases where the input PreprocessingInfo pointer is NULL. It asserts in such cases.
+ *
+ * @pre The input PreprocessingInfo object must not be NULL.
+ *
+ * @post The return value indicates whether the translation of the preprocessing directive should be skipped.
+ *
+ * @note This function uses a simple if-else statement to evaluate the type of directive and make its decision.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           PreprocessingInfo* info = new PreprocessingInfo();
+ *           // ... assume some initialization of info ...
+ *           bool skipTranslation = SageInterface::skipTranslateToUseCppDeclaration(info);
+ *           if (skipTranslation) {
+ *             std::cout << "Skipping translation..." << std::endl;
+ *           } else {
+ *             std::cout << "Not skipping translation..." << std::endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:24:24,941 - INFO - End time: 2025-01-27 20:24:24
+2025-01-27 20:24:24,941 - INFO - Duration: 23.004791498184204

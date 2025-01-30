@@ -1,0 +1,126 @@
+2025-01-27 17:57:52,486 - INFO - Start time: 2025-01-27 17:57:52
+2025-01-27 17:57:52,486 - INFO - Generating documents for a function with id : 24
+2025-01-27 17:57:52,486 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool SageInterface::insideHeader (SgLocatedNode* node)
+   {
+  // Check if a node is from a header file
+
+     bool returnValue = false;
+
+     Sg_File_Info* fileInfo = node->get_file_info();
+     ROSE_ASSERT(fileInfo != NULL);
+     string filename = fileInfo->get_filenameString();
+
+#if 0
+     printf ("In SageInterface::insideHeader(): node = %s line: %d column: %d file: %s \n",node->class_name().c_str(),fileInfo->get_line(),fileInfo->get_col(),filename.c_str());
+#endif
+
+  // DQ (2/27/2021): We save a map of all of the header files processed in the generation of the ROSE AST,
+  // so the test is only if the filename is in the list.
+     if (EDG_ROSE_Translation::edg_include_file_map.find(filename) == EDG_ROSE_Translation::edg_include_file_map.end())
+        {
+#if 0
+          printf ("This is NOT in the EDG_ROSE_Translation::edg_include_file_map \n");
+#endif
+        }
+       else
+        {
+#if 0
+          printf ("This IS in the EDG_ROSE_Translation::edg_include_file_map \n");
+#endif
+          returnValue = true;
+        }
+
+     return returnValue;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 17:58:17,245 - INFO - Response from llama3.1:70b for Function 24:
+2025-01-27 17:58:17,246 - INFO - /**
+ * @fn bool SageInterface::insideHeader(SgLocatedNode* node)
+ *
+ * @brief Checks if a given SgLocatedNode is from a header file.
+ *
+ * This function determines whether the input node originates from a header
+ * file by checking its filename against a map of processed header files.
+ *
+ * The check involves looking up the filename in the EDG_ROSE_Translation::edg_include_file_map,
+ * which stores all header files encountered during the generation of the ROSE AST.
+ *
+ * @param node The SgLocatedNode to be checked. Must not be NULL.
+ *
+ * @return True if the node is from a header file, false otherwise.
+ *
+ * @warning This function does not perform any error checking on the input node.
+ *          It assumes that the node has already been validated and is of type SgLocatedNode.
+ *
+ * @pre The EDG_ROSE_Translation::edg_include_file_map must be populated with header files processed during ROSE AST generation.
+ *
+ * @post The function does not modify any external state, but returns a boolean value indicating whether the node is from a header file.
+ *
+ * @note This function relies on the EDG_ROSE_Translation::edg_include_file_map being up-to-date and accurate. If this map is incomplete or outdated, the results of this function may be incorrect.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgLocatedNode* node = ...; // obtain a valid SgLocatedNode instance
+ *           if (SageInterface::insideHeader(node)) {
+ *               printf("Node is from a header file.\n");
+ *           } else {
+ *               printf("Node is not from a header file.\n");
+ *           }
+ *          @endcode
+ */
+2025-01-27 17:58:17,246 - INFO - End time: 2025-01-27 17:58:17
+2025-01-27 17:58:17,246 - INFO - Duration: 24.76000666618347

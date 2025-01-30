@@ -1,0 +1,123 @@
+2025-01-27 21:09:59,926 - INFO - Start time: 2025-01-27 21:09:59
+2025-01-27 21:09:59,926 - INFO - Generating documents for a function with id : 504
+2025-01-27 21:09:59,926 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    */
+    static bool HasTrivialCopy(const SgType * const inputType, bool checkPod){
+        //Strip typedef and array
+        SgType *type = inputType->stripType(SgType::STRIP_TYPEDEF_TYPE | SgType::STRIP_ARRAY_TYPE );
+        
+        
+        if (checkPod && IsPod(type))
+            return true;
+        
+        if (isReferenceType(type))
+            return true;
+        
+        ENSURE_CLASS_TYPE(type, false);
+        vector<SgMemberFunctionDeclaration*> allMemberFunctions =  GetAllMemberFunctionsInClassHierarchy(type);
+#if DEBUG_QUADRATIC_BEHAVIOR
+        printf ("In HasTrivialCopy(): allMemberFunctions.size() = %zu \n",allMemberFunctions.size());
+#endif
+        foreach(SgMemberFunctionDeclaration* memberFunction,allMemberFunctions) {
+            if (memberFunction->get_specialFunctionModifier().isConstructor()){
+                // function must have exactly one argument and the argument type after stripping typedef, const, and ref must match passed-in type
+                if(CheckIfFunctionAcceptsArgumentIgnoreConstRefAndTypedef(memberFunction))
+                    return false;
+            }
+        }
+        return true;
+    }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 21:10:24,689 - INFO - Response from llama3.1:70b for Function 504:
+2025-01-27 21:10:24,690 - INFO - /**
+ * @fn static bool HasTrivialCopy(const SgType * const inputType, bool checkPod)
+ *
+ * @brief Checks if a given type has a trivial copy constructor.
+ *
+ * This function determines whether the input type has a trivial copy constructor,
+ * which means that the type's objects can be copied using a simple bitwise copy operation.
+ * It checks for the presence of user-declared constructors and other conditions that
+ * would prevent the compiler from generating a default copy constructor.
+ *
+ * @param inputType The SgType object representing the type to check.
+ * @param checkPod If true, also checks if the type is POD (Plain Old Data).
+ *
+ * @return True if the type has a trivial copy constructor, false otherwise.
+ *
+ * @warning This function assumes that the input type is valid and properly initialized.
+ *          It does not perform any error checking on the input parameters.
+ *
+ * @pre The inputType parameter must be non-null.
+ *      The checkPod parameter must be either true or false.
+ *
+ * @post The return value indicates whether the input type has a trivial copy constructor.
+ *
+ * @note This function uses various heuristics to determine if a type has a trivial copy
+ *       constructor, but it may not cover all possible cases. Use with caution.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgType* myType = ...; // assume myType is initialized correctly
+ *           bool hasTrivialCopy = HasTrivialCopy(myType, true);
+ *           if (hasTrivialCopy) {
+ *               printf("My type has a trivial copy constructor!\n");
+ *           } else {
+ *               printf("My type does not have a trivial copy constructor.\n");
+ *           }
+ *          @endcode
+ */
+2025-01-27 21:10:24,690 - INFO - End time: 2025-01-27 21:10:24
+2025-01-27 21:10:24,690 - INFO - Duration: 24.763585329055786

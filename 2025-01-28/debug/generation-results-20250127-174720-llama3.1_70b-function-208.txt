@@ -1,0 +1,176 @@
+2025-01-27 19:12:35,989 - INFO - Start time: 2025-01-27 19:12:35
+2025-01-27 19:12:35,989 - INFO - Generating documents for a function with id : 208
+2025-01-27 19:12:35,989 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgType*
+getAssociatedTypeFromFunctionTypeList(SgExpression* actual_argument_expression)
+   {
+  // DQ (7/22/2014): Added support for comparing expression types in actual arguments 
+  // with those expected from the formal function parameter types.
+  // Get the type of the associated argument expression from the function type.
+     ROSE_ASSERT(actual_argument_expression != NULL);
+
+#if 0
+     printf ("In SageInterface::getAssociatedTypeFromFunctionTypeList(): actual_argument_expression = %p = %s \n",actual_argument_expression,actual_argument_expression->class_name().c_str());
+#endif
+
+     SgExprListExp* exprListExp = isSgExprListExp(actual_argument_expression->get_parent());
+     if (exprListExp == NULL)
+        {
+          printf ("Error: input actual_argument_expression = %p = %s is not a direct argument of a function argument list \n",actual_argument_expression,actual_argument_expression->class_name().c_str());
+        }
+     ROSE_ASSERT(exprListExp != NULL);
+
+     int index = 0;
+     SgExpressionPtrList & expressionList = exprListExp->get_expressions();
+     SgExpressionPtrList::iterator i = expressionList.begin(); 
+
+  // Generate the associated index into the array of function parameters.
+     while (*i != actual_argument_expression && i != expressionList.end())
+        {
+          index++;
+          i++;
+        }
+     ROSE_ASSERT(i != expressionList.end());
+
+  // Get the associated type list.
+     SgFunctionCallExp* functionCallExp = isSgFunctionCallExp(exprListExp->get_parent());
+     ROSE_ASSERT(functionCallExp != NULL);
+
+  // Note that the result of functionCallExp->get_function() can sometime not be a SgFunctionRefExp, 
+  // e.g. when called from a pointer to a function.  These cases are not handled.
+     SgExpression* tmp_exp = functionCallExp->get_function();
+     ROSE_ASSERT(tmp_exp != NULL);
+
+     SgType* tmp_functionType = NULL;
+     SgFunctionRefExp* functionRefExp = isSgFunctionRefExp(tmp_exp);
+     if (functionRefExp != NULL)
+        {
+       // This is the most common case.
+          ROSE_ASSERT(functionRefExp != NULL);
+          tmp_functionType = functionRefExp->get_type();
+        }
+       else
+        {
+          SgPointerDerefExp* pointerDerefExp = isSgPointerDerefExp(tmp_exp);
+          if (pointerDerefExp != NULL)
+             {
+            // This is the next most common case.
+               tmp_functionType = pointerDerefExp->get_type();
+#if 0
+               printf ("tmp_functionType = %p = %s = %s \n",tmp_functionType,tmp_functionType->class_name().c_str(),tmp_functionType->unparseToString().c_str());
+#endif
+#if 0
+               printf ("Exiting as a test! \n");
+               ROSE_ABORT();
+#endif
+             }
+            else
+             {
+               tmp_functionType = NULL;
+
+               printf ("Error: this is a case of a indirect reference to a function (not yet handled in SageInterface::getAssociatedTypeFromFunctionTypeList()) tmp_exp = %p = %s \n",tmp_exp,tmp_exp->class_name().c_str());
+               functionCallExp->get_file_info()->display("Error: functionRefExp == NULL: functionCallExp: debug");
+             }
+        }
+
+     ROSE_ASSERT(tmp_functionType != NULL);
+
+     SgFunctionType* functionType = isSgFunctionType(tmp_functionType);
+     ROSE_ASSERT(functionType != NULL);
+
+     SgTypePtrList & typeList = functionType->get_arguments();
+
+     SgType* indexed_function_parameter_type = typeList[index];
+     ROSE_ASSERT(indexed_function_parameter_type != NULL);
+
+     return indexed_function_parameter_type;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:13:04,596 - INFO - Response from llama3.1:70b for Function 208:
+2025-01-27 19:13:04,596 - INFO - /**
+ * @fn SgType* getAssociatedTypeFromFunctionTypeList(SgExpression* actual_argument_expression)
+ *
+ * @brief Retrieves the type of a formal function parameter associated with an actual argument expression.
+ *
+ * This function takes an actual argument expression and returns the corresponding type
+ * from the list of formal function parameters. It traverses up the abstract syntax tree (AST) to find
+ * the parent expression list, then iterates through it to determine the index of the input expression,
+ * which is used to access the associated type in the function parameter list.
+ *
+ * @param actual_argument_expression The expression for which the associated formal function parameter type is to be retrieved. Must not be NULL and must be a direct argument of a function call expression.
+ *
+ * @return The type of the formal function parameter associated with the input actual argument expression, or NULL if an error occurs.
+ *
+ * @warning This function assumes that the input expression is a direct argument of a function call expression and does not perform additional checks. It also does not handle cases where the function reference is indirect (e.g., through a pointer).
+ *
+ * @pre The input expression must be non-NULL and must be a direct argument of a function call expression.
+ * @post The returned type will be non-NULL if the function executes successfully, or NULL otherwise.
+ *
+ * @note This function uses ROSE_ASSERT statements to enforce preconditions and postconditions. It also prints error messages in case of failures.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgExpression* actual_argument_expression = ...; // Initialize with a valid expression
+ *           SgType* associated_type = getAssociatedTypeFromFunctionTypeList(actual_argument_expression);
+ *           if (associated_type != NULL) {
+ *             printf("Associated type: %s\n", associated_type->class_name().c_str());
+ *           } else {
+ *             printf("Error retrieving associated type\n");
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:13:04,596 - INFO - End time: 2025-01-27 19:13:04
+2025-01-27 19:13:04,596 - INFO - Duration: 28.606947660446167

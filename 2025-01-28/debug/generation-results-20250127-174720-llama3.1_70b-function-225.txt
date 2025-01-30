@@ -1,0 +1,101 @@
+2025-01-27 19:19:25,969 - INFO - Start time: 2025-01-27 19:19:25
+2025-01-27 19:19:25,969 - INFO - Generating documents for a function with id : 225
+2025-01-27 19:19:25,969 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::setLoopCondition(SgScopeStatement* loopStmt, SgStatement* cond) {
+    if (isSgWhileStmt(loopStmt)) {
+      isSgWhileStmt(loopStmt)->set_condition(cond);
+    } else if (isSgForStatement(loopStmt)) {
+      isSgForStatement(loopStmt)->set_test(cond);
+    } else if (isSgDoWhileStmt(loopStmt)) {
+      isSgDoWhileStmt(loopStmt)->set_condition(cond);
+    } else {
+      ROSE_ASSERT (!"Bad loop kind");
+    }
+    cond->set_parent(loopStmt);
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:19:46,863 - INFO - Response from llama3.1:70b for Function 225:
+2025-01-27 19:19:46,863 - INFO - /**
+ * @fn void SageInterface::setLoopCondition(SgScopeStatement* loopStmt, SgStatement* cond)
+ *
+ * @brief Sets the loop condition for a given loop statement.
+ *
+ * This function updates the condition of a loop statement (while, for, or do-while) 
+ * with a new condition statement. It checks the type of the loop statement and 
+ * sets the condition accordingly.
+ *
+ * @param loopStmt The loop statement whose condition is to be updated. Must be one of SgWhileStmt, SgForStatement, or SgDoWhileStmt.
+ * @param cond The new condition statement to be set for the loop statement.
+ *
+ * @return None
+ *
+ * @warning If the loop statement is not one of the supported types (SgWhileStmt, SgForStatement, or SgDoWhileStmt), a ROSE_ASSERT failure will occur.
+ *
+ * @pre The loop statement and condition statement must be valid and properly initialized.
+ *
+ * @post The loop condition of the loop statement will be updated with the new condition statement.
+ *
+ * @note This function assumes that the input loop statement and condition statement are correctly formed and do not contain any syntax errors.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgScopeStatement* loopStmt = ...; // Initialize loop statement
+ *           SgStatement* cond = ...; // Initialize condition statement
+ *           SageInterface::setLoopCondition(loopStmt, cond);
+ *          @endcode
+ */
+2025-01-27 19:19:46,863 - INFO - End time: 2025-01-27 19:19:46
+2025-01-27 19:19:46,863 - INFO - Duration: 20.89416265487671

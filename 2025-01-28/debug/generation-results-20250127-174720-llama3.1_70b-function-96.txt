@@ -1,0 +1,101 @@
+2025-01-27 18:27:19,872 - INFO - Start time: 2025-01-27 18:27:19
+2025-01-27 18:27:19,872 - INFO - Generating documents for a function with id : 96
+2025-01-27 18:27:19,872 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::setStatic(SgDeclarationStatement* stmt)
+  {
+    ROSE_ASSERT(stmt);
+    return ((stmt->get_declarationModifier()).get_storageModifier()).setStatic();
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:27:42,380 - INFO - Response from llama3.1:70b for Function 96:
+2025-01-27 18:27:42,380 - INFO - /**
+ * @fn void SageInterface::setStatic(SgDeclarationStatement* stmt)
+ *
+ * @brief Sets the static storage modifier for a declaration statement.
+ *
+ * This function modifies a given SgDeclarationStatement by setting its storage
+ * modifier to static. The static keyword in C++ is used to specify internal 
+ * linkage, which means that the variable or function can only be accessed from 
+ * within the same translation unit where it was defined.
+ *
+ * @param stmt A pointer to an SgDeclarationStatement for which the static storage 
+ *             modifier will be set. Must not be NULL.
+ *
+ * @return None
+ *
+ * @warning This function does not perform any checks on whether the input statement 
+ *          is a valid candidate for setting the static storage modifier. It is up 
+ *          to the caller to ensure that the statement can have its storage modifier 
+ *          set to static without causing undefined behavior.
+ *
+ * @pre The input SgDeclarationStatement must be non-NULL and have a valid declaration 
+ *      modifier.
+ *
+ * @post The storage modifier of the input SgDeclarationStatement will be set to static.
+ *
+ * @note This function does not return any value, but instead modifies the input statement 
+ *       in-place. It is up to the caller to ensure that this modification has the desired 
+ *       effect on the program's behavior.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgDeclarationStatement* stmt = ...; // obtain a declaration statement
+ *           SageInterface sage;
+ *           sage.setStatic(stmt); // set the static storage modifier for the statement
+ *          @endcode
+ */
+2025-01-27 18:27:42,380 - INFO - End time: 2025-01-27 18:27:42
+2025-01-27 18:27:42,381 - INFO - Duration: 22.508379220962524

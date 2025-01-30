@@ -1,0 +1,266 @@
+2025-01-27 18:50:10,609 - INFO - Start time: 2025-01-27 18:50:10
+2025-01-27 18:50:10,610 - INFO - Generating documents for a function with id : 153
+2025-01-27 18:50:10,610 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    PreprocessingInfo* SageInterface::insertHeader(const string& filename, PreprocessingInfo::RelativePositionType position /*=after*/, bool isSystemHeader /*=false*/, SgScopeStatement* scope /*=NULL*/)
+   {
+  // DQ (3/22/2019): If we are using the token based unparsing, then this will not work, since the global scope will not
+  // be marked as a transformation.  So it might be better to implement this with an option to support the token based
+  // unparsing, and specifically add a null declaration so that we can attach the #include directive directly to that statement.
+     bool supportTokenUnparsing = false;
+
+ // DQ (8/12/2020): This is a compiler warning.
+ // bool successful = false;
+
+#if 0
+     printf ("In SageInterface::insertHeader(): filename = %s \n",filename.c_str());
+     printf (" --- position = %s \n",PreprocessingInfo::relativePositionName(position).c_str());
+#endif
+
+     if (scope == NULL)
+          scope = SageBuilder::topScopeStack();
+
+     ROSE_ASSERT(scope);
+
+     SgGlobal* globalScope = getGlobalScope(scope);
+     ROSE_ASSERT(globalScope != NULL);
+
+  // To support inserting a header file into a header file, we need this srcScope to indicate the src file in which to insert the header
+  // if the input scope is within a header file,
+  // its global scope will jump to a .cpp file. Later looping will not find a match.
+     SgScopeStatement* srcScope = globalScope;
+     PreprocessingInfo* result=NULL;
+     string content;
+     if (isSystemHeader)
+          content = "#include <" + filename + "> \n";
+       else
+          content = "#include \"" + filename + "\" \n";
+
+  // DQ (11/21/2019): Token based unparsing has an additional requirement, we need to mark that the
+  // whitespace around the statement has been modified.  This will trigger the unparser to output
+  // the comments and CPP directives when using the token-based unparsing. The insertion of a header
+  // file requires this support else the original token stream will not have the added header file.
+
+  // DQ (11/21/2019): Need to set supportTokenUnparsing.
+     SgSourceFile* sourceFile = getEnclosingSourceFile(scope);
+     ROSE_ASSERT(sourceFile != NULL);
+
+     supportTokenUnparsing      = sourceFile->get_unparse_tokens();
+
+     bool supportUnparseHeaders = sourceFile->get_unparseHeaderFiles();
+     // if unparsing header and the scope is within a header file, we adjust srcScope to be scope, not its enclosing global scope
+     if (supportUnparseHeaders)
+        {
+          string filename= scope->get_file_info()->get_filename();
+          string suffix = Rose::StringUtility ::fileNameSuffix(filename);
+
+       // vector.tcc: This is an internal header file, included by other library headers
+          if (suffix=="h" ||suffix=="hpp"|| suffix=="hh"||suffix=="H" ||suffix=="hxx"||suffix=="h++" ||suffix=="tcc")
+               srcScope = scope;
+        }
+
+#if 0
+     printf ("supportTokenUnparsing = %s \n",supportTokenUnparsing ? "true" : "false");
+     printf ("supportUnparseHeaders = %s \n",supportUnparseHeaders ? "true" : "false");
+     printf ("sourceFile  = %p \n",sourceFile);
+     printf ("globalScope = %p \n",globalScope);
+#endif
+#if 0
+     printf ("supportTokenUnparsing = %s \n",supportTokenUnparsing ? "true" : "false");
+#endif
+#if 0
+     printf ("Exiting as a test! \n");
+     ROSE_ABORT();
+#endif
+
+     SgDeclarationStatementPtrList & stmtList = globalScope->get_declarations();
+
+#if 0
+     printf ("stmtList.size() = %zu \n",stmtList.size());
+#endif
+
+     if (stmtList.size() > 0) // the source file is not empty
+        {
+          for (SgDeclarationStatementPtrList::iterator j = stmtList.begin (); j != stmtList.end (); j++)
+             {
+            // must have this judgement, otherwise wrong file will be modified!
+            // It could also be the transformation generated statements with #include attached
+               if ( ((*j)->get_file_info())->isSameFile(srcScope->get_file_info ()) || ((*j)->get_file_info ())->isTransformation() )
+                  {
+                    result = new PreprocessingInfo(PreprocessingInfo::CpreprocessorIncludeDeclaration, content, "Transformation generated",0, 0, 0, PreprocessingInfo::before);
+                    ROSE_ASSERT(result != NULL);
+#if 0
+                    printf ("Building a PreprocessingInfo: result = %p \n",result);
+#endif
+                 // DQ (3/22/2019): Fixing this to work with the token-based unparsing.
+                 // add to the last position
+                 // TODO: support to add to the first,
+                 // TODO: support fine positioning with #include directives
+                 // (*j)->addToAttachedPreprocessingInfo(result,position);
+
+                    if (supportTokenUnparsing == false)
+                       {
+                         (*j)->addToAttachedPreprocessingInfo(result,position);
+                       }
+                      else
+                       {
+                         (*j)->addToAttachedPreprocessingInfo(result,position);
+#if 0
+                         printf ("In SageInterface::insertHeader(): Calling set_containsTransformationToSurroundingWhitespace(true) \n");
+#endif
+#if 1
+                      // DQ (12/31/2020): Set the whitespace around the statement as being modified.
+                         (*j)->set_containsTransformationToSurroundingWhitespace(true);
+#endif
+#if 0
+                         SgDeclarationStatement* declarationStatement = *j;
+
+                      // DQ (1/5/2021): Don't call unparseToString, since this triggers the unparer which then unparses
+                      // from the token stream and makrs some token stream elements as already unparsed.
+                      // printf ("declarationStatement = %p = %s unparseToString() = %s \n",declarationStatement,
+                      //     declarationStatement->class_name().c_str(),declarationStatement->unparseToString().c_str());
+                         printf ("In SageInterface::insertHeader(): declarationStatement = %p = %s \n",declarationStatement,declarationStatement->class_name().c_str());
+                         printf ("In SageInterface::insertHeader(): declarationStatement->get_containsTransformationToSurroundingWhitespace() = %s \n",
+                              declarationStatement->get_containsTransformationToSurroundingWhitespace() ? "true" : "false");
+#endif
+#if 0
+                      // Liao, let's try the new way.
+                      // global_scope->prepend_statement(null_statement);
+                         SgEmptyDeclaration* emptyDeclaration = buildEmptyDeclaration();
+
+                         if (supportUnparseHeaders == true)
+                            {
+                           // In this case we need to set the physical_file_id to match the target file to be unparsed.
+                              int physical_file_id = globalScope->get_startOfConstruct()->get_physical_file_id();
+#if 0
+                              printf ("physical_file_id = %d \n",physical_file_id);
+#endif
+                              emptyDeclaration->get_startOfConstruct()->set_physical_file_id(physical_file_id);
+                              emptyDeclaration->get_endOfConstruct()->set_physical_file_id(physical_file_id);
+#if 0
+                              printf ("Exiting as a test! \n");
+                              ROSE_ASSERT(false);
+#endif
+                            }
+
+                         emptyDeclaration->addToAttachedPreprocessingInfo(result, position);
+
+                         globalScope->insert_statement(*j,emptyDeclaration);
+#endif
+                       }
+#if 0
+                    printf ("break out of for loop: result = %p \n",result);
+#endif
+                 // DQ (8/12/2020): This is a compiler warning.
+                 // successful = true;
+                    break;
+                  }
+             }
+        }
+       else // empty file, attach it after SgGlobal,TODO it is not working for unknown reason!!
+        {
+          cerr<<"SageInterface::insertHeader() Empty file is found!"<<endl;
+          cerr<<"#include xxx is  preprocessing information which has to be attached  to some other  located node (a statement for example)"<<endl;
+          cerr<<"You may have to insert some statement first before inserting a header"<<endl;
+          ROSE_ASSERT(false);
+          result = new PreprocessingInfo(PreprocessingInfo::CpreprocessorIncludeDeclaration, content, "Transformation generated",0, 0, 0, PreprocessingInfo::after);
+          ROSE_ASSERT(result);
+          globalScope->addToAttachedPreprocessingInfo(result,position);
+
+       // DQ (8/12/2020): This is a compiler warning.
+       // successful = true;
+        }
+
+  // DQ (3/12/2019): We need to mark the added comments and CPP directives as a transformation so that then can be output.
+  // This is a result of a fix to support the correct handling of comments and CPP directives for shared IR nodes as happen
+  // when multiple files are used on the command line.
+  // DQ (3/12/2019): This can be NULL for the omp tests.
+     if (result != NULL)
+        {
+          result->get_file_info()->setTransformation();
+        }
+
+  // must be inserted once somehow
+  // Liao 3/11/2015. We allow failed insertion sometimes, for example when translating an empty file for OpenMP, we don't need to insert any headers
+  // The caller function should decide what to do if insertion is failed: ignore vs. assert failure.
+  // ROSE_ASSERT(successful==true);
+
+#if 0
+     printf ("Exiting as a test! \n");
+     ROSE_ASSERT(false);
+#endif
+
+#if 0
+     printf ("Leaving SageInterface::insertHeader(): filename = %s \n",filename.c_str());
+#endif
+
+#if 0
+     printf ("Exiting as a test! \n");
+     ROSE_ASSERT(false);
+#endif
+
+     return result;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:50:16,525 - INFO - Response from llama3.1:70b for Function 153:
+2025-01-27 18:50:16,528 - INFO - /**
+ * @brief Inserts a header file into an AST.
+ *
+ * @param filename The name of the header file to be inserted.
+ * @return A pointer to the newly created PreprocessingInfo object or NULL if insertion failed.
+ */
+PreprocessingInfo* insertHeader(const std::string& filename)
+2025-01-27 18:50:16,528 - INFO - End time: 2025-01-27 18:50:16
+2025-01-27 18:50:16,528 - INFO - Duration: 5.918629884719849

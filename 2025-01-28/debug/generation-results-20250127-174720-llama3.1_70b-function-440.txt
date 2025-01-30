@@ -1,0 +1,123 @@
+2025-01-27 20:49:31,136 - INFO - Start time: 2025-01-27 20:49:31
+2025-01-27 20:49:31,136 - INFO - Generating documents for a function with id : 440
+2025-01-27 20:49:31,136 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    */
+    bool HasVirtualDestructor(const SgType * const inputType){
+        //Strip typedef and array
+        SgType *type = inputType->stripType(SgType::STRIP_TYPEDEF_TYPE | SgType::STRIP_ARRAY_TYPE );
+        
+        ENSURE_CLASS_TYPE(type, false);
+        
+        if(!IsClass(type)){
+            return false;
+        }
+        
+        vector<SgMemberFunctionDeclaration*> allMemberFunctions =  GetAllMemberFunctionsInClassHierarchy(type);
+#if DEBUG_QUADRATIC_BEHAVIOR
+        printf ("In HasVirtualDestructor(): allMemberFunctions.size() = %zu \n",allMemberFunctions.size());
+#endif
+        foreach(SgMemberFunctionDeclaration* memberFunction,allMemberFunctions) {
+            if (memberFunction->get_functionModifier().isVirtual() && memberFunction->get_specialFunctionModifier().isDestructor())
+                return true;
+        }
+        
+        // No virtual destructor(s) found
+        return false;
+    }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:49:56,734 - INFO - Response from llama3.1:70b for Function 440:
+2025-01-27 20:49:56,734 - INFO - /**
+ * @fn bool HasVirtualDestructor(const SgType * const inputType)
+ *
+ * @brief Checks if a class has at least one virtual destructor.
+ *
+ * This function determines whether the input type has any virtual destructors
+ * by examining all member functions in the class hierarchy. It first strips
+ * away typedefs and arrays from the input type, then checks if the resulting
+ * type is a class type. If not, it returns false immediately. Otherwise,
+ * it iterates over all member functions in the class hierarchy to find any
+ * virtual destructors.
+ *
+ * @param inputType The SgType object representing the input type to be checked.
+ *                   Must not be NULL or ill-formed.
+ *
+ * @return True if at least one virtual destructor is found, false otherwise.
+ *
+ * @warning This function assumes that the input type has been properly
+ *          initialized and is well-formed. If this is not the case,
+ *          undefined behavior may occur.
+ *
+ * @pre The input type must be a valid SgType object representing a class type.
+ *
+ * @post None.
+ *
+ * @note This function uses the ROSE library's SgType and SgMemberFunctionDeclaration
+ *       classes to represent and manipulate types and member functions,
+ *       respectively. It also relies on the ROSE library's GetAllMemberFunctionsInClassHierarchy
+ *       function to retrieve all member functions in the class hierarchy.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgType* type = ...; // initialize with a valid SgType object representing a class type
+ *           if (HasVirtualDestructor(type)) {
+ *               printf("Class has at least one virtual destructor.\n");
+ *           } else {
+ *               printf("Class does not have any virtual destructors.\n");
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:49:56,734 - INFO - End time: 2025-01-27 20:49:56
+2025-01-27 20:49:56,734 - INFO - Duration: 25.59828495979309

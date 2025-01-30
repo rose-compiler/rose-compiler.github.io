@@ -1,0 +1,122 @@
+2025-01-27 20:06:25,488 - INFO - Start time: 2025-01-27 20:06:25
+2025-01-27 20:06:25,488 - INFO - Generating documents for a function with id : 334
+2025-01-27 20:06:25,488 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    (SgExpression* expression, SgScopeStatement* scope)
+{
+    SgType* expressionType = expression->get_type();
+    SgType* variableType = expressionType;
+
+    //MS 10/24/2018: If the expression has array type, we need to use a pointer type for the temporary variable.
+    if (SgArrayType* arrayType=isSgArrayType(expressionType))
+    {
+      if(SgArrayType* strippedArrayType = isSgArrayType(arrayType->stripType(SgType::STRIP_TYPEDEF_TYPE))) {
+        SgType* strippedArrayBaseType = strippedArrayType->get_base_type();
+        variableType = SageBuilder::buildPointerType(strippedArrayBaseType);
+      }
+    }
+
+    //Generate a unique variable name
+    string name = generateUniqueVariableName(scope);
+
+    //initialize the variable in its declaration
+    SgAssignInitializer* initializer = NULL;
+    SgExpression* initExpressionCopy = SageInterface::copyExpression(expression);
+    initializer = SageBuilder::buildAssignInitializer(initExpressionCopy);
+
+    SgVariableDeclaration* tempVarDeclaration = SageBuilder::buildVariableDeclaration(name, variableType, initializer, scope);
+    ROSE_ASSERT(tempVarDeclaration != NULL);
+
+    //Build the variable reference expression that can be used in place of the original expression
+    SgExpression* varRefExpression = SageBuilder::buildVarRefExp(tempVarDeclaration);
+    return std::make_pair(tempVarDeclaration, varRefExpression);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:06:54,674 - INFO - Response from llama3.1:70b for Function 334:
+2025-01-27 20:06:54,674 - INFO - /**
+ * @fn std::pair<SgVariableDeclaration*, SgExpression*> createTemporaryVariable(SgExpression* expression, SgScopeStatement* scope)
+ *
+ * @brief Creates a temporary variable declaration for the given expression and returns the declaration along with an expression referencing the new variable.
+ *
+ * This function generates a unique name for the temporary variable, determines its type based on the input expression (considering array types), 
+ * and initializes the variable using an assignment initializer. It then constructs a variable reference expression to be used in place of the original expression.
+ *
+ * @param expression The SgExpression object representing the expression for which a temporary variable is to be created.
+ * @param scope The SgScopeStatement object specifying the scope in which the temporary variable declaration will be inserted.
+ *
+ * @return A pair containing the SgVariableDeclaration* for the newly created temporary variable and an SgExpression* referencing this new variable.
+ *
+ * @warning If the input expression has an array type, the function may modify it to use a pointer type for the temporary variable.
+ *
+ * @pre The input expression must have a valid type. The scope object must be non-null and represent a valid statement scope.
+ *
+ * @post A new SgVariableDeclaration is created and inserted into the given scope, along with an assignment initializer using a copy of the original expression.
+ *
+ * @note This function assumes that the input expression does not already have side effects or dependencies on other variables in the same scope.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create a temporary variable for an expression
+ *           SgExpression* expr = SageBuilder::buildIntVal(10);
+ *           SgScopeStatement* scopeStmt = ...; // Obtain or create the relevant scope statement
+ *           std::pair<SgVariableDeclaration*, SgExpression*> result = createTemporaryVariable(expr, scopeStmt);
+ *           SgVariableDeclaration* tempVarDecl = result.first;
+ *           SgExpression* varRefExpr = result.second;
+ *
+ *           // Use the new variable reference expression in your code
+ *          @endcode
+ */
+2025-01-27 20:06:54,674 - INFO - End time: 2025-01-27 20:06:54
+2025-01-27 20:06:54,674 - INFO - Duration: 29.186321258544922

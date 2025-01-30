@@ -1,0 +1,159 @@
+2025-01-27 20:05:23,172 - INFO - Start time: 2025-01-27 20:05:23
+2025-01-27 20:05:23,172 - INFO - Generating documents for a function with id : 332
+2025-01-27 20:05:23,172 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::statementCanBeTransformed(SgStatement* stmt)
+   {
+     bool result = true;
+
+     bool includingSelf = false;
+     SgSourceFile* sourceFile = getEnclosingSourceFile(stmt,includingSelf);
+
+     if (sourceFile == NULL)
+        {
+          printf ("In SageInterface::statementCanBeTransformed(): sourceFile not found \n");
+        }
+
+  // I think we can assert this!
+     ROSE_ASSERT(sourceFile != NULL);
+
+     if (sourceFile != NULL && sourceFile->get_unparse_tokens() == true && sourceFile->get_unparseHeaderFiles() == true)
+        {
+       // Need to look up the source file name, find the SgIncludeFile, and check if statements from this file can be transformed.
+       // There could be at least one other file is this is a header file that was included twice, but it should have a different path.
+          string source_filename = stmt->getFilenameString();
+#if 0
+          printf ("In SageInterface::statementCanBeTransformed(): source_filename = %s \n",source_filename.c_str());
+          printf (" --- Rose::includeFileMapForUnparsing.size()                   = %zu \n",Rose::includeFileMapForUnparsing.size());
+#endif
+
+       // DQ (11/5/2019): Using the edg_include_file_map instead (constructed in EDG/ROSE translation).
+          if (EDG_ROSE_Translation::edg_include_file_map.find(source_filename) != EDG_ROSE_Translation::edg_include_file_map.end())
+             {
+               SgIncludeFile* include_file = EDG_ROSE_Translation::edg_include_file_map[source_filename];
+               ROSE_ASSERT(include_file != NULL);
+#if 0
+               printf ("include_file->get_can_be_supported_using_token_based_unparsing() = %s \n",include_file->get_can_be_supported_using_token_based_unparsing() ? "true" : "false");
+#endif
+               if (include_file->get_can_be_supported_using_token_based_unparsing() == false)
+                  {
+#if 0
+                    printf ("NOTE: Transformations of this statement cannot be supported using the header file unparsing with token unparsing options! \n");
+#endif
+                    result = false;
+                  }
+             }
+            else
+             {
+            // DQ (5/13/2021): I think that the default (returing true) will work well.
+            // This is likely just the original input source file (not a header file).
+#if 0
+               printf ("Not found in Rose::includeFileMapForUnparsing: source_filename = %s \n",source_filename.c_str());
+#endif
+#if 0
+               printf ("Exiting as a test! \n");
+               ROSE_ABORT();
+#endif
+             }
+
+#if 0
+          printf ("Error: In statementCanBeTransformed(): this might be an issue! \n");
+          ROSE_ABORT();
+#endif
+        }
+
+     return result;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:05:47,008 - INFO - Response from llama3.1:70b for Function 332:
+2025-01-27 20:05:47,008 - INFO - /**
+ * @fn bool SageInterface::statementCanBeTransformed(SgStatement* stmt)
+ *
+ * @brief Determines if a given statement can be transformed using token-based unparsing.
+ *
+ * This function checks if the source file associated with the input statement
+ * can be supported using token-based unparsing. It returns true if the statement
+ * can be transformed, and false otherwise.
+ *
+ * The function uses the EDG/ROSE translation's include file map to look up the
+ * source file name and determine if statements from this file can be transformed.
+ *
+ * @param stmt The input statement for which the transformation capability is to be checked.
+ *
+ * @return True if the statement can be transformed, false otherwise.
+ *
+ * @warning If the source file associated with the input statement is not found,
+ *          an error message is printed and the function returns true by default.
+ *
+ * @pre The input statement must be non-null.
+ *
+ * @post The function returns a boolean value indicating whether the statement can be transformed.
+ *
+ * @note This function uses the EDG/ROSE translation's include file map to look up the source file name.
+ *       If the source file is not found in the map, the function returns true by default.
+ *
+ * @example
+ *          @code
+ *           SgStatement* stmt = ...; // obtain a statement object
+ *           bool canBeTransformed = SageInterface::statementCanBeTransformed(stmt);
+ *           if (canBeTransformed) {
+ *               printf("The statement can be transformed.\n");
+ *           } else {
+ *               printf("The statement cannot be transformed.\n");
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:05:47,008 - INFO - End time: 2025-01-27 20:05:47
+2025-01-27 20:05:47,008 - INFO - Duration: 23.83687949180603

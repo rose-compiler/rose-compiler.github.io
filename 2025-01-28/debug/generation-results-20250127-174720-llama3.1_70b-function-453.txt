@@ -1,0 +1,152 @@
+2025-01-27 20:54:36,149 - INFO - Start time: 2025-01-27 20:54:36
+2025-01-27 20:54:36,149 - INFO - Generating documents for a function with id : 453
+2025-01-27 20:54:36,149 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::isStructurallyEquivalentAST( SgNode* tree1, SgNode* tree2 )
+   {
+  // DQ (3/4/2014): Added support for testing two trees for equivalents using the AST iterators.
+
+#ifndef USE_CMAKEx
+  // DQ (3/8/2014): Make this conditionally compiled based on when CMake is not used because the libraries are not configured yet.
+
+  // This is AST container for the ROSE AST that will provide an iterator.
+  // We want two iterators (one for the copy of the snippet and one for the
+  // original snippet so that we can query the original snippet's AST
+  // as we process each IR node of the AST for the copy of the snippet.
+  // Only the copy of the snippet is inserted into the target AST.
+     RoseAst ast_of_copy(tree1);
+     RoseAst ast_of_original(tree2);
+
+  // printf ("ast_of_copy.size() = %" PRIuPTR " \n",ast_of_copy.size());
+
+  // Build the iterators so that we can increment thorugh both ASTs one IR node at a time.
+     RoseAst::iterator i_copy     = ast_of_copy.begin();
+     RoseAst::iterator i_original = ast_of_original.begin();
+
+  // Iterate of the copy of the snippet's AST.
+     while (i_copy != ast_of_copy.end())
+        {
+#if 0
+          printf ("*i_copy = %p = %s \n",*i_copy,(*i_copy)->class_name().c_str());
+          printf ("*i_original = %p = %s \n",*i_original,(*i_original)->class_name().c_str());
+#endif
+       // DQ (2/28/2014): This is a problem for some of the test codes (TEST   store/load heap string [test7a] and [test7a])
+       // ROSE_ASSERT((*i_copy)->variantT() == (*i_original)->variantT());
+          if ((*i_copy)->variantT() != (*i_original)->variantT())
+             {
+#if 0
+               printf ("ERROR: return from SageInterface::isStructurallyEquivalentAST(): (*i_copy)->variantT() != (*i_original)->variantT() \n");
+#endif
+#if 0
+               printf ("Making this an error! \n");
+               ROSE_ABORT();
+#endif
+               return false;
+             }
+
+          i_copy++;
+
+       // Verify that we have not reached the end of the ast for the original (both the
+       // copy and the original are the same structurally, and thus the same size).
+          ROSE_ASSERT(i_original != ast_of_original.end());
+          i_original++;
+        }
+
+  // We have reached the end of both ASTs.
+     ROSE_ASSERT(i_copy == ast_of_copy.end() && i_original == ast_of_original.end());
+#endif
+
+     return true;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:55:02,991 - INFO - Response from llama3.1:70b for Function 453:
+2025-01-27 20:55:02,991 - INFO - /**
+ * @fn bool SageInterface::isStructurallyEquivalentAST(SgNode* tree1, SgNode* tree2)
+ *
+ * @brief Checks if two Abstract Syntax Trees (ASTs) are structurally equivalent.
+ *
+ * This function compares the structure of two ASTs by iterating through their nodes
+ * and checking for equivalence. It uses ROSE's AST iterator to traverse both trees
+ * simultaneously and verify that they have the same structure.
+ *
+ * @param tree1 The first AST to compare.
+ * @param tree2 The second AST to compare.
+ *
+ * @return True if the two ASTs are structurally equivalent, false otherwise.
+ *
+ * @warning This function assumes that the input ASTs are valid and well-formed.
+ * If the input ASTs are not valid or well-formed, the behavior of this function is undefined.
+ *
+ * @pre The input ASTs must be non-null and must have been created using ROSE's AST builder.
+ *
+ * @post If the function returns true, it means that the two input ASTs are structurally equivalent.
+ * If the function returns false, it means that the two input ASTs are not structurally equivalent.
+ *
+ * @note This function uses a recursive algorithm to compare the ASTs. It may cause a stack overflow if the input ASTs are very large.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* tree1 = ...; // create first AST
+ *           SgNode* tree2 = ...; // create second AST
+ *           bool result = SageInterface::isStructurallyEquivalentAST(tree1, tree2);
+ *           if (result) {
+ *               printf("The two ASTs are structurally equivalent.\n");
+ *           } else {
+ *               printf("The two ASTs are not structurally equivalent.\n");
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:55:02,991 - INFO - End time: 2025-01-27 20:55:02
+2025-01-27 20:55:02,991 - INFO - Duration: 26.841918468475342

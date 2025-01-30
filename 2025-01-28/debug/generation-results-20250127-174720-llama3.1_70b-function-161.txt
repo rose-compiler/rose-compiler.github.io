@@ -1,0 +1,189 @@
+2025-01-27 18:53:19,138 - INFO - Start time: 2025-01-27 18:53:19
+2025-01-27 18:53:19,138 - INFO - Generating documents for a function with id : 161
+2025-01-27 18:53:19,138 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    PreprocessingInfo* SageInterface::attachComment(
+           SgLocatedNode* target, const string& content,
+           PreprocessingInfo::RelativePositionType  position /*=PreprocessingInfo::before*/,
+           PreprocessingInfo::DirectiveType dtype /* PreprocessingInfo::CpreprocessorUnknownDeclaration */)
+   {
+     ASSERT_not_null(target); //dangling comment is not allowed
+
+     PreprocessingInfo* result = NULL;
+     PreprocessingInfo::DirectiveType mytype=dtype;
+     string comment;
+
+  // Rasmussen (11/3/2020): Added Ada and Jovial style comments
+  // DQ (5/5/2010): infer comment type from target's language
+     if (mytype == PreprocessingInfo::CpreprocessorUnknownDeclaration)
+        {
+       // This is a rather expensive way to detect the language type (chases pointers back to the SgFile object).
+          if (is_C_language() || is_C99_language())
+             {
+             // Comment = "/* "+ content + " */";
+                mytype = PreprocessingInfo::C_StyleComment;
+             }
+          else if (is_Cxx_language() || is_Java_language())
+             {
+             // Comment = "// "+ content;
+                mytype = PreprocessingInfo::CplusplusStyleComment;
+             }
+          else if (is_Fortran_language() || is_CAF_language()) //FMZ:3/23/2009
+             {
+             // Comment = "! "+ content;
+                mytype = PreprocessingInfo::F90StyleComment;
+             }
+          else if (is_Ada_language())
+             {
+             // Comment = "-- " + content;
+                mytype = PreprocessingInfo::AdaStyleComment;
+             }
+          else if (is_Jovial_language())
+             {
+             // Comment = "% " + content + " %";
+                mytype = PreprocessingInfo::JovialStyleComment;
+             }
+          else
+             {
+               cout << "WARNING: SageInterface::attachComment(): Unknown programming language \n";
+               ROSE_ABORT();
+             }
+        }
+
+  // Once the langauge type is set (discovered automatically or more directly specified by the user).
+     bool resetPositionInfo = false;
+     switch (mytype)
+        {
+          case PreprocessingInfo::C_StyleComment:        comment = "/* " + content + " */"; break;
+          case PreprocessingInfo::CplusplusStyleComment: comment = "// " + content;         break;
+          case PreprocessingInfo::FortranStyleComment:   comment = "      C " + content;    break;
+          case PreprocessingInfo::F90StyleComment:       comment = "!"   + content;         break;
+          case PreprocessingInfo::AdaStyleComment:       comment = "-- " + content;         break;
+          case PreprocessingInfo::JovialStyleComment:
+            // The Jovial comment content will already have the comment delimiters, '%' or '"'
+               comment = content;
+               break;
+          case PreprocessingInfo::CpreprocessorLineDeclaration:
+               comment = "#myline " + content;
+               mytype = PreprocessingInfo::CplusplusStyleComment;
+               resetPositionInfo = true;
+               break;
+          case PreprocessingInfo::CpreprocessorIfndefDeclaration: comment = "#ifndef " + content + "\n"; break;
+          case PreprocessingInfo::CpreprocessorDefineDeclaration: comment = "#define " + content + "\n"; break;
+          case PreprocessingInfo::CpreprocessorEndifDeclaration:  comment = "#endif" + (content.empty() ? "\n" : (" /* " + content + " */\n")); break;
+          case PreprocessingInfo::CpreprocessorEnd_ifDeclaration:  comment = "#end if" + (content.empty() ? "\n" : (" /* " + content + " */\n")); break;
+
+          default:
+             {
+               printf ("Error: default in switch reached in SageInterface::attachComment() PreprocessingInfo::DirectiveType == %d \n",mytype);
+               ROSE_ABORT();
+             }
+        }
+
+     result = new PreprocessingInfo (mytype,comment, "transformation-generated", 0, 0, 0, position);
+
+  // If this is a Cpp Line declaration then we have to set the position to match the statement.
+     if (resetPositionInfo == true)
+        {
+       // Call the Sg_File_Info::operator=() member function.
+          *(result->get_file_info()) = *(target->get_file_info());
+        }
+       else
+        {
+       // DQ (3/12/2019): We need to mark the added comments and CPP directives as a transformation so that then can be output.
+       // This is a result of a fix to support the correct handling of comments and CPP directives for shared IR nodes as happen
+       // when multiple files are used on the command line.
+          result->get_file_info()->setTransformation();
+        }
+
+     ASSERT_not_null(result);
+     target->addToAttachedPreprocessingInfo(result);
+     return result;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:53:55,335 - INFO - Response from llama3.1:70b for Function 161:
+2025-01-27 18:53:55,335 - INFO - /**
+ * @fn PreprocessingInfo* SageInterface::attachComment(SgLocatedNode* target, const string& content, PreprocessingInfo::RelativePositionType position = PreprocessingInfo::before, PreprocessingInfo::DirectiveType dtype = PreprocessingInfo::CpreprocessorUnknownDeclaration)
+ *
+ * @brief Attaches a comment to a given node in the Abstract Syntax Tree (AST) with specific formatting based on the target's language and directive type.
+ *
+ * This function generates a comment string in the correct format for the target's programming language and attaches it to the specified SgLocatedNode. The comment is formatted according to the provided content, position, and directive type.
+ *
+ * @param target The node in the AST where the comment will be attached. Must not be NULL.
+ * @param content The text that will be used as the comment.
+ * @param position Specifies the relative position of the comment with respect to the target node (default is before).
+ * @param dtype The type of directive for the comment (default is CpreprocessorUnknownDeclaration). If this is set to CpreprocessorUnknownDeclaration, the function will attempt to infer the language type from the target's context.
+ *
+ * @return A pointer to the newly created PreprocessingInfo object representing the attached comment. Returns NULL on failure.
+ *
+ * @warning The function may abort if it encounters an unknown programming language or directive type.
+ *
+ * @pre The target node must not be NULL, and the content string must be valid for the chosen directive type.
+ * @post A new PreprocessingInfo object is created and attached to the target node with the correctly formatted comment text. If resetPositionInfo is true, the position information of the newly created PreprocessingInfo object will be set to match the statement.
+ *
+ * @note This function supports various programming languages, including C, C++, Java, Fortran, Ada, and Jovial, and can handle different directive types such as line declarations, ifdefs, and defines.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgLocatedNode* target = ...; // obtain a valid node in the AST
+ *           string content = "This is an example comment.";
+ *           PreprocessingInfo::RelativePositionType position = PreprocessingInfo::before;
+ *           PreprocessingInfo::DirectiveType dtype = PreprocessingInfo::C_StyleComment;
+ *
+ *           PreprocessingInfo* comment = SageInterface::attachComment(target, content, position, dtype);
+ *          @endcode
+ */
+2025-01-27 18:53:55,335 - INFO - End time: 2025-01-27 18:53:55
+2025-01-27 18:53:55,335 - INFO - Duration: 36.197609424591064

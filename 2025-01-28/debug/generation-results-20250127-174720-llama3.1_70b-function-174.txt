@@ -1,0 +1,182 @@
+2025-01-27 18:58:58,503 - INFO - Start time: 2025-01-27 18:58:58
+2025-01-27 18:58:58,503 - INFO - Generating documents for a function with id : 174
+2025-01-27 18:58:58,503 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    // Does a type have a trivial (built-in) destructor?
+  bool hasTrivialDestructor(SgType* t) {
+    switch (t->variantT()) {
+
+     // DQ (9/7/2016): Added support for new type now referenced as a result of using new automated generation of builtin functions for ROSE.
+        case V_SgTypeSigned128bitInteger:
+
+      // DQ (8/27/2006): Changed name of SgComplex to make it more consistant with other 
+      // type names and added SgTypeImaginary IR node (for C99 complex support).
+      case V_SgTypeComplex:
+      case V_SgTypeImaginary:
+      case V_SgPointerType:
+      case V_SgReferenceType:
+      case V_SgTypeBool:
+      case V_SgTypeChar:
+      case V_SgTypeDouble:
+      case V_SgTypeEllipse:
+      case V_SgTypeFloat:
+      case V_SgTypeGlobalVoid:
+      case V_SgTypeInt:
+      case V_SgTypeLong:
+      case V_SgTypeLongDouble:
+      case V_SgTypeLongLong:
+      case V_SgTypeShort:
+      case V_SgTypeSignedChar:
+      case V_SgTypeSignedInt:
+      case V_SgTypeSignedLong:
+      case V_SgTypeSignedShort:
+      case V_SgTypeUnsignedChar:
+      case V_SgTypeUnsignedInt:
+      case V_SgTypeUnsignedLong:
+      case V_SgTypeUnsignedLongLong:
+      case V_SgTypeUnsignedShort:
+      case V_SgTypeVoid:
+      case V_SgTypeWchar:
+
+   // DQ (2/16/2018): Adding support for char16_t and char32_t (C99 and C++11 specific types).
+      case V_SgTypeChar16:
+      case V_SgTypeChar32:
+
+      case V_SgFunctionType:
+      case V_SgTypeString:
+      case V_SgEnumType:
+        return true;
+
+      case V_SgArrayType:
+        return hasTrivialDestructor(isSgArrayType(t)->get_base_type());
+
+      case V_SgModifierType: 
+        return hasTrivialDestructor(isSgModifierType(t)->get_base_type());
+
+      case V_SgTypedefType:
+        return hasTrivialDestructor(isSgTypedefType(t)->get_base_type());
+
+      default: 
+        SgClassType* ct = isSgClassType(t);
+        if (!ct) return false;
+        SgDeclarationStatement* decl = ct->get_declaration();
+        if (isSgClassDeclaration(decl)) {
+          SgClassDeclaration* cd = isSgClassDeclaration(decl);
+          SgClassDefinition* cdef = cd->get_definition();
+          if (!cdef) return false;
+          bool hasDestructor = false;
+          SgDeclarationStatementPtrList& decls = cdef->get_members();
+          for (SgDeclarationStatementPtrList::iterator i = decls.begin();
+              i != decls.end(); ++i) {
+            if (isSgFunctionDeclaration(*i)) {
+              SgFunctionDeclaration* fundecl = isSgFunctionDeclaration(*i);
+              if (fundecl->get_specialFunctionModifier().isDestructor())
+                hasDestructor = true;
+            }
+          }
+          if (hasDestructor)
+            return false;
+          else
+            return true;
+        } else if (isSgFunctionDeclaration(decl)) {
+          return true;
+        } else if (isSgEnumDeclaration(decl)) {
+          return true;
+        } else {
+          return false;
+        }
+    }
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:59:25,252 - INFO - Response from llama3.1:70b for Function 174:
+2025-01-27 18:59:25,253 - INFO - /**
+ * @fn bool hasTrivialDestructor(SgType* t)
+ *
+ * @brief Checks if a given type has a trivial (built-in) destructor.
+ *
+ * This function determines whether the provided SgType object represents
+ * a type that does not require explicit destruction or deallocation. It uses
+ * a combination of switch statements and recursive calls to inspect the type's
+ * properties, including its variant type, base types, and declarations.
+ *
+ * @param t The SgType object representing the type to be checked for trivial destructor.
+ * 
+ * @return True if the given type has a trivial destructor; false otherwise.
+ *
+ * @details This function employs a recursive approach to handle complex types,
+ *          such as arrays, modifiers, and typedefs. For class types, it checks
+ *          whether a user-defined destructor is present in the class definition.
+ *
+ * @warnings The result may be incorrect if the input type is not properly initialized or represents an invalid state.
+ *
+ * @preconditions The input SgType object must be valid and represent a well-formed type.
+ *
+ * @postconditions None.
+ *
+ * @note This function does not modify the input type or any related data structures.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgProject* project = ...; // assume a valid ROSE project is loaded
+ *           SgType* type = project->getTypeFromString("int"); // get the SgType object for 'int'
+ *           if (hasTrivialDestructor(type)) {
+ *             printf("The type '%s' has a trivial destructor.\n", type->getName().c_str());
+ *           } else {
+ *             printf("The type '%s' does not have a trivial destructor.\n", type->getName().c_str());
+ *           }
+ *          @endcode
+ */
+2025-01-27 18:59:25,253 - INFO - End time: 2025-01-27 18:59:25
+2025-01-27 18:59:25,253 - INFO - Duration: 26.74950075149536

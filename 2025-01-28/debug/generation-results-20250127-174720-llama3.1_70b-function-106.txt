@@ -1,0 +1,133 @@
+2025-01-27 18:31:30,255 - INFO - Start time: 2025-01-27 18:31:30
+2025-01-27 18:31:30,255 - INFO - Generating documents for a function with id : 106
+2025-01-27 18:31:30,255 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgNode* SageInterface::getSgNodeFromAbstractHandleString(const std::string& input_string)
+{
+#ifdef ROSE_USE_INTERNAL_FRONTEND_DEVELOPMENT
+  printf ("AbstractHandle support is disabled for ROSE_USE_INTERNAL_FRONTEND_DEVELOPMENT \n");
+  ROSE_ABORT();
+#else
+  AbstractHandle::abstract_handle * project_handle = buildAbstractHandle(getProject());
+
+  // trim off the possible leading handle for project: "Project<numbering,1>::"
+  size_t pos = input_string.find("SourceFile<");
+  ROSE_ASSERT (pos != string::npos);
+  string trimed_string = input_string.substr(pos);
+  AbstractHandle::abstract_handle * handle = new AbstractHandle::abstract_handle(project_handle, trimed_string);
+  if (handle)
+  {
+    if (handle->getNode()!=NULL)
+    {
+#ifdef _MSC_VER
+      // DQ (11/28/2009): This is related to the use of covariant return types (I think).
+      SgNode* result = NULL; // (SgNode*)(handle->getNode()->getNode());
+#pragma message ("WARNING: covariant return type for get_node() not supported in MSVC.")
+      printf ("ERROR: covariant return type for get_node() not supported in MSVC. \n");
+      ROSE_ABORT();
+#else
+      SgNode* result = (SgNode*)(handle->getNode()->getNode());
+#endif
+      // deallocate memory, should not do this!!
+      // May corrupt the internal std maps used in abstract handle namespace
+      //delete handle->getNode();
+      //delete handle;
+      return result;
+    }
+  }
+#endif
+
+  return NULL;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:31:53,837 - INFO - Response from llama3.1:70b for Function 106:
+2025-01-27 18:31:53,837 - INFO - /**
+ * @fn SgNode* SageInterface::getSgNodeFromAbstractHandleString(const std::string& input_string)
+ *
+ * @brief Retrieves an SgNode from a given abstract handle string.
+ *
+ * This function takes an abstract handle string as input and returns the corresponding
+ * SgNode if found. It uses the AbstractHandle class to build an abstract handle from the
+ * project and then creates another abstract handle using the trimmed input string.
+ * If the node is found, it is returned; otherwise, NULL is returned.
+ *
+ * @param input_string The abstract handle string used to retrieve the SgNode.
+ *
+ * @return A pointer to the SgNode if found, or NULL otherwise.
+ *
+ * @warning This function may abort the program if AbstractHandle support is disabled for
+ *          ROSE_USE_INTERNAL_FRONTEND_DEVELOPMENT.
+ *
+ * @pre The input_string must be a valid abstract handle string.
+ *
+ * @post If the node is found, it will be returned; otherwise, NULL will be returned.
+ *
+ * @note This function uses the AbstractHandle class to build and manipulate abstract handles.
+ *       It also uses the SgNode class to represent the retrieved node.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SageInterface sage;
+ *           std::string input_string = "SourceFile<some_file.cpp>";
+ *           SgNode* node = sage.getSgNodeFromAbstractHandleString(input_string);
+ *           if (node != NULL) {
+ *             // Use the retrieved node...
+ *           } else {
+ *             // Handle the case where the node is not found...
+ *           }
+ *          @endcode
+ */
+2025-01-27 18:31:53,837 - INFO - End time: 2025-01-27 18:31:53
+2025-01-27 18:31:53,837 - INFO - Duration: 23.58294939994812

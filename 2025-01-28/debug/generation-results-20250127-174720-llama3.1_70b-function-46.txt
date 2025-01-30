@@ -1,0 +1,145 @@
+2025-01-27 18:08:22,894 - INFO - Start time: 2025-01-27 18:08:22
+2025-01-27 18:08:22,894 - INFO - Generating documents for a function with id : 46
+2025-01-27 18:08:22,894 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::getDefaultConstructor( SgClassDeclaration* classDeclaration )
+   {
+     SgMemberFunctionDeclaration* defaultConstructor = NULL;
+
+     ROSE_ASSERT(classDeclaration != NULL);
+     SgDeclarationStatement* definingDeclaration = classDeclaration->get_definingDeclaration();
+     ROSE_ASSERT(definingDeclaration != NULL);
+     SgClassDeclaration* definingClassDeclaration = isSgClassDeclaration(definingDeclaration);
+
+  // Note that not all class declarations have to have a defining declaration (e.g. "~int()"
+  // would be associated with a class declaration but no definition would exist).
+     if (definingClassDeclaration != NULL)
+        {
+          SgClassDefinition* classDefinition = definingClassDeclaration->get_definition();
+          ROSE_ASSERT(classDefinition != NULL);
+
+          SgDeclarationStatementPtrList::iterator i = classDefinition->get_members().begin();
+          while ( i != classDefinition->get_members().end() )
+             {
+            // Check the parent pointer to make sure it is properly set
+               ROSE_ASSERT( (*i)->get_parent() != NULL);
+               ROSE_ASSERT( (*i)->get_parent() == classDefinition);
+
+               SgMemberFunctionDeclaration* memberFunction = isSgMemberFunctionDeclaration(*i);
+               if (memberFunction != NULL)
+                  {
+                 // printf ("memberFunction = %p = %s \n",memberFunction,memberFunction->get_name().str());
+                    if ( memberFunction->get_specialFunctionModifier().isConstructor() == true )
+                       defaultConstructor = memberFunction;
+                  }
+
+            // iterate through the class members
+               i++;
+             }
+        }
+
+  // This should be true for the specific case that we are currently debugging!
+  // ROSE_ASSERT(defaultConstructor != NULL);
+
+     return defaultConstructor;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:08:52,786 - INFO - Response from llama3.1:70b for Function 46:
+2025-01-27 18:08:52,786 - INFO - /**
+ * @fn SgMemberFunctionDeclaration* SageInterface::getDefaultConstructor(SgClassDeclaration* classDeclaration)
+ *
+ * @brief Retrieves the default constructor of a given class declaration.
+ *
+ * This function searches for the default constructor within a class definition
+ * and returns it. If no default constructor is found, or if the input class declaration
+ * does not have a defining declaration (i.e., it's a forward declaration), the 
+ * function returns NULL.
+ *
+ * The search algorithm iterates through all members of the class definition 
+ * to find a member function that has its special function modifier set as a constructor.
+ *
+ * @param classDeclaration A pointer to an SgClassDeclaration object representing
+ *                         the class for which to retrieve the default constructor.
+ *                         Must not be NULL.
+ *
+ * @return A pointer to the SgMemberFunctionDeclaration object representing the 
+ *         default constructor of the input class declaration, or NULL if no such 
+ *         constructor exists or if the input is invalid.
+ *
+ * @warning The function does not verify whether the found constructor has no arguments
+ *          (i.e., it's a true default constructor) or whether it's private/public. It 
+ *          only checks for the presence of a constructor.
+ *
+ * @pre The input class declaration must be non-NULL and have a defining declaration.
+ *
+ * @post If a default constructor is found, its parent pointer points to the class definition.
+ *
+ * @note This function does not handle cases where multiple constructors are present,
+ *       nor does it verify whether the found constructor has any side effects or 
+ *       whether it's actually callable.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgClassDeclaration* classDecl = ...; // obtain a class declaration
+ *           SgMemberFunctionDeclaration* defaultCtor = SageInterface::getDefaultConstructor(classDecl);
+ *           if (defaultCtor != NULL) {
+ *             printf("Default constructor found: %s\n", defaultCtor->get_name().str());
+ *           } else {
+ *             printf("No default constructor found.\n");
+ *           }
+ *          @endcode
+ */
+2025-01-27 18:08:52,786 - INFO - End time: 2025-01-27 18:08:52
+2025-01-27 18:08:52,786 - INFO - Duration: 29.89215087890625

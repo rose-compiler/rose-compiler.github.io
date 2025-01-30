@@ -1,0 +1,464 @@
+2025-01-27 20:15:26,714 - INFO - Start time: 2025-01-27 20:15:26
+2025-01-27 20:15:26,714 - INFO - Generating documents for a function with id : 358
+2025-01-27 20:15:26,714 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::buildFunctionPrototype ( SgFunctionDeclaration* functionDeclaration )
+   {
+     SgFunctionDeclaration* nondefiningFunctionDeclaration = NULL;
+  // SgDeclarationStatement* nondefiningFunctionDeclaration = NULL;
+
+#if 0
+     printf ("In SageInterface::buildFunctionPrototype(): functionDeclaration = %p = %s name = %s \n",
+          functionDeclaration,functionDeclaration->class_name().c_str(),functionDeclaration->get_name().str());
+#endif
+
+  // DQ (11/21/2019): Check if this is a constructor, this is a temporary fix.
+     bool isConstructor = false;
+     SgMemberFunctionDeclaration* tmp_memberFunctionDeclaration = isSgMemberFunctionDeclaration(functionDeclaration);
+     if (tmp_memberFunctionDeclaration != NULL)
+        {
+          isConstructor = tmp_memberFunctionDeclaration->get_specialFunctionModifier().isConstructor();
+
+#if 0
+          if (isConstructor == true)
+             {
+               printf ("Skipping case of constructors (in building prototype from defining function declaration) \n");
+               return;
+             }
+#endif
+        }
+
+  // DQ (12/2/2019): Need to support member functions which can't be declared when outside of their class.
+  // bool replaceWithEmptyDeclaration = false;
+  // SgDeclarationStatement* emptyDeclaration = NULL;
+
+     SgName name                         = functionDeclaration->get_name();
+     SgType* return_type                 = functionDeclaration->get_type()->get_return_type();
+
+#if 0
+  // DQ (12/10/2020): The issue is that the default arguments defined in template functions are represented in the AST.
+  // Where we output the template as a string, it is included, and in the template instantiation it is represented in
+  // the AST.  So where it is used, default arguments are not represented in the AST and so the are not generated in
+  // this function that builds the function prototype from the defining function.
+
+     printf ("In SageInterface::buildFunctionPrototype(): functionDeclaration = %p \n",functionDeclaration);
+     printf ("In SageInterface::buildFunctionPrototype(): functionDeclaration->get_firstNondefiningDeclaration() = %p \n",functionDeclaration->get_firstNondefiningDeclaration());
+     printf ("In SageInterface::buildFunctionPrototype(): functionDeclaration->get_definingDeclaration()         = %p \n",functionDeclaration->get_definingDeclaration());
+
+  // DQ (12/9/2020): Check if there is a default argument.  Need to figure out how default arguments
+  // are specified in the function declarations, and make sure the prototype reproduces them.
+     for (size_t i = 0; i < functionDeclaration->get_args().size(); i++)
+       {
+         SgInitializedName* arg = functionDeclaration->get_args()[i];
+#if 1
+         printf ("In SageInterface::buildFunctionPrototype(): functionDeclaration->get_args(): (i = %zu) arg = %p = %s isDefaultArgument = %s \n",
+              i,arg,arg->get_name().str(),arg->get_file_info()->isDefaultArgument() ? "true" : "false");
+         printf (" --- arg->get_initializer() = %p \n",arg->get_initializer());
+#endif
+         if (arg->get_file_info()->isDefaultArgument() == true)
+            {
+              printf ("NOTE: default argument (i = %zu) not reproduced in function prototype: arg = %p = %s \n",i,arg,arg->get_name().str());
+            }
+       }
+#endif
+
+#if 1
+     SgFunctionParameterList* param_list = buildFunctionParameterList( functionDeclaration->get_type()->get_argument_list());
+#else
+  // DQ (9/26/2019): We need to avoid building SgFunctionParameterList IR nodes and then not attaching them to anything (parent pointers are checked in AST consistancy testing).
+  // SgFunctionParameterList *param_list = functionDeclaration->get_parlist();
+     SgTemplateInstantiationFunctionDecl* templateInstantiationFunctionDecl = isSgTemplateInstantiationFunctionDecl(functionDeclaration);
+     SgFunctionParameterList* param_list = NULL;
+
+     if (templateInstantiationFunctionDecl == NULL)
+        {
+          param_list = buildFunctionParameterList( functionDeclaration->get_type()->get_argument_list());
+        }
+       else
+        {
+          SgTemplateInstantiationMemberFunctionDecl* templateInstantiationMemberFunctionDecl = isSgTemplateInstantiationMemberFunctionDecl(functionDeclaration);
+          if (templateInstantiationMemberFunctionDecl == NULL)
+             {
+               param_list = buildFunctionParameterList( functionDeclaration->get_type()->get_argument_list());
+             }
+        }
+#endif
+
+
+  // bool isTemplateInstantiationMemberFunctionDecl = isSgTemplateInstantiationMemberFunctionDecl(functionDeclaration) != NULL);
+     bool isTemplateInstantiationMemberFunctionDecl = false;
+
+     SgScopeStatement* scope             = functionDeclaration->get_scope();
+  // SgTemplateParameterPtrList* templateParameterList = NULL; // functionDeclaration->get_templateParameterList();
+     SgExprListExp* python_decoratorList = NULL;
+     bool buildTemplateInstantiation     = false;
+     SgTemplateArgumentPtrList* templateArgumentsList = NULL;
+
+  // DQ (9/26/2019): Tracing down a null parent pointer.
+  // ROSE_ASSERT(param_list->get_parent() != NULL);
+  // ROSE_ASSERT(param_list->get_parent() == NULL);
+     ROSE_ASSERT(param_list == NULL || param_list->get_parent() == NULL);
+
+     switch (functionDeclaration->variantT())
+        {
+          case V_SgTemplateMemberFunctionDeclaration:
+             {
+#if 0
+               printf ("This function to replace the defining declaration with a non-defining declaration does not yet support template member functions \n");
+#endif
+               SgTemplateMemberFunctionDeclaration* original_templateMemberFunctionDeclaration = isSgTemplateMemberFunctionDeclaration(functionDeclaration);
+               ROSE_ASSERT(original_templateMemberFunctionDeclaration != NULL);
+
+               SgTemplateMemberFunctionDeclaration* templateMemberFunctionDeclaration = NULL;
+
+               unsigned int functionConstVolatileFlags = 0;
+
+               ROSE_ASSERT(original_templateMemberFunctionDeclaration->get_type() != NULL);
+
+            // Need to call:
+            // unsigned int get_mfunc_specifier();
+
+               SgMemberFunctionType* memberFunctionType = isSgMemberFunctionType(original_templateMemberFunctionDeclaration->get_type());
+               ROSE_ASSERT(memberFunctionType != NULL);
+
+               functionConstVolatileFlags = memberFunctionType->get_mfunc_specifier();
+
+            // SgTemplateMemberFunctionDeclaration*
+            // buildNondefiningTemplateMemberFunctionDeclaration (const SgName & name, SgType* return_type, SgFunctionParameterList *parlist,
+            //      SgScopeStatement* scope, SgExprListExp* decoratorList, unsigned int functionConstVolatileFlags, SgTemplateParameterPtrList* templateParameterList );
+
+               SgTemplateParameterPtrList templateParameterList = original_templateMemberFunctionDeclaration->get_templateParameters();
+            // ROSE_ASSERT(templateParameterList != NULL);
+
+               templateMemberFunctionDeclaration =
+                    buildNondefiningTemplateMemberFunctionDeclaration ( name, return_type, param_list, scope, python_decoratorList, functionConstVolatileFlags, &templateParameterList );
+#if 0
+               printf ("ERROR: Template functions are not yet supported! \n");
+               ROSE_ABORT();
+#endif
+               nondefiningFunctionDeclaration = templateMemberFunctionDeclaration;
+
+               ROSE_ASSERT(nondefiningFunctionDeclaration != NULL);
+
+            // DQ (11/21/2019): Handle constructors.
+               if (isConstructor == true)
+                  {
+                    templateMemberFunctionDeclaration->get_specialFunctionModifier().setConstructor();
+                  }
+
+               break;
+             }
+
+          case V_SgTemplateFunctionDeclaration:
+             {
+#if 0
+               printf ("This function to replace the defining declaration with a non-defining declaration does not yet support template functions \n");
+#endif
+               SgTemplateFunctionDeclaration* original_templateFunctionDeclaration = isSgTemplateFunctionDeclaration(functionDeclaration);
+               ROSE_ASSERT(original_templateFunctionDeclaration != NULL);
+
+               SgTemplateFunctionDeclaration* templateFunctionDeclaration = NULL; // isSgTemplateFunctionDeclaration(functionDeclaration);
+
+            // SgTemplateFunctionDeclaration*
+            // buildNondefiningTemplateFunctionDeclaration (const SgName & name, SgType* return_type, SgFunctionParameterList *parlist,
+            //      SgScopeStatement* scope=NULL, SgExprListExp* decoratorList = NULL, SgTemplateParameterPtrList* templateParameterList = NULL);
+
+               SgTemplateParameterPtrList templateParameterList = original_templateFunctionDeclaration->get_templateParameters();
+
+               templateFunctionDeclaration = buildNondefiningTemplateFunctionDeclaration ( name, return_type, param_list, scope, python_decoratorList, &templateParameterList );
+#if 0
+               printf ("ERROR: Template functions are not yet supported! \n");
+               ROSE_ABORT();
+#endif
+               nondefiningFunctionDeclaration = templateFunctionDeclaration;
+
+               ROSE_ASSERT(nondefiningFunctionDeclaration != NULL);
+
+               break;
+             }
+
+       // DQ (10/29/2020): Added new case.
+          case V_SgTemplateInstantiationMemberFunctionDecl:
+             {
+               buildTemplateInstantiation = true;
+
+               isTemplateInstantiationMemberFunctionDecl = true;
+
+               SgTemplateInstantiationMemberFunctionDecl* templateInstantiationMemberFunctionDecl = isSgTemplateInstantiationMemberFunctionDecl(functionDeclaration);
+               ROSE_ASSERT(templateInstantiationMemberFunctionDecl != NULL);
+               templateArgumentsList = &(templateInstantiationMemberFunctionDecl->get_templateArguments());
+#if 0
+               printf ("name from functionDeclaration->get_name(): name                                       = %s \n",name.str());
+            // printf ("name from templateInstantiationMemberFunctionDecl->get_template_name(): template_name = %s \n",templateInstantiationMemberFunctionDecl->get_template_name().str());
+               printf ("name from templateInstantiationMemberFunctionDecl->get_templateName(): template_name  = %s \n",templateInstantiationMemberFunctionDecl->get_templateName().str());
+               SgTemplateMemberFunctionDeclaration* templateDeclaration = templateInstantiationMemberFunctionDecl->get_templateDeclaration();
+               if (templateDeclaration != NULL)
+                  {
+                    printf ("name from templateInstantiationMemberFunctionDecl->get_template_declaration()->get_name(): template_name  = %s \n",templateDeclaration->get_name().str());
+                    printf ("name from templateInstantiationMemberFunctionDecl->get_template_declaration()->get_template_name(): template_name  = %s \n",templateDeclaration->get_template_name().str());
+                  }
+#endif
+            // name = functionDeclaration->get_name();
+            // name = templateInstantiationMemberFunctionDecl->get_template_name();
+               name = templateInstantiationMemberFunctionDecl->get_templateName();
+#if 0
+               printf ("In case V_SgTemplateInstantiationMemberFunctionDecl: using name = %s \n",name.str());
+#endif
+            // DQ (10/29/2020): Change this to include the functionality to build the member function support without fall-through.
+             }
+             // fall through
+          case V_SgMemberFunctionDeclaration:
+             {
+#if 0
+               printf ("This function to replace the defining declaration with a non-defining declaration does not yet support member functions \n");
+#endif
+               SgMemberFunctionDeclaration* original_memberFunctionDeclaration = isSgMemberFunctionDeclaration(functionDeclaration);
+               ROSE_ASSERT(original_memberFunctionDeclaration != NULL);
+
+               SgMemberFunctionDeclaration* memberFunctionDeclaration = NULL; // isSgMemberFunctionDeclaration(functionDeclaration);
+
+            // SgMemberFunctionDeclaration*
+            // buildNondefiningMemberFunctionDeclaration (const SgName & name, SgType* return_type, SgFunctionParameterList *parlist,
+            //      SgScopeStatement* scope, SgExprListExp* decoratorList, unsigned int functionConstVolatileFlags, bool buildTemplateInstantiation, SgTemplateArgumentPtrList* templateArgumentsList);
+
+               unsigned int functionConstVolatileFlags = 0;
+
+               ROSE_ASSERT(original_memberFunctionDeclaration->get_type() != NULL);
+
+            // Need to call:
+            // unsigned int get_mfunc_specifier();
+
+            // DQ (12/2/2019): If it is defined outside of the class, then don't replace with member function prototype,
+            // since they is not allowed to be declared outside of the class they are a member of.
+
+            // We do want to build prototypes for template instantiation member functions, and template instantiation non-member functions (see below).
+               bool buildPrototype = isTemplateInstantiationMemberFunctionDecl || original_memberFunctionDeclaration->get_parent() == original_memberFunctionDeclaration->get_scope();
+#if 0
+               printf ("In SageInterface::buildFunctionPrototype(): buildPrototype = %s \n",buildPrototype ? "true" : "false");
+#endif
+               if (buildPrototype == true)
+                  {
+                    SgMemberFunctionType* memberFunctionType = isSgMemberFunctionType(original_memberFunctionDeclaration->get_type());
+                    ROSE_ASSERT(memberFunctionType != NULL);
+#if 0
+                    printf ("original_memberFunctionDeclaration->get_parent() == original_memberFunctionDeclaration->get_scope() \n");
+#endif
+                    functionConstVolatileFlags = memberFunctionType->get_mfunc_specifier();
+
+                    memberFunctionDeclaration =
+                         buildNondefiningMemberFunctionDeclaration
+                              ( name, return_type, param_list, scope, python_decoratorList, functionConstVolatileFlags,
+                                buildTemplateInstantiation,templateArgumentsList );
+#if 0
+                    printf ("ERROR: Member functions are not yet supported! \n");
+                    ROSE_ABORT();
+#endif
+                 // DQ (11/21/2019): Handle constructors.
+                    if (isConstructor == true)
+                       {
+                         memberFunctionDeclaration->get_specialFunctionModifier().setConstructor();
+                       }
+
+                    nondefiningFunctionDeclaration = memberFunctionDeclaration;
+
+                    ROSE_ASSERT(nondefiningFunctionDeclaration != NULL);
+                  }
+                 else
+                  {
+                 // Case of member function defined outside of it's class.
+#if 0
+                    printf ("NOTE: Member functions defined outside of their class can not be output as member function prototypes (not allowed in C++) \n");
+#endif
+                 // We want to build a SgEmptyDeclaration using buildEmptyDeclaration() but this is not a function.
+                 // nondefiningFunctionDeclaration = buildEmptyDeclaration();
+                    nondefiningFunctionDeclaration = NULL;
+#if 0
+                    nondefiningFunctionDeclaration = NULL;
+
+                    replaceWithEmptyDeclaration = true;
+                    emptyDeclaration = buildEmptyDeclaration();
+                    ROSE_ASSERT(emptyDeclaration != NULL);
+#endif
+                 // DQ (10/29/2020): Commented out as part of move to used SgFunctionDeclaration return type.
+                 // ROSE_ASSERT(nondefiningFunctionDeclaration != NULL);
+
+                 // Since we din't build a member function we don't need the parameter list.
+                    delete param_list;
+                    param_list = NULL;
+#if 0
+                    printf ("Exiting as a test! \n");
+                    ROSE_ABORT();
+#endif
+                  }
+
+            // DQ (10/29/2020): Commented out as part of move to used SgFunctionDeclaration return type.
+            // ROSE_ASSERT(nondefiningFunctionDeclaration != NULL);
+               break;
+             }
+
+          case V_SgFunctionDeclaration:
+             {
+            // This is for a non-member non-template function declaration.
+               nondefiningFunctionDeclaration = buildNondefiningFunctionDeclaration (name, return_type, param_list, scope, python_decoratorList, buildTemplateInstantiation,templateArgumentsList);
+               ROSE_ASSERT(nondefiningFunctionDeclaration != NULL);
+               break;
+             }
+
+       // DQ (10/29/2020): Added new case.
+          case V_SgTemplateInstantiationFunctionDecl:
+             {
+            // This is for a non-member non-template function declaration.
+               buildTemplateInstantiation = true;
+               SgTemplateInstantiationFunctionDecl* templateInstantiationFunctionDecl = isSgTemplateInstantiationFunctionDecl(functionDeclaration);
+               ROSE_ASSERT(templateInstantiationFunctionDecl != NULL);
+               templateArgumentsList = &(templateInstantiationFunctionDecl->get_templateArguments());
+#if 0
+               printf ("name from functionDeclaration->get_name(): name                                       = %s \n",name.str());
+            // printf ("name from templateInstantiationFunctionDecl->get_template_name(): template_name = %s \n",templateInstantiationFunctionDecl->get_template_name().str());
+               printf ("name from templateInstantiationFunctionDecl->get_templateName(): template_name  = %s \n",templateInstantiationFunctionDecl->get_templateName().str());
+               SgTemplateFunctionDeclaration* templateDeclaration = templateInstantiationFunctionDecl->get_templateDeclaration();
+               if (templateDeclaration != NULL)
+                  {
+                    printf ("name from templateInstantiationFunctionDecl->get_template_declaration()->get_name(): template_name  = %s \n",templateDeclaration->get_name().str());
+                    printf ("name from templateInstantiationFunctionDecl->get_template_declaration()->get_template_name(): template_name  = %s \n",templateDeclaration->get_template_name().str());
+                  }
+#endif
+               name = templateInstantiationFunctionDecl->get_templateName();
+#if 0
+               printf ("In case V_SgTemplateInstantiationFunctionDecl: using name = %s \n",name.str());
+#endif
+               nondefiningFunctionDeclaration = buildNondefiningFunctionDeclaration (name, return_type, param_list, scope, python_decoratorList, buildTemplateInstantiation,templateArgumentsList);
+               ROSE_ASSERT(nondefiningFunctionDeclaration != NULL);
+               break;
+             }
+
+          default:
+             {
+            // DQ (12/4/2019): If this is any other case than that handled above, then we just return.
+            // These cases would be only template instantiations.
+
+            // Nothing to do, except delete the parameter list we built, and return.
+               delete param_list;
+               param_list = NULL;
+
+               return NULL;
+             }
+        }
+
+  // DQ (10/29/2020): We should be able to change this now that we support SgTemplateInstantiationFunctionDecl and SgTemplateInstantiationMemberFunctionDecl IR nodes.
+  // DQ (9/26/2019): Tracing down a null parent pointer.
+     ROSE_ASSERT(param_list == NULL || param_list->get_parent() != NULL);
+  // ROSE_ASSERT(param_list != NULL);
+  // ROSE_ASSERT(param_list->get_parent() != NULL);
+
+  // ROSE_ASSERT(nondefiningFunctionDeclaration != NULL);
+
+     if (nondefiningFunctionDeclaration != NULL)
+        {
+          if (nondefiningFunctionDeclaration->get_firstNondefiningDeclaration() == NULL)
+             {
+#if 0
+               printf ("Setting the firstNondefiningDeclaration \n");
+#endif
+               nondefiningFunctionDeclaration->set_firstNondefiningDeclaration(functionDeclaration->get_firstNondefiningDeclaration());
+             }
+
+          if (nondefiningFunctionDeclaration->get_definingDeclaration() == NULL)
+             {
+#if 0
+               printf ("Setting the definingDeclaration \n");
+#endif
+               nondefiningFunctionDeclaration->set_definingDeclaration(functionDeclaration->get_definingDeclaration());
+             }
+
+          ROSE_ASSERT(nondefiningFunctionDeclaration->get_firstNondefiningDeclaration() != NULL);
+          ROSE_ASSERT(nondefiningFunctionDeclaration->get_definingDeclaration() != NULL);
+
+       // DQ (12/17/2020): This is a required fix that was only caught as an issue by some customer code.
+          if (nondefiningFunctionDeclaration != NULL)
+             {
+            // DQ (11/22/2020): These can't be the same list else we will have a case of iterator invalidation.
+            // This is a bug in the support for building a new prototype from a defining function declaration
+            // and caused this problem. This assertion will prevent this sort of error from happening again.
+               ROSE_ASSERT(functionDeclaration->getAttachedPreprocessingInfo() == NULL ||
+                           functionDeclaration->getAttachedPreprocessingInfo() != nondefiningFunctionDeclaration->getAttachedPreprocessingInfo());
+             }
+        }
+
+     return nondefiningFunctionDeclaration;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:15:42,453 - INFO - Response from llama3.1:70b for Function 358:
+2025-01-27 20:15:42,453 - INFO - /**
+ * @brief Builds a non-defining function declaration from a given function declaration.
+ *
+ * This function takes in various parameters such as the name of the function,
+ * return type, parameter list, scope, and Python decorator list to construct a
+ * non-defining function declaration. It also handles template instantiations.
+ *
+ * @param functionDeclaration The input function declaration.
+ * @param buildTemplateInstantiation A flag indicating whether to build a template instantiation.
+ * @param templateArgumentsList A pointer to the template arguments list (optional).
+ * @return A pointer to the built non-defining function declaration, or NULL if it cannot be constructed.
+ */
+SgNondefiningFunctionDeclaration* buildNondefiningFunctionDeclaration(SgFunctionDeclaration* functionDeclaration,
+                                                                     SgType* return_type,
+                                                                     SgParameterList* param_list,
+                                                                     SgScopeStatement* scope,
+                                                                     std::vector<SgPythonDecorator*> python_decoratorList,
+                                                                     bool buildTemplateInstantiation = false,
+                                                                     SgTemplateArgumentList* templateArgumentsList = NULL)
+2025-01-27 20:15:42,453 - INFO - End time: 2025-01-27 20:15:42
+2025-01-27 20:15:42,453 - INFO - Duration: 15.73958683013916

@@ -1,0 +1,267 @@
+2025-01-27 17:49:48,199 - INFO - Start time: 2025-01-27 17:49:48
+2025-01-27 17:49:48,199 - INFO - Generating documents for a function with id : 2
+2025-01-27 17:49:48,199 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    string
+SageInterface::get_name ( const SgExpression* expr )
+   {
+     string name = "undefined_name";
+
+  // ROSE_ASSERT(expr != NULL);
+     switch(expr->variantT())
+        {
+          case V_SgVarRefExp:
+             {
+               const SgVarRefExp* varRef = isSgVarRefExp(expr);
+               name = "var_ref_of_";
+               ROSE_ASSERT(varRef != NULL);
+               ROSE_ASSERT(varRef->get_symbol() != NULL);
+               name += varRef->get_symbol()->get_name();
+               break;
+             }
+
+       // DQ (2/2/2011): Added case to support fortran use of label references in alternate return parameters.
+          case V_SgLabelRefExp:
+             {
+               const SgLabelRefExp* labelRef = isSgLabelRefExp(expr);
+               name = "label_ref_of_";
+               ROSE_ASSERT(labelRef != NULL);
+               ROSE_ASSERT(labelRef->get_symbol() != NULL);
+               name += labelRef->get_symbol()->get_name();
+               break;
+             }
+
+          case V_SgPntrArrRefExp:
+             {
+               const SgPntrArrRefExp* arrayRef = isSgPntrArrRefExp(expr);
+               name = "array_ref_of_";
+               name += get_name(arrayRef->get_lhs_operand());
+               name += "_at_";
+               name += get_name(arrayRef->get_rhs_operand());
+               break;
+             }
+
+          case V_SgFunctionCallExp:
+             {
+               const SgFunctionCallExp* functionCall = isSgFunctionCallExp(expr);
+               name = "function_call_";
+               name += get_name(functionCall->get_function());
+               break;
+             }
+
+          case V_SgFunctionRefExp:
+             {
+               const SgFunctionRefExp* functionRefExp = isSgFunctionRefExp(expr);
+               name = "function_ref_";
+               name += functionRefExp->get_symbol()->get_name();
+               break;
+             }
+
+       // DQ (4/19/2013): Added support for SgMemberFunctionRefExp.
+          case V_SgMemberFunctionRefExp:
+             {
+               const SgMemberFunctionRefExp* memberFunctionRefExp = isSgMemberFunctionRefExp(expr);
+               name = "member_function_ref_";
+               name += memberFunctionRefExp->get_symbol()->get_name();
+               break;
+             }
+
+          case V_SgIntVal:
+             {
+               const SgIntVal* valueExp = isSgIntVal(expr);
+               name = "integer_value_exp_";
+               name += StringUtility::numberToString(valueExp->get_value());
+               break;
+             }
+
+          case V_SgStringVal:
+             {
+               const SgStringVal* valueExp = isSgStringVal(expr);
+               name = "string_value_exp_";
+               name += valueExp->get_value();
+               break;
+             }
+
+          case V_SgSubscriptExpression:
+             {
+               const SgSubscriptExpression* subscriptExpression = isSgSubscriptExpression(expr);
+               name = "subscript_exp_";
+            // name += StringUtility::numberToString(subscriptExpression->get_lowerBound());
+               name += get_name(subscriptExpression->get_lowerBound());
+               name += "_";
+            // name += StringUtility::numberToString(subscriptExpression->get_upperBound());
+               name += get_name(subscriptExpression->get_upperBound());
+               name += "_";
+            // name += StringUtility::numberToString(subscriptExpression->get_stride());
+               name += get_name(subscriptExpression->get_stride());
+               break;
+             }
+
+          case V_SgNullExpression:
+             {
+               name = "null_expression";
+               break;
+             }
+
+       // DQ (1/17/2011): Added support for SgExprListExp (to support debugging).
+          case V_SgExprListExp:
+             {
+               const SgExprListExp* exprListExp = isSgExprListExp(expr);
+               name = "expr_list_exp_";
+               for (size_t i = 0; i < exprListExp->get_expressions().size(); i++)
+                  {
+                    name += get_name(exprListExp->get_expressions()[i]);
+                  }
+               break;
+             }
+
+       // DQ (1/31/2011): Added to support Fortran debugging.
+          case V_SgActualArgumentExpression:
+             {
+               const SgActualArgumentExpression* actualArgExp = isSgActualArgumentExpression(expr);
+               name = "actual_arg_exp_name_";
+               name += actualArgExp->get_argument_name();
+               name = "_exp_";
+               name += get_name(actualArgExp->get_expression());
+               break;
+             }
+
+       // DQ (7/25/2012): Added support for new template IR nodes.
+          case V_SgTemplateParameterVal:
+             {
+               const SgTemplateParameterVal* valueExp = isSgTemplateParameterVal(expr);
+               name = "template_parameter_value_expression_number_";
+            // name += valueExp->get_value();
+            // name += get_name(valueExp);
+               name += StringUtility::numberToString(valueExp->get_template_parameter_position());
+               break;
+             }
+
+       // DQ (4/19/2013): Added support for SgDotExp.
+          case V_SgDotExp:
+             {
+               const SgDotExp* dotExp = isSgDotExp(expr);
+               ROSE_ASSERT(dotExp != NULL);
+
+               name = "_dot_exp_lhs_";
+               name += get_name(dotExp->get_lhs_operand());
+               name += "_dot_exp_rhs_";
+               name += get_name(dotExp->get_rhs_operand());
+            // name += StringUtility::numberToString(valueExp->get_template_parameter_position());
+               break;
+             }
+
+        // DQ (9/3/2014): Added support for C++11 lambda expressions.
+           case V_SgLambdaExp:
+             {
+               const SgLambdaExp* lambdaExp = isSgLambdaExp(expr);
+               ROSE_ASSERT (lambdaExp != NULL);
+               name = "lambda_expression_";
+               break;
+             }
+
+       // DQ (1/3/2020): Added support for SgThisExp.
+          case V_SgThisExp:
+             {
+               const SgThisExp* thisExp = isSgThisExp(expr);
+               ROSE_ASSERT(thisExp != NULL);
+
+               name = "_this_exp_for_";
+
+               SgClassSymbol* classSymbol = thisExp->get_class_symbol();
+               ROSE_ASSERT(classSymbol != NULL);
+            // name += get_name(classSymbol->get_name());
+            // string class_name = classSymbol->get_name();
+            // name += class_name;
+               name += classSymbol->get_name();
+               break;
+             }
+
+          default:
+             {
+            // Nothing to do for other IR nodes
+#if 0
+            // DQ (7/25/2012): Make this an error.
+               printf ("Note: default reached in get_name() expr = %p = %s \n",expr,expr->class_name().c_str());
+               ROSE_ABORT();
+#endif
+            // DQ (4/8/2010): define something specific to this function to make debugging more clear.
+            // printf ("Note: default reached in get_name() expr = %p = %s \n",expr,expr->class_name().c_str());
+              // name = "undefined_expression_name";
+               name = expr->class_name() + "_undef_name";
+               break;
+             }
+        }
+
+     return name;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 17:49:57,653 - INFO - Response from llama3.1:70b for Function 2:
+2025-01-27 17:49:57,653 - INFO - /**
+ * @brief Returns a unique name for an expression.
+ *
+ * This function generates a string representing the given expression.
+ * The generated name is composed of various components depending on the
+ * type of the expression. For example, for SgSubscriptExpression, it includes
+ * lower bound, upper bound, and stride information.
+ *
+ * @param expr The input expression to generate a name for.
+ * @return A string representing the given expression.
+ */
+string get_name(const SgExpression* expr) {
+    // ... (rest of the function remains the same)
+}
+2025-01-27 17:49:57,653 - INFO - End time: 2025-01-27 17:49:57
+2025-01-27 17:49:57,653 - INFO - Duration: 9.454210042953491

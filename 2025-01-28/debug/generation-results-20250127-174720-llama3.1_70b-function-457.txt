@@ -1,0 +1,94 @@
+2025-01-27 20:56:02,022 - INFO - Start time: 2025-01-27 20:56:02
+2025-01-27 20:56:02,022 - INFO - Generating documents for a function with id : 457
+2025-01-27 20:56:02,022 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::destroyTempDirectory(string directory_name) {
+    string command = string("rm -fr ") + directory_name;
+    int status = system(command.c_str());
+    ROSE_ASSERT(status == 0);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:56:21,897 - INFO - Response from llama3.1:70b for Function 457:
+2025-01-27 20:56:21,897 - INFO - /**
+ * @fn void SageInterface::destroyTempDirectory(string directory_name)
+ *
+ * @brief Destroys a temporary directory.
+ *
+ * This function permanently deletes a specified temporary directory and all of its contents. It utilizes the system's command-line interface to execute a removal command.
+ *
+ * The function first constructs a command string by concatenating the "rm -fr" command with the provided directory name. Then, it executes this command using the system() function and checks the returned status code to ensure successful execution. If the status code is non-zero, an assertion failure occurs.
+ *
+ * @param directory_name The name of the temporary directory to be destroyed. Must be a valid directory path.
+ *
+ * @return None
+ *
+ * @warning This function permanently deletes files without prompting for confirmation. Use with caution.
+ *
+ * @pre The provided directory name must exist and be accessible by the current user.
+ *
+ * @post The specified directory and all of its contents are deleted from the file system.
+ *
+ * @note This function uses the system() function to execute a command, which may pose security risks if used with untrusted input. Ensure that the provided directory name is properly sanitized before calling this function.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SageInterface sage;
+ *           string tempDir = "/path/to/temp/directory";
+ *           // Create a temporary directory (implementation omitted)
+ *           sage.destroyTempDirectory(tempDir);
+ *          @endcode
+ */
+2025-01-27 20:56:21,897 - INFO - End time: 2025-01-27 20:56:21
+2025-01-27 20:56:21,897 - INFO - Duration: 19.875723123550415

@@ -1,0 +1,170 @@
+2025-01-27 20:04:06,717 - INFO - Start time: 2025-01-27 20:04:06
+2025-01-27 20:04:06,717 - INFO - Generating documents for a function with id : 329
+2025-01-27 20:04:06,717 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::replaceStatement(SgStatement* oldStmt, SgStatement* newStmt, bool movePreprocessingInfoValue/* = false*/)
+   {
+     ROSE_ASSERT(oldStmt);
+     ROSE_ASSERT(newStmt);
+
+     if (oldStmt == newStmt) return;
+
+     SgStatement * p = isSgStatement(oldStmt->get_parent());
+     ROSE_ASSERT(p);
+
+#if 0
+  // TODO  handle replace the body of a C/Fortran function definition with a single statement?
+  // Liao 2/1/2010, in some case, we want to replace the entire body (SgBasicBlock) for some parent nodes.
+  // the built-in replace_statement() (insert_child() underneath) may not defined for them.
+     if (SgFortranDo * f_do = isSgFortranDo (p))
+        {
+          ROSE_ASSERT (f_do->get_body() == oldStmt);
+          if (!isSgBasicBlock(newStmt))
+               newStmt = buildBasicBlock (newStmt);
+          f_do->set_body(isSgBasicBlock(newStmt));
+          newStmt->set_parent(f_do);
+        }
+       else
+        {
+          p->replace_statement(oldStmt,newStmt);
+        }
+#endif
+     p->replace_statement(oldStmt,newStmt);
+
+#if 1
+  // DQ (7/20/2021): Need to make the physical_file_ids match and the parents.
+  // Acutally this may be too late in the case of a deferred transformation since
+  // we run the AST consistancy tests as an intermediate step.
+     int physical_file_id = oldStmt->get_startOfConstruct()->get_physical_file_id();
+
+#if 0
+     printf ("In SageInterface::replaceStatement(): physical_file_id = %d \n",physical_file_id);
+#endif
+
+     newStmt->get_startOfConstruct()->set_physical_file_id(physical_file_id);
+     newStmt->get_endOfConstruct  ()->set_physical_file_id(physical_file_id);
+
+  // DQ (7/20/2021): Do we need this when we set the physical_file_id?
+     newStmt->set_parent(oldStmt->get_parent());
+#endif
+
+  // Some translators have their own handling for this (e.g. the outliner)
+     if (movePreprocessingInfoValue)
+        {
+          // move inner dangling  #endif, #if  etc to newStmt's after position, otherwise they got lost
+//A-B test here
+         // I think we should move up old statement's inner dangling directives
+         // later , we move directives from old statement to new statement
+         moveUpInnerDanglingIfEndifDirective(oldStmt);
+#if 0
+          printf ("In SageInterface::replaceStatement(): calling moveUpPreprocessingInfo() changed to movePreprocessingInfo() \n");
+#endif
+
+       // DQ (12/28/2020): I think this should be movePreprocessingInfo instead of moveUpPreprocessingInfo
+       // (which has a collection of defaults that are not appropriate).
+       // moveUpPreprocessingInfo(newStmt, oldStmt);
+#if 1
+       // DQ (12/28/2020): Since this works we will leave it in place (it appears to not be required to call this with: usePrepend == true).
+          moveUpPreprocessingInfo(newStmt, oldStmt);
+#else
+       // void SageInterface::movePreprocessingInfo (SgStatement* stmt_src,  SgStatement* stmt_dst, PreprocessingInfo::RelativePositionType src_position/* =PreprocessingInfo::undef */,
+       //                                            PreprocessingInfo::RelativePositionType dst_position/* =PreprocessingInfo::undef */, bool usePrepend /*= false */)
+          bool usePrepend = true;
+       // movePreprocessingInfo ( newStmt, oldStmt, PreprocessingInfo::undef, PreprocessingInfo::undef, usePrepend );
+          movePreprocessingInfo ( oldStmt, newStmt, PreprocessingInfo::undef, PreprocessingInfo::undef, usePrepend );
+#endif
+        }
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:04:35,629 - INFO - Response from llama3.1:70b for Function 329:
+2025-01-27 20:04:35,629 - INFO - /**
+ * @fn void SageInterface::replaceStatement(SgStatement* oldStmt, SgStatement* newStmt, bool movePreprocessingInfoValue/* = false*/)
+ *
+ * @brief Replaces an existing statement with a new one in the AST.
+ *
+ * This function replaces an existing statement (oldStmt) with a new one (newStmt)
+ * within the Abstract Syntax Tree (AST). It ensures that the replacement is
+ * performed correctly by handling various cases, including replacing the body of
+ * a Fortran DO loop and updating preprocessing information.
+ *
+ * @param oldStmt The existing statement to be replaced. Must not be null.
+ * @param newStmt The new statement to replace the existing one. Must not be null.
+ * @param movePreprocessingInfoValue Optional flag indicating whether to move
+ *          preprocessing information from the old statement to the new one.
+ *          Defaults to false if not provided.
+ *
+ * @return None
+ *
+ * @warning This function modifies the AST and may have unintended consequences
+ *          if not used carefully. Ensure that the replacement is valid and does
+ *          not violate any AST consistency rules.
+ *
+ * @pre The old statement (oldStmt) must exist in the AST and be a child of some
+ *      parent node. The new statement (newStmt) must also be a valid statement.
+ * @post The old statement (oldStmt) is replaced by the new statement (newStmt)
+ *       in the AST, and preprocessing information is updated if requested.
+ *
+ * @note This function may need to handle special cases, such as replacing the
+ *       body of a Fortran DO loop or updating physical file IDs.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* oldStmt = ...; // existing statement to replace
+ *           SgStatement* newStmt = ...; // new statement to replace with
+ *           SageInterface::replaceStatement(oldStmt, newStmt);
+ *          @endcode
+ */
+2025-01-27 20:04:35,629 - INFO - End time: 2025-01-27 20:04:35
+2025-01-27 20:04:35,629 - INFO - Duration: 28.912070274353027

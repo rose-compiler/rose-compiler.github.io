@@ -1,0 +1,175 @@
+2025-01-27 17:47:21,570 - INFO - Start time: 2025-01-27 17:47:21
+2025-01-27 17:47:21,570 - INFO - Generating documents for a function with id : 0
+2025-01-27 17:47:21,570 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    std::string SageInterface::get_name(const SgNode* node)
+   {
+  // This function is useful for debugging
+  // This is the most general case of a function to return a name for an IR node.
+  // Later this function will handle expressions, etc.
+
+     string name = "undefined_name";
+
+     ROSE_ASSERT(node != NULL);
+
+     const SgLocatedNode* locatedNode = isSgLocatedNode(node);
+     if (locatedNode != NULL)
+        {
+          const SgStatement* statement = isSgStatement(node);
+          if (statement != NULL)
+             {
+               name = get_name(statement);
+             }
+            else
+             {
+               const SgExpression* expression = isSgExpression(node);
+               if (expression != NULL)
+                  {
+                    name = get_name(expression);
+                  }
+                 else
+                  {
+                    const SgLocatedNodeSupport* locatedNodeSupport = isSgLocatedNodeSupport(node);
+                    if (locatedNodeSupport != NULL)
+                       {
+                         name = get_name(locatedNodeSupport);
+                       }
+                      else
+                       {
+                         const SgToken* token = isSgToken(node);
+                         if (token != NULL)
+                            {
+                              name = get_name(token);
+                            }
+                           else
+                            {
+                              printf ("Unknown SgLocatedNode = %p = %s \n",node,node->class_name().c_str());
+                              ROSE_ABORT();
+                            }
+                       }
+                  }
+             }
+        }
+       else
+        {
+          const SgSupport* supportNode = isSgSupport(node);
+          if (supportNode != NULL)
+             {
+               name = get_name(supportNode);
+             }
+            else
+             {
+            // DQ (9/21/2005): I think this is good enough for the more general case (for now)
+               const SgSymbol* symbol = isSgSymbol(node);
+               if (symbol != NULL)
+                  {
+                    name = get_name(symbol);
+                  }
+                 else
+                  {
+                 // DQ (8/7/2007): Added support to get names of types (usefult for SgNamedType objects).
+                    const SgType* type = isSgType(node);
+                    if (type != NULL)
+                       {
+                         name = get_name(type);
+                       }
+                      else
+                       {
+                         name = node->class_name();
+                       }
+                  }
+             }
+        }
+
+     return name;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 17:49:23,971 - INFO - Response from llama3.1:70b for Function 0:
+2025-01-27 17:49:23,971 - INFO - /**
+ * @fn std::string SageInterface::get_name(const SgNode* node)
+ *
+ * @brief Returns a string representation of the name for an IR node.
+ *
+ * This function is useful for debugging purposes. It provides a general way to 
+ * obtain a name for any Intermediate Representation (IR) node in the ROSE AST. 
+ * The function recursively traverses the IR tree, handling different types of nodes,
+ * such as statements, expressions, symbols, and types, to extract their names.
+ *
+ * @param node A pointer to an SgNode object representing the IR node for which a name is desired.
+ *             Must not be NULL. If the node is not recognized or does not have a name, 
+ *             the function may print an error message and abort.
+ *
+ * @return A string containing the name of the input IR node. The returned string may be "undefined_name" 
+ *         if the node's type is unknown or does not support naming.
+ *
+ * @warning This function uses recursive function calls to traverse the IR tree, which may lead to a stack overflow
+ *          for very large inputs. Additionally, the function may print error messages and abort if it encounters an unrecognized node.
+ *
+ * @pre The input node must be non-NULL and point to a valid SgNode object in the ROSE AST.
+ *
+ * @post The returned string is a valid name for the input IR node or "undefined_name" if no name can be determined.
+ *
+ * @note This function provides a general way to obtain names for IR nodes but may not cover all possible cases. 
+ *       It is intended primarily for debugging purposes and should be used judiciously in production code.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* node = ...; // obtain an SgNode object from the ROSE AST
+ *           std::string name = SageInterface::get_name(node);
+ *           printf("Name of node: %s\n", name.c_str());
+ *          @endcode
+ */
+2025-01-27 17:49:23,971 - INFO - End time: 2025-01-27 17:49:23
+2025-01-27 17:49:23,971 - INFO - Duration: 122.40122246742249

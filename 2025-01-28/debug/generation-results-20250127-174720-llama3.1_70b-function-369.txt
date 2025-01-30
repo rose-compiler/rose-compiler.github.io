@@ -1,0 +1,224 @@
+2025-01-27 20:19:20,404 - INFO - Start time: 2025-01-27 20:19:20
+2025-01-27 20:19:20,404 - INFO - Generating documents for a function with id : 369
+2025-01-27 20:19:20,404 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::fixStatement(SgStatement* stmt, SgScopeStatement* scope)
+   {
+  // fix symbol table
+     if (isSgVariableDeclaration(stmt))
+        {
+          fixVariableDeclaration(isSgVariableDeclaration(stmt), scope);
+        }
+       else if (isStructDeclaration(stmt))
+        {
+          SgClassDeclaration* classDeclaration = isSgClassDeclaration(stmt);
+          ROSE_ASSERT(classDeclaration != nullptr);
+          fixStructDeclaration(classDeclaration,scope);
+        }
+       else if (isSgClassDeclaration(stmt))
+        {
+          fixClassDeclaration(isSgClassDeclaration(stmt),scope);
+        }
+      else if (isSgLabelStatement(stmt))
+        {
+          fixLabelStatement(isSgLabelStatement(stmt),scope);
+        }
+       else if (isSgFunctionDeclaration(stmt))
+        {
+#if 1
+          fixFunctionDeclaration(isSgFunctionDeclaration(stmt),scope);
+#else
+       // fix function type table's parent edge
+       // Liao 5/4/2010
+          SgFunctionTypeTable * fTable = SgNode::get_globalFunctionTypeTable();
+          ROSE_ASSERT(fTable);
+          if (fTable->get_parent() == NULL)
+               fTable->set_parent(getGlobalScope(scope));
+
+       // Liao 4/23/2010,  Fix function symbol
+       // This could happen when users copy a function, then rename it (func->set_name()), and finally insert it to a scope
+          SgFunctionDeclaration*       func        = isSgFunctionDeclaration(stmt);
+          SgMemberFunctionDeclaration* mfunc       = isSgMemberFunctionDeclaration(stmt);
+
+          printf ("In SageInterface::fixStatement(): scope = %p = %s \n",scope,scope->class_name().c_str());
+          printf ("In SageInterface::fixStatement(): stmt->get_scope() = %p \n",stmt->get_scope());
+
+       // DQ (12/3/2011): This is a scary piece of code, but I think it is OK now!
+       // It is an error to put the symbol for a function into the current scope if the function's scope
+       // is explicitly set to be different.  So this should be allowed only if the function's scope is
+       // not explicitly set, or if the scopes match.  This is an example of something different for C++
+       // than for C or other simpler languages.
+       // If the scope of the function is not set, or if it matches the current scope then allow this step.
+          if (stmt->get_scope() == NULL || scope == stmt->get_scope())
+             {
+#if 0
+               printf ("Looking up the function symbol using name = %s and type = %p = %s \n",func->get_name().str(),func->get_type(),func->get_type()->class_name().c_str());
+#endif
+               SgFunctionSymbol*            func_symbol = scope->lookup_function_symbol (func->get_name(), func->get_type());
+
+               printf ("In SageInterface::fixStatement(): func_symbol = %p \n",func_symbol);
+               if (func_symbol == NULL)
+                  {
+                 // DQ (12/3/2011): Added support for C++ member functions.
+                 // func_symbol = new SgFunctionSymbol (func);
+                    if (mfunc != NULL)
+                       {
+                         func_symbol = new SgMemberFunctionSymbol (func);
+                       }
+                      else
+                       {
+                         func_symbol = new SgFunctionSymbol (func);
+                       }
+                    ROSE_ASSERT (func_symbol != NULL);
+
+                    scope->insert_symbol(func->get_name(), func_symbol);
+                  }
+                 else
+                  {
+                    printf ("In SageInterface::fixStatement(): found a valid function so no need to insert new symbol \n");
+                  }
+             }
+#if 0
+       // Fix local symbol, a symbol directly refer to this function declaration
+       // This could happen when a non-defining func decl is copied, the corresonding symbol will point to the original source func
+       // symbolTable->find(this) used inside get_symbol_from_symbol_table()  won't find the copied decl
+          SgSymbol* local_symbol = func ->get_symbol_from_symbol_table();
+          if (local_symbol == NULL) //
+             {
+               if (func->get_definingDeclaration() == NULL) // prototype function
+                  {
+                    SgFunctionDeclaration * src_func = func_symbol->get_declaration();
+                    if (func != src_func )
+                       {
+                         ROSE_ASSERT (src_func->get_firstNondefiningDeclaration () == src_func);
+                         func->set_firstNondefiningDeclaration (func_symbol->get_declaration());
+                       }
+                  }
+             }
+#endif
+#endif
+        }
+       else if (isSgTemplateDeclaration(stmt) != NULL)
+        {
+       // DQ (12/3/2011): Added new case for SgTemplateDeclaration (adding template declarations to the AST).
+          fixTemplateDeclaration(isSgTemplateDeclaration(stmt),scope);
+        }
+
+#if 0
+  // DQ (12/4/2011): This WAS not the correct behavior for C++ since declarations can appear structureally in different
+  // scopes than where the are positioned (e.g. member functions defined outside of there associated class).
+  // This this code is very dangerous.
+
+  // fix scope pointer for statements explicitly storing scope pointer
+     switch (stmt->variantT())
+        {
+       // The case of SgLabelStatement should maybe be included.
+          case V_SgEnumDeclaration:
+          case V_SgTemplateDeclaration:
+          case V_SgTypedefDeclaration:
+          case V_SgFunctionDeclaration:
+          case V_SgMemberFunctionDeclaration:
+          case V_SgTemplateInstantiationFunctionDecl:
+             {
+            // DQ (12/4/2011): We can't just set the scope this simily (except in C).  In C++ the scope should have
+            // already been set or we can let it default to the current scope where it si located structurally.
+            // stmt->set_scope(scope);
+                if ( (stmt->hasExplicitScope() == true) && (stmt->get_scope() == NULL) )
+                  {
+                    stmt->set_scope(scope);
+                  }
+               break;
+             }
+
+          default:
+             {
+            // debugging support...
+               printf ("In SageInterface::fixStatement(): switch default case used (likely OK): stmt = %p = %s \n",stmt,stmt->class_name().c_str());
+               ROSE_ASSERT(stmt->hasExplicitScope() == false);
+#if 0
+               printf ("switch case not handled properly: stmt = %p = %s \n",stmt,stmt->class_name().c_str());
+               ROSE_ABORT();
+#endif
+               break;
+             }
+        }
+#else
+  // If the scoep has to be set and it has not yet been set, then set it directly.
+     if ( (stmt->hasExplicitScope() == true) && (stmt->get_scope() == NULL) )
+        {
+          stmt->set_scope(scope);
+        }
+#endif
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:19:34,046 - INFO - Response from llama3.1:70b for Function 369:
+2025-01-27 20:19:34,046 - INFO - /**
+ * @fn void SageInterface::fixStatement(SgStatement* stmt, SgScopeStatement* scope)
+ *
+ * @brief Fixes a statement by updating symbol table and scope information.
+ *
+ * This function takes an abstract syntax tree (AST) node representing a statement
+ * and its enclosing scope as input. It updates the symbol table and scope information
+ * for the given statement to ensure consistency in the AST representation of the code.
+ *
+ * @param stmt The statement to be fixed, represented as an SgStatement*.
+ * @param scope The enclosing scope of the statement, represented as an SgScopeStatement*.
+ */
+void SageInterface::fixStatement(SgStatement* stmt, SgScopeStatement* scope)
+{
+    // ... (function body remains the same)
+}
+2025-01-27 20:19:34,046 - INFO - End time: 2025-01-27 20:19:34
+2025-01-27 20:19:34,046 - INFO - Duration: 13.641829252243042

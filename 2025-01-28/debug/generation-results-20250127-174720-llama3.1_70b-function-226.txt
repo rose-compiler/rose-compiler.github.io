@@ -1,0 +1,256 @@
+2025-01-27 19:19:46,863 - INFO - Start time: 2025-01-27 19:19:46
+2025-01-27 19:19:46,863 - INFO - Generating documents for a function with id : 226
+2025-01-27 19:19:46,863 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool SageInterface::isCanonicalForLoop(SgNode* loop,SgInitializedName** ivar/*=NULL*/, SgExpression** lb/*=NULL*/, SgExpression** ub/*=NULL*/, SgExpression** step/*=NULL*/, SgStatement** body/*=NULL*/, bool *hasIncrementalIterationSpace/*= NULL*/, bool* isInclusiveUpperBound/*=NULL*/)
+{
+  ROSE_ASSERT(loop != NULL);
+  SgForStatement* fs = isSgForStatement(loop);
+  //SgFortranDo* fs2 = isSgFortranDo(loop);
+  if (fs == NULL)
+  {
+   // if (fs2)
+   //   return isCanonicalDoLoop (fs2, ivar, lb, ub, step, body, hasIncrementalIterationSpace, isInclusiveUpperBound);
+   // else
+      return false;
+   }
+  // 1. Check initialization statement is something like i=xx;
+  SgStatementPtrList & init = fs->get_init_stmt();
+  if (init.size() !=1)
+    return false;
+  SgStatement* init1 = init.front();
+  SgExpression* ivarast=NULL, *lbast=NULL, *ubast=NULL, *stepast=NULL;
+  SgInitializedName* ivarname=NULL;
+
+  bool isCase1=false, isCase2=false;
+  //consider C99 style: for (int i=0;...)
+  if (isSgVariableDeclaration(init1))
+   {
+     SgVariableDeclaration* decl = isSgVariableDeclaration(init1);
+     ivarname = decl->get_variables().front();
+     ROSE_ASSERT(ivarname != NULL);
+     SgInitializer * initor = ivarname->get_initializer();
+     if (isSgAssignInitializer(initor))
+     {
+       lbast = isSgAssignInitializer(initor)->get_operand();
+       isCase1 = true;
+     }
+   }// other regular case: for (i=0;..)
+   else if (isAssignmentStatement(init1, &ivarast, &lbast))
+   {
+     SgVarRefExp* var = isSgVarRefExp(SkipCasting(ivarast));
+     if (var)
+     {
+       ivarname = var->get_symbol()->get_declaration();
+       isCase2 = true;
+     }
+   }
+   // Cannot be both true
+   ROSE_ASSERT(!(isCase1&&isCase2));
+   // if not either case is true
+    if (!(isCase1||isCase2))
+      return false;
+
+  //Check loop index's type
+  if (!isStrictIntegerType(ivarname->get_type()))
+    return false;
+
+  //2. Check test expression i [<=, >=, <, > ,!=] bound
+  SgBinaryOp* test = isSgBinaryOp(fs->get_test_expr());
+  if (test == NULL)
+    return false;
+  switch (test->variantT()) {
+    case V_SgLessOrEqualOp:
+       if (isInclusiveUpperBound != NULL)
+         *isInclusiveUpperBound = true;
+       if (hasIncrementalIterationSpace != NULL)
+         *hasIncrementalIterationSpace = true;
+       break;
+    case V_SgLessThanOp:
+       if (isInclusiveUpperBound != NULL)
+         *isInclusiveUpperBound = false;
+       if (hasIncrementalIterationSpace != NULL)
+         *hasIncrementalIterationSpace = true;
+       break;
+    case V_SgGreaterOrEqualOp:
+       if (isInclusiveUpperBound != NULL)
+         *isInclusiveUpperBound = true;
+        if (hasIncrementalIterationSpace != NULL)
+         *hasIncrementalIterationSpace = false;
+      break;
+    case V_SgGreaterThanOp:
+       if (isInclusiveUpperBound != NULL)
+         *isInclusiveUpperBound = false;
+       if (hasIncrementalIterationSpace != NULL)
+         *hasIncrementalIterationSpace = false;
+      break;
+//    case V_SgNotEqualOp: // Do we really want to allow this != operator ?
+      break;
+    default:
+      return false;
+  }
+  // check the tested variable is the same as the loop index
+  SgVarRefExp* testvar = isSgVarRefExp(SkipCasting(test->get_lhs_operand()));
+  if (testvar == NULL)
+    return false;
+  if (testvar->get_symbol() != ivarname->get_symbol_from_symbol_table ())
+    return false;
+  //grab the upper bound
+  ubast = test->get_rhs_operand();
+
+  //3. Check the increment expression
+  /* Allowed forms
+     ++var
+     var++
+     --var
+     var--
+
+     var += incr
+     var -= incr
+
+     var = var + incr
+     var = incr + var
+     var = var - incr
+  */
+  SgExpression* incr = fs->get_increment();
+  SgVarRefExp* incr_var = NULL;
+  switch (incr->variantT()) {
+    case V_SgPlusAssignOp: //+=
+    case V_SgMinusAssignOp://-=
+      incr_var = isSgVarRefExp(SkipCasting(isSgBinaryOp(incr)->get_lhs_operand()));
+      stepast = isSgBinaryOp(incr)->get_rhs_operand();
+      break;
+    case V_SgPlusPlusOp:   //++
+    case V_SgMinusMinusOp:  //--
+      incr_var = isSgVarRefExp(SkipCasting(isSgUnaryOp(incr)->get_operand()));
+      stepast = buildIntVal(1); // will this dangling SgNode cause any problem?
+      break;
+    case V_SgAssignOp: { // cases : var + incr, var - incr, incr + var (not allowed: incr-var)
+      incr_var=isSgVarRefExp(SkipCasting(isSgBinaryOp(incr)->get_lhs_operand()));
+      if(incr_var == NULL)
+        return false;
+      SgAddOp* addOp=isSgAddOp(SkipCasting(isSgBinaryOp(incr)->get_rhs_operand()));
+      SgSubtractOp* subtractOp=isSgSubtractOp(SkipCasting(isSgBinaryOp(incr)->get_rhs_operand()));
+      SgBinaryOp* arithOp=0;
+      if(addOp)
+        arithOp=addOp;
+      else if(subtractOp)
+        arithOp=subtractOp;
+      else
+        return false;
+      ROSE_ASSERT(arithOp!=0);
+      if(SgVarRefExp* varRefExp=isSgVarRefExp(SkipCasting(isSgBinaryOp(arithOp)->get_lhs_operand()))) {
+        // cases : var + incr, var - incr
+        incr_var=varRefExp;
+        stepast=isSgBinaryOp(arithOp)->get_rhs_operand();
+      } else if(SgVarRefExp* varRefExp=isSgVarRefExp(SkipCasting(isSgBinaryOp(arithOp)->get_rhs_operand()))) {
+        if(isSgAddOp(arithOp)) {
+          // case : incr + var (not allowed: incr-var)
+          incr_var=varRefExp;
+          stepast=isSgBinaryOp(arithOp)->get_lhs_operand();
+        }
+      }
+      break;
+    } // end of V_AssignOp
+    default:
+      return false;
+  }
+
+  if (incr_var == NULL)
+    return false;
+  if (incr_var->get_symbol() != ivarname->get_symbol_from_symbol_table ())
+    return false;
+
+
+  // single entry and single exit?
+  // only for C for loop for now
+  // TODO: Fortran support later
+  if (fs && !isStructuredBlock(fs->get_loop_body()) )
+    return false;
+
+  // return loop information if requested
+  if (ivar != NULL)
+    *ivar = ivarname;
+  if (lb != NULL)
+    *lb = lbast;
+  if (ub != NULL)
+    *ub = ubast;
+  if (step != NULL)
+    *step = stepast;
+  if (body != NULL) {
+    *body = fs->get_loop_body();
+  }
+  return true;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:20:05,607 - INFO - Response from llama3.1:70b for Function 226:
+2025-01-27 19:20:05,607 - INFO - /**
+ * @brief Analyzes a for loop to extract information about the loop variable, lower bound, upper bound, step size, and body.
+ *
+ * This function checks if the given loop is in the standard form of a C-style for loop, where the initialization statement
+ * declares a single integer variable, the condition is a comparison between this variable and another expression,
+ * and the increment statement increments or decrements this variable by some amount. The upper bound can be either inclusive or exclusive.
+ *
+ * @param fs The for loop to analyze.
+ * @param ivarname A pointer to store the name of the loop variable (optional).
+ * @param lb A pointer to store the lower bound expression (optional).
+ * @param ub A pointer to store the upper bound expression (optional).
+ * @param step A pointer to store the step size expression (optional).
+ * @param body A pointer to store the loop body statement (optional).
+ * @return True if the loop is in the standard form and false otherwise.
+ */
+bool analyzeForLoop(SgNode* fs, SgFunctionSymbol* ivarname = NULL, SgExpression** lb = NULL, SgExpression** ub = NULL, SgExpression** step = NULL, SgStatement** body = NULL)
+2025-01-27 19:20:05,607 - INFO - End time: 2025-01-27 19:20:05
+2025-01-27 19:20:05,607 - INFO - Duration: 18.743701219558716

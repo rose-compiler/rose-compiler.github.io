@@ -1,0 +1,187 @@
+2025-01-27 18:48:40,234 - INFO - Start time: 2025-01-27 18:48:40
+2025-01-27 18:48:40,234 - INFO - Generating documents for a function with id : 150
+2025-01-27 18:48:40,234 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    PreprocessingInfo* SageInterface::insertHeader(SgSourceFile * source_file, const std::string & filename, bool isSystemHeader , bool asLastHeader)
+{
+  ROSE_ASSERT (source_file != NULL);
+  SgGlobal* globalScope = source_file->get_globalScope();
+  ROSE_ASSERT (globalScope != NULL);
+
+  PreprocessingInfo* result=NULL;
+  string content;
+  if (isSystemHeader)
+    content = "#include <" + filename + "> \n";
+  else
+    content = "#include \"" + filename + "\" \n";
+
+#if 0
+  // DQ (4/6/2021): This is a compiler warning, this variable is set but not used since some unreachable code is now commented out below.
+  PreprocessingInfo::RelativePositionType position ;
+
+  if (asLastHeader )
+    position = PreprocessingInfo::after;
+  else
+    position = PreprocessingInfo::before;
+#endif
+
+  SgDeclarationStatementPtrList & stmtList = globalScope->get_declarations ();
+  if (stmtList.size()>0) // the source file is not empty
+  {
+    for (SgDeclarationStatementPtrList::iterator j = stmtList.begin (); j != stmtList.end (); j++)
+    {
+      // Attach to the first eligible located statement
+      //must have this judgement, otherwise wrong file will be modified!
+      //It could also be the transformation generated statements with #include attached
+      if ( (*j)->get_file_info()->isSameFile(globalScope->get_file_info()) || (*j)->get_file_info()->isTransformation() )
+      {
+#if 0
+        printf ("In SageInterface::insertHeader(): Found statement to attached #include: *j = %p = %s \n",*j,(*j)->class_name().c_str());
+        printf (" --- unparseToString() = %s \n",(*j)->unparseToString().c_str());
+#endif
+        result = new PreprocessingInfo(PreprocessingInfo::CpreprocessorIncludeDeclaration, content, "Transformation generated",0, 0, 0, PreprocessingInfo::before);
+        ROSE_ASSERT(result);
+        insertHeader (*j, result, asLastHeader);
+        //successful = true;
+#if 0
+        printf ("Exiting as a test! \n");
+        ROSE_ABORT();
+#endif
+        break;
+      }
+    } // end for
+  }
+  else // empty file, attach it after SgGlobal,TODO it is not working for unknown reason!!
+  {
+    cerr<<"SageInterface::insertHeader() Empty file is found!"<<endl;
+    cerr<<"#include xxx is  preprocessing information which has to be attached  to some other  located node (a statement for example)"<<endl;
+    cerr<<"You may have to insert some statement first before inserting a header"<<endl;
+    ROSE_ABORT();
+#if 0 // [Robb Matzke 2021-03-24]: unreachable
+    result = new PreprocessingInfo(PreprocessingInfo::CpreprocessorIncludeDeclaration,
+        content, "Transformation generated",0, 0, 0, PreprocessingInfo::after);
+    ROSE_ASSERT(result);
+    globalScope->addToAttachedPreprocessingInfo(result,position);
+#endif
+    //    successful = true;
+  }
+
+#if 0
+  printf ("In SageInterface::insertHeader(): Marking include file for filename = %s as a transformation \n",filename.c_str());
+#endif
+
+  // DQ (3/12/2019): We need to mark the added comments and CPP directives as a transformation so that then can be output.
+  // This is a result of a fix to support the correct handling of comments and CPP directives for shared IR nodes as happen
+  // when multiple files are used on the command line.
+  if (result)
+    result->get_file_info()->setTransformation();
+
+#if 0
+  printf ("Exiting as a test! \n");
+  ROSE_ASSERT(false);
+#endif
+
+  // must be inserted once somehow
+  // Liao 3/11/2015. We allow failed insertion sometimes, for example when translating an empty file for OpenMP, we don't need to insert any headers
+  // The caller function should decide what to do if insertion is failed: ignore vs. assert failure.
+  // ROSE_ASSERT(successful==true);
+  return result;
+
+} // end insertHeader
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:49:15,930 - INFO - Response from llama3.1:70b for Function 150:
+2025-01-27 18:49:15,930 - INFO - /**
+ * @fn PreprocessingInfo* SageInterface::insertHeader(SgSourceFile * source_file, const std::string & filename, bool isSystemHeader , bool asLastHeader)
+ *
+ * @brief Inserts a header file into the given source file.
+ *
+ * This function inserts a header file with the specified filename into the given source file. 
+ * The insertion point can be controlled by specifying whether it should be inserted before or after other declarations in the global scope.
+ * If the source file is empty, an error message will be printed and the program will terminate.
+ *
+ * @param source_file The source file where the header will be inserted.
+ * @param filename The name of the header file to be inserted.
+ * @param isSystemHeader Whether the header file is a system header or not. 
+ *          If true, the header file will be included using angle brackets; otherwise, it will be included using double quotes.
+ * @param asLastHeader Whether the header should be inserted after all other declarations in the global scope or not.
+ *          If true, the header will be inserted after all other declarations; otherwise, it will be inserted before them.
+ *
+ * @return A pointer to the PreprocessingInfo object representing the inserted header file, or NULL if insertion fails.
+ *
+ * @warning The function may terminate the program with an error message if the source file is empty.
+ *
+ * @pre The source_file parameter must not be NULL. 
+ *      The filename parameter must be a valid string.
+ *
+ * @post If successful, the function will insert the header file into the source file and return a pointer to the PreprocessingInfo object representing the inserted header.
+ *
+ *       If unsuccessful (i.e., if the source file is empty), the function will print an error message and terminate the program.
+ *
+ * @note The function assumes that the source file has a valid global scope. 
+ *       If the source file does not have a global scope, the behavior of this function is undefined.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgSourceFile* source_file = ...; // assume some source file object
+ *           PreprocessingInfo* result = SageInterface::insertHeader(source_file, "my_header.h", false, true);
+ *           if (result != NULL) {
+ *               cout << "Header inserted successfully!" << endl;
+ *           } else {
+ *               cerr << "Error inserting header!" << endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 18:49:15,930 - INFO - End time: 2025-01-27 18:49:15
+2025-01-27 18:49:15,930 - INFO - Duration: 35.69615125656128

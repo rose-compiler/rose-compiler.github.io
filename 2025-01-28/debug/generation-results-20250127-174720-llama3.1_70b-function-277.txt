@@ -1,0 +1,130 @@
+2025-01-27 19:42:28,755 - INFO - Start time: 2025-01-27 19:42:28
+2025-01-27 19:42:28,755 - INFO - Generating documents for a function with id : 277
+2025-01-27 19:42:28,755 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::isInSubTree(SgExpression* subtree, SgExpression* exp)
+   {
+     bool returnValue = false;
+
+     struct Visitor: public AstSimpleProcessing
+        {
+          SgExpression* expression_target;
+          bool in_subtree;
+          virtual void visit(SgNode* n)
+             {
+               if (n == expression_target)
+                  {
+                    in_subtree = true;
+                  }
+             }
+
+          Visitor(SgExpression* expr) : expression_target(expr), in_subtree(false) {}
+        };
+
+     Visitor traversal(exp);
+
+     traversal.traverse(subtree, preorder);
+
+     returnValue = traversal.in_subtree;
+
+     return returnValue;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:42:55,809 - INFO - Response from llama3.1:70b for Function 277:
+2025-01-27 19:42:55,809 - INFO - /**
+ * @fn SageInterface::isInSubTree(SgExpression* subtree, SgExpression* exp)
+ *
+ * @brief Checks if an expression is contained within a given subtree.
+ *
+ * This function traverses the abstract syntax tree (AST) of the given subtree
+ * and checks if the specified expression is present within it. It utilizes a
+ * visitor pattern to perform the traversal efficiently.
+ *
+ * The function uses a recursive approach to explore the AST, ensuring that all
+ * nodes are examined thoroughly. If the target expression is found during the
+ * traversal, the function immediately returns true; otherwise, it returns false.
+ *
+ * @param subtree The root node of the subtree to search within.
+ * @param exp The target expression to search for within the subtree.
+ *
+ * @return True if the target expression is found within the subtree; false otherwise.
+ *
+ * @warning This function assumes that the provided subtree and expression are
+ *          valid and non-null. Failure to meet these preconditions may result in
+ *          undefined behavior or crashes.
+ *
+ * @pre The input subtree and expression must be valid, non-null pointers.
+ *
+ * @post The function will not modify the input subtree or expression.
+ *
+ * @note This function has a time complexity of O(n), where n is the number of nodes
+ *       in the subtree. It is designed to be efficient for large ASTs.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgExpression* subtree = ...; // Initialize subtree
+ *           SgExpression* exp = ...;    // Initialize target expression
+ *
+ *           bool result = SageInterface::isInSubTree(subtree, exp);
+ *
+ *           if (result) {
+ *               std::cout << "Target expression found within the subtree." << std::endl;
+ *           } else {
+ *               std::cout << "Target expression not found within the subtree." << std::endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:42:55,809 - INFO - End time: 2025-01-27 19:42:55
+2025-01-27 19:42:55,810 - INFO - Duration: 27.05459237098694

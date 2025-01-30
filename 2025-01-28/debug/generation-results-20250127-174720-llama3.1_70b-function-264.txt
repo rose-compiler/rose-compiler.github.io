@@ -1,0 +1,129 @@
+2025-01-27 19:36:34,366 - INFO - Start time: 2025-01-27 19:36:34
+2025-01-27 19:36:34,366 - INFO - Generating documents for a function with id : 264
+2025-01-27 19:36:34,366 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool
+SageInterface::hasSameGlobalScope ( SgStatement* statement_1, SgStatement* statement_2 )
+   {
+  // DQ (12/7/2020): This is supporting the recognition of functions in header files from two different AST.
+
+#define DEBUG_HAS_SAME_SCOPE 0
+
+#if DEBUG_HAS_SAME_SCOPE
+     printf ("In SageInterface::hasSameGlobalScope(): \n");
+     printf (" --- statement_1 = %p = %s \n",statement_1,statement_1->class_name().c_str());
+     printf (" --- statement_2 = %p = %s \n",statement_2,statement_2->class_name().c_str());
+#endif
+
+     bool includingSelf = true;
+     SgGlobal* global_scope_1 = getEnclosingNode<SgGlobal>(statement_1,includingSelf);
+     SgGlobal* global_scope_2 = getEnclosingNode<SgGlobal>(statement_2,includingSelf);
+
+#if DEBUG_HAS_SAME_SCOPE
+     printf (" --- global_scope_1 = %p = %s \n",global_scope_1,global_scope_1->class_name().c_str());
+     SgSourceFile* sourcefile_1 = isSgSourceFile(global_scope_1->get_parent());
+     printf (" --- --- sourcefile_1 = %p filename = %s \n",sourcefile_1,sourcefile_1->getFileName().c_str());
+
+     printf (" --- global_scope_2 = %p = %s \n",global_scope_2,global_scope_2->class_name().c_str());
+     SgSourceFile* sourcefile_2 = isSgSourceFile(global_scope_2->get_parent());
+     printf (" --- --- sourcefile_2 = %p filename = %s \n",sourcefile_2,sourcefile_2->getFileName().c_str());
+#endif
+
+     bool returnResult = (global_scope_1 == global_scope_2);
+
+#if DEBUG_HAS_SAME_SCOPE
+     printf ("Leaving SageInterface::hasSameGlobalScope(): returning: %s \n",returnResult ? "true" : "false");
+#endif
+
+     return returnResult;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:36:56,719 - INFO - Response from llama3.1:70b for Function 264:
+2025-01-27 19:36:56,720 - INFO - /**
+ * @fn bool SageInterface::hasSameGlobalScope(SgStatement* statement_1, SgStatement* statement_2)
+ *
+ * @brief Checks if two statements have the same global scope.
+ *
+ * This function determines whether two given statements are enclosed by the same global scope. 
+ * It traverses up the abstract syntax tree (AST) from each statement to find their respective global scopes, 
+ * and then checks for equality between these scopes.
+ *
+ * @param statement_1 The first statement to check.
+ * @param statement_2 The second statement to check.
+ *
+ * @return True if both statements have the same global scope; false otherwise.
+ *
+ * @note This function is used to support the recognition of functions in header files from two different ASTs.
+ *
+ * @warning No error handling is performed on the input statements. It is assumed that they are valid and non-null.
+ *
+ * @pre The input statements must be valid and non-null.
+ *
+ * @post None
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* statement_1 = ...; // Initialize statement_1
+ *           SgStatement* statement_2 = ...; // Initialize statement_2
+ *           bool result = SageInterface::hasSameGlobalScope(statement_1, statement_2);
+ *           if (result) {
+ *               printf("Both statements have the same global scope.\n");
+ *           } else {
+ *               printf("The statements do not have the same global scope.\n");
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:36:56,720 - INFO - End time: 2025-01-27 19:36:56
+2025-01-27 19:36:56,720 - INFO - Duration: 22.35369324684143

@@ -1,0 +1,123 @@
+2025-01-27 20:01:22,474 - INFO - Start time: 2025-01-27 20:01:22
+2025-01-27 20:01:22,474 - INFO - Generating documents for a function with id : 323
+2025-01-27 20:01:22,474 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::insertStatementAfterLastDeclaration(std::vector<SgStatement*> stmt_list, SgScopeStatement* scope)
+  {
+    ROSE_ASSERT (scope != NULL);
+    vector <SgStatement* >::iterator iter;
+    SgStatement* prev_stmt = NULL;
+    for (iter= stmt_list.begin(); iter != stmt_list.end(); iter++)
+    {
+      if (iter == stmt_list.begin())
+      {
+        insertStatementAfterLastDeclaration (*iter, scope);
+      }
+      else
+      {
+        ROSE_ASSERT (prev_stmt != NULL);
+        insertStatementAfter (prev_stmt, *iter);
+      }
+      prev_stmt = *iter;
+    }
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:01:53,001 - INFO - Response from llama3.1:70b for Function 323:
+2025-01-27 20:01:53,002 - INFO - /**
+ * @fn void SageInterface::insertStatementAfterLastDeclaration(std::vector<SgStatement*> stmt_list, SgScopeStatement* scope)
+ *
+ * @brief Inserts a list of statements after the last declaration in a given scope.
+ *
+ * This function takes a vector of statements and a scope statement as input. It then inserts each statement
+ * in the vector after the last declaration in the given scope using a recursive approach.
+ *
+ * The function first checks if the provided scope is not null, then it iterates through the list of statements.
+ * For the first statement in the list, it calls the insertStatementAfterLastDeclaration function to insert
+ * the statement after the last declaration in the scope. For subsequent statements, it calls the insertStatementAfter
+ * function to insert each statement after the previously inserted statement.
+ *
+ * @param stmt_list The vector of statements to be inserted after the last declaration in the scope.
+ * @param scope     The scope statement where the statements are to be inserted.
+ *
+ * @return None
+ *
+ * @warning This function does not handle cases where the input scope is null or the list of statements is empty.
+ *          It also assumes that the provided scope and statements are valid and do not contain any errors.
+ *
+ * @pre The input scope must not be null, and the list of statements must not be empty.
+ *
+ * @post The function inserts each statement in the list after the last declaration in the given scope.
+ *
+ * @note This function uses a recursive approach to insert the statements. It also assumes that the provided
+ *       scope and statements are valid and do not contain any errors.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create a vector of statements
+ *           std::vector<SgStatement*> stmt_list;
+ *           
+ *           // Add some statements to the list
+ *           stmt_list.push_back(new SgVariableDeclaration());
+ *           stmt_list.push_back(new SgFunctionCall());
+ *           
+ *           // Get the scope statement
+ *           SgScopeStatement* scope = getScope();
+ *           
+ *           // Insert the statements after the last declaration in the scope
+ *           SageInterface::insertStatementAfterLastDeclaration(stmt_list, scope);
+ *          @endcode
+ */
+2025-01-27 20:01:53,002 - INFO - End time: 2025-01-27 20:01:53
+2025-01-27 20:01:53,002 - INFO - Duration: 30.52759838104248

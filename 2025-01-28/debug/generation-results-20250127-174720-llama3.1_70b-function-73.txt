@@ -1,0 +1,102 @@
+2025-01-27 18:18:41,281 - INFO - Start time: 2025-01-27 18:18:41
+2025-01-27 18:18:41,281 - INFO - Generating documents for a function with id : 73
+2025-01-27 18:18:41,281 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgExpression* SageInterface::forallMaskExpression(SgForAllStatement* stmt) {
+  SgExprListExp* el = stmt->get_forall_header();
+  const SgExpressionPtrList& ls = el->get_expressions();
+  if (ls.empty()) return 0;
+  if (isSgAssignOp(ls.back())) return 0;
+  return ls.back();
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:19:07,731 - INFO - Response from llama3.1:70b for Function 73:
+2025-01-27 18:19:07,731 - INFO - /**
+ * @fn SgExpression* SageInterface::forallMaskExpression(SgForAllStatement* stmt)
+ *
+ * @brief Returns the last expression in the forall header of a given statement.
+ *
+ * This function extracts the last expression from the forall header of an
+ * SgForAllStatement. The forall header is represented as an SgExprListExp,
+ * which contains a list of expressions. If this list is empty, or if the last
+ * expression in the list is an assignment operation (SgAssignOp), the function
+ * returns 0.
+ *
+ * @param stmt A pointer to an SgForAllStatement from which to extract the forall header.
+ *             Must not be null.
+ *
+ * @return The last expression in the forall header, or 0 if the list is empty or ends with an assignment operation.
+ *
+ * @warnings This function does not perform any error checking on its input parameter. It assumes that stmt is a valid pointer to an SgForAllStatement.
+ *
+ * @preconditions stmt must be a non-null pointer to an SgForAllStatement.
+ *
+ * @postconditions The returned expression is the last one in the forall header, or 0 if the list is empty or ends with an assignment operation.
+ *
+ * @note This function uses the ROSE library's SageInterface and AstHandling mechanisms to manipulate and analyze the abstract syntax tree (AST) of the input statement.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgForAllStatement* stmt = ...; // assume a valid SgForAllStatement pointer
+ *           SgExpression* last_expr = SageInterface::forallMaskExpression(stmt);
+ *           if (last_expr != 0) {
+ *             // process the last expression in the forall header
+ *           } else {
+ *             // handle the case where the list is empty or ends with an assignment operation
+ *           }
+ *          @endcode
+ */
+2025-01-27 18:19:07,731 - INFO - End time: 2025-01-27 18:19:07
+2025-01-27 18:19:07,731 - INFO - Duration: 26.44946551322937

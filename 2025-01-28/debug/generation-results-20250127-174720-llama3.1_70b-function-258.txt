@@ -1,0 +1,103 @@
+2025-01-27 19:34:00,274 - INFO - Start time: 2025-01-27 19:34:00
+2025-01-27 19:34:00,274 - INFO - Generating documents for a function with id : 258
+2025-01-27 19:34:00,274 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgFunctionDeclaration* SageInterface::findFunctionDeclaration(SgNode* root, std::string name, SgScopeStatement* scope, bool isDefining)
+{
+  return findDeclarationStatement<SgFunctionDeclaration> (root, name, scope, isDefining);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:34:28,097 - INFO - Response from llama3.1:70b for Function 258:
+2025-01-27 19:34:28,097 - INFO - /**
+ * @fn SgFunctionDeclaration* SageInterface::findFunctionDeclaration(SgNode* root, std::string name, SgScopeStatement* scope, bool isDefining)
+ *
+ * @brief Searches for a function declaration in the given AST node.
+ *
+ * This function traverses the Abstract Syntax Tree (AST) rooted at the given
+ * node to find a function declaration with the specified name and scope. It returns
+ * a pointer to the found SgFunctionDeclaration node if successful, or NULL otherwise.
+ *
+ * The search is performed recursively, starting from the root node down to its
+ * children nodes. If the isDefining flag is set to true, the search will only consider
+ * function declarations that are defining instances (i.e., non-forward declarations).
+ *
+ * @param root The root node of the AST to start searching from.
+ * @param name The name of the function declaration to search for.
+ * @param scope The scope statement within which the function declaration should be found.
+ * @param isDefining Whether to only consider defining instances of the function declaration.
+ *
+ * @return A pointer to the SgFunctionDeclaration node if found, or NULL otherwise.
+ *
+ * @note This function uses a recursive approach to traverse the AST. While this
+ *       approach allows for efficient searching, it may lead to stack overflow errors
+ *       for very large ASTs.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* root = ...; // obtain the root node of the AST
+ *           std::string funcName = "myFunction";
+ *           SgScopeStatement* scope = ...; // obtain the scope statement
+ *           bool isDefining = true;
+ *
+ *           SgFunctionDeclaration* decl = SageInterface::findFunctionDeclaration(root, funcName, scope, isDefining);
+ *           if (decl != NULL) {
+ *               // found function declaration, process it further
+ *           } else {
+ *               // function declaration not found
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:34:28,097 - INFO - End time: 2025-01-27 19:34:28
+2025-01-27 19:34:28,097 - INFO - Duration: 27.823017835617065

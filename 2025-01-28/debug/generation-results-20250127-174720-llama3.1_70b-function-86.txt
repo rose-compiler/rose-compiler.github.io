@@ -1,0 +1,101 @@
+2025-01-27 18:23:30,629 - INFO - Start time: 2025-01-27 18:23:30
+2025-01-27 18:23:30,629 - INFO - Generating documents for a function with id : 86
+2025-01-27 18:23:30,629 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgExpression* SageInterface::copyExpression(SgExpression* e)
+  {
+    ROSE_ASSERT( e != NULL);
+    // We enforce that the source expression is fully attached to the AST
+    // Too strict, the source expression can be just built and not attached.
+    // Liao, 9/21/2009
+//    ROSE_ASSERT( e->get_parent() != NULL);
+    return deepCopy(e);
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:23:49,641 - INFO - Response from llama3.1:70b for Function 86:
+2025-01-27 18:23:49,641 - INFO - /**
+ * @fn SgExpression* SageInterface::copyExpression(SgExpression* e)
+ *
+ * @brief Creates a deep copy of the given expression.
+ *
+ * This function generates a new expression that is a deep copy of the input
+ * expression. It recursively traverses the abstract syntax tree (AST) of the
+ * input expression and creates new nodes for each element, ensuring that the
+ * resulting copy is completely independent of the original expression.
+ *
+ * @param e The expression to be copied. Must not be NULL.
+ *          The source expression can be either attached or unattached to the AST.
+ *
+ * @return A pointer to the root node of the copied expression.
+ *
+ * @warning If the input expression is very large, this function may consume
+ *          significant memory and processing time.
+ *
+ * @pre e != NULL
+ * @post The returned expression is a deep copy of the input expression.
+ *
+ * @note This function uses the deepCopy() method to perform the actual copying,
+ *       which may have additional preconditions or postconditions that are not
+ *       explicitly checked here.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgExpression* originalExpr = ...;
+ *           SgExpression* copiedExpr = SageInterface::copyExpression(originalExpr);
+ *           // Use the copied expression as needed...
+ *          @endcode
+ */
+2025-01-27 18:23:49,642 - INFO - End time: 2025-01-27 18:23:49
+2025-01-27 18:23:49,642 - INFO - Duration: 19.01306653022766

@@ -1,0 +1,109 @@
+2025-01-27 19:18:07,289 - INFO - Start time: 2025-01-27 19:18:07
+2025-01-27 19:18:07,289 - INFO - Generating documents for a function with id : 222
+2025-01-27 19:18:07,289 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgStatement* SageInterface::getLoopBody(SgScopeStatement* loopStmt) {
+    if (isSgWhileStmt(loopStmt)) return isSgWhileStmt(loopStmt)->get_body();
+    if (isSgForStatement(loopStmt)) return isSgForStatement(loopStmt)->get_loop_body();
+    if (isSgDoWhileStmt(loopStmt)) return isSgDoWhileStmt(loopStmt)->get_body();
+
+        ROSE_ASSERT (!"Bad loop kind");
+    return NULL;
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:18:33,470 - INFO - Response from llama3.1:70b for Function 222:
+2025-01-27 19:18:33,470 - INFO - /**
+ * @fn SgStatement* SageInterface::getLoopBody(SgScopeStatement* loopStmt)
+ *
+ * @brief Retrieves the body of a loop statement.
+ *
+ * This function takes a loop statement as input and returns its corresponding body.
+ * It supports different types of loops, including while, for, and do-while statements.
+ *
+ * The function uses a series of conditional checks to determine the type of loop
+ * and then calls the appropriate method to retrieve the loop body. If the loop
+ * type is not recognized, an assertion failure occurs.
+ *
+ * @param loopStmt A pointer to the loop statement for which the body is to be retrieved.
+ *                 Must be a valid SgScopeStatement object representing a while,
+ *                 for, or do-while loop.
+ *
+ * @return A pointer to the loop body statement. Returns NULL if the input loop
+ *          statement is not recognized or if an error occurs.
+ *
+ * @warning The function uses assertions to check for invalid input. If an assertion
+ *          failure occurs, the program will terminate abruptly.
+ *
+ * @pre The input loop statement must be a valid SgScopeStatement object representing
+ *      a while, for, or do-while loop.
+ *
+ * @post The returned loop body statement is valid and can be used for further processing.
+ *
+ * @note This function does not perform any semantic checks on the input loop statement.
+ *       It assumes that the input is valid and well-formed.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgScopeStatement* loopStmt = ...; // assume a valid loop statement
+ *           SgStatement* loopBody = SageInterface::getLoopBody(loopStmt);
+ *           if (loopBody != NULL) {
+ *               // process the loop body
+ *           } else {
+ *               // handle error or unrecognized loop type
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:18:33,470 - INFO - End time: 2025-01-27 19:18:33
+2025-01-27 19:18:33,470 - INFO - Duration: 26.181532621383667

@@ -1,0 +1,257 @@
+2025-01-27 18:57:25,155 - INFO - Start time: 2025-01-27 18:57:25
+2025-01-27 18:57:25,155 - INFO - Generating documents for a function with id : 171
+2025-01-27 18:57:25,155 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool isCopyConstructible(SgType* type)
+{
+    switch (type->variantT())
+    {
+        case V_SgArrayType:
+            return false; //Liao, array types are not copy constructible, 3/3/2009
+            //return isCopyConstructible(isSgArrayType(type)->get_base_type());
+            break;
+
+        case V_SgModifierType:
+            return isCopyConstructible(isSgModifierType(type)->get_base_type());
+            break;
+
+        case V_SgFunctionType:
+        case V_SgMemberFunctionType:
+        case V_SgTypeEllipse:
+        case V_SgDeclType:
+            return false;
+            break;
+
+        case V_SgClassType:
+        {
+            SgClassDeclaration* decl = isSgClassDeclaration(isSgClassType(type)->get_declaration());
+            ROSE_ASSERT(decl);
+            ROSE_ASSERT(decl->get_definingDeclaration());
+            // from forward declaration to defining declaration 
+            SgClassDefinition* defn = isSgClassDeclaration(decl->get_definingDeclaration())->get_definition();
+            ROSE_ASSERT(defn);
+            bool hasPublicCopyConstructor = false, hasAnyCopyConstructor = false;
+            // Look for user-defined constructors
+            SgDeclarationStatementPtrList& classMembers = defn->get_members();
+            for (SgDeclarationStatementPtrList::iterator i = classMembers.begin(); i != classMembers.end(); ++i)
+            {
+                if (isSgFunctionDeclaration(*i))
+                {
+                    SgFunctionDeclaration* fundecl = isSgFunctionDeclaration(*i);
+                    bool thisIsAConstructor = fundecl->get_specialFunctionModifier().isConstructor();
+                    bool isCopyConstructor = false;
+                    if (fundecl->get_args().size() == 1)
+                    {
+                        SgType* formalArg = fundecl->get_args().front()->get_type();
+                        
+                        //This must be a reference to the type or a const reference to the type.
+                        //Let's remove the 'const'                     
+                        formalArg = formalArg->stripTypedefsAndModifiers();
+                        if (isSgReferenceType(formalArg))
+                        {
+                            SgType* refType = isSgReferenceType(formalArg)->get_base_type();
+                            refType = refType->stripTypedefsAndModifiers();
+                            isCopyConstructor = (refType == type);
+                        }
+                    }
+                    
+                    if (thisIsAConstructor && isCopyConstructor)
+                    {
+                        hasAnyCopyConstructor = true;
+                        if ((*i)->get_declarationModifier().get_accessModifier().isPublic())
+                            hasPublicCopyConstructor = true;
+                    }
+                    
+                    //Check if the function is pure virtual. If so we can't copy the class.
+                    if (fundecl->get_functionModifier().isPureVirtual())
+                    {
+                        return false;
+                    }
+                }
+            }
+                        
+            if (hasPublicCopyConstructor) 
+                return true;
+            if (hasAnyCopyConstructor) 
+                return false;
+            
+            // Return true if all non-static data members are copy constructible
+            for (SgDeclarationStatementPtrList::iterator i = classMembers.begin(); i != classMembers.end(); ++i)
+            {
+                if (isSgVariableDeclaration(*i))
+                {
+                    SgVariableDeclaration* decl = isSgVariableDeclaration(*i);
+                    if (decl->get_declarationModifier().get_storageModifier().isStatic())
+                        continue;
+                    SgInitializedNamePtrList& vars = decl->get_variables();
+                    for (SgInitializedNamePtrList::iterator j = vars.begin(); j != vars.end(); ++j)
+                    {
+                        if (!isCopyConstructible((*j)->get_type()))
+                            return false;
+                    }
+                }
+            }
+            
+            //Check that all the bases classes are copy constructible
+            foreach (SgBaseClass* baseClass, defn->get_inheritances())
+            {
+                SgClassDeclaration* baseClassDecl = baseClass->get_base_class();
+                if (!isCopyConstructible(baseClassDecl->get_type()))
+                    return false;
+            }
+            
+            return true; // If no non-copy constructible data member, return true.
+        }
+            break;
+
+        case V_SgTypedefType:
+            return isCopyConstructible(isSgTypedefType(type)->get_base_type());
+            break;
+
+     // DQ (9/7/2016): Added support for new type now referenced as a result of using new automated generation of builtin functions for ROSE.
+        case V_SgTypeSigned128bitInteger:
+
+        case V_SgReferenceType:
+            // DQ (8/27/2006): Changed name of SgComplex to make it more consistent with other 
+            // type names and added SgTypeImaginary IR node (for C99 complex support).
+        case V_SgTypeComplex:
+        case V_SgTypeImaginary:
+        case V_SgEnumType:
+        case V_SgPointerType:
+        case V_SgPointerMemberType:
+        case V_SgTypeBool:
+        case V_SgTypeChar:
+        case V_SgTypeDefault:
+        case V_SgTypeDouble:
+        case V_SgTypeFloat:
+        case V_SgTypeGlobalVoid:
+        case V_SgTypeInt:
+        case V_SgTypeLong:
+        case V_SgTypeLongDouble:
+        case V_SgTypeLongLong:
+        case V_SgTypeNullptr:
+        case V_SgTypeShort:
+        case V_SgTypeSignedChar:
+        case V_SgTypeSignedInt:
+        case V_SgTypeSignedLong:
+        case V_SgTypeSignedShort:
+        case V_SgTypeString:
+        case V_SgTypeUnsignedChar:
+        case V_SgTypeUnsignedInt:
+        case V_SgTypeUnsignedLong:
+        case V_SgTypeUnsignedLongLong:
+        case V_SgTypeUnsignedShort:
+        case V_SgTypeVoid:
+        case V_SgTypeWchar:
+
+     // DQ (2/16/2018): Adding support for char16_t and char32_t (C99 and C++11 specific types).
+        case V_SgTypeChar16:
+        case V_SgTypeChar32:
+
+            return true;
+            break;
+
+        default:
+            std::cerr << "In SageInterface::isCopyConstructible(), type is a " << type->class_name() << std::endl;
+            ROSE_ASSERT(!"Unknown type in isCopyConstructible()");
+    }
+    return true;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:57:56,030 - INFO - Response from llama3.1:70b for Function 171:
+2025-01-27 18:57:56,030 - INFO - /**
+ * @fn bool isCopyConstructible(SgType* type)
+ *
+ * @brief Determines whether a given type is copy constructible.
+ *
+ * This function checks if a given SgType object represents a type that can be
+ * copied using the copy constructor. It recursively checks the base types of
+ * compound types and returns false as soon as it encounters an uncopyable type.
+ *
+ * @param type The SgType object to check for copy constructibility.
+ *
+ * @return True if the given type is copy constructible, false otherwise.
+ *
+ * @warning This function may return incorrect results for certain edge cases
+ *          or unsupported types. It is recommended to manually verify the
+ *          result in such cases.
+ *
+ * @pre The input SgType object must be valid and non-null.
+ *
+ * @note This function uses a recursive approach to check the copy constructibility
+ *       of compound types, which may lead to performance issues for deeply nested
+ *       types.
+ *
+ * @sa isCopyConstructible(SgVariableDeclaration*)
+ */
+
+// Detailed description of the implementation:
+// The function first checks if the input type is null or invalid. If so, it returns false.
+// Then, it uses a switch statement to handle different types of SgType objects.
+// For each case, it either directly returns true or false based on the type's properties,
+// or recursively calls itself with the base type of the compound type.
+// The function also checks for certain special cases, such as the presence of
+// non-static data members or pure virtual functions in a class declaration.
+
+// Example usage:
+// SgType* myType = ...; // Initialize myType to some valid SgType object
+// bool isCopyConstructibleResult = isCopyConstructible(myType);
+// if (isCopyConstructibleResult) {
+//     std::cout << "The type is copy constructible." << std::endl;
+// } else {
+//     std::cout << "The type is not copy constructible." << std::endl;
+// }
+2025-01-27 18:57:56,030 - INFO - End time: 2025-01-27 18:57:56
+2025-01-27 18:57:56,030 - INFO - Duration: 30.875194549560547

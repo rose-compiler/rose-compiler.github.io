@@ -1,0 +1,191 @@
+2025-01-27 19:33:22,080 - INFO - Start time: 2025-01-27 19:33:22
+2025-01-27 19:33:22,081 - INFO - Generating documents for a function with id : 257
+2025-01-27 19:33:22,081 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    template <typename T>
+T* findDeclarationStatement(SgNode* root, std::string name, SgScopeStatement* scope, bool isDefining)
+   {
+     bool found = false;
+
+#if 0
+     printf ("In findDeclarationStatement(): root       = %p \n",root);
+     printf ("In findDeclarationStatement(): name       = %s \n",name.c_str());
+     printf ("In findDeclarationStatement(): scope      = %p \n",scope);
+     printf ("In findDeclarationStatement(): isDefining = %s \n",isDefining ? "true" : "false");
+#endif
+
+  // Do we really want a NULL pointer to be acceptable input to this function?
+  // Maybe we should have an assertion that it is non-null?
+     if (!root) return NULL;
+
+     T* decl = dynamic_cast<T*>(root);
+
+#if 0
+     printf ("In findDeclarationStatement(): decl       = %p \n",decl);
+#endif
+
+     if (decl != NULL)
+        {
+          if (scope)
+             {
+               if ((decl->get_scope() == scope) && (decl->search_for_symbol_from_symbol_table()->get_name() == name))
+                  {
+                    found = true;
+                  }
+             }
+            else // Liao 2/9/2010. We should allow NULL scope
+             {
+#if 0
+            // DQ (12/6/2016): Include this into the debugging code to aboid compiler warning about unused variable.
+               SgSymbol* symbol = decl->search_for_symbol_from_symbol_table();
+               printf ("In findDeclarationStatement(): decl->search_for_symbol_from_symbol_table() = %p \n",symbol);
+               printf ("In findDeclarationStatement(): decl->search_for_symbol_from_symbol_table()->get_name() = %s \n",symbol->get_name().str());
+#endif
+               if (decl->search_for_symbol_from_symbol_table()->get_name() == name)
+                  {
+                    found = true;
+                  }
+             }
+        }
+
+     if (found)
+        {
+          if (isDefining)
+             {
+#if 0
+               printf ("In findDeclarationStatement(): decl->get_firstNondefiningDeclaration() = %p \n",decl->get_firstNondefiningDeclaration());
+               printf ("In findDeclarationStatement(): decl->get_definingDeclaration()         = %p \n",decl->get_definingDeclaration());
+#endif
+               ROSE_ASSERT (decl->get_definingDeclaration() != NULL);
+#if 0
+               printf ("In findDeclarationStatement(): returing decl->get_definingDeclaration() = %p \n",decl->get_definingDeclaration());
+#endif
+               return dynamic_cast<T*> (decl->get_definingDeclaration());
+             }
+            else
+             {
+#if 0
+               printf ("In findDeclarationStatement(): returing decl = %p \n",decl);
+#endif
+               return decl;
+             }
+        }
+
+     std::vector<SgNode*> children = root->get_traversalSuccessorContainer();
+
+#if 0
+     printf ("In findDeclarationStatement(): children.size() = %zu \n",children.size());
+#endif
+
+  // DQ (4/10/2016): Note that if we are searching for a function member that has it's defining
+  // declaration defined outside of the class then it will not be found in the child list.
+     for (std::vector<SgNode*>::const_iterator i = children.begin(); i != children.end(); ++i)
+        {
+          T* target = findDeclarationStatement<T> (*i,name,scope,isDefining);
+
+          if (target)
+             {
+               return target;
+             }
+        }
+
+     return NULL;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:34:00,273 - INFO - Response from llama3.1:70b for Function 257:
+2025-01-27 19:34:00,274 - INFO - /**
+ * @fn template <typename T> T* findDeclarationStatement(SgNode* root, std::string name, SgScopeStatement* scope, bool isDefining)
+ *
+ * @brief Finds a declaration statement in the abstract syntax tree (AST) that matches the given name and scope.
+ *
+ * This function searches for a declaration statement of type T in the AST rooted at 'root' with the specified 'name' 
+ * within the given 'scope'. If 'isDefining' is true, it returns the defining declaration; otherwise, it returns the first 
+ * non-defining declaration. The search is performed recursively by traversing the successor container of each node.
+ *
+ * @param root The root node of the AST to start searching from. Must be a valid pointer.
+ * @param name The name of the declaration statement to search for.
+ * @param scope The scope in which to search for the declaration statement. Can be NULL.
+ * @param isDefining Whether to return the defining declaration (true) or the first non-defining declaration (false).
+ *
+ * @return A pointer to the found declaration statement, or NULL if not found.
+ *
+ * @warning If 'root' is NULL, the function returns immediately with a NULL result. Consider adding an assertion to ensure 
+ *          that 'root' is always valid.
+ *
+ * @pre The input parameters must be valid: 'root' must be a non-NULL pointer, and 'name' must be a valid string.
+ * @post If a matching declaration statement is found, the returned pointer points to a valid node in the AST; otherwise, 
+ *       the function returns NULL.
+ *
+ * @note The search algorithm used by this function may not work correctly for function members with defining declarations 
+ *       outside of their class. Also, the function does not handle cases where multiple declarations have the same name within 
+ *       the given scope.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* root = ...; // obtain the root node of the AST
+ *           std::string name = "myVariable"; // set the name to search for
+ *           SgScopeStatement* scope = ...; // obtain the scope in which to search
+ *           bool isDefining = true; // whether to return the defining declaration
+ *
+ *           T* decl = findDeclarationStatement<T>(root, name, scope, isDefining);
+ *           if (decl != NULL) {
+ *               printf("Found declaration statement: %s\n", decl->get_name().str());
+ *           } else {
+ *               printf("No matching declaration statement found.\n");
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:34:00,274 - INFO - End time: 2025-01-27 19:34:00
+2025-01-27 19:34:00,274 - INFO - Duration: 38.193302154541016

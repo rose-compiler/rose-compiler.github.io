@@ -1,0 +1,172 @@
+2025-01-27 20:13:45,251 - INFO - Start time: 2025-01-27 20:13:45
+2025-01-27 20:13:45,251 - INFO - Generating documents for a function with id : 354
+2025-01-27 20:13:45,251 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::resetInternalMapsForTargetStatement(SgStatement* sourceStatement)
+   {
+  // This function allows the modification of the input statement to trigger operations on internal
+  // data structures that hold references to such statements.  An example is the macroExpansion
+  // data structures that have a reference to the statements that are associated with and macro expansion.
+  // if a statement assocated with a macro expansion is removed, then the macroExpansion needs to be
+  // updated to force all of the statements to be marked as transformed (so that the AST will be unparsed
+  // instead of the tokens representing the macro or some partial representation of the transformed
+  // statements and the macro call (worse).
+
+#if 0
+     printf ("In SageInterface::resetInternalMapsForTargetStatement(SgStatement*): sourceStatement = %p = %s \n",sourceStatement,sourceStatement->class_name().c_str());
+#endif
+
+     SgSourceFile* sourceFile = getEnclosingSourceFile(sourceStatement);
+
+  // NOTE: if the statment has not yet been added to the AST then it will not return a valid pointer.
+  // ROSE_ASSERT(sourceFile != NULL);
+
+#if 0
+     printf ("In SageInterface::resetInternalMapsForTargetStatement(SgStatement*): sourceFile = %p \n",sourceFile);
+#endif
+
+     if (sourceFile != NULL)
+        {
+          std::map<SgStatement*,MacroExpansion*> & macroExpansionMap = sourceFile->get_macroExpansionMap();
+
+          if (macroExpansionMap.find(sourceStatement) != macroExpansionMap.end())
+             {
+               MacroExpansion* macroExpansion = macroExpansionMap[sourceStatement];
+               ROSE_ASSERT(macroExpansion != NULL);
+#if 0
+               printf ("In resetInternalMapsForTargetStatement(): macroExpansion = %p = %s \n",macroExpansion,macroExpansion->macro_name.c_str());
+#endif
+               if (macroExpansion->isTransformed == false)
+                  {
+                 // Mark all of the statements in the macro expansion to be transformed.
+                    std::vector<SgStatement*> & associatedStatementVector = macroExpansion->associatedStatementVector;
+
+                    for (size_t i = 0; i < associatedStatementVector.size(); i++)
+                       {
+                      // I am concerned that some of these statements might have been deleted.
+                         SgStatement* statement = associatedStatementVector[i];
+#if 0
+                         printf ("Mark as transformation to be output: statement = %p = %s \n",statement,statement->class_name().c_str());
+#endif
+                      // Note that any new statement might not yet have valid Sg_File_Info objects setup at this point.
+                      // Then again, now did it make it into the associatedStatementVector unless it was via memory
+                      // recycling through the mmory pool.
+                         if (statement->get_file_info() != NULL)
+                            {
+                           // Mark each of the statements as a transformation.
+                              statement->setTransformation();
+
+                           // This is required, else the statement will not be output in the generated code.
+                           // To understand this, consider that statements in header files could be transformed,
+                           // but we would not want that to cause them to be unparse in the source file.
+                              statement->setOutputInCodeGeneration();
+
+                           // Not clear if we should also remove the statement from the associatedStatementVector.
+                           // This would be important to do to avoid having the same location in the memory pool
+                           // be reused for another statement. Since we makr the macro expansion as transformed
+                           // we likely don't have to worry about this.
+                            }
+                       }
+                 }
+
+            // Mark this macro expansion as having been processed.
+               macroExpansion->isTransformed = true;
+             }
+
+       // Other data strucutes that may have to be updated include:
+       // representativeWhitespaceStatementMap (should be required, but only effects whitespace details)
+       // redundantlyMappedTokensToStatementMultimap (might not be required)
+
+        }
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:14:12,437 - INFO - Response from llama3.1:70b for Function 354:
+2025-01-27 20:14:12,437 - INFO - /**
+ * @fn SageInterface::resetInternalMapsForTargetStatement(SgStatement* sourceStatement)
+ *
+ * @brief Resets internal maps for a target statement by updating data structures that hold references to the statement.
+ *
+ * This function allows the modification of the input statement to trigger operations on internal
+ * data structures that hold references to such statements. An example is the macro expansion
+ * data structures that have a reference to the statements that are associated with and macro expansion.
+ * If a statement associated with a macro expansion is removed, then the macro expansion needs to be
+ * updated to force all of the statements to be marked as transformed (so that the AST will be unparsed
+ * instead of the tokens representing the macro or some partial representation of the transformed
+ * statements and the macro call).
+ *
+ * @param sourceStatement The statement for which internal maps need to be reset.
+ *                        Must not be NULL. If the statement has not yet been added to the AST, it will not return a valid pointer.
+ *
+ * @return None
+ *
+ * @warning This function does not check if the input statement is valid or if it has already been processed.
+ *          It assumes that the input statement is valid and needs to be processed.
+ *
+ * @pre The input statement must be a valid SgStatement object.
+ *
+ * @post Internal maps are updated to reflect changes to the input statement.
+ *
+ * @note This function updates data structures such as macroExpansionMap, representativeWhitespaceStatementMap,
+ *       and redundantlyMappedTokensToStatementMultimap. It also marks statements in the macro expansion
+ *       as transformed and sets them to be output in code generation.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* statement = ...; // create a statement object
+ *           SageInterface::resetInternalMapsForTargetStatement(statement);
+ *          @endcode
+ */
+2025-01-27 20:14:12,437 - INFO - End time: 2025-01-27 20:14:12
+2025-01-27 20:14:12,437 - INFO - Duration: 27.186631679534912

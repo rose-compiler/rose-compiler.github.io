@@ -1,0 +1,173 @@
+2025-01-27 20:42:23,238 - INFO - Start time: 2025-01-27 20:42:23
+2025-01-27 20:42:23,238 - INFO - Generating documents for a function with id : 422
+2025-01-27 20:42:23,238 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::changeAllBodiesToBlocks(SgNode* top, bool createEmptyBody /*= true*/ ) {
+    class Visitor: public AstSimpleProcessing {
+      public:
+      bool allowEmptyBody;
+      Visitor (bool flag):allowEmptyBody(flag) {}
+      virtual void visit(SgNode* n) {
+
+        bool wasPreviouslyModified = n->get_isModified();
+
+        switch (n->variantT()) {
+          case V_SgForStatement: {
+            ensureBasicBlockAsBodyOfFor(isSgForStatement(n));
+            break;
+          }
+          case V_SgWhileStmt: {
+            ensureBasicBlockAsBodyOfWhile(isSgWhileStmt(n));
+            break;
+          }
+          case V_SgDoWhileStmt: {
+            ensureBasicBlockAsBodyOfDoWhile(isSgDoWhileStmt(n));
+            break;
+          }
+          case V_SgSwitchStatement: {
+            ensureBasicBlockAsBodyOfSwitch(isSgSwitchStatement(n));
+            break;
+          }
+          case V_SgIfStmt: {
+            ensureBasicBlockAsTrueBodyOfIf(isSgIfStmt(n));
+            ensureBasicBlockAsFalseBodyOfIf(isSgIfStmt(n), allowEmptyBody);
+#if 0
+         // DQ (10/6/2015): Debugging why changes are being made to the AST for token-based unparsing.
+            printf ("In changeAllBodiesToBlocks(): case SgIfStmt: n->get_isModified() = %s \n",n->get_isModified() ? "true" : "false");
+#endif
+#if 0
+         // Reset this to false as a test.
+            if (n->get_isModified() == true)
+               {
+                 n->set_isModified(false);
+                 printf ("In changeAllBodiesToBlocks(): AFTER RESET: case SgIfStmt: n->get_isModified() = %s \n",n->get_isModified() ? "true" : "false");
+               }
+#endif
+            break;
+          }
+          case V_SgCatchOptionStmt: {
+            ensureBasicBlockAsBodyOfCatch(isSgCatchOptionStmt(n));
+            break;
+          }
+          case V_SgUpcForAllStatement: {
+            ensureBasicBlockAsBodyOfUpcForAll(isSgUpcForAllStatement(n));
+            break;
+          }
+
+          default:
+            {
+              if (isSgOmpBodyStatement(n))
+                ensureBasicBlockAsBodyOfOmpBodyStmt(isSgOmpBodyStatement(n));
+              break;
+            }
+        }
+
+  // DQ (10/6/2015): Added code to reset isModified flag if it was only modified by this function.
+     if (wasPreviouslyModified == false)
+        {
+          if (n->get_isModified() == true)
+             {
+#if 0
+               printf ("In SageInterface::changeAllBodiesToBlocks(): parentOfBlock reset to FALSE after IR node member function call (e.g. set_body()): parentOfBlock = %p = %s \n",n,n->class_name().c_str());
+#endif
+               n->set_isModified(false);
+             }
+
+        }
+
+      }
+    };
+    Visitor(createEmptyBody).traverse(top, postorder);
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:42:49,235 - INFO - Response from llama3.1:70b for Function 422:
+2025-01-27 20:42:49,235 - INFO - /**
+ * @fn void SageInterface::changeAllBodiesToBlocks(SgNode* top, bool createEmptyBody /*= true*/)
+ *
+ * @brief Changes all bodies in the given SgNode to basic blocks.
+ *
+ * This function traverses the Abstract Syntax Tree (AST) rooted at the given node
+ * and ensures that every body is a basic block. A basic block is a sequence of
+ * statements with no control flow between them, except possibly for the last
+ * statement in the block which may be a jump or return.
+ *
+ * The function uses a visitor pattern to traverse the AST. It visits each node
+ * and checks if it needs to be modified to ensure that its body is a basic block.
+ * If necessary, it calls other functions (e.g., ensureBasicBlockAsBodyOfFor,
+ * ensureBasicBlockAsBodyOfWhile, etc.) to perform the actual modifications.
+ *
+ * @param top The root node of the AST to traverse.
+ * @param createEmptyBody A flag indicating whether an empty body should be created
+ *                       if one does not already exist. Defaults to true.
+ *
+ * @return None
+ *
+ * @warning This function modifies the AST in place and does not return a new tree.
+ *
+ * @pre The input node is a valid SgNode.
+ *
+ * @post All bodies in the AST rooted at the input node are basic blocks.
+ *
+ * @note This function uses a recursive approach to traverse the AST. It may cause
+ *       a stack overflow if the input tree is very deep.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* root = ...; // obtain the root node of the AST
+ *           SageInterface::changeAllBodiesToBlocks(root, true);
+ *          @endcode
+ */
+2025-01-27 20:42:49,235 - INFO - End time: 2025-01-27 20:42:49
+2025-01-27 20:42:49,235 - INFO - Duration: 25.99720311164856

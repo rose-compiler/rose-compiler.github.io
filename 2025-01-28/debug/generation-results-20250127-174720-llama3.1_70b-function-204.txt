@@ -1,0 +1,115 @@
+2025-01-27 19:10:50,102 - INFO - Start time: 2025-01-27 19:10:50
+2025-01-27 19:10:50,102 - INFO - Generating documents for a function with id : 204
+2025-01-27 19:10:50,102 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    //! Phase-less means block size ==1, or 0, or unspecified(-1). 
+  bool isUpcPhaseLessSharedType (SgType* t)
+  {
+    SgModifierType * mod_type_out;
+    int block_size;
+
+    bool check = hasUpcSharedType(t,&mod_type_out);
+    //ROSE_ASSERT(hasUpcSharedType(t,mod)); // avoid side effect for assertion!!
+    if (check==false) 
+      return false;
+    else
+      ROSE_ASSERT(check&&mod_type_out); 
+    block_size =  mod_type_out->get_typeModifier().get_upcModifier().get_layout();
+    // cout<<"block size is "<<block_size<<endl;
+    if ((block_size==1)||(block_size == -1)|| (block_size == 0))
+      return true;
+    else 
+      return false;
+  } // isUpcPhaseLessSharedType
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:11:18,646 - INFO - Response from llama3.1:70b for Function 204:
+2025-01-27 19:11:18,646 - INFO - /**
+ * @fn bool isUpcPhaseLessSharedType(SgType* t)
+ *
+ * @brief Checks if a given type is an UPC phase-less shared type.
+ *
+ * This function determines whether the input type represents a UPC (Unified Parallel C) phase-less shared type. 
+ * A phase-less shared type in UPC means that the block size of the shared array is either 1, 0, or unspecified (-1).
+ *
+ * @param t The SgType object to be checked.
+ *          Must not be NULL and should represent a valid type in the UPC context.
+ *
+ * @return True if the input type represents an UPC phase-less shared type; false otherwise.
+ *
+ * @details This function first checks if the input type has an associated UPC shared type modifier. 
+ * If this check fails, it immediately returns false. Otherwise, it extracts the block size from the UPC shared type modifier and checks whether it is 1, 0, or -1. 
+ * If any of these conditions are met, the function returns true; otherwise, it returns false.
+ *
+ * @warnings This function assumes that the input SgType object has already been validated in terms of its syntax and semantics. 
+ * It does not perform any additional checks for the correctness of the input type.
+ *
+ * @pre The input SgType object must be valid and represent a UPC shared type.
+ *
+ * @post If the function returns true, it guarantees that the input type represents an UPC phase-less shared type.
+ *
+ * @note This function is specific to the UPC programming model and may not work correctly for other parallel programming models.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgType* my_type = ...; // assume a valid UPC shared type object
+ *           if (isUpcPhaseLessSharedType(my_type)) {
+ *             cout << "The type is an UPC phase-less shared type." << endl;
+ *           } else {
+ *             cout << "The type is not an UPC phase-less shared type." << endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:11:18,646 - INFO - End time: 2025-01-27 19:11:18
+2025-01-27 19:11:18,646 - INFO - Duration: 28.544137716293335

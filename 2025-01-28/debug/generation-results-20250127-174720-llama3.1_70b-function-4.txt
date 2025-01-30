@@ -1,0 +1,172 @@
+2025-01-27 17:50:09,357 - INFO - Start time: 2025-01-27 17:50:09
+2025-01-27 17:50:09,357 - INFO - Generating documents for a function with id : 4
+2025-01-27 17:50:09,357 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    string
+SageInterface::get_name ( const SgScopeStatement* scope )
+   {
+     string name = "undefined_name";
+
+     ROSE_ASSERT(scope != NULL);
+
+     switch (scope->variantT())
+        {
+       // DQ (6/11/2011): Added support for new template IR nodes.
+          case V_SgTemplateClassDefinition:
+               name = get_name(isSgTemplateClassDefinition(scope)->get_declaration());
+               break;
+
+          case V_SgClassDefinition:
+          case V_SgTemplateInstantiationDefn:
+               name = get_name(isSgClassDefinition(scope)->get_declaration());
+               break;
+
+       // DQ (9/8/2012): Added missing case for SgTemplateFunctionDefinition.
+          case V_SgTemplateFunctionDefinition:
+          case V_SgFunctionDefinition:
+               name = get_name(isSgFunctionDefinition(scope)->get_declaration());
+               break;
+
+          case V_SgNamespaceDefinitionStatement:
+               name = get_name(isSgNamespaceDefinitionStatement(scope)->get_namespaceDeclaration());
+               break;
+          case V_SgJavaLabelStatement:
+               name = (isSgJavaLabelStatement(scope)->get_label()).getString();
+               break;
+
+       // DQ (7/18/2017): Added support for the new declaration scope.
+          case V_SgDeclarationScope:
+
+       // DQ (11/30/2007): Added more fortran support.
+          case V_SgAssociateStatement:
+          case V_SgJavaForEachStatement:
+
+          case V_SgFunctionParameterScope:
+          case V_SgAdaPackageSpec:
+          case V_SgAdaPackageBody:
+          case V_SgAdaTaskSpec:
+          case V_SgAdaTaskBody:
+          case V_SgAdaProtectedSpec:
+          case V_SgAdaProtectedBody:
+          case V_SgAdaGenericDefn:
+          case V_SgAdaAcceptStmt:
+          case V_SgJovialForThenStatement: //Rasmussen: Jovial for statement
+          case V_SgMatlabForStatement: //SK: Matlab for statement
+          case V_SgBasicBlock:
+          case V_SgCatchOptionStmt:
+          case V_SgDoWhileStmt:
+          case V_SgForStatement:
+          case V_SgGlobal:
+          case V_SgIfStmt:
+          case V_SgSwitchStatement:
+          case V_SgWhileStmt:
+          case V_SgFortranDo:
+          case V_SgForAllStatement:
+          case V_SgRangeBasedForStatement:
+               name = StringUtility::numberToString(const_cast<SgScopeStatement*>(scope));
+               break;
+
+          default:
+               printf ("Error: undefined case (SgScopeStatement) in SageInterface::get_name(): node = %s \n",scope->class_name().c_str());
+               ROSE_ABORT();
+        }
+
+     return name;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 17:50:35,699 - INFO - Response from llama3.1:70b for Function 4:
+2025-01-27 17:50:35,699 - INFO - /**
+ * @fn string SageInterface::get_name ( const SgScopeStatement* scope )
+ *
+ * @brief Retrieves the name of a given SgScopeStatement.
+ *
+ * This function computes the name of a given SgScopeStatement based on its variant type.
+ * It handles various types of scopes, including template class definitions,
+ * class definitions, function definitions, namespace definitions, and more.
+ *
+ * The function uses a switch statement to determine the correct approach
+ * for retrieving the name based on the input scope's variant type.
+ *
+ * @param scope A pointer to an SgScopeStatement object. Must not be NULL.
+ *
+ * @return The name of the input SgScopeStatement as a string. If the scope is
+ *         undefined, returns "undefined_name".
+ *
+ * @warning This function does not perform any error checking on the input scope's validity.
+ *          It assumes that the input scope is valid and correctly initialized.
+ *
+ * @note This function uses the ROSE_ASSERT macro to ensure that the input scope is not NULL.
+ *
+ * @pre The input scope must be a valid SgScopeStatement object.
+ *
+ * @post The returned name is a string representation of the input scope's name.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create an instance of SageInterface
+ *           SageInterface sage;
+ *
+ *           // Create an SgScopeStatement object (e.g., an SgClassDefinition)
+ *           SgScopeStatement* scope = new SgClassDefinition();
+ *
+ *           // Get the name of the scope using the get_name function
+ *           string name = sage.get_name(scope);
+ *
+ *           // Print the retrieved name
+ *           cout << "Name: " << name << endl;
+ *          @endcode
+ */
+2025-01-27 17:50:35,699 - INFO - End time: 2025-01-27 17:50:35
+2025-01-27 17:50:35,699 - INFO - Duration: 26.342477798461914

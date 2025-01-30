@@ -1,0 +1,165 @@
+2025-01-27 20:21:50,515 - INFO - Start time: 2025-01-27 20:21:50
+2025-01-27 20:21:50,515 - INFO - Generating documents for a function with id : 375
+2025-01-27 20:21:50,515 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::reportModifiedLocatedNodes( const string & label, SgNode* node )
+   {
+  // DQ (6/21/2021): This reports the nodes in the AST that are marked as modified (isModified flag).
+  // It is useful for debugging the token-based unparsing.
+
+     printf ("\n\n##################################################### \n");
+     printf ("Report on modified locatedNodes: label = %s \n",label.c_str());
+
+     SgSourceFile* sourceFile = isSgSourceFile(node);
+     if (sourceFile != NULL)
+        {
+          printf ("   --- (SgSourceFile) filename = %s \n",sourceFile->getFileName().c_str());
+        }
+       else
+        {
+          SgGlobal* globalScope = isSgGlobal(node);
+          if (globalScope != NULL)
+             {
+               sourceFile = isSgSourceFile(globalScope->get_parent());
+               printf ("   --- (SgGlobal) filename = %s \n",sourceFile->getFileName().c_str());
+             }
+        }
+
+     ROSE_ASSERT(node != NULL);
+     std::set<SgLocatedNode*> collection = collectModifiedLocatedNodes(node);
+
+#if 0
+     printf ("In reportModifiedLocatedNode(): collection.size() = %zu \n",collection.size());
+#endif
+
+     std::set<SgLocatedNode*>::iterator i = collection.begin();
+     while (i != collection.end())
+        {
+       // DQ (10/9/2019): Adding filename to debug output.
+          string filename = (*i)->get_file_info()->get_filename();
+
+       // DQ (10/14/2019): Get the best name possible.
+          if (filename == "transformation")
+             {
+#if 0
+               printf ("   --- filename == transformation: sourceFile = %p using physical filename \n",sourceFile);
+#endif
+            // filename = (*i)->get_file_info()->get_physical_filename();
+               SgSourceFile* sourceFile = TransformationSupport::getSourceFile(*i);
+               if (sourceFile != NULL)
+                  {
+                    filename = sourceFile->getFileName();
+                  }
+             }
+
+          printf ("   --- filename = %s modified locatedNode = %p = %s \n",filename.c_str(),(*i),(*i)->class_name().c_str());
+
+          i++;
+        }
+
+#if 1
+  // DQ (6/8/2019): This helps track down where this is being called when are are cleaning up
+  // output spew else the message output at the top of this function will scroll off the screen.
+     printf ("########################################################## \n");
+     printf ("reportModifiedLocatedNodes(): Called using label = %s \n",label.c_str());
+#endif
+     printf ("########################################################## \n\n\n");
+
+#if 0
+     printf ("Exiting as a test! \n");
+     ROSE_ASSERT(false);
+#endif
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:22:16,908 - INFO - Response from llama3.1:70b for Function 375:
+2025-01-27 20:22:16,908 - INFO - /**
+ * @fn void SageInterface::reportModifiedLocatedNodes( const string & label, SgNode* node )
+ *
+ * @brief Reports the nodes in the AST that are marked as modified (isModified flag).
+ *
+ * This function is useful for debugging the token-based unparsing. It collects and prints
+ * information about the modified located nodes in the Abstract Syntax Tree (AST) based on the
+ * provided label and SgNode.
+ *
+ * The function first checks if the provided node is an instance of SgSourceFile or SgGlobal,
+ * and retrieves the corresponding source file name. Then, it collects all modified located nodes
+ * using the collectModifiedLocatedNodes() function and iterates over them to print their
+ * information, including filename, memory address, and class name.
+ *
+ * @param label A string label used for debugging purposes.
+ * @param node The SgNode instance from which to start collecting modified located nodes.
+ *
+ * @return None (void function).
+ *
+ * @warning This function does not perform any error handling on the input parameters. It assumes
+ *          that the provided node is valid and that the label string is properly formatted.
+ *
+ * @pre The input node must be a valid SgNode instance, and the label string must be properly formatted.
+ *
+ * @post The function will print information about the modified located nodes to the console.
+ *
+ * @note This function is primarily used for debugging purposes and may produce verbose output.
+ *
+ * @example
+ *          @code
+ *           // Create a sample SgNode instance (e.g., an SgSourceFile)
+ *           SgNode* node = new SgSourceFile();
+ *
+ *           // Call the reportModifiedLocatedNodes() function with a label and the node instance
+ *           SageInterface::reportModifiedLocatedNodes("Sample Label", node);
+ *          @endcode
+ */
+2025-01-27 20:22:16,908 - INFO - End time: 2025-01-27 20:22:16
+2025-01-27 20:22:16,908 - INFO - Duration: 26.392950534820557

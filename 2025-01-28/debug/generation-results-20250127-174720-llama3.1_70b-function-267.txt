@@ -1,0 +1,103 @@
+2025-01-27 19:37:49,565 - INFO - Start time: 2025-01-27 19:37:49
+2025-01-27 19:37:49,565 - INFO - Generating documents for a function with id : 267
+2025-01-27 19:37:49,565 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgStatement* SageInterface::getEnclosingStatement(SgNode* n) {
+  while (n && !isSgStatement(n)) n = n->get_parent();
+  return isSgStatement(n);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:38:19,489 - INFO - Response from llama3.1:70b for Function 267:
+2025-01-27 19:38:19,489 - INFO - /**
+ * @fn SgStatement* SageInterface::getEnclosingStatement(SgNode* n)
+ *
+ * @brief Retrieves the enclosing statement of a given node in the abstract syntax tree.
+ *
+ * This function traverses up the parent nodes of the input node until it finds a node that represents a statement, 
+ * and returns this statement. If no such statement is found (i.e., if the root node is reached), 
+ * the function returns a null pointer.
+ *
+ * The algorithm used in this implementation simply checks each parent node to see if it is an instance of SgStatement,
+ * which represents statements in the Sage++ abstract syntax tree. This approach has a time complexity of O(h),
+ * where h is the height of the subtree rooted at the input node, since in the worst case we may need to traverse up
+ * to the root node.
+ *
+ * @param n The node for which the enclosing statement is to be retrieved.
+ *
+ * @return A pointer to the SgStatement object representing the enclosing statement of the input node,
+ *         or a null pointer if no such statement exists (which should not happen in a well-formed abstract syntax tree).
+ *
+ * @warning This function does not perform any error checking on its input parameter. 
+ *          It assumes that the input node is valid and part of a well-formed abstract syntax tree.
+ *
+ * @pre The input node must be non-null and part of a well-formed abstract syntax tree.
+ *
+ * @post If a statement node is found, it will be returned; otherwise, a null pointer will be returned.
+ *
+ * @note This function does not modify the abstract syntax tree in any way. It simply traverses the existing tree structure.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Assume we have an SgNode* called my_node that represents a node in the AST.
+ *           SgStatement* enclosing_stmt = SageInterface::getEnclosingStatement(my_node);
+ *           if (enclosing_stmt != NULL) {
+ *             // We found an enclosing statement; do something with it...
+ *           } else {
+ *             // No enclosing statement was found; handle this case as needed...
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:38:19,489 - INFO - End time: 2025-01-27 19:38:19
+2025-01-27 19:38:19,489 - INFO - Duration: 29.924012899398804

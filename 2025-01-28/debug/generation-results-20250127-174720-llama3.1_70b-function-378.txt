@@ -1,0 +1,123 @@
+2025-01-27 20:23:05,513 - INFO - Start time: 2025-01-27 20:23:05
+2025-01-27 20:23:05,514 - INFO - Generating documents for a function with id : 378
+2025-01-27 20:23:05,514 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::translateStatementToUseCppDeclarations( SgStatement* statement, SgScopeStatement*)
+   {
+     std::vector<SgC_PreprocessorDirectiveStatement*> directiveList;
+
+  // Find existing first and last header.
+     AttachedPreprocessingInfoType* comments = statement->getAttachedPreprocessingInfo();
+
+     if (comments != nullptr)
+        {
+          AttachedPreprocessingInfoType::iterator i; // , firsti, lasti;
+          for (i = comments->begin (); i != comments->end(); i++)
+             {
+               if (skipTranslateToUseCppDeclaration(*i) == true)
+                  {
+                 // We are not processing these types of directives into IR nodes (new IR nodes would have to be added and this can be done later if required).
+                  }
+                 else
+                  {
+                    SgC_PreprocessorDirectiveStatement* directive = SgC_PreprocessorDirectiveStatement::createDirective(*i);
+                    ROSE_ASSERT(directive != NULL);
+                    directiveList.push_back(directive);
+                  }
+
+               printf ("directiveList.size() = %zu \n",directiveList.size());
+             }
+        }
+
+     return directiveList;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:23:31,751 - INFO - Response from llama3.1:70b for Function 378:
+2025-01-27 20:23:31,751 - INFO - /**
+ * @fn std::vector<SgC_PreprocessorDirectiveStatement*> SageInterface::translateStatementToUseCppDeclarations(SgStatement* statement, SgScopeStatement*)
+ *
+ * @brief Translates a given statement to use C++ declarations.
+ *
+ * This function takes an input statement and translates it to use C++ declarations. 
+ * It iterates through the attached preprocessing information of the statement, 
+ * creates a directive for each non-skipped preprocessor directive, and returns a list of these directives.
+ *
+ * @param statement The input statement to be translated.
+ * @param scopeStatement The scope statement associated with the input statement.
+ *
+ * @return A vector of SgC_PreprocessorDirectiveStatement pointers representing the translated directives.
+ *
+ * @warning This function assumes that the input statement has attached preprocessing information. 
+ *          If not, an empty vector will be returned.
+ *
+ * @pre The input statement must have attached preprocessing information.
+ *
+ * @post The returned vector contains all non-skipped preprocessor directives from the input statement's attached preprocessing information.
+ *
+ * @note This function does not handle skipped preprocessor directives (i.e., those that are not translated into IR nodes). 
+ *       If such handling is required, additional logic will need to be added.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* statement = ...; // Initialize the input statement
+ *           SgScopeStatement* scopeStatement = ...; // Initialize the associated scope statement
+ *           std::vector<SgC_PreprocessorDirectiveStatement*> directiveList = SageInterface::translateStatementToUseCppDeclarations(statement, scopeStatement);
+ *           for (auto& directive : directiveList) {
+ *             printf("Translated Directive: %s\n", directive->get_prettyPrint().c_str());
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:23:31,752 - INFO - End time: 2025-01-27 20:23:31
+2025-01-27 20:23:31,752 - INFO - Duration: 26.238200426101685

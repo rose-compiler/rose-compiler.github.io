@@ -1,0 +1,149 @@
+2025-01-27 18:30:00,418 - INFO - Start time: 2025-01-27 18:30:00
+2025-01-27 18:30:00,418 - INFO - Generating documents for a function with id : 103
+2025-01-27 18:30:00,418 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool SageInterface::isAssignmentStatement(SgNode* s, SgExpression** lhs/*=NULL*/, SgExpression** rhs/*=NULL*/, bool* readlhs/*=NULL*/)
+{
+  SgExprStatement *n = isSgExprStatement(s);
+  SgExpression *exp = (n != 0)? n->get_expression() : isSgExpression(s);
+  if (exp != 0) {
+    switch (exp->variantT()) {
+      case V_SgPlusAssignOp:
+      case V_SgMinusAssignOp:
+      case V_SgAndAssignOp:
+      case V_SgIorAssignOp:
+      case V_SgMultAssignOp:
+      case V_SgDivAssignOp:
+      case V_SgModAssignOp:
+      case V_SgXorAssignOp:
+      case V_SgAssignOp:
+        {
+          SgBinaryOp* s2 = isSgBinaryOp(exp);
+          if (lhs != 0)
+            *lhs = s2->get_lhs_operand();
+          if (rhs != 0) {
+            SgExpression* init = s2->get_rhs_operand();
+            if ( init->variantT() == V_SgAssignInitializer)
+              init = isSgAssignInitializer(init)->get_operand();
+            *rhs = init;
+          }
+          if (readlhs != 0)
+            *readlhs = (exp->variantT() != V_SgAssignOp);
+          return true;
+        }
+      default:
+         return false;
+    }
+  }
+  return false;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:30:40,655 - INFO - Response from llama3.1:70b for Function 103:
+2025-01-27 18:30:40,655 - INFO - /**
+ * @fn bool SageInterface::isAssignmentStatement(SgNode* s, SgExpression** lhs/*=NULL*/, SgExpression** rhs/*=NULL*/, bool* readlhs/*=NULL*/)
+ *
+ * @brief Checks if a given statement is an assignment statement.
+ *
+ * This function determines whether the provided SgNode represents an
+ * assignment operation. It checks for various types of assignments, including
+ * simple assignments and compound assignments (e.g., +=, -=, *=, /=, %=, etc.).
+ *
+ * @param s The SgNode to be checked for assignment statement.
+ * @param lhs [out] A pointer to store the left-hand side expression of the assignment,
+ *          if it exists and lhs is not NULL.
+ * @param rhs [out] A pointer to store the right-hand side expression of the assignment,
+ *          if it exists and rhs is not NULL.
+ * @param readlhs [out] A boolean flag indicating whether the left-hand side
+ *           was read in the assignment operation, if readlhs is not NULL.
+ *
+ * @return True if the statement is an assignment statement; false otherwise.
+ *
+ * @warning This function assumes that the input SgNode is a valid expression or statement.
+ *          It does not perform any additional error checking on the input node.
+ *
+ * @pre The input SgNode s must be non-NULL and represent a valid expression or statement.
+ *
+ * @post If lhs, rhs, or readlhs are non-NULL, they will contain the corresponding values
+ *       if the function returns true; otherwise, their contents are undefined.
+ *
+ * @note This function uses the ROSE library's SgNode hierarchy to analyze the input node.
+ *       It may not work correctly with nodes that do not conform to this hierarchy.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create a sample assignment statement
+ *           SgAssignOp* assignStmt = new SgAssignOp();
+ *           SgVariableRefExp* lhsVar = new SgVariableRefExp("x");
+ *           SgIntVal* rhsValue = new SgIntVal(5);
+ *           assignStmt->set_lhs_operand(lhsVar);
+ *           assignStmt->set_rhs_operand(rhsValue);
+ *
+ *           // Check if the statement is an assignment
+ *           bool isAssignment = SageInterface::isAssignmentStatement(assignStmt);
+ *           assert(isAssignment == true);
+ *
+ *           // Extract the left-hand side and right-hand side expressions
+ *           SgExpression* lhsExpr;
+ *           SgExpression* rhsExpr;
+ *           bool readLHS;
+ *           SageInterface::isAssignmentStatement(assignStmt, &lhsExpr, &rhsExpr, &readLHS);
+ *
+ *           assert(lhsExpr == lhsVar);
+ *           assert(rhsExpr == rhsValue);
+ *           assert(readLHS == true);
+ *          @endcode
+ */
+2025-01-27 18:30:40,655 - INFO - End time: 2025-01-27 18:30:40
+2025-01-27 18:30:40,655 - INFO - Duration: 40.23670506477356

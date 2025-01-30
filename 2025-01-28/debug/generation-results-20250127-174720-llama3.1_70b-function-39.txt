@@ -1,0 +1,391 @@
+2025-01-27 18:05:47,125 - INFO - Start time: 2025-01-27 18:05:47
+2025-01-27 18:05:47,125 - INFO - Generating documents for a function with id : 39
+2025-01-27 18:05:47,125 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    int
+SageInterface::set_name ( SgInitializedName *initializedNameNode, SgName new_name )
+   {
+  // find the appropriate symbol table, delete the symbol
+  // with the old name and add a symbol with the new name.
+     ROSE_ASSERT(initializedNameNode != NULL);
+
+#define DEBUG_SET_NAME 0
+
+  // SgNode * node = this;
+#if DEBUG_SET_NAME
+     printf ("In SageInterface::set_name(): initializedNameNode = %p name = %s new_name = %s \n",initializedNameNode,initializedNameNode->get_name().str(),new_name.str());
+#endif
+
+#if 0
+  // DQ (12/9/2004): This should likely call the get_scope function (which is more robust than traversing
+  // parents, there is a reason why we are forced to include the scope explicitly on some IR nodes,
+  // see test2004_133.C for details).
+     while((node!=NULL) && ( isSgScopeStatement(node)==NULL))
+          node = node->get_parent();
+
+     ROSE_ASSERT(node!=NULL);
+
+     SgScopeStatement * scope_stmt = isSgScopeStatement(node);
+#else
+     SgScopeStatement *scope_stmt = initializedNameNode->get_scope();
+#endif
+
+  // DQ (2/4/2021): Adding support for enum values (in SgEnumDeclarations).
+     if (isSgEnumDeclaration(initializedNameNode->get_parent()) != NULL)
+        {
+          ROSE_ASSERT(scope_stmt != NULL);
+          printf ("scope_stmt = %p = %s \n",scope_stmt,scope_stmt->class_name().c_str());
+#if 0
+          printf ("Detected isSgEnumDeclaration as parent: exiting as a test in SageInterface::set_name() \n");
+          ROSE_ASSERT(false);
+#endif
+        }
+
+     ROSE_ASSERT(scope_stmt != NULL);
+     ROSE_ASSERT(scope_stmt->get_symbol_table() != NULL);
+     ROSE_ASSERT(scope_stmt->get_symbol_table()->get_table() != NULL);
+
+     SgDeclarationStatement * parent_declaration = initializedNameNode->get_declaration();
+
+     ROSE_ASSERT(parent_declaration != NULL);
+
+  // Find the symbols associated with p_name
+     std::pair<SgSymbolTable::hash_iterator,SgSymbolTable::hash_iterator> pair_it = scope_stmt->get_symbol_table()->get_table()->equal_range(initializedNameNode->get_name());
+
+     SgSymbolTable::hash_iterator found_it = scope_stmt->get_symbol_table()->get_table()->end();
+
+     for (SgSymbolTable::hash_iterator it = pair_it.first; it != pair_it.second; ++it)
+        {
+#if DEBUG_SET_NAME
+          printf ("Looking for symbol in scope = %p = %s \n",scope_stmt,scope_stmt->class_name().c_str());
+          printf (" --- *it = %p = %s \n",(*it).second,(*it).second->class_name().c_str());
+#endif
+          switch(parent_declaration->variantT())
+             {
+               case V_SgFunctionParameterList:
+               case V_SgVariableDeclaration:
+                  {
+                    if (isSgVariableSymbol((*it).second) != NULL)
+                         found_it = it;
+                    break;
+                  }
+
+               case V_SgClassDeclaration:
+                  {
+                    if (isSgClassSymbol((*it).second) != NULL)
+                         found_it = it;
+                    break;
+                  }
+
+               case V_SgFunctionDeclaration:
+                  {
+                    if (isSgFunctionSymbol((*it).second) != NULL)
+                         found_it = it;
+                    break;
+                  }
+
+            // DQ (2/4/2021): Adding support for enum values (in SgEnumDeclarations).
+               case V_SgEnumDeclaration:
+                  {
+                    if (isSgEnumFieldSymbol((*it).second) != NULL)
+                         found_it = it;
+                    break;
+                  }
+
+               default:
+                  {
+                    printf ("Default reached in switch in SageInterface::set_name() \n");
+                  }
+             };
+        }
+
+  // there is no Variable, Class or Function symbol associated with p_name
+     if (found_it == scope_stmt->get_symbol_table()->get_table()->end())
+        {
+          printf ("Warning: There is no Variable, Class, Function, or EnumValue symbol associated with p_name \n");
+          return 0;
+        }
+
+  // DQ (11/12/2018): In general, this can't be tested if we permit it to be transformed.
+     if (statementCanBeTransformed(parent_declaration) == false)
+        {
+          printf ("WARNING: SageInterface::set_name(): This statement can not be transformed because it is part of a header file specific more then once with different include file syntax \n");
+          return 0;
+        }
+       else
+        {
+#if DEBUG_SET_NAME
+          printf ("In SageInterface::set_name(): This statement can be transformed! parent_declaration = %p = %s \n",parent_declaration,get_name(parent_declaration).c_str());
+#endif
+
+#if 0
+       // DQ (11/12/2018): Initial test problem should not permit a transformation!
+          printf ("Exiting as a test! \n");
+          ROSE_ABORT();
+#endif
+        }
+
+     SgSymbol * associated_symbol = (*found_it).second;
+
+  // erase the name from there
+     scope_stmt->get_symbol_table()->get_table()->erase(found_it);
+
+  // insert the new_name in the symbol table
+// CH (4/9/2010): Use boost::unordered instead
+//#ifdef _MSCx_VER
+#if 0
+  // DQ (11/28/2009): Unclear if this code is a problem (testing).
+
+// CH (4/7/2010): It seems that the following code can be compiled under MSVC 9.0
+//#pragma message ("WARNING: this code does not apprear to compile with MSVC.")
+//       printf ("ERROR: this code does not apprear to compile with MSVC. \n");
+//       ROSE_ASSERT(false);
+     found_it = scope_stmt->get_symbol_table()->get_table()->insert(pair<SgName,SgSymbol*> ( new_name,associated_symbol));
+#else
+     found_it = scope_stmt->get_symbol_table()->get_table()->insert(pair<SgName,SgSymbol*> ( new_name,associated_symbol));
+#endif
+  // if insertion failed
+     if (found_it == scope_stmt->get_symbol_table()->get_table()->end())
+        {
+          printf ("Warning: insertion of new symbol failed \n");
+          return 0;
+        }
+
+#if DEBUG_SET_NAME
+  // Set the p_name to the new_name
+     printf ("Reset initializedNameNode->get_name() = %s to new_name = %s \n",initializedNameNode->get_name().str(),new_name.str());
+#endif
+
+  // p_name = new_name;
+     initializedNameNode->set_name(new_name);
+
+  // DQ (11/30/2018): Mark the enclosing statement as modified, so that it will be recognized
+  // in the header file unparsing as being a header file that should be unparsed.
+     SgStatement* enclosingStatement = getEnclosingStatement(initializedNameNode);
+     ROSE_ASSERT(enclosingStatement != NULL);
+     enclosingStatement->set_isModified(true);
+     enclosingStatement->setTransformation();
+
+  // Invalidate the p_iterator, p_no_name and p_name data members in the Symbol table
+
+#if 1
+  // Search the AST for references to this SgInitializedName (SgVarRefExp), check if the symbol matches
+  // (we can do this since we only reused the exisitng symbol), and mark those expressions as modified.
+     class RoseVisitor : public ROSE_VisitTraversal
+        {
+          public:
+               int counter;
+               SgSymbol* symbol;
+
+           //! Required traversal function
+               void visit (SgNode* node)
+                  {
+                    SgVarRefExp*      varRefExp      = isSgVarRefExp(node);
+                    SgVariableSymbol* variableSymbol = isSgVariableSymbol(symbol);
+
+                    ROSE_ASSERT(varRefExp      != NULL);
+                    ROSE_ASSERT(variableSymbol != NULL);
+
+                    if (varRefExp->get_symbol() == variableSymbol)
+                       {
+#if DEBUG_SET_NAME
+                         printf ("In SageInterface::set_name(): Found associated SgVarRefExp varRefExp = %p to symbol associated_symbol = %p \n",varRefExp,variableSymbol);
+#endif
+#if 0
+                         printf ("Exiting as a test! \n");
+                         ROSE_ABORT();
+#endif
+                         varRefExp->set_isModified(true);
+                         varRefExp->setTransformation();
+#if 1
+                      // DQ (5/2/2021): The traversal over the file will identify the nesting of and transformations in outer (enclosing) IR nodes.
+                      // DQ (5/1/2021): I think that we may have to set the physical node id and maybe make it to be output.  This is
+                      // special to the case of using the header file unparsing (any maybe the token-based unparsing with the header
+                      // file unparsing, but I think just the header file unparsing).
+#if 0
+                         printf ("In SageInterface::set_name(): When unparsing header files, we need to set the physical file id to the correct file \n");
+#endif
+                      // DQ (4/23/2021): I think it is a problem that the statement is not marked as a transformation so that we
+                      // know how to handle it with the token-based unparsing.
+                         SgStatement* associatedStatement = getEnclosingStatement(varRefExp);
+                         ROSE_ASSERT(associatedStatement != NULL);
+                         associatedStatement->setTransformation();
+#endif
+#if 0
+                      // DQ (11/13/2018): Mark the statement associated with this SgVarRefExp (see test9 in UnparseHeaders_tests).
+                         SgStatement* associatedStatement = getEnclosingStatement(varRefExp);
+                         ROSE_ASSERT(associatedStatement != NULL);
+                      // associatedStatement->set_isModified(true);
+                      // associatedStatement->set_containsTransformation(true);
+                         associatedStatement->setTransformation();
+#endif
+                       }
+                  }
+
+               RoseVisitor(SgSymbol* symbol_parmeter) : counter(0), symbol(symbol_parmeter)
+                 {
+#if 0
+                   printf ("roseVisitor::visit: counter %4d node = %s \n",counter,symbol_parmeter->class_name().c_str());
+#endif
+                   counter++;
+                 }
+        };
+
+  // RoseVisitor visitor;
+  // visitor.traverseMemoryPool();
+     RoseVisitor t1(associated_symbol);
+     SgVarRefExp::traverseMemoryPoolNodes(t1);
+#endif
+
+#if DEBUG_SET_NAME
+     printf ("Leaving SageInterface::set_name(): initializedNameNode = %p name = %s new_name = %s (return 1) \n",initializedNameNode,initializedNameNode->get_name().str(),new_name.str());
+#endif
+
+  // DQ (4/23/2021): I think that we should be returning zero for no error
+  // and one for an error, this function appears to have this detail reversed.
+     return 1;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:06:37,857 - INFO - Response from llama3.1:70b for Function 39:
+2025-01-27 18:06:37,857 - INFO - /**
+ * @file SageInterface.cpp
+ * @author [Your Name]
+ * @date [Current Date]
+ * @brief This file contains the implementation of the SageInterface class.
+ */
+
+#include "SageInterface.h"
+#include <rose.h>
+
+using namespace std;
+using namespace Rose;
+
+/**
+ * @brief Sets a new name for an SgInitializedName node.
+ *
+ * This function sets a new name for an SgInitializedName node and updates all
+ * associated SgVarRefExp nodes. It also marks the enclosing statement as modified.
+ *
+ * @param initializedNameNode The SgInitializedName node to rename.
+ * @param new_name The new name for the SgInitializedName node.
+ * @return 0 if successful, 1 otherwise.
+ */
+int SageInterface::set_name(SgInitializedName* initializedNameNode, string new_name) {
+    // Check if the input is valid
+    ROSE_ASSERT(initializedNameNode != NULL);
+
+    // Get the associated symbol for the SgInitializedName node
+    SgSymbol* associated_symbol = initializedNameNode->get_symbol();
+    ROSE_ASSERT(associated_symbol != NULL);
+
+#if DEBUG_SET_NAME
+    printf("In SageInterface::set_name(): initializedNameNode = %p name = %s new_name = %s \n", initializedNameNode, initializedNameNode->get_name().str(), new_name.str());
+#endif
+
+    // Set the new name for the SgInitializedName node
+    initializedNameNode->set_name(new_name);
+
+    // Mark the enclosing statement as modified
+    SgStatement* enclosingStatement = getEnclosingStatement(initializedNameNode);
+    ROSE_ASSERT(enclosingStatement != NULL);
+    enclosingStatement->set_isModified(true);
+    enclosingStatement->setTransformation();
+
+#if 1
+    // Search the AST for references to this SgInitializedName (SgVarRefExp), check if the symbol matches, and mark those expressions as modified.
+    class RoseVisitor : public ROSE_VisitTraversal {
+        public:
+            int counter;
+            SgSymbol* symbol;
+
+            //! Required traversal function
+            void visit(SgNode* node) {
+                SgVarRefExp* varRefExp = isSgVarRefExp(node);
+                SgVariableSymbol* variableSymbol = isSgVariableSymbol(symbol);
+
+                ROSE_ASSERT(varRefExp != NULL);
+                ROSE_ASSERT(variableSymbol != NULL);
+
+                if (varRefExp->get_symbol() == variableSymbol) {
+#if DEBUG_SET_NAME
+                    printf("In SageInterface::set_name(): Found associated SgVarRefExp varRefExp = %p to symbol associated_symbol = %p \n", varRefExp, variableSymbol);
+#endif
+
+                    // Mark the SgVarRefExp node as modified
+                    varRefExp->set_isModified(true);
+                    varRefExp->setTransformation();
+
+#if 1
+                    // DQ (5/2/2021): The traversal over the file will identify the nesting of and transformations in outer (enclosing) IR nodes.
+                    SgStatement* associatedStatement = getEnclosingStatement(varRefExp);
+                    ROSE_ASSERT(associatedStatement != NULL);
+
+                    // Mark the enclosing statement as a transformation
+                    associatedStatement->setTransformation();
+#endif
+                }
+            }
+
+            RoseVisitor(SgSymbol* symbol_parameter) : counter(0), symbol(symbol_parameter) {
+#if 0
+                printf("roseVisitor::visit: counter %4d node = %s \n", counter, symbol_parameter->class_name().c_str());
+#endif
+                counter++;
+            }
+    };
+
+    // Traverse the AST to find and mark associated SgVarRef
+2025-01-27 18:06:37,857 - INFO - End time: 2025-01-27 18:06:37
+2025-01-27 18:06:37,857 - INFO - Duration: 50.732131481170654

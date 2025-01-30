@@ -1,0 +1,108 @@
+2025-01-27 20:55:39,191 - INFO - Start time: 2025-01-27 20:55:39
+2025-01-27 20:55:39,191 - INFO - Generating documents for a function with id : 456
+2025-01-27 20:55:39,191 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    string SageInterface::getTempDirectory(SgProject *project) {
+    jstring temp_directory = (jstring) Rose::Frontend::Java::Ecj::currentEnvironment -> CallObjectMethod(::currentJavaTraversalClass, Rose::Frontend::Java::Ecj::getTempDirectoryMethod);
+
+    const char *utf8 = Rose::Frontend::Java::Ecj::currentEnvironment -> GetStringUTFChars(temp_directory, NULL);
+    ROSE_ASSERT(utf8);
+    string directory_name = utf8;
+    Rose::Frontend::Java::Ecj::currentEnvironment -> ReleaseStringUTFChars(temp_directory, utf8);
+
+    list<string> sourcepath = project -> get_Java_sourcepath();
+    sourcepath.push_back(directory_name); // push it in the back because it should have lower priority
+    project -> set_Java_sourcepath(sourcepath);
+
+    return directory_name;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:56:02,021 - INFO - Response from llama3.1:70b for Function 456:
+2025-01-27 20:56:02,021 - INFO - /**
+ * @fn string SageInterface::getTempDirectory(SgProject *project)
+ *
+ * @brief Retrieves a temporary directory for a given project.
+ *
+ * This function obtains a temporary directory from the Java environment and
+ * returns it as a string. The retrieved directory is also appended to the
+ * project's Java source path with lower priority.
+ *
+ * @param project A pointer to an SgProject object representing the project for which the temporary directory is needed.
+ *                 Must be non-null.
+ *
+ * @return The name of the temporary directory as a string.
+ *
+ * @warning The returned directory may not exist or may have been deleted after this function returns. It's the caller's responsibility to check its existence before use.
+ *
+ * @pre The project pointer must be valid and non-null.
+ *
+ * @post The retrieved directory is appended to the project's Java source path, but its existence is not guaranteed.
+ *
+ * @note This function relies on the Java environment being properly set up and configured. If the Java environment is not available or is malfunctioning, this function may return an empty string or throw an exception.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgProject* project = ...; // assume a valid project object
+ *           SageInterface sage;
+ *           string tempDir = sage.getTempDirectory(project);
+ *           if (!tempDir.empty()) {
+ *               cout << "Temporary directory: " << tempDir << endl;
+ *           } else {
+ *               cerr << "Failed to retrieve temporary directory." << endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:56:02,021 - INFO - End time: 2025-01-27 20:56:02
+2025-01-27 20:56:02,021 - INFO - Duration: 22.830578804016113

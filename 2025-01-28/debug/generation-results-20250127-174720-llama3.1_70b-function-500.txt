@@ -1,0 +1,137 @@
+2025-01-27 21:08:05,596 - INFO - Start time: 2025-01-27 21:08:05
+2025-01-27 21:08:05,596 - INFO - Generating documents for a function with id : 500
+2025-01-27 21:08:05,596 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    // Walks over the call hierarchy and collects all member function in a vector.
+    vector<SgMemberFunctionDeclaration*> GetAllMemberFunctionsInClassHierarchy(SgType *type){
+#if DEBUG_QUADRATIC_BEHAVIOR
+      printf ("In GetAllMemberFunctionsInClassHierarchy(): type = %p = %s \n",type,type->class_name().c_str());
+#endif
+        vector<SgMemberFunctionDeclaration*> allMemberFunctions;
+        
+        SgClassType * sgClassType = isSgClassType(type);
+        if (!sgClassType) {
+            ROSE_ASSERT(0 && "Requires a complete class type");
+        }
+        
+        SgClassDeclaration* decl = isSgClassDeclaration(sgClassType->get_declaration());
+        ROSE_ASSERT(decl && "Requires a complete class type");
+        SgClassDeclaration * definingDeclaration = isSgClassDeclaration(decl->get_definingDeclaration ());
+        ROSE_ASSERT(definingDeclaration && "Requires a complete class type");
+        SgClassDefinition* classDef = definingDeclaration->get_definition();
+        ROSE_ASSERT(classDef && "Requires a complete class type");
+        
+        //Find all superclasses
+        ClassHierarchyWrapper classHierarchy(getProject());
+        const ClassHierarchyWrapper::ClassDefSet& ancestors =  classHierarchy.getAncestorClasses(classDef);
+        set<SgClassDefinition*> inclusiveAncestors(ancestors.begin(), ancestors.end());
+        inclusiveAncestors.insert(classDef);
+        
+        //Find all member functions
+        foreach(SgClassDefinition* c, inclusiveAncestors) {
+            foreach(SgDeclarationStatement* memberDeclaration, c->get_members()) {
+                if (SgMemberFunctionDeclaration* memberFunction = isSgMemberFunctionDeclaration(memberDeclaration)) {
+                    allMemberFunctions.push_back(memberFunction);
+                }
+            }
+        }
+        
+        return allMemberFunctions;
+    }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 21:08:37,745 - INFO - Response from llama3.1:70b for Function 500:
+2025-01-27 21:08:37,745 - INFO - /**
+ * @fn vector<SgMemberFunctionDeclaration*> GetAllMemberFunctionsInClassHierarchy(SgType *type)
+ *
+ * @brief Walks over the call hierarchy and collects all member functions in a vector.
+ *
+ * This function traverses the class hierarchy of a given type and accumulates
+ * all member functions into a vector. It uses the ClassHierarchyWrapper to 
+ * determine the ancestor classes and then iterates through their members to find
+ * the member functions.
+ *
+ * @param type The SgType representing the class for which to collect member functions.
+ *             Must be a complete class type, i.e., not an incomplete or forward-declared type.
+ *
+ * @return A vector of SgMemberFunctionDeclaration pointers containing all member functions 
+ *         found in the class hierarchy of the input type. If no member functions are found, 
+ *         an empty vector is returned.
+ *
+ * @warning This function assumes that the input type is a complete class type and does not
+ *          perform any checks for incomplete or forward-declared types. It also assumes that
+ *          the ClassHierarchyWrapper has been properly initialized before calling this function.
+ *
+ * @pre The input type must be a valid SgType pointer, i.e., not null or invalid.
+ *      The ClassHierarchyWrapper must have been properly initialized before calling this function.
+ *
+ * @post The returned vector contains all member functions found in the class hierarchy of the input type.
+ *       If no member functions are found, an empty vector is returned.
+ *
+ * @note This function uses the ROSE_ASSERT macro to assert that the input type is a complete
+ *       class type and that the ClassHierarchyWrapper has been properly initialized. If these
+ *       assertions fail, the program will terminate with an error message.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+            SgProject* project = ...; // Assume a valid SgProject pointer
+            SgType* type = ...; // Assume a valid SgType pointer representing a class
+            vector<SgMemberFunctionDeclaration*> memberFunctions = GetAllMemberFunctionsInClassHierarchy(type);
+            foreach (SgMemberFunctionDeclaration* func, memberFunctions) {
+                printf("Found member function: %s\n", func->get_name().c_str());
+            }
+ *          @endcode
+ */
+2025-01-27 21:08:37,745 - INFO - End time: 2025-01-27 21:08:37
+2025-01-27 21:08:37,745 - INFO - Duration: 32.148818016052246

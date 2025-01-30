@@ -1,0 +1,134 @@
+2025-01-27 20:43:47,286 - INFO - Start time: 2025-01-27 20:43:47
+2025-01-27 20:43:47,286 - INFO - Generating documents for a function with id : 425
+2025-01-27 20:43:47,287 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::getDependentDeclarations ( SgStatement* stmt )
+   {
+  // This function returns a list of the dependent declaration for any input statement.
+  // Dependent declaration are functions called, types referenced in variable declarations, etc.
+#if 0
+     printf ("\n\n********************************************************** \n");
+     printf (" Inside of getDependentDeclarations(stmt = %p = %s) \n",stmt,stmt->class_name().c_str());
+     printf ("********************************************************** \n");
+
+     CollectDependentDeclarationsTraversal t;
+     t.traverse(stmt,preorder);
+
+     return t.declarationList;
+#else
+     // share a single implementation for recursive lookup for dependent declaration
+   visitedDeclMap.clear();
+   vector<SgDeclarationStatement*> declarationList;
+   vector<SgSymbol*> symbolList;
+   getDependentDeclarations(stmt, declarationList, symbolList);
+   declarationList = sortSgNodeListBasedOnAppearanceOrderInSource(declarationList);
+#if 0
+     printf ("\n\n ********************************************************** \n");
+     cout<<"Found dependent decl: count="<<declarationList.size()<<endl;
+     for ( vector<SgDeclarationStatement*>::const_iterator iter = declarationList.begin();
+          iter != declarationList.end(); iter++)
+     {
+       cout<<"\t"<<(*iter)->class_name()<<" at line "<<(*iter)->get_file_info()->get_line()<<endl;
+       if ((*iter)->variantT()== V_SgFunctionDeclaration)
+         cout<<"func name is:"<<isSgFunctionDeclaration(*iter)->get_name().getString()<<endl;
+       //<<(*iter)->unparseToString()<<endl;  // unparseToString() won't work on outlined function
+     }
+     printf ("\n ********************************************************** \n");
+#endif
+
+   return declarationList;
+
+#endif
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:44:11,505 - INFO - Response from llama3.1:70b for Function 425:
+2025-01-27 20:44:11,505 - INFO - /**
+ * @fn SageInterface::getDependentDeclarations(SgStatement* stmt)
+ *
+ * @brief Returns a list of dependent declarations for a given statement.
+ *
+ * This function computes the list of dependent declarations for any input statement.
+ * Dependent declarations include functions called, types referenced in variable declarations, etc.
+ *
+ * The function uses a recursive algorithm to traverse the abstract syntax tree (AST) and collect
+ * the dependent declarations. It also sorts the collected declarations based on their appearance order
+ * in the source code.
+ *
+ * @param stmt The input statement for which the dependent declarations are to be calculated.
+ *             Must be a valid SgStatement pointer.
+ *
+ * @return A list of dependent declarations (SgDeclarationStatement pointers) for the input statement.
+ *
+ * @warning If the input statement is null or invalid, the function may produce undefined behavior.
+ *
+ * @pre The input statement must be a valid SgStatement pointer.
+ *
+ * @post The returned list of dependent declarations is sorted based on their appearance order in the source code.
+ *
+ * @note This function uses a recursive algorithm and may cause stack overflow for very large input statements.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* stmt = ...; // assume stmt is initialized with a valid statement
+ *           SageInterface sage;
+ *           vector<SgDeclarationStatement*> dependentDecls = sage.getDependentDeclarations(stmt);
+ *           for (vector<SgDeclarationStatement*>::const_iterator iter = dependentDecls.begin();
+ *                iter != dependentDecls.end(); ++iter) {
+ *             cout << "Dependent declaration: " << (*iter)->class_name() << endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:44:11,505 - INFO - End time: 2025-01-27 20:44:11
+2025-01-27 20:44:11,505 - INFO - Duration: 24.21895170211792

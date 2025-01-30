@@ -1,0 +1,160 @@
+2025-01-27 20:08:35,488 - INFO - Start time: 2025-01-27 20:08:35
+2025-01-27 20:08:35,488 - INFO - Generating documents for a function with id : 339
+2025-01-27 20:08:35,488 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    template <class actualFunction>
+void setParameterList(actualFunction *func,SgFunctionParameterList *paralist) {
+
+  // TODO consider the difference between C++ and Fortran
+  // fixup the scope of arguments,no symbols for nondefining function declaration's arguments
+
+  // DQ (11/25/2011): templated function so that we can handle both
+  // SgFunctionDeclaration and SgTemplateFunctionDeclaration (and their associated member
+  // function derived classes).
+
+     ROSE_ASSERT(func != NULL);
+     ROSE_ASSERT(paralist != NULL);
+
+#if 0
+  // At this point we don't have cerr and endl defined, so comment this code out.
+  // Warn to users if a paralist is being shared
+     if (paralist->get_parent() !=NULL)
+        {
+          cerr << "Waring! Setting a used SgFunctionParameterList to function: "
+               << (func->get_name()).getString()<<endl
+               << " Sharing parameter lists can corrupt symbol tables!"<<endl
+               << " Please use deepCopy() to get an exclusive parameter list for each function declaration!"<<endl;
+       // ROSE_ASSERT(false);
+        }
+#endif
+
+  // Liao,2/5/2008  constructor of SgFunctionDeclaration will automatically generate SgFunctionParameterList, so be cautious when set new paralist!!
+     if (func->get_parameterList() != NULL)
+        {
+          if (func->get_parameterList() != paralist)
+             {
+               delete func->get_parameterList();
+             }
+        }
+
+     func->set_parameterList(paralist);
+     paralist->set_parent(func);
+
+     if (SageInterface::is_Ada_language())
+     {
+       // Ada stores variable declarations in the function parameter scope (for functions)
+       //   and in a discriminantScope (for discriminated declarations).
+       //   ==> just make sure that these are set.
+      SgInitializedNamePtrList& args = paralist->get_args();
+       for (SgInitializedNamePtrList::iterator i = args.begin(); i != args.end(); ++i)
+       {
+         ROSE_ASSERT(*i && isSgVariableDeclaration((*i)->get_declptr()));
+       }
+     }
+     else
+     {
+        // DQ (5/15/2012): Need to set the declptr in each SgInitializedName IR node.
+        // This is needed to support the AST Copy mechanism (at least). The files: test2005_150.C,
+        // test2012_81.C and testcode2012_82.C demonstrate this problem.
+      SgInitializedNamePtrList & args = paralist->get_args();
+       for (SgInitializedNamePtrList::iterator i = args.begin(); i != args.end(); i++)
+        {
+          (*i)->set_declptr(func);
+        }
+     }
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:09:01,292 - INFO - Response from llama3.1:70b for Function 339:
+2025-01-27 20:09:01,292 - INFO - /**
+ * @fn template <class actualFunction> void setParameterList(actualFunction *func,SgFunctionParameterList *paralist)
+ *
+ * @brief Sets a new parameter list for the given function.
+ *
+ * This function sets a new parameter list for the given function. It first checks if
+ * the provided function and parameter list are not NULL, then it updates the function's
+ * parameter list with the new one, taking care of any existing parameter lists that may be
+ * in use. Additionally, it handles language-specific requirements such as setting the declptr
+ * for each SgInitializedName IR node in the parameter list.
+ *
+ * @param func The function to which a new parameter list is to be set.
+ *             Must not be NULL.
+ *
+ * @param paralist The new parameter list to be set for the given function.
+ *                 Must not be NULL.
+ *
+ * @return None
+ *
+ * @warning Sharing parameter lists can corrupt symbol tables. If a shared parameter list
+ *          is detected, a warning message will be displayed and the program may terminate.
+ *
+ * @pre The provided function and parameter list must not be NULL.
+ *
+ * @post The function's parameter list has been updated with the new one.
+ *
+ * @note This function handles language-specific requirements such as setting the declptr
+ *       for each SgInitializedName IR node in the parameter list.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create a sample function and parameter list
+ *           SgFunctionDeclaration* func = new SgFunctionDeclaration();
+ *           SgFunctionParameterList* paralist = new SgFunctionParameterList();
+ *
+ *           // Set the new parameter list for the given function
+ *           setParameterList(func, paralist);
+ *          @endcode
+ */
+2025-01-27 20:09:01,292 - INFO - End time: 2025-01-27 20:09:01
+2025-01-27 20:09:01,292 - INFO - Duration: 25.80455207824707

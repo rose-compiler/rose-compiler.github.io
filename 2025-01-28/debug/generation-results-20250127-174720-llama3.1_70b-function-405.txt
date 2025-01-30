@@ -1,0 +1,115 @@
+2025-01-27 20:35:54,434 - INFO - Start time: 2025-01-27 20:35:54
+2025-01-27 20:35:54,434 - INFO - Generating documents for a function with id : 405
+2025-01-27 20:35:54,434 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::removeLabeledGotos(SgNode* top) {
+   Rose_STL_Container<SgNode*> gotos = NodeQuery::querySubTree(top,
+  V_SgGotoStatement);
+   map<SgLabelStatement*, SgLabelStatement*> labelsToReplace;   for
+  (size_t i = 0; i < gotos.size(); ++i) {
+     SgGotoStatement* gs = isSgGotoStatement(gotos[i]);
+     SgBasicBlock* gsParent = isSgBasicBlock(gs->get_parent());
+     if (!gsParent) continue;
+     SgStatementPtrList& bbStatements = gsParent->get_statements();
+     size_t j = std::find(bbStatements.begin(), bbStatements.end(), gs)
+  - bbStatements.begin();
+     ROSE_ASSERT (j != bbStatements.size());
+     if (j == 0) continue;
+     if (isSgLabelStatement(bbStatements[j - 1])) {
+       labelsToReplace[isSgLabelStatement(bbStatements[j - 1])] =
+  gs->get_label();
+     }
+   }
+   for (size_t i = 0; i < gotos.size(); ++i) {
+     SgGotoStatement* gs = isSgGotoStatement(gotos[i]);
+     SgLabelStatement* oldLabel = gs->get_label();
+     while (labelsToReplace.find(oldLabel) != labelsToReplace.end()) {
+       oldLabel = labelsToReplace[oldLabel];
+     }
+     gs->set_label(oldLabel);
+   }
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:36:09,590 - INFO - Response from llama3.1:70b for Function 405:
+2025-01-27 20:36:09,590 - INFO - /**
+ * @fn void SageInterface::removeLabeledGotos(SgNode* top)
+ *
+ * @brief Removes labeled gotos from an Abstract Syntax Tree (AST).
+ *
+ * This function traverses the AST rooted at the given node and replaces
+ * labeled goto statements with their corresponding labels, effectively
+ * removing them. It uses a recursive algorithm to navigate the tree.
+ *
+ * @param top The root node of the AST to process.
+ *
+ * @return None
+ *
+ * @warning This function modifies the input AST in-place.
+ *
+ * @preconditions The input node is not null and represents a valid AST.
+ *
+ * @postconditions The labeled goto statements have been replaced with their corresponding labels.
+ *
+ * @note This function assumes that the input AST has already been parsed and validated.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* astRoot = ...; // assume a valid AST root node
+ *           SageInterface sage;
+ *           sage.removeLabeledGotos(astRoot);
+ *          @endcode
+ */
+2025-01-27 20:36:09,590 - INFO - End time: 2025-01-27 20:36:09
+2025-01-27 20:36:09,590 - INFO - Duration: 15.15661358833313

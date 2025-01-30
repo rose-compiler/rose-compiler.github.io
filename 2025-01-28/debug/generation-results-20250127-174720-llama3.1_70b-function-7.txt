@@ -1,0 +1,472 @@
+2025-01-27 17:51:22,472 - INFO - Start time: 2025-01-27 17:51:22
+2025-01-27 17:51:22,472 - INFO - Generating documents for a function with id : 7
+2025-01-27 17:51:22,472 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    string
+SageInterface::get_name ( const SgSupport* node )
+   {
+  // This function is useful for debugging
+  // This is the most general case of a function to return a name for an IR node.
+     ROSE_ASSERT(node != NULL);
+
+     string name = "undefined_name";
+
+     ROSE_ASSERT(node != NULL);
+
+     switch (node->variantT())
+        {
+          case V_SgInitializedName:
+             {
+               const SgInitializedName* initializedName = isSgInitializedName(node);
+               if (initializedName != NULL)
+                  {
+                    name = initializedName->get_name().str();
+                  }
+               break;
+             }
+#if 1
+       // DQ (3/17/2006): Implemented case for pragma declaration (forgot this case)
+          case V_SgPragma:
+             {
+               name = "_pragma_string_";
+               const SgPragma* pragma = isSgPragma(node);
+               ROSE_ASSERT(pragma != NULL);
+               name += pragma->get_pragma();
+               break;
+             }
+#endif
+
+       // DQ (5/31/2007): Implemented case for SgProject
+          case V_SgProject:
+             {
+               name = "_project_";
+               break;
+             }
+
+       // DQ (5/31/2007): Implemented case for SgFile
+       // case V_SgFile:
+          case V_SgSourceFile:
+#ifdef ROSE_ENABLE_BINARY_ANALYSIS
+          case V_SgBinaryComposite:
+#endif
+             {
+               name = "_file_";
+
+            // DQ (3/1/2009): Added support to include the file name.
+               const SgFile* file = isSgFile(node);
+               ROSE_ASSERT(file != NULL);
+
+               name += file->getFileName();
+               break;
+             }
+
+       // DQ (5/31/2007): Implemented case for SgSymbolTable
+          case V_SgSymbolTable:
+             {
+               name = "_symbol_table_";
+               break;
+             }
+
+       // DQ (5/31/2007): Implemented case for SgStorageModifier
+          case V_SgStorageModifier:
+             {
+               name = "_storage_modifier_";
+               break;
+             }
+
+
+       // DQ (5/31/2007): Implemented case for Sg_File_Info
+          case V_Sg_File_Info:
+             {
+               name = "_file_info_";
+               break;
+             }
+
+       // DQ (8/7/2007): Implemented case for SgTemplateArgument
+          case V_SgTemplateArgument:
+             {
+               name = "_template_argument_";
+               const SgTemplateArgument* templateArgument = isSgTemplateArgument(node);
+               ROSE_ASSERT(templateArgument != NULL);
+               switch(templateArgument->get_argumentType())
+                  {
+                    case SgTemplateArgument::type_argument:
+                       {
+                         SgType* t = templateArgument->get_type();
+                         ROSE_ASSERT(t != NULL);
+                         name += get_name(t);
+                         break;
+                       }
+
+                    case SgTemplateArgument::nontype_argument:
+                       {
+                         SgExpression* t = templateArgument->get_expression();
+
+                      // DQ (8/11/2013): Adding support for including an initializedName instead of an expression (for template parameters used as expressions).
+                      // ROSE_ASSERT(t != NULL);
+                      // name += get_name(t);
+                         if (t != NULL)
+                            {
+                              ROSE_ASSERT(templateArgument->get_initializedName() == NULL);
+                              name += get_name(t);
+                            }
+                           else
+                            {
+                              ROSE_ASSERT(t == NULL);
+                              SgInitializedName* initializedName = templateArgument->get_initializedName();
+                              ROSE_ASSERT(initializedName != NULL);
+
+                              name += get_name(initializedName);
+                            }
+                         break;
+                       }
+
+                    case SgTemplateArgument::template_template_argument:
+                       {
+                      // SgTemplateDeclaration* t = templateArgument->get_templateDeclaration();
+                         SgDeclarationStatement* t = templateArgument->get_templateDeclaration();
+                         ROSE_ASSERT(t != NULL);
+                         name += get_name(t);
+                         break;
+                       }
+
+                    default:
+                       {
+                         printf ("Error: default case reached in switch on templateArgument->get_argumentType() \n");
+                         ROSE_ABORT();
+                       }
+                  }
+               break;
+             }
+
+
+       // DQ (8/7/2007): Implemented case for SgTemplateArgument
+          case V_SgTypeModifier:
+             {
+               const SgTypeModifier* typeModifier = isSgTypeModifier(node);
+               ROSE_ASSERT(typeModifier != NULL);
+               name = "_type_modifier_" + typeModifier->displayString();
+               break;
+             }
+
+       // DQ (11/19/2007): Implemented case for SgNameGroup
+          case V_SgNameGroup:
+             {
+               const SgNameGroup* nameGroup = isSgNameGroup(node);
+               ROSE_ASSERT(nameGroup != NULL);
+               name = "_name_group_" + nameGroup->get_group_name();
+               break;
+             }
+
+       // DQ (11/20/2007): Implemented case for Fortran data statement support
+          case V_SgDataStatementGroup:
+             {
+               const SgDataStatementGroup* dataGroup = isSgDataStatementGroup(node);
+               ROSE_ASSERT(dataGroup != NULL);
+               name = "_data_statement_group_";
+               break;
+             }
+
+       // DQ (11/20/2007): Implemented case for Fortran data statement support
+          case V_SgDataStatementObject:
+             {
+               const SgDataStatementObject* dataObject = isSgDataStatementObject(node);
+               ROSE_ASSERT(dataObject != NULL);
+               name = "_data_statement_object_";
+               break;
+             }
+
+       // DQ (11/20/2007): Implemented case for Fortran data statement support
+          case V_SgDataStatementValue:
+             {
+               const SgDataStatementValue* dataValue = isSgDataStatementValue(node);
+               ROSE_ASSERT(dataValue != NULL);
+               name = "_data_statement_value_";
+               break;
+             }
+
+       // DQ (11/19/2007): Implemented case for SgCommonBlock
+          case V_SgCommonBlockObject:
+             {
+               const SgCommonBlockObject* commonBlockObject = isSgCommonBlockObject(node);
+               ROSE_ASSERT(commonBlockObject != NULL);
+               name = "_common_block_object_" + commonBlockObject->get_block_name();
+               break;
+             }
+
+       // DQ (12/23/2007): Added support for repeat_specification
+          case V_SgFormatItem:
+             {
+               const SgFormatItem* formatItem = isSgFormatItem(node);
+               ROSE_ASSERT(formatItem != NULL);
+               name = "_format_item_";
+               break;
+             }
+
+       // DQ (12/23/2007): Added support for repeat_specification
+          case V_SgFormatItemList:
+             {
+               const SgFormatItemList* formatItemList = isSgFormatItemList(node);
+               ROSE_ASSERT(formatItemList != NULL);
+               name = "_format_item_list_";
+               break;
+             }
+
+       // DQ (12/23/2007): Added support for repeat_specification
+          case V_SgRenamePair:
+             {
+               const SgRenamePair* renamePair = isSgRenamePair(node);
+               ROSE_ASSERT(renamePair != NULL);
+               name = renamePair->get_local_name() + "__" + renamePair->get_use_name() + "_rename_pair_";
+               break;
+             }
+
+       // DQ (12/2/2010): Implemented case for SgName
+          case V_SgName:
+             {
+               const SgName* name_node = isSgName(node);
+               ROSE_ASSERT(name_node != NULL);
+               name = "_name_" + name_node->getString();
+               break;
+             }
+
+       // DQ (8/8/2013): Implemented case for SgTemplateParameter
+          case V_SgTemplateParameter:
+             {
+               const SgTemplateParameter* template_parameter_node = isSgTemplateParameter(node);
+               ROSE_ASSERT(template_parameter_node != NULL);
+               name = "_template_parameter_";
+
+               switch(template_parameter_node->get_parameterType())
+                  {
+                    case SgTemplateParameter::type_parameter:
+                       {
+                         name += "type_parameter_";
+                         break;
+                       }
+
+                    case SgTemplateParameter::nontype_parameter:
+                       {
+                         name += "nontype_parameter_";
+#if 1
+                         name += template_parameter_node->unparseToString();
+#else
+                         if (template_parameter_node->get_expression() != NULL)
+                            {
+                              name += template_parameter_node->get_expression()->unparseToString();
+                            }
+                           else
+                            {
+                              ROSE_ASSERT(template_parameter_node->get_initializedName() != NULL);
+
+                           // DQ (8/8/2013): This does not handle the case of "template <void (foo::*M)()> void test() {}"
+                           // since what is unparsed is: "_template_parameter_nontype_parameter_M"
+                           // instead of a string to represent what is in "void (foo::*M)()"
+                           // and differentiate it from: "int foo::*M" in: "template <void (foo::*M)()> void test() {}"
+                              name += template_parameter_node->get_initializedName()->unparseToString();
+                            }
+#endif
+                         break;
+                       }
+
+                    case SgTemplateParameter::template_parameter:
+                       {
+                         name += "template_parameter_";
+                         break;
+                       }
+
+                    default:
+                       {
+                         printf ("Error: default reached \n");
+                         ROSE_ABORT();
+                       }
+                  }
+               break;
+             }
+
+       // DQ (1/21/2019): Implemented case for SgBaseClass
+          case V_SgBaseClass:
+             {
+               const SgBaseClass* base_class_node = isSgBaseClass(node);
+               ROSE_ASSERT(base_class_node != NULL);
+               ROSE_ASSERT(base_class_node->get_base_class() != NULL);
+
+            // Add the access modifier to the output.
+               string access = "";
+               const SgBaseClassModifier* baseClassModifier = base_class_node->get_baseClassModifier();
+               ROSE_ASSERT(baseClassModifier != NULL);
+               access = baseClassModifier->displayString();
+
+               name = "_base_class_" + access + "_" + get_name(base_class_node->get_base_class());
+               break;
+             }
+
+          default:
+             {
+               printf ("Default reached in switch for SgSupport IR node = %s \n",node->class_name().c_str());
+               name = "default name";
+            // ROSE_ASSERT(false);
+               break;
+             }
+        }
+
+     return name;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 17:52:13,203 - INFO - Response from llama3.1:70b for Function 7:
+2025-01-27 17:52:13,203 - INFO - /**
+ * @file
+ * @author [Your Name]
+ * @date [Current Date]
+ * @brief This file contains a set of functions for generating names for various types of nodes in the Sage III compiler infrastructure.
+ */
+
+#include "rose.h"
+
+using namespace Rose;
+
+/**
+ * @brief Generates a name for an SgNode based on its type and contents.
+ *
+ * This function takes an SgNode as input and returns a string that represents the node's name. The name is generated based on the node's type and its contents.
+ *
+ * @param node The SgNode for which to generate a name.
+ * @return A string representing the node's name.
+ */
+string get_name(const SgNode* node)
+{
+    ROSE_ASSERT(node != NULL);
+
+    string name = "";
+
+    switch (node->variantT())
+    {
+        // DQ (12/23/2007): Implemented case for SgCommonBlock
+        case V_SgCommonBlockObject:
+        {
+            const SgCommonBlockObject* commonBlockObject = isSgCommonBlockObject(node);
+            ROSE_ASSERT(commonBlockObject != NULL);
+            name = "_common_block_object_" + commonBlockObject->get_block_name();
+            break;
+        }
+
+        // DQ (12/23/2007): Added support for repeat_specification
+        case V_SgFormatItem:
+        {
+            const SgFormatItem* formatItem = isSgFormatItem(node);
+            ROSE_ASSERT(formatItem != NULL);
+            name = "_format_item_";
+            break;
+        }
+
+        // DQ (12/23/2007): Added support for repeat_specification
+        case V_SgFormatItemList:
+        {
+            const SgFormatItemList* formatItemList = isSgFormatItemList(node);
+            ROSE_ASSERT(formatItemList != NULL);
+            name = "_format_item_list_";
+            break;
+        }
+
+        // DQ (12/23/2007): Added support for repeat_specification
+        case V_SgRenamePair:
+        {
+            const SgRenamePair* renamePair = isSgRenamePair(node);
+            ROSE_ASSERT(renamePair != NULL);
+            name = renamePair->get_local_name() + "__" + renamePair->get_use_name() + "_rename_pair_";
+            break;
+        }
+
+        // DQ (12/2/2010): Implemented case for SgName
+        case V_SgName:
+        {
+            const SgName* name_node = isSgName(node);
+            ROSE_ASSERT(name_node != NULL);
+            name = "_name_" + name_node->getString();
+            break;
+        }
+
+        // DQ (8/8/2013): Implemented case for SgTemplateParameter
+        case V_SgTemplateParameter:
+        {
+            const SgTemplateParameter* template_parameter_node = isSgTemplateParameter(node);
+            ROSE_ASSERT(template_parameter_node != NULL);
+            name = "_template_parameter_";
+
+            switch (template_parameter_node->get_parameterType())
+            {
+                case SgTemplateParameter::type_parameter:
+                {
+                    name += "type_parameter_";
+                    break;
+                }
+
+                case SgTemplateParameter::nontype_parameter:
+                {
+                    name += "nontype_parameter_";
+#if 1
+                    name += template_parameter_node->unparseToString();
+#else
+                    if (template_parameter_node->get_expression() != NULL)
+                    {
+                        name += template_parameter_node->get_expression()->unparseToString();
+                    }
+                    else
+                    {
+                        ROSE_ASSERT(template_parameter_node->get_initializedName() != NULL);
+
+                        // DQ (8/
+2025-01-27 17:52:13,203 - INFO - End time: 2025-01-27 17:52:13
+2025-01-27 17:52:13,203 - INFO - Duration: 50.73085880279541

@@ -1,0 +1,188 @@
+2025-01-27 20:42:49,235 - INFO - Start time: 2025-01-27 20:42:49
+2025-01-27 20:42:49,235 - INFO - Generating documents for a function with id : 423
+2025-01-27 20:42:49,235 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgBasicBlock * SageInterface::makeSingleStatementBodyToBlock(SgStatement* singleStmt)
+{
+  ROSE_ASSERT (singleStmt != NULL); // not NULL
+  ROSE_ASSERT (isSgBasicBlock(singleStmt) == NULL); //not a block
+  ROSE_ASSERT (isBodyStatement(singleStmt) == true); // is a body statement
+
+  SgBasicBlock* rt = NULL;
+
+
+
+  SgStatement* s = singleStmt;
+  SgLocatedNode* p = isSgLocatedNode(s->get_parent());
+  ROSE_ASSERT(p);
+  switch (p->variantT())
+  {
+    case V_SgForStatement:
+      {
+        if (isSgForStatement(p)->get_loop_body() == s)
+          rt = ensureBasicBlockAsBodyOfFor(isSgForStatement(p));
+        break;
+      }
+    case V_SgUpcForAllStatement: // PP
+      {
+        SgUpcForAllStatement& upcforall = *isSgUpcForAllStatement(p);
+
+        if (upcforall.get_loop_body() == s)
+          rt = ensureBasicBlockAsBodyOfUpcForAll(&upcforall);
+        break;
+      }
+    case V_SgWhileStmt:
+      {
+        if (isSgWhileStmt(p)->get_body() == s)
+          rt = ensureBasicBlockAsBodyOfWhile(isSgWhileStmt(p));
+        break;
+      }
+    case V_SgDoWhileStmt:
+      {
+        if (isSgDoWhileStmt(p)->get_body() == s)
+          rt = ensureBasicBlockAsBodyOfDoWhile(isSgDoWhileStmt(p));
+        break;
+      }
+    case V_SgSwitchStatement:
+      {
+        if (isSgSwitchStatement(p)->get_body() == s)
+          rt = ensureBasicBlockAsBodyOfSwitch(isSgSwitchStatement(p));
+        break;
+      }
+    case V_SgCaseOptionStmt:
+      {
+          if (isSgCaseOptionStmt(p)->get_body() == s)
+            rt = ensureBasicBlockAsBodyOfCaseOption(isSgCaseOptionStmt(p));
+          break;
+      }
+    case V_SgDefaultOptionStmt:
+      {
+          if (isSgDefaultOptionStmt(p)->get_body() == s)
+            rt = ensureBasicBlockAsBodyOfDefaultOption(isSgDefaultOptionStmt(p));
+          break;
+      }
+    case V_SgCatchOptionStmt:
+      {
+        if (isSgCatchOptionStmt(p)->get_body() == s)
+          rt = ensureBasicBlockAsBodyOfCatch(isSgCatchOptionStmt(p));
+        break;
+      }
+    case V_SgIfStmt:
+      {
+        if (isSgIfStmt(p)->get_true_body() == s)
+          rt = ensureBasicBlockAsTrueBodyOfIf(isSgIfStmt(p));
+        else if (isSgIfStmt(p)->get_false_body() == s)
+          rt = ensureBasicBlockAsFalseBodyOfIf(isSgIfStmt(p));
+        break;
+      }
+    default:
+      {
+        if (isSgOmpBodyStatement(p))
+        {
+          rt = ensureBasicBlockAsBodyOfOmpBodyStmt(isSgOmpBodyStatement(p));
+        }
+        break;
+      }
+  }
+  ROSE_ASSERT (rt != NULL); // the input statement has been confirmed to be a body statement, it must have being processed to be a basic block at this point.
+  return rt;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:43:21,744 - INFO - Response from llama3.1:70b for Function 423:
+2025-01-27 20:43:21,744 - INFO - /**
+ * @fn SgBasicBlock* SageInterface::makeSingleStatementBodyToBlock(SgStatement* singleStmt)
+ *
+ * @brief Converts a single statement into a basic block to serve as the body of its parent statement.
+ *
+ * This function takes a pointer to an SgStatement and returns a pointer to an SgBasicBlock.
+ * It ensures that the input statement is not NULL, is not already a basic block,
+ * and is a body statement. The function then navigates through different types
+ * of parent statements (e.g., for loops, while loops, if-else statements) to create
+ * or retrieve the corresponding basic block serving as their bodies.
+ *
+ * @param singleStmt A pointer to an SgStatement that needs to be converted into a basic block.
+ *                   Must not be NULL and must be a body statement.
+ *
+ * @return A pointer to an SgBasicBlock representing the body of the parent statement
+ *         containing the input statement. Returns NULL if the conversion fails.
+ *
+ * @warning The function assumes that the input statement has already been confirmed
+ *          to be a valid body statement and its parent statement is properly formed.
+ *          Failure to meet these preconditions may result in undefined behavior.
+ *
+ * @pre singleStmt must not be NULL, must not be a basic block itself,
+ *      and must be confirmed as a body statement before calling this function.
+ *
+ * @post If successful, the returned SgBasicBlock is guaranteed to represent
+ *       the body of the parent statement containing the input statement.
+ *
+ * @note The implementation relies on a series of assertions at the beginning
+ *       of the function to ensure that the preconditions are met. It also uses
+ *       a switch-case block to handle different types of parent statements,
+ *       each requiring distinct handling for creating or retrieving their bodies.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* stmt = ...; // obtain an SgStatement somehow
+ *           SgBasicBlock* block = makeSingleStatementBodyToBlock(stmt);
+ *           if (block != NULL) {
+ *             // process the basic block as needed
+ *           } else {
+ *             // handle conversion failure
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:43:21,744 - INFO - End time: 2025-01-27 20:43:21
+2025-01-27 20:43:21,744 - INFO - Duration: 32.50883388519287

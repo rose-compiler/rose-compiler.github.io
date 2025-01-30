@@ -1,0 +1,193 @@
+2025-01-27 19:46:52,965 - INFO - Start time: 2025-01-27 19:46:52
+2025-01-27 19:46:52,965 - INFO - Generating documents for a function with id : 288
+2025-01-27 19:46:52,965 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgStatement* SageInterface::getFirstStatement(SgScopeStatement *scope, bool includingCompilerGenerated/*=false*/)
+   {
+  // DQ (2/17/2013): This function appears to be a performance problem (so a pass was made to
+  // use lower complexity operations that are equivalent in funcionality for this context).
+
+     ROSE_ASSERT(scope);
+     SgStatement* stmt = NULL;
+
+     if (scope->containsOnlyDeclarations())
+        {
+       // DQ (2/17/2013): Fixed declList to be a reference instead of a copy.
+       // DQ Note: Do we really need to make a copy of the list just to return a pointer to the first entry?
+       // SgDeclarationStatementPtrList declList = scope->getDeclarationList();
+          SgDeclarationStatementPtrList & declList = scope->getDeclarationList();
+          if (includingCompilerGenerated)
+             {
+            // DQ (2/17/2013): Fixed evaluation of empty list use SgDeclarationStatementPtrList::empty() member function for faster performance.
+            // DQ Note: (declList.empty() == false) is a much faster test  O(1) than (declList.size() > 0), which is O(n).
+               if (declList.empty() == false)
+                  {
+                    stmt = isSgStatement(declList.front());
+                  }
+             }
+            else
+             {
+            // skip compiler-generated declarations
+               SgDeclarationStatementPtrList::iterator i=declList.begin();
+               while (i != declList.end())
+                  {
+                 // isCompilerGenerated(),isOutputInCodeGeneration(),etc. are not good enough,
+                 // some content from headers included are not marked as compiler-generated
+                 //
+                 // cout<<(*i)->unparseToString()<<endl;
+                 // ((*i)->get_file_info())->display("debug.......");
+                    Sg_File_Info * fileInfo = (*i)->get_file_info();
+                 // include transformation-generated  statements, but not the hidden ones
+                 // Note: isOutputInCodeGeneration is not default to true for original statements from user code
+                    if ((fileInfo->isSameFile(scope->get_file_info())) || (fileInfo->isTransformation() && fileInfo->isOutputInCodeGeneration()))
+                       {
+                         stmt = *i;
+                         break;
+                       }
+                      else
+                       {
+                         i++;
+                         continue;
+                       }
+                  }
+             }
+        }
+       else
+        {
+       // DQ Note: Do we really need to make a copy of the list just to return a pointer to the first entry?
+          SgStatementPtrList & stmtList = scope->getStatementList();
+          if (includingCompilerGenerated)
+             {
+            // DQ (2/17/2013): Fixed evaluation of empty list use SgStatementPtrList::empty() member function for faster performance.
+            // DQ Note: (stmtList.empty() == false) is a much faster test  O(1) than (stmtList.size() > 0), which is O(n).
+               if (stmtList.empty() == false)
+                  {
+                    stmt = stmtList.front();
+                  }
+             }
+            else
+             {
+            // skip compiler-generated declarations
+               SgStatementPtrList::iterator i = stmtList.begin();
+               while (i!=stmtList.end())
+                  {
+                 // isCompilerGenerated(),isOutputInCodeGeneration(),etc. are not good enough,
+                 // some content from headers included are not marked as compiler-generated
+                 //
+                 // cout<<(*i)->unparseToString()<<endl;
+                 // ((*i)->get_file_info())->display("debug.......");
+                    Sg_File_Info * fileInfo = (*i)->get_file_info();
+                 // include transformation-generated  statements, but not the hidden ones
+                 // Note: isOutputInCodeGeneration is not default to true for original statements from user code
+                    if ( (fileInfo->isSameFile(scope->get_file_info())) || (fileInfo->isTransformation()&& fileInfo->isOutputInCodeGeneration()))
+                       {
+                         stmt=*i;
+                         break;
+                       }
+                      else
+                       {
+                         i++;
+                         continue;
+                       }
+                  }
+             }
+        }
+
+     return stmt;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:47:25,976 - INFO - Response from llama3.1:70b for Function 288:
+2025-01-27 19:47:25,976 - INFO - /**
+ * @fn SgStatement* SageInterface::getFirstStatement(SgScopeStatement *scope, bool includingCompilerGenerated/*=false*/)
+ *
+ * @brief Retrieves the first statement within a given scope.
+ *
+ * This function searches for the first statement in the provided scope and returns it. 
+ * It considers both declaration statements and non-declaration statements, depending on the value of the includingCompilerGenerated parameter.
+ *
+ * If the scope contains only declarations, the function iterates through them to find the first one that meets the criteria.
+ * Otherwise, it searches through the list of statements in the scope to find the first valid statement.
+ *
+ * The search process skips compiler-generated statements unless explicitly instructed to include them.
+ *
+ * @param scope The SgScopeStatement object representing the scope within which to search for the first statement.
+ *              Must be a non-null pointer to a valid SgScopeStatement object.
+ * @param includingCompilerGenerated A boolean flag indicating whether to consider compiler-generated statements in the search. 
+ *                                    Default value is false, meaning that such statements are skipped by default.
+ *
+ * @return The first statement found within the given scope according to the specified criteria, or NULL if no valid statement is found.
+ *
+ * @warning This function may return NULL if the input scope does not contain any valid statements.
+ *
+ * @pre The provided SgScopeStatement object must be non-null and represent a valid scope.
+ *
+ * @post The returned statement pointer will either point to a valid SgStatement object or be NULL, depending on whether a valid statement was found in the scope.
+ *
+ * @note This function has been optimized for performance by minimizing unnecessary copies of lists and using more efficient search algorithms.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create an SgScopeStatement object representing the desired scope
+ *           SgScopeStatement* myScope = ...;
+ *           
+ *           // Call getFirstStatement() with the default parameter value (false)
+ *           SgStatement* firstStmt = SageInterface::getFirstStatement(myScope);
+ *
+ *           // Alternatively, call getFirstStatement() with includingCompilerGenerated set to true
+ *           SgStatement* firstStmtWithCG = SageInterface::getFirstStatement(myScope, true);
+ *          @endcode
+ */
+2025-01-27 19:47:25,976 - INFO - End time: 2025-01-27 19:47:25
+2025-01-27 19:47:25,976 - INFO - Duration: 33.011638879776

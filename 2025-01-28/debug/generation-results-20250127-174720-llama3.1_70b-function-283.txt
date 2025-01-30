@@ -1,0 +1,151 @@
+2025-01-27 19:45:03,992 - INFO - Start time: 2025-01-27 19:45:03
+2025-01-27 19:45:03,993 - INFO - Generating documents for a function with id : 283
+2025-01-27 19:45:03,993 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    std::set<SgNode*> SageInterface::getFrontendSpecificNodes() {
+  struct FrontendSpecificTraversal : public ROSE_VisitTraversal {
+    std::set<SgNode*> specific;
+    std::set<SgNode*> non_specific;
+
+    static void recursive_collect( SgNode* node , std::set<SgNode *> & collection ) {
+      // Stop on sinks and loops
+      if (node == NULL || !collection.insert(node).second) return;
+
+      std::vector<std::pair<SgNode*, std::string> > data_members = node->returnDataMemberPointers();
+      for (std::vector<std::pair<SgNode*, std::string> >::iterator i = data_members.begin(); i != data_members.end(); ++i) {
+        recursive_collect(i->first, collection);
+      }
+    }
+
+    void visit (SgNode* n) {
+      Sg_File_Info * fileInfo = n->get_file_info();
+
+      if (fileInfo != NULL) {
+        if (fileInfo->isFrontendSpecific()) {
+          specific.insert(n);
+          recursive_collect(n, specific);
+        } else {
+          non_specific.insert(n);
+          recursive_collect(n, non_specific);
+        }
+      } else {
+        fileInfo = isSg_File_Info(n);
+        if (fileInfo != NULL) {
+          if (fileInfo->isFrontendSpecific()) {
+            specific.insert(n);
+          } else {
+            non_specific.insert(n);
+          }
+        }
+      }
+    }
+
+    std::set<SgNode*> apply() {
+      traverseMemoryPool();
+
+      std::set<SgNode*> result;
+
+      std::set_difference(
+        specific.begin(), specific.end(),
+        non_specific.begin(), non_specific.end(),
+        std::insert_iterator<set<SgNode*> >(result, result.begin())
+      );
+
+      return result;
+    }
+  };
+
+  FrontendSpecificTraversal fst;
+  return fst.apply();
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:45:27,842 - INFO - Response from llama3.1:70b for Function 283:
+2025-01-27 19:45:27,843 - INFO - /**
+ * @fn std::set<SgNode*> SageInterface::getFrontendSpecificNodes()
+ *
+ * @brief Retrieves a set of frontend-specific nodes from the memory pool.
+ *
+ * This function traverses the memory pool to identify frontend-specific nodes
+ * and returns them as a set. It uses a recursive traversal algorithm to collect
+ * all relevant nodes.
+ *
+ * The traversal process involves visiting each node in the memory pool, checking
+ * if it is frontend-specific or not, and collecting the specific nodes while ignoring
+ * non-specific ones. The function also handles cases where a node's frontend specificity
+ * cannot be determined directly from its file information.
+ *
+ * @param None
+ *
+ * @return A set of SgNode pointers representing the frontend-specific nodes in the memory pool.
+ *
+ * @warning This function does not modify the original memory pool or any of its contents.
+ *
+ * @pre The memory pool must have been initialized and populated with nodes before calling this function.
+ *
+ * @post The returned set of nodes will contain only frontend-specific nodes, excluding non-specific ones.
+ *
+ * @note The traversal algorithm used in this function has a time complexity of O(n), where n is the number of nodes in the memory pool.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SageInterface sage;
+ *           std::set<SgNode*> specificNodes = sage.getFrontendSpecificNodes();
+ *           for (std::set<SgNode*>::iterator i = specificNodes.begin(); i != specificNodes.end(); ++i) {
+ *             // Process the frontend-specific node here
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:45:27,843 - INFO - End time: 2025-01-27 19:45:27
+2025-01-27 19:45:27,843 - INFO - Duration: 23.850276708602905

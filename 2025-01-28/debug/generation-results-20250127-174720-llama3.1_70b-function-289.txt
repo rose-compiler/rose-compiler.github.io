@@ -1,0 +1,155 @@
+2025-01-27 19:47:25,976 - INFO - Start time: 2025-01-27 19:47:25
+2025-01-27 19:47:25,977 - INFO - Generating documents for a function with id : 289
+2025-01-27 19:47:25,977 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgFunctionDeclaration* SageInterface::findFirstDefiningFunctionDecl(SgScopeStatement* scope)
+  {
+    ROSE_ASSERT(scope);
+    SgFunctionDeclaration* result = NULL;
+    if (scope->containsOnlyDeclarations())
+    {
+      SgDeclarationStatementPtrList declList = scope->getDeclarationList();
+      SgDeclarationStatementPtrList::iterator i=declList.begin();
+      while (i!=declList.end())
+      {
+        Sg_File_Info * fileInfo = (*i)->get_file_info();
+
+       if ((fileInfo->isSameFile(scope->get_file_info()))||
+          (fileInfo->isTransformation()&& fileInfo->isOutputInCodeGeneration())
+        )
+        {
+          SgFunctionDeclaration* func = isSgFunctionDeclaration(*i);
+          if (func)
+          {
+            if (func->get_definingDeclaration ()==func)
+            {
+            //cout<<"debug, first defining func decl is:"<<(*i)->unparseToString()<<endl;
+            result=func;
+            break;
+            }
+          }
+        }
+        i++;
+      }//end while
+    } else
+    {
+      SgStatementPtrList stmtList = scope->getStatementList();
+      SgStatementPtrList::iterator i=stmtList.begin();
+      while (i!=stmtList.end())
+      {
+        Sg_File_Info * fileInfo = (*i)->get_file_info();
+        if ( (fileInfo->isSameFile(scope->get_file_info()))||
+             (fileInfo->isTransformation()&& fileInfo->isOutputInCodeGeneration())
+            )
+         {
+          SgFunctionDeclaration* func = isSgFunctionDeclaration(*i);
+          if (func)
+          {
+            if (func->get_definingDeclaration ()==func)
+            {
+            //cout<<"debug, first defining func decl is:"<<(*i)->unparseToString()<<endl;
+            result=func;
+            break;
+            }// if defining
+          } // if func
+         }// if fileInof
+        i++;
+      }//while
+    } // end if
+    return result;
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:47:53,100 - INFO - Response from llama3.1:70b for Function 289:
+2025-01-27 19:47:53,100 - INFO - /**
+ * @fn SgFunctionDeclaration* SageInterface::findFirstDefiningFunctionDecl(SgScopeStatement* scope)
+ *
+ * @brief Finds the first defining function declaration within a given scope.
+ *
+ * This function traverses the declarations or statements within a scope to find
+ * the first defining function declaration. A defining function declaration is one
+ * where the declaration itself defines the function, rather than just declaring it.
+ *
+ * The search is limited to declarations or statements that are in the same file as
+ * the scope, or are part of a transformation and have output in code generation.
+ *
+ * @param scope The scope within which to search for the defining function declaration.
+ *              Must not be NULL.
+ *
+ * @return The first defining function declaration found within the scope, or NULL if none is found.
+ *
+ * @warning This function assumes that the input scope is valid and has been properly initialized.
+ *
+ * @pre The input scope must not be NULL.
+ *
+ * @post The returned function declaration is guaranteed to be a defining declaration,
+ *       but may be NULL if no such declaration was found within the scope.
+ *
+ * @note This function uses a recursive approach to traverse the declarations or statements
+ *       within the scope. It also relies on the Sg_File_Info class to determine whether
+ *       a declaration or statement is in the same file as the scope, or is part of a transformation.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgScopeStatement* scope = ...; // obtain a valid scope
+ *           SgFunctionDeclaration* funcDecl = SageInterface::findFirstDefiningFunctionDecl(scope);
+ *           if (funcDecl != NULL) {
+ *             cout << "Found defining function declaration: " << funcDecl->unparseToString() << endl;
+ *           } else {
+ *             cout << "No defining function declaration found within the scope." << endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:47:53,100 - INFO - End time: 2025-01-27 19:47:53
+2025-01-27 19:47:53,100 - INFO - Duration: 27.12361192703247

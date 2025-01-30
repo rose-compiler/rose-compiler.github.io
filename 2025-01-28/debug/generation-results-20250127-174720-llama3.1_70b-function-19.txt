@@ -1,0 +1,143 @@
+2025-01-27 17:56:09,968 - INFO - Start time: 2025-01-27 17:56:09
+2025-01-27 17:56:09,968 - INFO - Generating documents for a function with id : 19
+2025-01-27 17:56:09,968 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::setSourcePositionAsTransformation(SgNode *node)
+   {
+  // DQ (5/1/2012): Newer function to support specification of IR nodes being a part of a transformation.
+
+  // DQ (1/24/2009): I think this should be renamed to be "setSourcePositionAsTransformation(SgNode *node)"
+  // The logic should be make more independent of if (locatedNode->get_startOfConstruct() == NULL)
+  // Since that make understanding where the function is applied too complex.
+  // If (locatedNode->get_startOfConstruct() != NULL), then we should just make that Sg_File_Info as
+  // a transforamtion directly, this function misses that step.
+
+     ROSE_ASSERT(node != NULL);
+
+  // DQ (10/12/2012): Commented out since we are past AST regression tests passing and now trying to get this work checked in.
+//     printf ("In SageInterface::setSourcePositionAsTransformation() for node = %p = %s (make this an error while debugging AST construction) \n",node,node->class_name().c_str());
+  // ROSE_ASSERT(false);
+
+     SgLocatedNode*     locatedNode = isSgLocatedNode(node);
+     SgExpression*      expression  = isSgExpression(node);
+  // SgInitializedName* initName    = isSgInitializedName(node);
+     SgPragma*          pragma      = isSgPragma(node); // missed this one!! Liao, 1/30/2008
+     SgGlobal*          global      = isSgGlobal(node); // SgGlobal should have NULL endOfConstruct()
+
+#if 0
+     SgVariableDefinition * v_d = isSgVariableDefinition(node);
+     if (v_d )
+       printf ("Debug, Found a variable definition: %p\n", v_d);
+#endif
+
+     if (locatedNode != NULL)
+        {
+          locatedNode->set_startOfConstruct(Sg_File_Info::generateDefaultFileInfoForTransformationNode());
+          locatedNode->get_startOfConstruct()->set_parent(locatedNode);
+
+          if (global==NULL)
+             {
+               locatedNode->set_endOfConstruct(Sg_File_Info::generateDefaultFileInfoForTransformationNode());
+               locatedNode->get_endOfConstruct  ()->set_parent(locatedNode);
+             }
+
+       // Only SgExpression IR nodes have a 3rd source position data structure.
+          if (expression!=NULL)
+             {
+               expression->set_operatorPosition(Sg_File_Info::generateDefaultFileInfoForTransformationNode());
+               expression->get_operatorPosition()->set_parent(expression);
+             }
+        }
+       else // special non-located node with file info
+        {
+          if ( (pragma != NULL) && (pragma->get_startOfConstruct() == NULL) )
+             {
+               pragma->set_startOfConstruct(Sg_File_Info::generateDefaultFileInfoForTransformationNode());
+               pragma->get_startOfConstruct()->set_parent(pragma);
+             }
+        }
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 17:56:29,940 - INFO - Response from llama3.1:70b for Function 19:
+2025-01-27 17:56:29,940 - INFO - /**
+ * @fn void SageInterface::setSourcePositionAsTransformation(SgNode* node)
+ *
+ * @brief Sets source position of a given SgNode as transformation.
+ *
+ * This function sets the source position of a given SgNode to represent it as a part of a transformation.
+ * It handles different types of nodes such as SgLocatedNode, SgExpression, and SgPragma, setting their startOfConstruct,
+ * endOfConstruct, and operatorPosition accordingly. If the node is not located, it sets its startOfConstruct if applicable.
+ *
+ * @param node The SgNode for which the source position is to be set as transformation.
+ *              Must not be NULL.
+ *
+ * @return None
+ *
+ * @warning This function assumes that the input node is valid and does not perform any checks on it.
+ *
+ * @pre The input node must not be NULL.
+ *
+ * @post The source position of the input node is set to represent it as a part of a transformation.
+ *
+ * @note This function generates default file info for transformation nodes using Sg_File_Info::generateDefaultFileInfoForTransformationNode().
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* node = ...; // obtain an SgNode instance
+ *           SageInterface::setSourcePositionAsTransformation(node);
+ *          @endcode
+ */
+2025-01-27 17:56:29,940 - INFO - End time: 2025-01-27 17:56:29
+2025-01-27 17:56:29,940 - INFO - Duration: 19.972590923309326

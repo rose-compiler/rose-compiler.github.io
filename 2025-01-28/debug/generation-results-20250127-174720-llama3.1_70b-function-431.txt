@@ -1,0 +1,116 @@
+2025-01-27 20:46:24,541 - INFO - Start time: 2025-01-27 20:46:24
+2025-01-27 20:46:24,541 - INFO - Generating documents for a function with id : 431
+2025-01-27 20:46:24,541 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool
+SageInterface::hasTemplateSyntax( const SgName & name )
+   {
+  // DQ (6/7/2012): This refactors the test for template instantiation syntax in names used for classes, member functions, and functions
+     bool usingTemplateSyntax = false;
+     string nameString = name.getString();
+
+  // DQ (6/7/2012): We need to avoid the identification of the "operator<()" as valid template syntax.
+     usingTemplateSyntax = (nameString.find('<') != string::npos) && (nameString.find('>') != string::npos);
+
+  // DQ (5/10/2016): Debugging case of C++11 using the Intel v16 compiler and it's associated mutex header file.
+  // See Cxx11_tests/test2016_32.C for an example that demonstrates this problem.
+     if (nameString == "<unnamed>")
+        {
+          printf ("In SageInterface::hasTemplateSyntax(): Identified case of name == <unnamed> \n");
+
+          usingTemplateSyntax = false;
+        }
+
+  // return (name.getString().find('<') == string::npos);
+     return usingTemplateSyntax;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:46:46,523 - INFO - Response from llama3.1:70b for Function 431:
+2025-01-27 20:46:46,523 - INFO - /**
+ * @fn bool SageInterface::hasTemplateSyntax(const SgName & name)
+ *
+ * @brief Checks if a given name contains template syntax.
+ *
+ * This function determines whether a given SgName object represents a name with
+ * template syntax. It checks for the presence of '<' and '>' characters in the
+ * string representation of the name, which are indicative of template syntax in C++.
+ *
+ * @param name The SgName object to be checked for template syntax.
+ *
+ * @return True if the given name contains template syntax, false otherwise.
+ *
+ * @note This function is designed to avoid misidentifying "operator<()" as valid
+ *       template syntax. It also handles a special case where the name string is "<unnamed>".
+ *
+ * @warning The implementation of this function may not cover all possible cases of
+ *          template syntax in C++ names, and may need to be updated for future versions
+ *          of the language.
+ *
+ * @pre The input SgName object must be valid and properly initialized.
+ *
+ * @post The return value indicates whether the given name contains template syntax.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgName name("myTemplateClass");
+ *           if (SageInterface::hasTemplateSyntax(name)) {
+ *             printf("The name %s contains template syntax.\n", name.getString().c_str());
+ *           } else {
+ *             printf("The name %s does not contain template syntax.\n", name.getString().c_str());
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:46:46,523 - INFO - End time: 2025-01-27 20:46:46
+2025-01-27 20:46:46,523 - INFO - Duration: 21.982200622558594

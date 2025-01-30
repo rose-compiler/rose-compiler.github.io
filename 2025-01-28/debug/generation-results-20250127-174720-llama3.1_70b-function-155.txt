@@ -1,0 +1,256 @@
+2025-01-27 18:50:47,111 - INFO - Start time: 2025-01-27 18:50:47
+2025-01-27 18:50:47,111 - INFO - Generating documents for a function with id : 155
+2025-01-27 18:50:47,111 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::movePreprocessingInfo (SgStatement* stmt_src,  SgStatement* stmt_dst, PreprocessingInfo::RelativePositionType src_position/* =PreprocessingInfo::undef */,
+                                      PreprocessingInfo::RelativePositionType dst_position/* =PreprocessingInfo::undef */, bool usePrepend /*= false */)
+   {
+     ROSE_ASSERT(stmt_src != NULL);
+     ROSE_ASSERT(stmt_dst != NULL);
+     AttachedPreprocessingInfoType* infoList = stmt_src->getAttachedPreprocessingInfo();
+
+     if (infoList == NULL)
+        {
+#if 0
+          printf ("In SageInterface::movePreprocessingInfo(): infoList == NULL: exiting movePreprocessingInfo() \n");
+#endif
+          return;
+        }
+
+     AttachedPreprocessingInfoType* infoToRemoveList = new AttachedPreprocessingInfoType();
+
+#if 0
+     printf ("In SageInterface::movePreprocessingInfo(): \n");
+     printf ("   --- stmt_src = %p = %s src_position = %d \n",stmt_src,stmt_src->class_name().c_str(),src_position);
+     SgDeclarationStatement* src_declarationStatement = isSgDeclarationStatement(stmt_src);
+     if (src_declarationStatement != NULL)
+        {
+          printf ("src_declarationStatement->get_firstNondefiningDeclaration() = %p \n",src_declarationStatement->get_firstNondefiningDeclaration());
+          printf ("src_declarationStatement->get_definingDeclaration()         = %p \n",src_declarationStatement->get_definingDeclaration());
+        }
+     printf ("   --- stmt_dst = %p = %s dst_position = %d \n",stmt_dst,stmt_dst->class_name().c_str(),dst_position);
+     SgDeclarationStatement* dst_declarationStatement = isSgDeclarationStatement(stmt_dst);
+     if (dst_declarationStatement != NULL)
+        {
+          printf ("dst_declarationStatement->get_firstNondefiningDeclaration() = %p \n",dst_declarationStatement->get_firstNondefiningDeclaration());
+          printf ("dst_declarationStatement->get_definingDeclaration()         = %p \n",dst_declarationStatement->get_definingDeclaration());
+        }
+     printf ("   --- src_position                    = %s \n",PreprocessingInfo::relativePositionName(src_position).c_str());
+     printf ("   --- dst_position                    = %s \n",PreprocessingInfo::relativePositionName(dst_position).c_str());
+     printf ("   --- usePrepend                      = %s \n",usePrepend ? "true" : "false");
+
+     printf ("   --- infoList                        = %p \n",infoList);
+     printf ("   --- infoToRemoveList                = %p \n",infoToRemoveList);
+
+     AttachedPreprocessingInfoType* dst_infoList = stmt_dst->getAttachedPreprocessingInfo();
+     printf ("   --- dst_infoList                    = %p \n",dst_infoList);
+#endif
+#if 0
+     printf ("****************************************************************** \n");
+     printf ("In SageInterface::movePreprocessingInfo(): Attached comments and CPP directives: stmt_src \n");
+     SageInterface::printOutComments (stmt_src);
+     printf ("In SageInterface::movePreprocessingInfo(): Attached comments and CPP directives: stmt_dst \n");
+     SageInterface::printOutComments (stmt_dst);
+     printf ("****************************************************************** \n");
+#endif
+
+  // DQ (11/22/2020): These can't be the same list else we will have a case of iterator invalidation.
+  // This is a bug in the support for building a new prototype from a defining function declaration
+  // and caused this problem. This assertion will prevent this sort of error from happening again.
+     ROSE_ASSERT(infoList == NULL || stmt_src->getAttachedPreprocessingInfo() != stmt_dst->getAttachedPreprocessingInfo());
+
+
+#if 0
+     printf ("   --- infoList->size()                = %zu \n",infoList->size());
+     printf ("   --- infoToRemoveList->size()        = %zu \n",infoToRemoveList->size());
+#endif
+
+#if 0
+     int counter = 0;
+
+     for (Rose_STL_Container<PreprocessingInfo*>::iterator i = (*infoList).begin(); i != (*infoList).end(); i++)
+        {
+       // DQ (11/19/2020): Added assertion.
+          ROSE_ASSERT(*i != NULL);
+
+       // DQ (11/19/2020): Why do we have a dynamic cast here.
+       // PreprocessingInfo * info = dynamic_cast<PreprocessingInfo*> (*i);
+          PreprocessingInfo * info = *i;
+          ROSE_ASSERT(info != NULL);
+
+       // printf ("counter = %d \n",counter);
+          printf ("counter = %d Processing PreprocessingInfo = %s \n",counter,info->getString().c_str());
+          counter++;
+        }
+
+     counter = 0;
+#endif
+
+     PreprocessingInfo* prevItem = NULL;
+
+     for (Rose_STL_Container<PreprocessingInfo*>::iterator i = (*infoList).begin(); i != (*infoList).end(); i++)
+        {
+          ROSE_ASSERT(*i != NULL);
+
+          PreprocessingInfo * info = *i;
+          ROSE_ASSERT(info != NULL);
+
+          if (   // match enum values in http://rosecompiler.org/ROSE_HTML_Reference/classPreprocessingInfo.html
+               (info->getTypeOfDirective()==PreprocessingInfo::C_StyleComment)||
+               (info->getTypeOfDirective()==PreprocessingInfo::CplusplusStyleComment)||
+               (info->getTypeOfDirective()==PreprocessingInfo::FortranStyleComment)||
+               (info->getTypeOfDirective()==PreprocessingInfo::F90StyleComment)||
+               (info->getTypeOfDirective()==PreprocessingInfo::CpreprocessorIncludeDeclaration )||
+               (info->getTypeOfDirective()==PreprocessingInfo::CpreprocessorIncludeNextDeclaration )||
+               (info->getTypeOfDirective()==PreprocessingInfo::CpreprocessorDefineDeclaration )||
+               (info->getTypeOfDirective()==PreprocessingInfo::CpreprocessorUndefDeclaration)||
+               (info->getTypeOfDirective()==PreprocessingInfo::CpreprocessorIfdefDeclaration )||
+               (info->getTypeOfDirective()==PreprocessingInfo::CpreprocessorIfndefDeclaration )||
+               (info->getTypeOfDirective()==PreprocessingInfo::CpreprocessorIfDeclaration )||
+               (info->getTypeOfDirective()==PreprocessingInfo::CpreprocessorDeadIfDeclaration )||
+               (info->getTypeOfDirective()==PreprocessingInfo::CpreprocessorElseDeclaration )||
+               (info->getTypeOfDirective()==PreprocessingInfo::CpreprocessorElifDeclaration )||
+               (info->getTypeOfDirective()==PreprocessingInfo::CpreprocessorEndifDeclaration ) ||
+               (info->getTypeOfDirective()==PreprocessingInfo::CpreprocessorEnd_ifDeclaration ) ||
+               (info->getTypeOfDirective()==PreprocessingInfo::CpreprocessorLineDeclaration) ||
+               (info->getTypeOfDirective()==PreprocessingInfo::CpreprocessorErrorDeclaration) ||
+               (info->getTypeOfDirective()==PreprocessingInfo::CpreprocessorWarningDeclaration) ||
+            // DQ (12/28/2020): Added support for C linkage specifications.
+               (info->getTypeOfDirective()==PreprocessingInfo::ClinkageSpecificationStart) ||
+               (info->getTypeOfDirective()==PreprocessingInfo::ClinkageSpecificationEnd)
+             )
+             {
+            // move all source preprocessing info if the desired source type is not specified or matching
+            // a specified desired source type
+               if ( src_position == PreprocessingInfo::undef || info->getRelativePosition() == src_position)
+                  {
+                    if (usePrepend == true)
+                       {
+                      // Liao (1/27/2015):  modification to fix order of CPP directives when a list of them are moved.
+                         if (prevItem == NULL)
+                            {
+                           // addToAttachedPreprocessingInfo() is poorly designed, the last parameter is used
+                           // to indicate appending or prepending by reusing the type of relative position.
+                           // this is very confusing for users
+                              stmt_dst->addToAttachedPreprocessingInfo(info,PreprocessingInfo::before);
+                            }
+                           else // there is a previous item, insert after it
+                            {
+                              stmt_dst->insertToAttachedPreprocessingInfo(info, prevItem);
+                            }
+                         prevItem = info;
+                       }
+                      else
+                       {
+                         stmt_dst->addToAttachedPreprocessingInfo(info,PreprocessingInfo::after);
+                       }
+                 // DQ (1/15/2015): Added support to mark as transformations so that the token-based unparsing can know to NOT use the leading and trailing token stream for whitespace.
+                    info->setAsTransformation();
+
+                 // DQ (10/13/2015): This is a problem for the token-based unparsing since we don't want to have this
+                 // set_containsTransformationToSurroundingWhitespace() function cause the isModified flag to be set.
+                 // So we have to detect it being set and reset it as needed.  An alternative would be to have a
+                 // non-ROSETTA generate function that didn't have the isModified flag set for the seter access function.
+                 // Note that the inputmoveDeclarationToInnermostScope_test2015_123.C file demonstrates this problem.
+                    bool isMarkedAsModified = stmt_dst->get_isModified();
+                    stmt_dst->set_containsTransformationToSurroundingWhitespace(true);
+                    if (isMarkedAsModified == false)
+                       {
+                         if (stmt_dst->get_isModified() == true)
+                            {
+                              stmt_dst->set_isModified(false);
+                            }
+                       }
+                    (*infoToRemoveList).push_back(*i);
+                  }
+
+            // adjust dst position if needed
+               if (dst_position != PreprocessingInfo::undef)
+                  {
+                    info->setRelativePosition(dst_position);
+                  }
+             } // end if
+        } // end for
+
+  // Remove the element from the list of comments at the current astNode
+     AttachedPreprocessingInfoType::iterator j;
+     for (j = (*infoToRemoveList).begin(); j != (*infoToRemoveList).end(); j++)
+        {
+          infoList->erase( find(infoList->begin(),infoList->end(),*j) );
+        }
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:51:03,992 - INFO - Response from llama3.1:70b for Function 155:
+2025-01-27 18:51:03,992 - INFO - /**
+ * @brief Moves preprocessing information from one statement to another.
+ *
+ * This function moves the specified preprocessing information from one
+ * statement to another based on the provided parameters. It checks if the
+ * desired source type is not specified or matching a specified desired source
+ * type and moves all source preprocessing info accordingly.
+ *
+ * @param src The source statement to move the preprocessing information from.
+ * @param stmt_dst The destination statement to move the preprocessing information to.
+ * @param usePrepend Whether to prepend or append the preprocessing information.
+ * @param src_position The relative position of the preprocessing information in the source statement.
+ * @param dst_position The relative position of the preprocessing information in the destination statement.
+ * @param infoToRemoveList A list of preprocessing information to remove from the source statement.
+ */
+void moveDeclarationToInnermostScope_test2015_123::movePreprocessingInfo(SgStatement* src, SgStatement* stmt_dst,
+    bool usePrepend, PreprocessingInfo::RelativePositionType src_position,
+    PreprocessingInfo::RelativePositionType dst_position,
+    AttachedPreprocessingInfoType* infoToRemoveList)
+2025-01-27 18:51:03,992 - INFO - End time: 2025-01-27 18:51:03
+2025-01-27 18:51:03,992 - INFO - Duration: 16.881015300750732

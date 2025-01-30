@@ -1,0 +1,97 @@
+2025-01-27 20:00:36,459 - INFO - Start time: 2025-01-27 20:00:36
+2025-01-27 20:00:36,459 - INFO - Generating documents for a function with id : 321
+2025-01-27 20:00:36,459 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::insertStatementListAfter(SgStatement *targetStmt, const std::vector<SgStatement*>& newStmts)
+  {
+    insertStatementList(targetStmt,newStmts,false);
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:00:57,345 - INFO - Response from llama3.1:70b for Function 321:
+2025-01-27 20:00:57,345 - INFO - /**
+ * @fn void SageInterface::insertStatementListAfter(SgStatement* targetStmt, const std::vector<SgStatement*>& newStmts)
+ *
+ * @brief Inserts a list of statements after a specified target statement.
+ *
+ * This function inserts a vector of statements after the specified target
+ * statement in the Abstract Syntax Tree (AST). The insertion is performed by
+ * calling the insertStatementList function with the 'after' flag set to false.
+ *
+ * @param targetStmt The target statement after which the new statements are to be inserted.
+ *                    Must not be NULL.
+ *
+ * @param newStmts    A vector of statements to be inserted. Must not contain NULL elements.
+ *
+ * @return None
+ *
+ * @warning This function modifies the AST by inserting new statements.
+ *
+ * @pre The target statement must exist in the AST, and the new statements must be valid.
+ *
+ * @post The new statements are inserted after the target statement in the AST.
+ *
+ * @note This function is a wrapper around the insertStatementList function with the 'after' flag set to false.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* targetStmt = ...; // obtain the target statement
+ *           std::vector<SgStatement*> newStmts;
+ *           newStmts.push_back(new SgVariableDeclaration()); // create and add new statements
+ *           SageInterface sageInterface;
+ *           sageInterface.insertStatementListAfter(targetStmt, newStmts);
+ *          @endcode
+ */
+2025-01-27 20:00:57,346 - INFO - End time: 2025-01-27 20:00:57
+2025-01-27 20:00:57,346 - INFO - Duration: 20.886388301849365

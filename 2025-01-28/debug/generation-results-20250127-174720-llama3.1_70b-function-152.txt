@@ -1,0 +1,176 @@
+2025-01-27 18:49:39,875 - INFO - Start time: 2025-01-27 18:49:39
+2025-01-27 18:49:39,875 - INFO - Generating documents for a function with id : 152
+2025-01-27 18:49:39,875 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::insertHeader(SgSourceFile * source_file, const string & header_file_name, bool isSystemHeader, PreprocessingInfo::RelativePositionType position)
+   {
+  // DQ (3/22/2019): If we are using the token based unparsing, then this will not work, since the global scope will not
+  // be marked as a transformation.  So it might be better to implement this with an option to support the token based
+  // unparsing, and specifically add a null declaration so that we can attach the #include directive directly to that statement.
+     bool supportTokenUnparsing = false;
+
+     assert(source_file != NULL);
+     assert(position == PreprocessingInfo::before || position ==  PreprocessingInfo::after);
+
+     SgGlobal * global_scope = source_file->get_globalScope();
+
+     string content;
+     if (isSystemHeader)
+        content = "#include <" + header_file_name + "> \n";
+     else
+        content = "#include \"" + header_file_name + "\" \n";
+
+     PreprocessingInfo* result = new PreprocessingInfo(PreprocessingInfo::CpreprocessorIncludeDeclaration, content, "Transformation generated",0, 0, 0, position);
+     ROSE_ASSERT(result);
+
+  // DQ (3/12/2019): We need to mark the added comments and CPP directives as a transformation so that then can be output.
+  // This is a result of a fix to support the correct handling of comments and CPP directives for shared IR nodes as happen
+  // when multiple files are used on the command line.
+     result->get_file_info()->setTransformation();
+
+  // DQ (11/21/2019): Need to set supportTokenUnparsing.
+     supportTokenUnparsing = source_file->get_unparse_tokens();
+     bool supportUnparseHeaders = source_file->get_unparseHeaderFiles();
+
+#if 0
+     printf ("supportTokenUnparsing = %s \n",supportTokenUnparsing ? "true" : "false");
+     printf ("supportUnparseHeaders = %s \n",supportUnparseHeaders ? "true" : "false");
+     printf ("source_file           = %p \n",source_file);
+     printf ("global_scope          = %p \n",global_scope);
+#endif
+#if 0
+     printf ("Exiting as a test! \n");
+     ROSE_ABORT();
+#endif
+
+  // global_scope->addToAttachedPreprocessingInfo(result, position);
+     if (supportTokenUnparsing == false)
+        {
+          global_scope->addToAttachedPreprocessingInfo(result, position);
+        }
+       else
+        {
+       // global_scope->prepend_statement(null_statement);
+          SgEmptyDeclaration* emptyDeclaration = buildEmptyDeclaration();
+
+          if (supportUnparseHeaders == true)
+              {
+             // In this case we need to set the physical_file_id to match the target file to be unparsed.
+                int physical_file_id = global_scope->get_startOfConstruct()->get_physical_file_id();
+#if 0
+                printf ("physical_file_id = %d \n",physical_file_id);
+#endif
+                emptyDeclaration->get_startOfConstruct()->set_physical_file_id(physical_file_id);
+                emptyDeclaration->get_endOfConstruct()->set_physical_file_id(physical_file_id);
+#if 0
+                printf ("Exiting as a test! \n");
+                ROSE_ABORT();
+#endif
+              }
+
+          emptyDeclaration->addToAttachedPreprocessingInfo(result, position);
+
+          global_scope->prepend_statement(emptyDeclaration);
+        }
+
+#if 0
+     printf ("Exiting as a test! \n");
+     ROSE_ASSERT(false);
+#endif
+
+     return result;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:50:10,609 - INFO - Response from llama3.1:70b for Function 152:
+2025-01-27 18:50:10,609 - INFO - /**
+ * @fn SageInterface::insertHeader(SgSourceFile * source_file, const string & header_file_name, bool isSystemHeader, PreprocessingInfo::RelativePositionType position)
+ *
+ * @brief Inserts a header file into the given source file at the specified position.
+ *
+ * This function inserts a header file with the given name into the source file
+ * at the specified position. If the header file is a system header, it is included
+ * using angle brackets; otherwise, it is included using double quotes. The function
+ * returns a PreprocessingInfo object representing the inserted #include directive.
+ *
+ * @param source_file The source file into which the header file is to be inserted.
+ *                     Must not be NULL.
+ * @param header_file_name The name of the header file to be inserted.
+ * @param isSystemHeader A boolean indicating whether the header file is a system header.
+ * @param position The position at which the header file is to be inserted, either
+ *                  before or after the global scope.
+ *
+ * @return A PreprocessingInfo object representing the inserted #include directive.
+ *
+ * @warning If the source file uses token-based unparsing, this function may not work correctly.
+ *          In such cases, a null declaration must be added to attach the #include directive directly to it.
+ *
+ * @pre The source file is not NULL, and the position is either before or after the global scope.
+ *
+ * @post A PreprocessingInfo object representing the inserted #include directive is returned.
+ *
+ * @note This function modifies the given source file by inserting a header file into it.
+ *       If the source file uses token-based unparsing, additional steps may be necessary to ensure correct output.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgSourceFile* source_file = ...;
+ *           string header_file_name = "my_header.h";
+ *           bool isSystemHeader = false;
+ *           PreprocessingInfo::RelativePositionType position = PreprocessingInfo::before;
+ *           SageInterface::insertHeader(source_file, header_file_name, isSystemHeader, position);
+ *          @endcode
+ */
+2025-01-27 18:50:10,609 - INFO - End time: 2025-01-27 18:50:10
+2025-01-27 18:50:10,609 - INFO - Duration: 30.734047174453735

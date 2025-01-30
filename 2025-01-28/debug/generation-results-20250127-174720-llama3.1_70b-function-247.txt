@@ -1,0 +1,352 @@
+2025-01-27 19:28:57,507 - INFO - Start time: 2025-01-27 19:28:57
+2025-01-27 19:28:57,507 - INFO - Generating documents for a function with id : 247
+2025-01-27 19:28:57,507 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::serialize(SgNode* node, string& prefix, bool hasRemaining, ostringstream& out, string& edgeLabel)
+{
+  // there may be NULL children!!
+  //if (!node) return;
+
+  out<<prefix;
+  out<< (hasRemaining?"|---": "|___");
+
+  out<<" "<<edgeLabel<<" ->";
+  if (!node)
+  {
+    out<<" NULL "<<endl;
+    return;
+  }
+
+  // print address
+  out<<"@"<<node<<" "<< node->class_name()<<" ";
+
+  //optionally file info
+  if (SgLocatedNode* lnode= isSgLocatedNode(node))
+  {
+    //Rose::StringUtility::stripPathFromFileName()
+    out<< lnode->get_file_info()->get_filename() <<" "<<lnode->get_file_info()->get_line()<<":"<<lnode->get_file_info()->get_col();
+    // also preprocessing info. attached.
+    AttachedPreprocessingInfoType *comments =
+      lnode->getAttachedPreprocessingInfo ();
+
+    if (comments != NULL)
+    {
+//      printf ("Found an IR node with preprocessing Info attached:\n");
+      out<<" AttachedPreprocessingInfoType@"<<comments;
+      int counter = 0;
+      AttachedPreprocessingInfoType::iterator i;
+      out <<"{";
+      for (i = comments->begin (); i != comments->end (); i++)
+      {
+        if (i!=comments->begin ())
+          out<<endl;
+        out<<"<id=";
+        out<<counter++<<" ";
+  //        printf("-------------PreprocessingInfo #%d ----------- : \n",counter++);
+  //        printf("classification = %s:\n String format = %s\n",
+  //              PreprocessingInfo::directiveTypeName((*i)->getTypeOfDirective ()). c_str (),
+  //              (*i)->getString ().c_str ());
+        if (*i==NULL)
+         out<<" NULL="; // The AST may be in the middle of transformation, with NULL comments attached.
+        else
+        {
+            out<<*i<<" classification="<<PreprocessingInfo::directiveTypeName((*i)->getTypeOfDirective ()). c_str ();
+            out<<" string="<<(*i)->getString ().c_str ();
+            out<<" relative pos=" ; // << (*i)->getRelativePosition ();
+#if 1
+            if ((*i)->getRelativePosition () == PreprocessingInfo::inside)
+                out<<"inside";
+            else if ((*i)->getRelativePosition () == PreprocessingInfo::before)
+                out<<"before";
+            else
+                out<<"after";
+#endif
+        }
+        out<<">";
+      }
+      out <<"}";
+    }
+  }
+
+  if (SgDeclarationStatement* v= isSgDeclarationStatement(node))
+  {
+    out<<" first nondefining decl@"<< v->get_firstNondefiningDeclaration();
+    out<<" defining decl@"<< v->get_definingDeclaration();
+  }
+
+  if (SgEnumVal* f = isSgEnumVal(node) )
+    out<<" value="<< f->get_value() <<" declaration="<<f->get_declaration() << " name="<< f->get_name().getString();
+  // optionally  qualified name
+
+  if (SgFunctionDeclaration* f = isSgFunctionDeclaration(node) )
+    out<<" "<< f->get_qualified_name();
+
+  if (SgAdaFunctionRenamingDecl* f = isSgAdaFunctionRenamingDecl(node) )
+    out<<" renamed_function "<< f->get_renamed_function();
+
+  if (SgAdaRenamingDecl* f = isSgAdaRenamingDecl(node) )
+    out<<" name="<< f->get_name() << " renamed decl "<<f->get_renamed() ;
+
+  if (SgClassDeclaration* f = isSgClassDeclaration(node) )
+    out<<" "<< f->get_qualified_name();
+
+  if (SgTypedefDeclaration* f = isSgTypedefDeclaration(node) )
+    out<<" "<< f->get_qualified_name();
+
+  if (SgAdaPackageSpecDecl * f = isSgAdaPackageSpecDecl(node) )
+    out<<" "<< f->get_qualified_name();
+
+  if (SgAdaEnumRepresentationClause* f = isSgAdaEnumRepresentationClause(node) )
+    out<<" enumType="<< f->get_enumType();
+
+  if (SgAdaAccessType* v = isSgAdaAccessType(node) )
+  {
+    // out<<" "<< v->get_qualified_name();
+    //out<<" "<< v->get_name();
+    // PP (2/18/22) updated to reflect properties in AdaAccessType
+    //~ out<<" is_object_type"<< v->get_is_object_type();
+    out<<" is_general_access"<< v->get_is_general_access();
+    //~ out<<" is_constant:"<< v->get_is_constant();
+    //~ out<<" is_protected:"<< v->get_is_protected ();
+    out<<" is_anonymous:"<< v->get_is_anonymous ();
+  }
+
+  if (SgAdaSubroutineType* v = isSgAdaSubroutineType(node) )
+  {
+    out<<" is_protected"<< v->get_is_protected();
+  }
+
+  if (SgInitializedName * v = isSgInitializedName(node) )
+  {
+    out<<" "<< v->get_qualified_name();
+    out<<" type@"<< v->get_type();
+    out<<" initializer@"<< v->get_initializer();
+    out<<" scope@"<< v->get_scope();
+//    type_set.insert (v->get_type());
+  }
+
+  // associated class, function and variable declarations
+  if (SgTemplateInstantiationDecl* f = isSgTemplateInstantiationDecl(node) )
+    out<<" template class decl@"<< f->get_templateDeclaration();
+
+  if (SgMemberFunctionDeclaration* f = isSgMemberFunctionDeclaration(node) )
+    out<<" assoc. class decl@"<< f->get_associatedClassDeclaration();
+
+  if (SgConstructorInitializer* ctor= isSgConstructorInitializer(node) )
+  {
+    out<<" member function decl@"<< ctor->get_declaration();
+  }
+
+  if (SgIntVal* v= isSgIntVal(node))
+    out<<" value="<< v->get_value() <<" valueString="<< v->get_valueString();
+
+  if (SgShortVal* v= isSgShortVal(node))
+    out<<" value="<< v->get_value() <<" valueString="<< v->get_valueString();
+
+  if (SgLongIntVal* v= isSgLongIntVal(node))
+    out<<" value="<< v->get_value() <<" valueString="<< v->get_valueString();
+
+  if (SgLongLongIntVal* v= isSgLongLongIntVal(node))
+    out<<" value="<< v->get_value() <<" valueString="<< v->get_valueString();
+
+  if (SgUnsignedIntVal* v= isSgUnsignedIntVal(node))
+    out<<" value="<< v->get_value() <<" valueString="<< v->get_valueString();
+
+  if (SgUnsignedShortVal* v= isSgUnsignedShortVal(node))
+    out<<" value="<< v->get_value() <<" valueString="<< v->get_valueString();
+
+  if (SgUnsignedLongVal* v= isSgUnsignedLongVal(node))
+    out<<" value="<< v->get_value() <<" valueString="<< v->get_valueString();
+
+  if (SgUnsignedLongLongIntVal* v= isSgUnsignedLongLongIntVal(node))
+    out<<" value="<< v->get_value() <<" valueString="<< v->get_valueString();
+
+  if (SgFloatVal* v= isSgFloatVal(node))
+    out<<" value="<< v->get_value() <<" valueString="<< v->get_valueString();
+
+  if (SgDoubleVal* v= isSgDoubleVal(node))
+    out<<" value="<< v->get_value() <<" valueString="<< v->get_valueString();
+
+  if (SgLongDoubleVal* v= isSgLongDoubleVal(node))
+    out<<" value="<< v->get_value() <<" valueString="<< v->get_valueString();
+
+  if (SgVarRefExp* var_ref= isSgVarRefExp(node) )
+    out<<" init name@"<< var_ref->get_symbol()->get_declaration() <<" symbol name="<<var_ref->get_symbol()->get_name();
+
+  if (SgMemberFunctionRefExp* func_ref= isSgMemberFunctionRefExp(node) )
+    out<<" member func decl@"<< func_ref->get_symbol_i()->get_declaration();
+
+  if (SgTemplateInstantiationMemberFunctionDecl* cnode= isSgTemplateInstantiationMemberFunctionDecl(node) )
+    out<<" template member func decl@"<< cnode->get_templateDeclaration();
+
+  if (SgFunctionRefExp* func_ref= isSgFunctionRefExp(node) )
+  {
+    SgFunctionSymbol* sym= func_ref->get_symbol_i();
+    out<<" func decl@"<< sym->get_declaration() << " func sym name="<<sym->get_name();
+  }
+
+  if (SgAdaRenamingRefExp* renaming_ref= isSgAdaRenamingRefExp(node) )
+  {
+    SgAdaRenamingDecl * renaming_decl = renaming_ref->get_decl();
+    out<<" ada renaming decl@"<< renaming_decl;
+  }
+
+  // base type of several types of nodes:
+  if (SgTypedefDeclaration * v= isSgTypedefDeclaration(node))
+  {
+    out<<" base_type@"<< v->get_base_type();
+//    type_set.insert (v->get_base_type());
+  }
+
+  if (SgArrayType* v= isSgArrayType(node))
+    out<<" base_type@"<< v->get_base_type();
+
+  if (SgAdaAccessType* v= isSgAdaAccessType(node))
+    out<<" base_type@"<< v->get_base_type();
+
+  if (SgTypeExpression* v= isSgTypeExpression(node))
+    out<<" type@"<< v->get_type();
+
+  if (SgAdaAttributeExp* v= isSgAdaAttributeExp(node))
+    out<<" attribute@"<< v->get_attribute();
+
+  if (SgUsingDirectiveStatement* v= isSgUsingDirectiveStatement(node))
+    out<<" namespaceDeclaration="<< v->get_namespaceDeclaration();
+
+  out<<endl;
+
+  std::vector<SgNode* > children = node->get_traversalSuccessorContainer();
+#if 0
+  int total_count = children.size();
+  int current_index=0;
+#endif
+
+  int last_non_null_child_idx =-1;
+  for (int i = (int) (children.size())-1; i>=0; i--)
+  {
+    if (children[i])
+    {
+      last_non_null_child_idx = i;
+      break;
+    }
+  }
+
+#if 0
+  // some Sg??PtrList are not AST nodes, not part of children , we need to handle them separatedly
+  // we sum all children into single total_count to tell if there is remaining children.
+  if (isSgTemplateInstantiationDecl (node))
+    total_count += 1; // sn->get_templateArguments().size();
+#endif
+
+   // handling SgTemplateArgumentPtrList first
+  if (SgTemplateInstantiationDecl* sn = isSgTemplateInstantiationDecl (node))
+  {
+    SgTemplateArgumentPtrList& plist = sn->get_templateArguments();
+     bool n_hasRemaining=false;
+    if (last_non_null_child_idx>-1) n_hasRemaining = true;
+    string suffix= hasRemaining? "|   " : "    ";
+    string n_prefix = prefix+suffix;
+    string n_edge_label= "";
+    serialize_list(plist, "SgTemplateArgumentPtrList", n_prefix, n_hasRemaining, out, n_edge_label);
+  }
+  else if (SgImportStatement* import_stmt = isSgImportStatement(node))
+  {
+    SgExpressionPtrList& plist = import_stmt->get_import_list();
+    bool n_hasRemaining=false;
+    if (last_non_null_child_idx>-1) n_hasRemaining = true;
+    string suffix= hasRemaining? "|   " : "    ";
+    string n_prefix = prefix+suffix;
+    string n_edge_label= "";
+    serialize_list(plist, "SgExpressionPtrList", n_prefix, n_hasRemaining, out, n_edge_label);
+  }
+
+  std::vector< std::string >  successorNames= node->get_traversalSuccessorNamesContainer();
+
+   // finish sucessors
+  for (size_t i =0; i< children.size(); i++)
+  {
+    bool n_hasRemaining=false;
+#if 0
+    if (current_index+1<total_count)
+      n_hasRemaining=true;
+    current_index++;
+#else
+    if ((int)i<last_non_null_child_idx) n_hasRemaining = true;
+#endif
+    string suffix= hasRemaining? "|   " : "    ";
+    string n_prefix = prefix+suffix;
+    if (children[i])
+      serialize (children[i], n_prefix, n_hasRemaining, out, successorNames[i]);
+  }
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:29:09,087 - INFO - Response from llama3.1:70b for Function 247:
+2025-01-27 19:29:09,087 - INFO - /**
+ * @brief Serialize an abstract syntax tree (AST) node.
+ *
+ * This function takes an AST node as input and prints out a human-readable
+ * representation of the node's structure. It recursively traverses the node's
+ * children, printing their types and any relevant information.
+ *
+ * @param node The AST node to serialize.
+ * @param prefix A string used for indentation and formatting.
+ * @param hasRemaining Whether there are remaining nodes in the traversal.
+ * @param out The output stream where the serialized node will be written.
+ */
+void serialize(SgNode* node, std::string prefix, bool hasRemaining, std::ostream& out) {
+    // ... (rest of the function remains the same)
+}
+2025-01-27 19:29:09,087 - INFO - End time: 2025-01-27 19:29:09
+2025-01-27 19:29:09,087 - INFO - Duration: 11.580619812011719

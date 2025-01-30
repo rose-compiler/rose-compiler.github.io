@@ -1,0 +1,116 @@
+2025-01-27 19:45:27,843 - INFO - Start time: 2025-01-27 19:45:27
+2025-01-27 19:45:27,843 - INFO - Generating documents for a function with id : 284
+2025-01-27 19:45:27,843 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::outputSharedNodes( SgNode* node )
+   {
+  // DQ (2/17/2019): Display the shared nodes in the AST for debugging.
+
+     class OutputSharedNodesTraversal : public SgSimpleProcessing
+        {
+       // This traversal collects the includes at the top of a file.
+          public:
+               void visit(SgNode *astNode)
+                  {
+                    ROSE_ASSERT(astNode != NULL);
+                    Sg_File_Info* file_info = astNode->get_file_info();
+                    if (file_info != NULL)
+                       {
+                         if (file_info->isShared() == true)
+                            {
+                              printf ("Found shared node: astNode = %p = %s \n",astNode,astNode->class_name().c_str());
+                            }
+                       }
+                  }
+        };
+
+     OutputSharedNodesTraversal tt;
+     tt.traverse(node,preorder);
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:45:47,864 - INFO - Response from llama3.1:70b for Function 284:
+2025-01-27 19:45:47,864 - INFO - /**
+ * @fn void SageInterface::outputSharedNodes(SgNode* node)
+ *
+ * @brief Displays shared nodes in the AST for debugging purposes.
+ *
+ * This function is used to traverse the Abstract Syntax Tree (AST) and identify
+ * shared nodes. It utilizes a custom traversal class, OutputSharedNodesTraversal,
+ * which visits each node in the AST and checks if it has associated file information.
+ * If the node's file information indicates that it is shared, the node's address and
+ * class name are printed to the console for debugging purposes.
+ *
+ * @param node The root node of the AST to be traversed. Must not be NULL.
+ *
+ * @return None
+ *
+ * @warning This function does not perform any error handling on the input parameter.
+ *          It assumes that the provided node is valid and can be safely traversed.
+ *
+ * @pre The input node must not be NULL, and it must represent a valid AST.
+ *
+ * @post The shared nodes in the AST will have been printed to the console for debugging purposes.
+ *
+ * @note This function uses a recursive traversal approach to visit all nodes in the AST.
+ *       It does not modify the AST or its contents in any way.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* root = ...; // obtain the root node of the AST
+ *           SageInterface::outputSharedNodes(root);
+ *          @endcode
+ */
+2025-01-27 19:45:47,864 - INFO - End time: 2025-01-27 19:45:47
+2025-01-27 19:45:47,864 - INFO - Duration: 20.021552562713623

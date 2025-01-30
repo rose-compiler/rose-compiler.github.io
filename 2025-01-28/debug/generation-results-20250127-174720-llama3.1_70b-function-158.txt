@@ -1,0 +1,126 @@
+2025-01-27 18:51:59,510 - INFO - Start time: 2025-01-27 18:51:59
+2025-01-27 18:51:59,510 - INFO - Generating documents for a function with id : 158
+2025-01-27 18:51:59,510 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::attachArbitraryText(SgLocatedNode* target, const std::string & text, PreprocessingInfo::RelativePositionType position /*=PreprocessingInfo::before*/)
+   {
+  // DQ (1/13/2014): This function needs a better mechanism than attaching text to the AST unparser as a CPP directive.
+
+     ROSE_ASSERT(target != NULL); //dangling #define xxx is not allowed in the ROSE AST
+     PreprocessingInfo* result = NULL;
+
+  // DQ (1/13/2014): It is a mistake to attach arbitrary test to the AST as a #define
+  // (since we evaluate all #define CPP declarations to be a self-referential macro).
+  // For now I will make it a #if CPP declaration, since these are not evaluated internally.
+  // PreprocessingInfo::DirectiveType mytype = PreprocessingInfo::CpreprocessorDefineDeclaration;
+     PreprocessingInfo::DirectiveType mytype = PreprocessingInfo::CpreprocessorIfDeclaration;
+
+  // DQ (1/13/2014): Output a warning so that this can be fixed whereever it is used.
+     printf ("Warning: attachArbitraryText(): attaching arbitrary text to the AST as a #if declaration: text = %s \n",text.c_str());
+
+     result = new PreprocessingInfo (mytype,text, "transformation-generated", 0, 0, 0, position);
+     ROSE_ASSERT(result);
+
+ // DQ (3/12/2019): We need to mark the added comments and CPP directives as a transformation so that then can be output.
+ // This is a result of a fix to support the correct handling of comments and CPP directives for shared IR nodes as happen
+ // when multiple files are used on the command line.
+    result->get_file_info()->setTransformation();
+
+     target->addToAttachedPreprocessingInfo(result);
+
+     return result;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:52:29,649 - INFO - Response from llama3.1:70b for Function 158:
+2025-01-27 18:52:29,649 - INFO - /**
+ * @fn SageInterface::attachArbitraryText(SgLocatedNode* target, const std::string & text, PreprocessingInfo::RelativePositionType position /*=PreprocessingInfo::before*/)
+ *
+ * @brief Attaches arbitrary text to a given SgLocatedNode in the AST as a preprocessing directive.
+ *
+ * This function is used to attach user-defined text to an AST node. The attached text
+ * can be any string and will be treated as a preprocessing directive when the AST is 
+ * unparsed. By default, the text is attached before the target node, but this behavior 
+ * can be modified by specifying a different relative position.
+ *
+ * @param target The SgLocatedNode to which the text is to be attached. Must not be NULL.
+ * @param text The arbitrary text to be attached as a preprocessing directive.
+ * @param position The relative position at which the text is to be attached, with respect 
+ *                  to the target node. Defaults to PreprocessingInfo::before if not specified.
+ *
+ * @return A pointer to the newly created PreprocessingInfo object representing the 
+ *         attached text, or NULL on failure.
+ *
+ * @warning This function currently attaches the arbitrary text as a #if CPP declaration,
+ *          which may not be the desired behavior. It is recommended to use this function
+ *          with caution and consider alternative approaches if possible.
+ *
+ * @pre The target node must not be NULL.
+ *
+ * @post A new PreprocessingInfo object representing the attached text will be created 
+ *       and added to the target node's attached preprocessing info list.
+ *
+ * @note This function is currently implemented as a workaround for attaching arbitrary
+ *       text to an AST node. It may be revised or replaced in future versions of ROSE.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *            SgLocatedNode* target = ...; // obtain the target node
+ *            std::string text = "This is some arbitrary text.";
+ *            PreprocessingInfo::RelativePositionType position = PreprocessingInfo::before;
+ *            SageInterface::attachArbitraryText(target, text, position);
+ *          @endcode
+ */
+2025-01-27 18:52:29,649 - INFO - End time: 2025-01-27 18:52:29
+2025-01-27 18:52:29,649 - INFO - Duration: 30.13875985145569

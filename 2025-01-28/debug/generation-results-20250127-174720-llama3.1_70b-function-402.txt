@@ -1,0 +1,122 @@
+2025-01-27 20:34:31,233 - INFO - Start time: 2025-01-27 20:34:31
+2025-01-27 20:34:31,233 - INFO - Generating documents for a function with id : 402
+2025-01-27 20:34:31,233 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    ROSE_DLL_API int SageInterface::splitVariableDeclaration (SgScopeStatement* scope, bool topLevelOnly /* = true */)
+{
+  int count = 0;
+  if (!topLevelOnly)
+  {
+    cerr<<"SageInterface::splitVariableDeclaration() topLevelOnly == false is not yet implemented."<<endl;
+    ROSE_ASSERT (false);
+  }
+
+  Rose_STL_Container<SgNode*> nodeList = NodeQuery::querySubTree(scope, V_SgVariableDeclaration);
+  for (Rose_STL_Container<SgNode *>::iterator i = nodeList.begin(); i != nodeList.end(); i++)
+  {
+    SgVariableDeclaration *decl= isSgVariableDeclaration(*i);
+    if (topLevelOnly)
+    {
+      ROSE_ASSERT(decl != NULL);
+      if (decl->get_scope() == scope)
+      {
+        splitVariableDeclaration (decl);
+        count ++;
+      }
+    }
+  }
+  return count;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:35:00,908 - INFO - Response from llama3.1:70b for Function 402:
+2025-01-27 20:35:00,908 - INFO - /**
+ * @fn int SageInterface::splitVariableDeclaration(SgScopeStatement* scope, bool topLevelOnly)
+ *
+ * @brief Splits variable declarations in a given scope statement.
+ *
+ * This function splits variable declarations that are declared together into separate declarations.
+ * It traverses the abstract syntax tree (AST) of the input scope statement and identifies variable declarations
+ * that need to be split. The splitting is performed based on the topLevelOnly parameter, which determines whether
+ * only top-level variable declarations should be considered or all variable declarations regardless of their nesting level.
+ *
+ * @param scope The scope statement in which variable declarations are to be split.
+ *              Must not be NULL and must represent a valid scope statement in the AST.
+ *
+ * @param topLevelOnly Flag indicating whether only top-level variable declarations should be considered for splitting.
+ *                      If true, only variable declarations that are direct children of the input scope statement
+ *                      will be considered. If false, all variable declarations regardless of their nesting level
+ *                      will be considered. Defaults to true if not specified.
+ *
+ * @return The number of variable declarations that were split by this function.
+ *
+ * @warning This function does not handle cases where topLevelOnly is false. An assertion failure will occur in such cases.
+ *
+ * @pre The input scope statement must represent a valid scope statement in the AST and must not be NULL.
+ *
+ * @post Variable declarations that are direct children of the input scope statement (or all variable declarations if topLevelOnly is false)
+ *        will be split into separate declarations. The number of splits performed is returned by this function.
+ *
+ * @note This function does not perform any semantic checks on the input AST and assumes that it represents valid C++ code.
+ *       It also does not handle cases where the input scope statement has already been modified by other parts of the program.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgScopeStatement* scope = ...; // obtain a valid scope statement from the AST
+ *           int count = SageInterface::splitVariableDeclaration(scope);
+ *           cout << "Split " << count << " variable declarations." << endl;
+ *          @endcode
+ */
+2025-01-27 20:35:00,908 - INFO - End time: 2025-01-27 20:35:00
+2025-01-27 20:35:00,908 - INFO - Duration: 29.675726890563965

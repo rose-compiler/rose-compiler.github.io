@@ -1,0 +1,226 @@
+2025-01-27 20:22:42,433 - INFO - Start time: 2025-01-27 20:22:42
+2025-01-27 20:22:42,433 - INFO - Generating documents for a function with id : 377
+2025-01-27 20:22:42,433 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::translateScopeToUseCppDeclarations( SgScopeStatement* scope )
+   {
+     bool declarationsOnly = scope->containsOnlyDeclarations();
+
+     printf ("In translateScopeToUseCppDeclarations(): declarationsOnly = %s scope = %p = %s \n",declarationsOnly ? "true" : "false",scope,scope->class_name().c_str());
+
+     std::map<SgStatement*,std::vector<SgC_PreprocessorDirectiveStatement*> > directiveMap;
+
+     if (declarationsOnly == true)
+        {
+       // These are scopes such as global scope, namespace definitions, class definitions, etc.
+          SgDeclarationStatementPtrList & declarationList = scope->getDeclarationList();
+          SgDeclarationStatementPtrList::iterator i = declarationList.begin();
+          while (i != declarationList.end())
+             {
+               SgDeclarationStatement* declaration = *i;
+               ROSE_ASSERT(declaration != NULL);
+
+               std::vector<SgC_PreprocessorDirectiveStatement*> attachDirectives = translateStatementToUseCppDeclarations(declaration,scope);
+
+               printf ("attachDirectives.size() = %zu \n",attachDirectives.size());
+
+               if (attachDirectives.empty() == false)
+                  {
+                    directiveMap.insert(std::pair<SgStatement*,std::vector<SgC_PreprocessorDirectiveStatement*> >(declaration,attachDirectives));
+                  }
+
+               i++;
+             }
+
+            // Need to save the list of things that will be added so we can avoid iterator invalidation.
+        }
+       else
+        {
+       // These are scopes such as SgBasicBlock (which can contain non-declaration statements.
+          SgStatementPtrList & statementList = scope->getStatementList();
+          SgStatementPtrList::iterator i = statementList.begin();
+          while (i != statementList.end())
+             {
+               SgStatement* statement = *i;
+               ROSE_ASSERT(statement != NULL);
+
+               std::vector<SgC_PreprocessorDirectiveStatement*> attachDirectives = translateStatementToUseCppDeclarations(statement,scope);
+
+               printf ("attachDirectives.size() = %zu \n",attachDirectives.size());
+
+               if (attachDirectives.empty() == false)
+                  {
+                    directiveMap.insert(std::pair<SgStatement*,std::vector<SgC_PreprocessorDirectiveStatement*> >(statement,attachDirectives));
+                  }
+
+               i++;
+             }
+        }
+
+     printf ("directiveMap.size() = %zu \n",directiveMap.size());
+
+     printf ("Processing the directiveMap: \n");
+     std::map<SgStatement*,std::vector<SgC_PreprocessorDirectiveStatement*> >::iterator i = directiveMap.begin();
+     while (i != directiveMap.end())
+        {
+          SgStatement* statement                                      = i->first;
+          std::vector<SgC_PreprocessorDirectiveStatement*> directives = i->second;
+
+          printf ("statement = %p = %s \n",statement,statement->class_name().c_str());
+          printf ("directives.size() = %zu \n",directives.size());
+       // std::vector<SgC_PreprocessorDirectiveStatement*>::reverse_iterator j = directives.begin();
+          std::vector<SgC_PreprocessorDirectiveStatement*>::iterator j = directives.begin();
+          while (j != directives.end())
+             {
+               scope->insert_statement(statement,*j);
+
+               j++;
+             }
+
+       // Remove the directives there were attached to the statement.
+          AttachedPreprocessingInfoType *comments = statement->getAttachedPreprocessingInfo();
+          ROSE_ASSERT(comments != NULL);
+
+          AttachedPreprocessingInfoType deleteList;
+       // std::vector<PreprocessingInfo*> deleteList;
+
+       // comments->erase();
+       // statement->setAttachedPreprocessingInfo(NULL);
+          AttachedPreprocessingInfoType::iterator k;
+          for (k = comments->begin(); k != comments->end(); k++)
+             {
+#if 1
+               ROSE_ASSERT ( (*k) != NULL );
+               printf ("          Attached Comment (relativePosition=%s): %s\n",
+                    ((*k)->getRelativePosition() == PreprocessingInfo::before) ? "before" : "after",
+                    (*k)->getString().c_str());
+               printf ("translateScopeToUseCppDeclarations(): Comment/Directive getNumberOfLines = %d getColumnNumberOfEndOfString = %d \n",(*k)->getNumberOfLines(),(*k)->getColumnNumberOfEndOfString());
+#endif
+
+            // We only want to process the CPP directives (skipping comments and a few othr kinds of obscure directives).
+               if (skipTranslateToUseCppDeclaration(*k) == true)
+                  {
+                 // We are not processing these types of directives into IR nodes (new IR nodes would have to be added and this can be done later if required).
+                    printf ("Do NOT delete *k = %p = %s \n",*k,(*k)->getString().c_str());
+                  }
+                 else
+                  {
+                    printf ("DO delete *k = %p = %s \n",*k,(*k)->getString().c_str());
+
+                    deleteList.push_back(*k);
+                 // delete *k;
+                 // *k = NULL;
+                  }
+             }
+
+          printf ("Iterate over the deleteList: deleteList.size() = %zu comments->size() = %zu \n",deleteList.size(),comments->size());
+          AttachedPreprocessingInfoType::iterator m = deleteList.begin();
+          while (m != deleteList.end())
+             {
+            // comments->erase(m);
+            // std::remove(comments->begin(), comments->end(), *m);
+               comments->erase(std::remove(comments->begin(), comments->end(), *m), comments->end());
+
+               printf (" --- comments->size() = %zu \n",comments->size());
+
+               m++;
+             }
+
+       // comments->clear();
+       // delete comments; // statement->getAttachedPreprocessingInfoPtr();
+       // statement->set_attachedPreprocessingInfoPtr(NULL);
+
+          i++;
+        }
+
+     printf ("Leaving translateScopeToUseCppDeclarations(): scope = %p = %s \n",scope,scope->class_name().c_str());
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:23:05,513 - INFO - Response from llama3.1:70b for Function 377:
+2025-01-27 20:23:05,513 - INFO - /**
+ * @fn SageInterface::translateScopeToUseCppDeclarations(SgScopeStatement* scope)
+ *
+ * @brief Translates a given scope to use C++ declarations.
+ *
+ * This function processes the statements in the provided SgScopeStatement and 
+ * translates them to use C++ declarations. It handles both declaration-only scopes
+ * (e.g., global scope, namespace definitions, class definitions) and scopes that contain
+ * non-declaration statements (e.g., SgBasicBlock). The translation process involves
+ * attaching preprocessor directives to the statements in the scope.
+ *
+ * @param scope The SgScopeStatement to be translated. Must not be NULL.
+ *
+ * @return None.
+ *
+ * @warning This function modifies the input scope by inserting preprocessor directives.
+ *          It also removes attached preprocessing information from the statements.
+ *
+ * @pre The input scope must be a valid SgScopeStatement.
+ *
+ * @post The input scope is modified to use C++ declarations. Attached preprocessing
+ *       information is removed from the statements in the scope.
+ *
+ * @note This function uses a recursive approach to process the statements in the scope.
+ *       It also relies on the skipTranslateToUseCppDeclaration() function to determine
+ *       which directives should be skipped during translation.
+ *
+ * @example
+ *   SgScopeStatement* scope = ...;
+ *   SageInterface::translateScopeToUseCppDeclarations(scope);
+ */
+ 
+// The rest of the comments are omitted for brevity.
+2025-01-27 20:23:05,513 - INFO - End time: 2025-01-27 20:23:05
+2025-01-27 20:23:05,513 - INFO - Duration: 23.080092906951904

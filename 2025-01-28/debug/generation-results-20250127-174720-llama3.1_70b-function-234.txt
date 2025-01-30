@@ -1,0 +1,190 @@
+2025-01-27 19:23:21,190 - INFO - Start time: 2025-01-27 19:23:21
+2025-01-27 19:23:21,190 - INFO - Generating documents for a function with id : 234
+2025-01-27 19:23:21,190 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool SageInterface::normalizeForLoopTest(SgForStatement* loop)
+{
+  ROSE_ASSERT(loop != NULL);
+
+  // Normalized the test expressions
+  // -------------------------------------
+#if 0  // this is undecided
+  // skip for (;;) case
+  SgStatement* test_stmt = loop->get_test();
+  if (test_stmt!=NULL)
+  {
+    if (isSgNullStatement(test_stmt))
+      return false;
+  }
+#endif
+  SgExpression* test = loop->get_test_expr();
+  SgExpression* testlhs=NULL, * testrhs=NULL;
+  if (isSgBinaryOp(test))
+  {
+    testlhs = isSgBinaryOp(test)->get_lhs_operand();
+    testrhs = isSgBinaryOp(test)->get_rhs_operand();
+    ROSE_ASSERT(testlhs && testrhs);
+  }
+  else
+    return false;
+  // keep the variable since test will be removed later on
+  SgVarRefExp* testlhs_var = isSgVarRefExp(SkipCasting(testlhs));
+  if (testlhs_var == NULL )
+    return false;
+  SgVariableSymbol * var_symbol = testlhs_var->get_symbol();
+  if (var_symbol==NULL)
+    return false;
+
+  switch (test->variantT()) {
+    case V_SgLessThanOp:  // i<x is normalized to i<= (x-1)
+      replaceExpression(test, buildLessOrEqualOp(deepCopy(testlhs),
+            buildSubtractOp(deepCopy(testrhs), buildIntVal(1))));
+      // deepDelete(test);// replaceExpression() does this already by default.
+      break;
+    case V_SgGreaterThanOp: // i>x is normalized to i>= (x+1)
+      replaceExpression( test, buildGreaterOrEqualOp(deepCopy(testlhs),
+            buildAddOp(deepCopy(testrhs), buildIntVal(1))));
+      break;
+    case V_SgLessOrEqualOp:
+    case V_SgGreaterOrEqualOp:
+    case V_SgNotEqualOp: //TODO Do we want to allow this?
+      break;
+    default:
+      return false;
+  }
+  return true;
+}
+bool  SageInterface::normalizeForLoopIncrement(SgForStatement* loop)
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:24:07,755 - INFO - Response from llama3.1:70b for Function 234:
+2025-01-27 19:24:07,755 - INFO - /**
+ * @fn bool SageInterface::normalizeForLoopTest(SgForStatement* loop)
+ *
+ * @brief Normalizes the test expression of a for loop.
+ *
+ * This function normalizes the test expression of a given for loop by transforming
+ * certain binary operations into their equivalent forms. The normalization is
+ * done to facilitate further analysis or transformation of the loop.
+ *
+ * The function checks if the test expression is a binary operation and, if so,
+ * applies the following transformations:
+ *   - Less-than (<) operations are transformed into less-or-equal (<=) operations
+ *     by subtracting 1 from the right operand.
+ *   - Greater-than (>) operations are transformed into greater-or-equal (>=)
+ *     operations by adding 1 to the right operand.
+ *
+ * If the test expression is not a binary operation or if it cannot be normalized,
+ * the function returns false. Otherwise, it returns true.
+ *
+ * @param loop The for loop whose test expression is to be normalized.
+ *             Must be non-null and have a valid test expression.
+ *
+ * @return True if the test expression was successfully normalized, false otherwise.
+ *
+ * @warning This function modifies the input loop's test expression. If the original
+ *          expression needs to be preserved, a copy of the loop should be made before
+ *          calling this function.
+ *
+ * @pre The input loop is non-null and has a valid test expression.
+ *
+ * @post The input loop's test expression has been normalized if possible.
+ *
+ * @note This function does not handle all possible binary operations. It only
+ *       handles less-than, greater-than, less-or-equal, and greater-or-equal operations.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgForStatement* loop = ...; // create or obtain a for loop
+ *           if (SageInterface::normalizeForLoopTest(loop)) {
+ *             // the test expression has been normalized
+ *           } else {
+ *             // the test expression could not be normalized
+ *           }
+ *          @endcode
+ */
+
+/**
+ * @fn bool SageInterface::normalizeForLoopIncrement(SgForStatement* loop)
+ *
+ * @brief Normalizes the increment expression of a for loop.
+ *
+ * This function normalizes the increment expression of a given for loop by
+ * transforming certain expressions into their equivalent forms. The normalization
+ * is done to facilitate further analysis or transformation of the loop.
+ *
+ * The function checks if the increment expression can be normalized and, if so,
+ * applies the necessary transformations.
+ *
+ * If the increment expression cannot be normalized, the function returns false.
+ * Otherwise, it returns true.
+ *
+ * @param loop The for loop whose increment expression is to be normalized.
+ *             Must be non-null and have a valid increment expression.
+ *
+ * @return True if the increment expression was successfully normalized, false otherwise.
+ *
+ * @warning This function modifies the input loop's increment expression. If the original
+ *          expression needs to be preserved, a copy of the loop should be made before
+ *          calling this function.
+ *
+ * @pre The input loop is non-null and has a valid increment expression.
+ *
+ * @post The input loop's increment expression has been normalized if possible.
+ *
+ * @note This function does not handle all possible expressions. It only handles
+ *       certain forms of increments.
+ */
+2025-01-27 19:24:07,755 - INFO - End time: 2025-01-27 19:24:07
+2025-01-27 19:24:07,755 - INFO - Duration: 46.56522250175476

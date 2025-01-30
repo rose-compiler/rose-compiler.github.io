@@ -1,0 +1,155 @@
+2025-01-27 19:20:32,754 - INFO - Start time: 2025-01-27 19:20:32
+2025-01-27 19:20:32,754 - INFO - Generating documents for a function with id : 228
+2025-01-27 19:20:32,754 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::setLoopLowerBound(SgNode* loop, SgExpression* lb)
+{
+  ROSE_ASSERT(loop != NULL);
+  ROSE_ASSERT(lb != NULL);
+  SgForStatement* forstmt = isSgForStatement(loop);
+  SgFortranDo* dostmt = isSgFortranDo(loop);
+  //  ROSE_ASSERT(forstmt!= NULL);
+
+  if (forstmt != NULL)
+  {
+    // two cases: init_stmt is
+    //       SgExprStatement (assignment) like i=0;
+    //       SgVariableDeclaration int i =0 or
+    Rose_STL_Container<SgNode* > testList = NodeQuery::querySubTree( *((forstmt->get_init_stmt()).begin()), V_SgAssignOp);
+    if (testList.size()>0) // assignment statement
+    {
+      ROSE_ASSERT(testList.size()==1);// only handle the case of 1 statement, canonical form
+      SgAssignOp * assignop = isSgAssignOp((*testList.begin()));
+      ROSE_ASSERT(assignop);
+      if( assignop->get_rhs_operand()->get_lvalue())
+        lb->set_lvalue(true);
+      assignop->set_rhs_operand(lb);
+      lb->set_parent(assignop);
+      //TODO what happens to the original rhs operand?
+    }
+    else // variable declaration case
+    {
+      // SgVariableDeclaration
+      Rose_STL_Container<SgNode* > testList = NodeQuery::querySubTree( *((forstmt->get_init_stmt()).begin()),  V_SgAssignInitializer );
+      ROSE_ASSERT(testList.size()==1);// only handle the case of 1 statement, canonical form
+      SgAssignInitializer* init = isSgAssignInitializer((*testList.begin()));
+      ROSE_ASSERT(init != NULL);
+      init->set_operand(lb);
+      lb->set_parent(init);
+      //TODO what happens to the original rhs operand?
+    }
+  }
+  else if (dostmt != NULL)
+  {
+    SgExpression* init = dostmt->get_initialization();
+    ROSE_ASSERT (init != NULL);
+    SgAssignOp * a_op = isSgAssignOp (init);
+    ROSE_ASSERT (a_op!=NULL);
+    a_op->set_rhs_operand(lb);
+    lb->set_parent(a_op);
+    //TODO delete the previous operand?
+  }
+  else
+  {
+    cerr<<"Error. SageInterface::setLoopLowerBound(), illegal loop type:"<< loop->class_name()<<endl;
+    ROSE_ASSERT (false);
+  }
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:21:02,585 - INFO - Response from llama3.1:70b for Function 228:
+2025-01-27 19:21:02,585 - INFO - /**
+ * @fn void SageInterface::setLoopLowerBound(SgNode* loop, SgExpression* lb)
+ *
+ * @brief Sets the lower bound of a for loop or Fortran do statement.
+ *
+ * This function sets the lower bound of a for loop or Fortran do statement
+ * by modifying its initialization expression. The new lower bound is set to
+ * the value specified in the second argument, and any existing lower bound
+ * is replaced. If the loop is not a valid for loop or Fortran do statement,
+ * an error message is printed.
+ *
+ * @param loop A pointer to the SgNode representing the loop whose lower bound is to be set.
+ *             Must be non-null and represent either a SgForStatement or SgFortranDo node.
+ *
+ * @param lb   A pointer to the new lower bound expression. Must be non-null.
+ *
+ * @return None
+ *
+ * @warning This function modifies the input loop statement in place, so use with caution.
+ *
+ * @pre The input loop must be a valid for loop or Fortran do statement, and the input lower bound expression must be non-null.
+ *
+ * @post The lower bound of the input loop is set to the value specified in the second argument.
+ *
+ * @note This function assumes that the input loop has an initialization expression,
+ *       which may not always be the case (e.g. for Fortran do statements with no initial
+ *       clause).
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create a sample for loop
+ *           SgForStatement* forstmt = new SgForStatement();
+ *           forstmt->set_init_stmt(new SgExprStatement());
+ *
+ *           // Set the lower bound of the loop
+ *           SageInterface::setLoopLowerBound(forstmt, new SgIntVal(10));
+ *
+ *           // Print the modified loop statement
+ *           ROSE_ASSERT(forstmt != NULL);
+ *           cout << forstmt->class_name() << endl;
+ *          @endcode
+ */
+2025-01-27 19:21:02,585 - INFO - End time: 2025-01-27 19:21:02
+2025-01-27 19:21:02,585 - INFO - Duration: 29.83180046081543

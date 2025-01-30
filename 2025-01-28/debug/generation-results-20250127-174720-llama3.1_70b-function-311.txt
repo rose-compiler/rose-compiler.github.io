@@ -1,0 +1,450 @@
+2025-01-27 19:56:21,863 - INFO - Start time: 2025-01-27 19:56:21
+2025-01-27 19:56:21,863 - INFO - Generating documents for a function with id : 311
+2025-01-27 19:56:21,863 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::appendStatementWithDependentDeclaration( SgDeclarationStatement* decl, SgGlobal* scope, SgStatement* original_statement, bool excludeHeaderFiles)
+   {
+  // New function to support outlining of functions into separate files (with their required declarations).
+
+#if 0
+     printf ("***** In SageInterface::appendStatementWithDependentDeclaration(): decl                                    = %p \n",decl);
+     printf ("***** In SageInterface::appendStatementWithDependentDeclaration(): decl->get_parent()                      = %p \n",decl->get_parent());
+     printf ("***** In SageInterface::appendStatementWithDependentDeclaration(): decl->get_scope()                       = %p \n",decl->get_scope());
+     printf ("***** In SageInterface::appendStatementWithDependentDeclaration(): original_statement                      = %p \n",original_statement);
+     printf ("***** In SageInterface::appendStatementWithDependentDeclaration(): file (decl)                             = %s \n",TransformationSupport::getSourceFile(decl)->getFileName().c_str());
+     printf ("***** In SageInterface::appendStatementWithDependentDeclaration(): decl->get_firstNondefiningDeclaration() = %p \n",decl->get_firstNondefiningDeclaration());
+     if (decl->get_firstNondefiningDeclaration() != NULL)
+          printf ("***** In SageInterface::appendStatementWithDependentDeclaration(): file (first non-defining)               = %s \n",TransformationSupport::getSourceFile(decl->get_firstNondefiningDeclaration())->getFileName().c_str());
+     printf ("***** In SageInterface::appendStatementWithDependentDeclaration(): decl->get_definingDeclaration()         = %p \n",decl->get_definingDeclaration());
+     if (decl->get_definingDeclaration() != NULL)
+          printf ("***** In SageInterface::appendStatementWithDependentDeclaration(): file (first non-defining)               = %s \n",TransformationSupport::getSourceFile(decl->get_definingDeclaration())->getFileName().c_str());
+#endif
+
+#ifndef ROSE_USE_INTERNAL_FRONTEND_DEVELOPMENT
+  // Make sure that the input declaration (decl" is consistent in it's representation across more
+  // than one file (only a significant test when outlining to a separate file; which is what this
+  // function supports).
+     ROSE_ASSERT(decl->get_firstNondefiningDeclaration() != NULL);
+     ROSE_ASSERT(TransformationSupport::getSourceFile(decl) == TransformationSupport::getSourceFile(decl->get_firstNondefiningDeclaration()));
+     ROSE_ASSERT(TransformationSupport::getSourceFile(decl->get_scope()) == TransformationSupport::getSourceFile(decl->get_firstNondefiningDeclaration()));
+
+  // DQ (2/6/2009): I need to write this function to support the
+  // insertion of the function into the specified scope.  If the
+  // file associated with the scope is marked as compiler generated
+  // (or as a transformation) then the declarations referenced in the
+  // function must be copied as well (those not in include files)
+  // and the include files must be copies also. If the SgFile
+  // is not compiler generated (or a transformation) then we just
+  // append the function to the scope (trivial case).
+
+  // This code will be based on the work in:
+  //   developersScratchSpace/Dan/translator_tests/reverseTraversal.C
+
+  // To test this run: "rm moreTest2.o ; make moreTest2.o"
+  // in directory: tests/nonsmoke/functional/roseTests/astOutliningTests
+
+  // ***** Also move different loop IR nodes into a common base class *****
+
+  // SgSourceFile* separateSourceFile = TransformationSupport::getSourceFile(scope);
+
+  // DQ (3/2/2009): This now calls a newer function which returns a list of declarations and a list of symbols.
+  // The declarations are sometimes outer declarations of nested references to dependent declaration in inner
+  // scopes (see moreTest3.cpp).  The Symbol list are the symbols in the old AST that will be mapped to newer
+  // symbols generated in the copied AST.
+  // Collect the declaration that the input declaration depends upon.
+    vector<SgDeclarationStatement*> dependentDeclarationList_inOriginalFile;
+
+    dependentDeclarationList_inOriginalFile = getDependentDeclarations(decl);
+
+  // Generate the copies of all the dependent statements
+//     printf ("Fixme: this currently causes the getDependentDeclarations(decl) function to be called twice \n");
+//     vector<SgDeclarationStatement*> dependentDeclarationList = generateCopiesOfDependentDeclarations(decl,scope);
+     vector<SgDeclarationStatement*> dependentDeclarationList = generateCopiesOfDependentDeclarations(dependentDeclarationList_inOriginalFile,scope);
+     ROSE_ASSERT(dependentDeclarationList.size() <= dependentDeclarationList_inOriginalFile.size());
+
+  // Make sure that the input declaration (decl" is consistent in it's representation across more
+  // than one file (only a significant test when outlining to a separate file; which is what this
+  // function supports).
+     ROSE_ASSERT(decl->get_firstNondefiningDeclaration() != NULL);
+     ROSE_ASSERT(TransformationSupport::getSourceFile(decl) == TransformationSupport::getSourceFile(decl->get_firstNondefiningDeclaration()));
+     ROSE_ASSERT(TransformationSupport::getSourceFile(decl->get_scope()) == TransformationSupport::getSourceFile(decl->get_firstNondefiningDeclaration()));
+
+  // This is used to fixup the AST by resetting references to IR nodes (leveraged from AST merge).
+     std::map<SgNode*, SgNode*> replacementMap;
+
+  // DQ (3/2/2009): Now use the collectDependentDeclarationsCopyType object to generate the mapping
+  // from the symbols in the old AST to the new symbols in the new AST (generated as part of the AST
+  // copy mechanism).
+     SgCopyHelp::copiedNodeMapType copyNodeMap = collectDependentDeclarationsCopyType.get_copiedNodeMap();
+     SgCopyHelp::copiedNodeMapType::iterator copyNodeMapItrator = copyNodeMap.begin();
+     while (copyNodeMapItrator != copyNodeMap.end())
+        {
+       // Loop over all the nodes generated in the AST copy mechanism (accumulated result over multiple copies).
+       // const SgNode* first  = const_cast<SgNode*>(copyNodeMapItrator->first);
+       // SgNode* first  = copyNodeMapItrator->first;
+          SgNode* first  = const_cast<SgNode*>(copyNodeMapItrator->first);
+          SgNode* second = copyNodeMapItrator->second;
+#if 0
+          printf ("copyNodeMapItrator.first = %p = %s second = %p = %s \n",first,first->class_name().c_str(),second,second->class_name().c_str());
+#endif
+       // Add the SgGlobal referenece to the replacementMap
+          if (isSgSymbol(first) != NULL)
+             {
+#if 0
+               printf ("Adding to replacementMap (first = %p = %s = %s , second = %p \n",first,first->class_name().c_str(),SageInterface::get_name(first).c_str(),second);
+#endif
+               replacementMap.insert(pair<SgNode*,SgNode*>(first,second));
+             }
+
+          copyNodeMapItrator++;
+        }
+
+#if 0
+     printf ("Exiting after test of new functionality \n");
+     ROSE_ABORT();
+#endif
+
+  // DQ (2/22/2009): We need all the declarations! (moreTest3.cpp demonstrates this, since it drops
+  // the "#define SIMPLE 1" which causes it to be treated a "0" (causing errors in the generated code).
+     SgSourceFile* sourceFile = TransformationSupport::getSourceFile(original_statement);
+     vector<PreprocessingInfo*> requiredDirectivesList = collectCppDirectives(sourceFile);
+
+     SgFunctionDeclaration* outlinedFunctionDeclaration = isSgFunctionDeclaration(decl);
+     ROSE_ASSERT(outlinedFunctionDeclaration != NULL);
+     SgGlobal* originalFileGlobalScope = TransformationSupport::getGlobalScope(original_statement);
+     ROSE_ASSERT(originalFileGlobalScope != NULL);
+     if ( SgProject::get_verbose() >= 1 )
+       printf ("WARNING: In SageInterface::appendStatementWithDependentDeclaration(): I think this is the wrong lookup symbol function that is being used here! \n");
+
+  // DQ (8/16/2013): I think this is the wrong symbol lookup function to be using here, but the API is fixed.
+  // SgFunctionSymbol* outlinedFunctionSymbolFromOriginalFile = isSgFunctionSymbol(originalFileGlobalScope->lookup_symbol(outlinedFunctionDeclaration->get_name()));
+     SgFunctionSymbol* outlinedFunctionSymbolFromOriginalFile = isSgFunctionSymbol(originalFileGlobalScope->lookup_symbol(outlinedFunctionDeclaration->get_name(),NULL,NULL));
+
+  // SgSymbol* outlinedFunctionSymbolFromOutlinedFile = scope->lookup_symbol(outlinedFunctionDeclaration->get_name());
+     ROSE_ASSERT(decl->get_firstNondefiningDeclaration() != NULL);
+     SgFunctionSymbol* outlinedFunctionSymbolFromOutlinedFile = isSgFunctionSymbol(decl->get_firstNondefiningDeclaration()->get_symbol_from_symbol_table());
+#if 0
+     printf ("outlinedFunctionSymbolFromOriginalFile = %p outlinedFunctionSymbolFromOutlinedFile = %p \n",outlinedFunctionSymbolFromOriginalFile,outlinedFunctionSymbolFromOutlinedFile);
+
+     printf ("TransformationSupport::getSourceFile(decl)->getFileName()                                    = %s \n",TransformationSupport::getSourceFile(decl)->getFileName().c_str());
+     printf ("TransformationSupport::getSourceFile(decl->get_firstNondefiningDeclaration())->getFileName() = %s \n",TransformationSupport::getSourceFile(decl->get_firstNondefiningDeclaration())->getFileName().c_str());
+     printf ("TransformationSupport::getSourceFile(original_statement)->getFileName()                      = %s \n",TransformationSupport::getSourceFile(original_statement)->getFileName().c_str());
+#endif
+
+     ROSE_ASSERT(outlinedFunctionSymbolFromOriginalFile != NULL);
+     ROSE_ASSERT(outlinedFunctionSymbolFromOutlinedFile != NULL);
+
+  // TV (07/24/2013): Symbol are unified across files through the project wide global scope
+     ROSE_ASSERT(outlinedFunctionSymbolFromOriginalFile == outlinedFunctionSymbolFromOutlinedFile);
+
+  // Add the SgGlobal referenece to the replacementMap
+     replacementMap.insert(pair<SgNode*,SgNode*>(originalFileGlobalScope,scope));
+
+  // Add the non-defining declarations of the outlined function to the replacementMap
+     SgFunctionDeclaration* outlinedNondefiningFunctionDeclarationFromOriginalFile = isSgFunctionDeclaration(outlinedFunctionSymbolFromOriginalFile->get_declaration());
+     SgFunctionDeclaration* outlinedNondefiningFunctionDeclarationFromOutlinedFile = isSgFunctionDeclaration(decl->get_firstNondefiningDeclaration());
+     ROSE_ASSERT(outlinedNondefiningFunctionDeclarationFromOriginalFile != NULL);
+     ROSE_ASSERT(outlinedNondefiningFunctionDeclarationFromOutlinedFile != NULL);
+     replacementMap.insert(pair<SgNode*,SgNode*>(outlinedNondefiningFunctionDeclarationFromOriginalFile,outlinedNondefiningFunctionDeclarationFromOutlinedFile));
+
+
+  // list<SgDeclarationStatement>::iterator i = declarationList.begin();
+  // while (i != declarationList.end())
+  // for (list<SgDeclarationStatement>::iterator i = declarationList.begin(); i != declarationList.end(); i++)
+
+//      cout<<"\n*******************************************\n"<<endl;
+//      cout<<"Inserting dependent decls: count="<<dependentDeclarationList.size()<<endl;
+     for (size_t i = 0; i < dependentDeclarationList.size(); i++)
+        {
+          SgDeclarationStatement* d                   = dependentDeclarationList[i]; // copies of dependent declarations
+#if 0
+          SgDeclarationStatement* originalDeclaration = dependentDeclarationList_inOriginalFile[i];
+          printf ("declarationList[%" PRIuPTR "] = %p = %s = %s \n",i,d,d->class_name().c_str(),SageInterface::get_name(d).c_str());
+          printf ("originalDeclaration = %p \n",originalDeclaration);
+
+          d->get_file_info()->display("SageInterface::appendStatementWithDependentDeclaration()");
+#endif
+
+       // DQ (2/20/2009): Added assertion.
+          ROSE_ASSERT(d->get_parent() == NULL);
+
+       // scope->append_declaration(d);
+       // scope->insert_statement (decl, d, /* bool inFront= */ true);
+          ROSE_ASSERT(decl->get_scope() == scope);
+          ROSE_ASSERT(find(scope->getDeclarationList().begin(),scope->getDeclarationList().end(),decl) != scope->getDeclarationList().end());
+          scope->insert_statement (decl, d, /* bool inFront= */ true);
+          d->set_parent (scope);
+
+#if 0
+          printf ("Add the required symbol information to the symbol table: scope = %p = %s \n",scope,scope->class_name().c_str());
+#endif
+
+       // For whatever type of declaration we add to the global scope in the new separate
+       // file we have to add the required symbol information to the symbol table.
+          switch(d->variantT())
+             {
+               case V_SgClassDeclaration:
+                  {
+                    if ( declarationContainsDependentDeclarations(d,dependentDeclarationList) == true )
+                         printf ("Warning: This class contains dependent declarations (not implemented) \n");
+                    break;
+                  }
+
+               case V_SgMemberFunctionDeclaration:
+                  printf ("Sorry, support for dependent member function declarations not implemented! \n");
+                  ROSE_ABORT();
+
+                case V_SgTemplateInstantiationDecl:
+                  printf ("Sorry, not implemented: case SgTemplateInstantiationDecl not handled as dependent declaration \n");
+                  d->get_file_info()->display("Sorry, not implemented: case SgTemplateInstantiationDecl not handled as dependent declaration");
+
+                  printf ("Case of SgTemplateInstantiationDecl not implemented. \n");
+                  ROSE_ABORT();
+
+                case V_SgNamespaceDeclarationStatement:
+                  if (declarationContainsDependentDeclarations(d,dependentDeclarationList) == true )
+                    printf ("Warning: This namespace contains dependent declarations (not supported) \n");
+                  break;
+
+               case V_SgFunctionDeclaration:
+               case V_SgTypedefDeclaration:
+               case V_SgEnumDeclaration:
+                  break;
+
+               default:
+                 printf ("default case in SageInterface::appendStatementWithDependentDeclaration() (handling dependentDeclarationList) d = %p = %s \n",d,d->class_name().c_str());
+                 ROSE_ABORT();
+             }
+
+
+       // Collect include directives that are already attached to this dependent declaration.
+          vector<PreprocessingInfo*> cppDirectivesAlreadyAttachedToDependentDeclarations = collectCppDirectives(d);
+
+#if 0
+          printf ("directives BEFORE excluding those already present in dependent declarations \n");
+          outputPreprocessingInfoList(requiredDirectivesList);
+
+          printf ("directives already attached to dependent declarations \n");
+          outputPreprocessingInfoList(cppDirectivesAlreadyAttachedToDependentDeclarations);
+#endif
+
+       // Remove these include directives from the requiredDirectivesList (to prevent redundant output in the generated file)
+          vector<PreprocessingInfo*>::iterator j = cppDirectivesAlreadyAttachedToDependentDeclarations.begin();
+          while ( j != cppDirectivesAlreadyAttachedToDependentDeclarations.end() )
+             {
+            // Remove this directive from the requiredDirectivesList (to avoid having them output redundently).
+               vector<PreprocessingInfo*>::iterator entry = find(requiredDirectivesList.begin(),requiredDirectivesList.end(),*j);
+               ROSE_ASSERT(entry != requiredDirectivesList.end());
+
+               requiredDirectivesList.erase(entry);
+
+               j++;
+             }
+
+#if 0
+          printf ("directives AFTER excluding those already present in dependent declarations \n");
+          outputPreprocessingInfoList(requiredDirectivesList);
+#endif
+        }
+
+  // Add a message to the top of the outlined function that has been added
+     addMessageStatement(decl,"/* OUTLINED FUNCTION */");
+
+  // Insert the dependent declarations ahead of the input "decl".
+     SgStatement* firstStatmentInFile = NULL;
+     if (dependentDeclarationList.empty() == true)
+        {
+          firstStatmentInFile = decl;
+        }
+       else
+        {
+          firstStatmentInFile = dependentDeclarationList[0];
+        }
+
+     ROSE_ASSERT(firstStatmentInFile != NULL);
+
+  // Add a message to the top of the dependent declarations that have been added
+     addMessageStatement(firstStatmentInFile,"/* REQUIRED DEPENDENT DECLARATIONS */");
+
+  // DQ (3/6/2009): Added support to permit exclusion of "#include<header.h>" files since they can make it
+  // much more difficult for external tools. Later we will check if there are remaining unsatisfied dependent
+  // declarations (which must be in the header file) so we can automate this step.
+     if (excludeHeaderFiles == false)
+        {
+       // Include all the "#include<header.h>" cpp directives obtained from the original file.
+          vector<PreprocessingInfo*>::reverse_iterator j = requiredDirectivesList.rbegin();
+          while ( j != requiredDirectivesList.rend() )
+             {
+               firstStatmentInFile->addToAttachedPreprocessingInfo(*j,PreprocessingInfo::before);
+               j++;
+             }
+        }
+
+  // Add a message to the top of the CPP directives that have been added
+     addMessageStatement(firstStatmentInFile,"/* REQUIRED CPP DIRECTIVES */");
+
+  // ****************************************************************************
+  // ****************  Fixup AST to Reset References To IR nodes  ***************
+  // ****************************************************************************
+  // This traversal of the replacement map modified the AST to reset pointers to subtrees that will be shared.
+  // The whole AST is traversed (using the memory pool traversal) and the data member pointers to IR nodes that
+  // are found in the replacement map are used to lookup the replacement values that are used to reset the
+  // pointers in the AST. As the replacement is computed the pointer values that are marked in the replacement
+  // list for update are added to the intermediateDeleteSet.
+
+     SgSourceFile* outlinedFile = TransformationSupport::getSourceFile(scope);
+     ROSE_ASSERT(outlinedFile != NULL);
+
+  // This replacement will be done over the entire file (parts of it are redundant with what has already
+  // been done by the AST copy (so this step need not do as much and may be reduced to just operating
+  // on the outlined function, I think).
+#if 0
+     printf ("\n\n************************************************************\n");
+     printf ("Calling Utils::edgePointerReplacement() \n");
+#endif
+
+     Rose::AST::Utility::edgePointerReplacement(outlinedFile,replacementMap);
+
+#if 0
+     printf ("Calling Utils::edgePointerReplacement(): DONE \n");
+     printf ("************************************************************\n\n");
+
+     printf ("\n\n After replacementMapTraversal(): intermediateDeleteSet: \n");
+     displaySet(intermediateDeleteSet,"After Utils::edgePointerReplacement");
+#endif
+
+  // Repeated test from above
+     ROSE_ASSERT(dependentDeclarationList.size() <= dependentDeclarationList_inOriginalFile.size());
+
+// endif for ROSE_USE_INTERNAL_FRONTEND_DEVELOPMENT
+#endif
+
+#if 0
+  // The replacementMap should include the symbols associated with the dependentDeclarationList
+  // and the outlined function (so dependentDeclarationList.size() + 1).
+     printf ("replacementMap.size() = %" PRIuPTR " dependentDeclarationList.size() = %" PRIuPTR " \n",replacementMap.size(),dependentDeclarationList.size());
+  // ROSE_ASSERT(replacementMap.size() == dependentDeclarationList.size() + 1);
+#endif
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:56:43,384 - INFO - Response from llama3.1:70b for Function 311:
+2025-01-27 19:56:43,384 - INFO - /**
+ * @file   OutlinedFunction.cpp
+ * @author [Your Name]
+ * @date   [Current Date]
+ *
+ * @brief  This file contains the outlined function that was extracted from a larger source code.
+ */
+
+// ****************************************************************************
+// *********************  OUTLINED FUNCTION  *********************************
+// ****************************************************************************
+
+/**
+ * @fn    [Function Name]
+ *
+ * @brief [Brief description of the function]
+ *
+ * [Detailed description of the function, including its purpose, parameters, and return values]
+ *
+ * @param [Parameter 1] [Description of parameter 1]
+ * @param [Parameter 2] [Description of parameter 2]
+ * ...
+ * @return [Return type] [Description of return value]
+ */
+
+[Function Definition]
+
+// ****************************************************************************
+// *********************  DEPENDENT DECLARATIONS  *******************************
+// ****************************************************************************
+
+/**
+ * @brief This section contains the dependent declarations that are required by the outlined function.
+ */
+
+[Dependent Declaration 1]
+
+[Dependent Declaration 2]
+
+...
+
+// ****************************************************************************
+// *********************  CPP DIRECTIVES  *************************************
+// ****************************************************************************
+
+/**
+ * @brief This section contains the CPP directives that are required by the outlined function.
+ */
+
+[C++ Directive 1]
+
+[C++ Directive 2]
+
+...
+
+// ****************************************************************************
+// *********************  NOTES AND COMMENTS  *******************************
+// ****************************************************************************
+
+/**
+ * @note [Note or comment about the outlined function]
+ */
+
+// ****************************************************************************
+// *********************  END OF OUTLINED FUNCTION  **************************
+// ****************************************************************************
+2025-01-27 19:56:43,384 - INFO - End time: 2025-01-27 19:56:43
+2025-01-27 19:56:43,384 - INFO - Duration: 21.52064299583435

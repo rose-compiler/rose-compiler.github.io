@@ -1,0 +1,135 @@
+2025-01-27 20:44:38,800 - INFO - Start time: 2025-01-27 20:44:38
+2025-01-27 20:44:38,800 - INFO - Generating documents for a function with id : 427
+2025-01-27 20:44:38,800 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgCommaOpExp * SageInterface::insertAfterUsingCommaOp (SgExpression* new_exp, SgExpression* anchor_exp, SgStatement** temp_decl /* = NULL */, SgVarRefExp** temp_ref /* = NULL */)
+{
+  ROSE_ASSERT (new_exp != NULL);
+  ROSE_ASSERT (anchor_exp != NULL);
+  ROSE_ASSERT (new_exp != anchor_exp);
+
+  SgNode* parent = anchor_exp->get_parent();
+  ROSE_ASSERT (parent != NULL);
+
+  // insert TYPE T1; right before the enclosing statement of anchor_exp
+  SgType * t = anchor_exp ->get_type();
+  ROSE_ASSERT (t != NULL);
+  SgStatement * enclosing_stmt = getEnclosingStatement(anchor_exp);
+  ROSE_ASSERT (enclosing_stmt != NULL);
+
+  gensym_counter ++;
+  string temp_name = "_t_"+ StringUtility::numberToString(gensym_counter);
+  SgVariableDeclaration* t_decl = buildVariableDeclaration(temp_name, t, NULL, enclosing_stmt->get_scope());
+  insertStatementBefore (enclosing_stmt, t_decl);
+  SgVariableSymbol * temp_sym = getFirstVarSym (t_decl);
+  ROSE_ASSERT (temp_sym != NULL);
+  if (temp_decl)
+    *temp_decl = t_decl;
+
+  // build ((T1 = anchor_exp, new_exp),T1) )
+  SgVarRefExp * first_ref = buildVarRefExp(temp_sym);
+  if (temp_ref)
+    * temp_ref = first_ref;
+  SgCommaOpExp * result = buildCommaOpExp ( buildCommaOpExp (buildAssignOp ( first_ref, deepCopy(anchor_exp)), new_exp) , buildVarRefExp(temp_sym));
+  replaceExpression (anchor_exp, result, false);
+
+  return result;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:45:21,594 - INFO - Response from llama3.1:70b for Function 427:
+2025-01-27 20:45:21,594 - INFO - /**
+ * @fn SgCommaOpExp* SageInterface::insertAfterUsingCommaOp (SgExpression* new_exp, SgExpression* anchor_exp, SgStatement** temp_decl /* = NULL */, SgVarRefExp** temp_ref /* = NULL */)
+ *
+ * @brief Inserts an expression after another using a comma operator.
+ *
+ * This function inserts the given expression `new_exp` after the given anchor
+ * expression `anchor_exp` in the Abstract Syntax Tree (AST) of the source code,
+ * using a comma operator. It creates a new temporary variable declaration and
+ * uses it to store the value of the anchor expression, then replaces the anchor
+ * expression with the new comma operator expression.
+ *
+ * The function takes four parameters:
+ * - `new_exp`: The new expression to be inserted after the anchor expression.
+ * - `anchor_exp`: The anchor expression in the AST where the new expression is to be inserted.
+ * - `temp_decl`: A pointer to a pointer of type SgStatement, which will hold the newly created temporary variable declaration. Can be NULL if not needed.
+ * - `temp_ref`: A pointer to a pointer of type SgVarRefExp, which will hold the reference to the newly created temporary variable. Can be NULL if not needed.
+ *
+ * @param new_exp The new expression to be inserted after the anchor expression.
+ *                Must not be NULL.
+ * @param anchor_exp The anchor expression in the AST where the new expression is to be inserted.
+ *                   Must not be NULL and must not be the same as `new_exp`.
+ * @param temp_decl A pointer to a pointer of type SgStatement, which will hold the newly created temporary variable declaration. Can be NULL if not needed.
+ * @param temp_ref A pointer to a pointer of type SgVarRefExp, which will hold the reference to the newly created temporary variable. Can be NULL if not needed.
+ *
+ * @return The newly created comma operator expression that replaces the anchor expression in the AST.
+ *
+ * @warning This function modifies the AST of the source code and may have unintended consequences if not used carefully.
+ *
+ * @pre The input parameters `new_exp` and `anchor_exp` must not be NULL, and `anchor_exp` must not be the same as `new_exp`.
+ * @post The anchor expression in the AST is replaced with the new comma operator expression, and the temporary variable declaration and reference are created if requested.
+ *
+ * @note This function uses a recursive algorithm to create the new comma operator expression and may cause stack overflow for very deep recursion.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgExpression* anchor_exp = ...; // some expression in the AST
+ *           SgExpression* new_exp = ...; // some new expression to be inserted
+ *           SgStatement** temp_decl = NULL;
+ *           SgVarRefExp** temp_ref = NULL;
+ *           SgCommaOpExp* result = insertAfterUsingCommaOp(new_exp, anchor_exp, temp_decl, temp_ref);
+ *          @endcode
+ */
+2025-01-27 20:45:21,594 - INFO - End time: 2025-01-27 20:45:21
+2025-01-27 20:45:21,594 - INFO - Duration: 42.793790102005005

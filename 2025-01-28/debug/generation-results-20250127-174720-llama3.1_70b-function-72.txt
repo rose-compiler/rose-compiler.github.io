@@ -1,0 +1,121 @@
+2025-01-27 18:18:12,230 - INFO - Start time: 2025-01-27 18:18:12
+2025-01-27 18:18:12,230 - INFO - Generating documents for a function with id : 72
+2025-01-27 18:18:12,230 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgFunctionDeclaration* SageInterface::getDeclarationOfNamedFunction(SgExpression* func) {
+  SgFunctionDeclaration * ret = NULL;
+  if (isSgFunctionRefExp(func))
+  {
+    return isSgFunctionRefExp(func)->get_symbol()->get_declaration();
+  }
+  else if (isSgDotExp(func) || isSgArrowExp(func))
+  {
+    SgExpression* func2 = isSgBinaryOp(func)->get_rhs_operand();
+    if (isSgMemberFunctionRefExp(func2))
+      return isSgMemberFunctionRefExp(func2)->get_symbol()->get_declaration();
+    else
+    {
+      cerr<<"Warning in SageInterface::getDeclarationOfNamedFunction(): rhs operand of dot or arrow operations is not a member function, but a "<<func2->class_name()<<endl;
+    }
+  }
+
+  return ret;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:18:41,281 - INFO - Response from llama3.1:70b for Function 72:
+2025-01-27 18:18:41,281 - INFO - /**
+ * @fn SgFunctionDeclaration* SageInterface::getDeclarationOfNamedFunction(SgExpression* func)
+ *
+ * @brief Retrieves the declaration of a named function from a given expression.
+ *
+ * This function takes an expression as input and attempts to extract the declaration
+ * of a named function. It supports various types of expressions, including function references,
+ * dot operations, and arrow operations.
+ *
+ * The function first checks if the input expression is a function reference. If so, it directly
+ * returns the declaration of the referenced function.
+ *
+ * If the input expression is not a function reference, the function checks if it is a dot or arrow
+ * operation. In this case, it extracts the right-hand side operand and checks if it is a member
+ * function reference. If so, it returns the declaration of the referenced member function.
+ *
+ * If none of the above conditions are met, the function issues a warning message to the standard error stream
+ * indicating that the input expression does not represent a named function.
+ *
+ * @param func The input expression from which to extract the declaration of a named function.
+ *
+ * @return A pointer to the declaration of the named function if found; otherwise, NULL.
+ *
+ * @warning If the right-hand side operand of a dot or arrow operation is not a member function reference,
+ *          a warning message is issued to the standard error stream.
+ *
+ * @pre The input expression must be non-NULL.
+ *
+ * @post If the function returns a non-NULL pointer, it points to a valid declaration of a named function.
+ *
+ * @note This function does not perform any semantic analysis on the input expression. It only checks
+ *       the syntactic structure of the expression to determine if it represents a named function.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgExpression* func = ...; // assume some valid expression
+ *           SgFunctionDeclaration* decl = SageInterface::getDeclarationOfNamedFunction(func);
+ *           if (decl != NULL) {
+ *             // process the declaration of the named function
+ *           }
+ *          @endcode
+ */
+2025-01-27 18:18:41,281 - INFO - End time: 2025-01-27 18:18:41
+2025-01-27 18:18:41,281 - INFO - Duration: 29.050939559936523

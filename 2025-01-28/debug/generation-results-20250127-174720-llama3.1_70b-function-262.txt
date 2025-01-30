@@ -1,0 +1,108 @@
+2025-01-27 19:35:42,483 - INFO - Start time: 2025-01-27 19:35:42
+2025-01-27 19:35:42,484 - INFO - Generating documents for a function with id : 262
+2025-01-27 19:35:42,484 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgScopeStatement* SageInterface::getEnclosingScope(SgNode* n, const bool includingSelf/* =false*/)
+{
+  SgScopeStatement* result = getScope (n);
+  if (result == n)
+  {
+    if (!includingSelf)
+      result = getScope(n->get_parent());
+  }
+  return result;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:36:11,440 - INFO - Response from llama3.1:70b for Function 262:
+2025-01-27 19:36:11,440 - INFO - /**
+ * @fn SgScopeStatement* SageInterface::getEnclosingScope(SgNode* n, const bool includingSelf/* =false*/)
+ *
+ * @brief Retrieves the enclosing scope statement of a given node.
+ *
+ * This function computes the enclosing scope statement of a given node in an abstract syntax tree (AST).
+ * It traverses up the AST from the input node to find the nearest enclosing scope statement.
+ *
+ * @param n The node for which the enclosing scope is to be retrieved. Must not be NULL.
+ * @param includingSelf A flag indicating whether the input node itself should be considered as a potential enclosing scope.
+ *                      If true, the function returns the input node if it is already a scope statement; otherwise,
+ *                      the function traverses up the AST to find the nearest enclosing scope statement.
+ *
+ * @return The enclosing scope statement of the input node. Returns NULL if no enclosing scope is found or
+ *         if the input node itself is not within any scope statement.
+ *
+ * @warning This function assumes that the input node is a valid node in an abstract syntax tree (AST).
+ *          If the input node is invalid or corrupted, the behavior of this function is undefined.
+ *
+ * @pre The input node must be non-NULL and part of a valid AST.
+ *
+ * @post The returned enclosing scope statement is guaranteed to be a valid SgScopeStatement object,
+ *       but may be NULL if no enclosing scope is found.
+ *
+ * @note This function uses the Sage III compiler infrastructure, which provides an abstract syntax tree (AST)
+ *       representation of source code. The AST is traversed recursively to find the nearest enclosing scope statement.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* node = ...; // obtain a valid node from the AST
+ *           SgScopeStatement* enclosingScope = SageInterface::getEnclosingScope(node);
+ *           if (enclosingScope != NULL) {
+ *             // process the enclosing scope statement
+ *           } else {
+ *             // no enclosing scope found or input node is invalid
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:36:11,440 - INFO - End time: 2025-01-27 19:36:11
+2025-01-27 19:36:11,440 - INFO - Duration: 28.95691466331482

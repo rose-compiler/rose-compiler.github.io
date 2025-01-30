@@ -1,0 +1,213 @@
+2025-01-27 18:21:04,977 - INFO - Start time: 2025-01-27 18:21:04
+2025-01-27 18:21:04,977 - INFO - Generating documents for a function with id : 81
+2025-01-27 18:21:04,977 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::declarationPreceedsDefinition ( SgDeclarationStatement* nonDefiningDeclaration, SgDeclarationStatement* definingDeclaration )
+   {
+  // This function is used in the unparser, but might be more generally useful.  Since it is
+  // related to general AST tests, I have put it here.  It might be alternatively put in the
+  // src/backend/unparser or related utility directory.
+
+  // Preorder traversal to test the order of declaration of non-defining vs. defining class
+  // declarations in the preorder traversal of the AST.
+     class DeclarationOrderTraversal : public AstSimpleProcessing
+        {
+          public:
+               DeclarationOrderTraversal( SgDeclarationStatement* nonDefiningDeclaration, SgDeclarationStatement* definingDeclaration )
+                  : storedNondefiningDeclaration(nonDefiningDeclaration),
+                    storedDefiningDeclaration(definingDeclaration)
+                  {
+                    storedDeclarationFound                            = false;
+                    nonDefiningDeclarationPreceedsDefiningDeclaration = false;
+                  }
+
+               void visit (SgNode* node)
+                  {
+                    ROSE_ASSERT(storedNondefiningDeclaration != NULL);
+                    ROSE_ASSERT(storedDefiningDeclaration != NULL);
+                    ROSE_ASSERT(storedNondefiningDeclaration != storedDefiningDeclaration);
+                 // ROSE_ASSERT(storedNondefiningDeclaration->get_definingDeclaration() == storedDefiningDeclaration);
+
+                 // Even though we only care about the SgClassDeclaration IR nodes we have to traverse them
+                 // in the AST in the order defined by the traversal (order of apprearance in the AST).  We
+                 // also can't just search the declarations of a single scope (since the nondefining declaration
+                 // can appear in a different scope than the defining declaration).
+                    SgDeclarationStatement* declaration = isSgDeclarationStatement(node);
+                    if ( declaration != NULL )
+                       {
+                         if (storedDeclarationFound == false)
+                            {
+                              if (declaration == storedDefiningDeclaration)
+                                 {
+                                   storedDeclarationFound = true;
+                                   nonDefiningDeclarationPreceedsDefiningDeclaration = false;
+                                 }
+                              if (declaration == storedNondefiningDeclaration)
+                                 {
+                                   storedDeclarationFound = true;
+                                   nonDefiningDeclarationPreceedsDefiningDeclaration = true;
+                                 }
+                            }
+                       }
+                  }
+
+          public:
+               bool storedDeclarationFound;
+               bool nonDefiningDeclarationPreceedsDefiningDeclaration;
+
+          private:
+               SgDeclarationStatement* storedNondefiningDeclaration;
+               SgDeclarationStatement* storedDefiningDeclaration;
+        };
+
+     ROSE_ASSERT(nonDefiningDeclaration != NULL);
+#if 0
+     printf ("In SageInterface::declarationPreceedsDefinition(): \n");
+     printf ("     nondefiningDeclaration                            = %p = %s \n",nonDefiningDeclaration,nonDefiningDeclaration->class_name().c_str());
+     nonDefiningDeclaration->get_file_info()->display("nonDefiningDeclaration");
+     printf ("     nondefiningDeclaration->get_definingDeclaration() = %p \n",nonDefiningDeclaration->get_definingDeclaration());
+     printf ("     definingDeclaration                               = %p = %s \n",definingDeclaration,definingDeclaration->class_name().c_str());
+     definingDeclaration->get_file_info()->display("definingDeclaration");
+     printf ("************************************************************* \n");
+#endif
+
+#if 0
+  // The nonDefiningDeclaration can be a different type of declaration than the definingDeclaration
+     if (nonDefiningDeclaration->get_definingDeclaration() != definingDeclaration)
+        {
+          printf ("In SageInterface::declarationPreceedsDefinition() (warning): \n");
+          printf ("     nondefiningDeclaration                            = %p \n",nonDefiningDeclaration);
+          printf ("     nondefiningDeclaration->get_definingDeclaration() = %p \n",nonDefiningDeclaration->get_definingDeclaration());
+          printf ("     definingDeclaration                               = %p \n",definingDeclaration);
+        }
+#endif
+
+  // define trival case of classNonDefiningDeclaration == classDefiningDeclaration to be false.
+     bool returnResult = false;
+     if (nonDefiningDeclaration != definingDeclaration)
+        {
+       // Get the global scope from a traversal back (up) through the AST.
+          SgGlobal* globalScope = TransformationSupport::getGlobalScope(definingDeclaration);
+          ROSE_ASSERT(globalScope != NULL);
+
+       // Now buid the traveral object and call the traversal (preorder) on the function definition.
+          DeclarationOrderTraversal traversal (nonDefiningDeclaration,definingDeclaration);
+
+#if 0
+          traversal.traverse(globalScope, preorder);
+#else
+       // DQ (5/29/2007): To avoid order n^2 complexity in unparsing we turn off the name qualification for now.
+          printf ("Skipping traversal within SageInterface::declarationPreceedsDefinition() \n");
+          traversal.storedDeclarationFound = true;
+          traversal.nonDefiningDeclarationPreceedsDefiningDeclaration = false;
+#endif
+
+       // I hope that we have found the input nondefining or defining declaration, if not let it be an error
+       // for now.  There may however be good reasons why we might miss them (hidden island problem, or
+       // nondefining declarations that are not in the traversal).
+
+          if (traversal.storedDeclarationFound == false)
+             {
+#if 0
+               printf ("In SageInterface::declarationPreceedsDefinition(): warning, nonDefiningDeclaration not found in the AST \n");
+               nonDefiningDeclaration->get_file_info()->display("nonDefiningDeclaration");
+               definingDeclaration->get_file_info()->display("definingDeclaration");
+               printf ("---------------------------------------------------- \n\n");
+#endif
+            // Set this error case to return true so that we will not assume incorrectly
+            // that the classNonDefiningDeclaration apears after the classDefiningDeclaration.
+               returnResult = true;
+             }
+            else
+             {
+               returnResult = traversal.nonDefiningDeclarationPreceedsDefiningDeclaration;
+             }
+
+       // ROSE_ASSERT(traversal.storedDeclarationFound == true);
+        }
+#if 0
+     printf ("returnResult = %s \n",returnResult ? "true" : "false");
+     printf ("************************************************************* \n\n");
+#endif
+     return returnResult;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:21:25,277 - INFO - Response from llama3.1:70b for Function 81:
+2025-01-27 18:21:25,277 - INFO - /**
+ * @fn bool SageInterface::declarationPreceedsDefinition(SgDeclarationStatement* nonDefiningDeclaration, SgDeclarationStatement* definingDeclaration)
+ *
+ * @brief Determines if a non-defining declaration precedes the corresponding defining declaration in the AST.
+ *
+ * This function checks whether a given non-defining declaration appears before its
+ * corresponding defining declaration in the Abstract Syntax Tree (AST). It uses a preorder
+ * traversal to test the order of declaration. If the non-defining and defining declarations are
+ * identical, it returns false by default.
+ *
+ * @param nonDefiningDeclaration The non-defining declaration statement.
+ * @param definingDeclaration The defining declaration statement.
+ *
+ * @return True if the non-defining declaration precedes the defining declaration in the AST,
+ *         false otherwise. If the input declarations are not found during traversal, it returns true
+ *         to avoid incorrect assumptions about their order.
+ *
+ * @warning This function may return incorrect results if the input declarations are not found
+ *          during traversal or if there are hidden island problems.
+ *
+ * @pre The input nonDefiningDeclaration and definingDeclaration must be valid SgDeclarationStatement objects.
+ * @post The function will return a boolean value indicating whether the non-defining declaration precedes the defining declaration.
+ */
+/**
+2025-01-27 18:21:25,277 - INFO - End time: 2025-01-27 18:21:25
+2025-01-27 18:21:25,277 - INFO - Duration: 20.299915313720703

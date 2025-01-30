@@ -1,0 +1,194 @@
+2025-01-27 19:16:48,109 - INFO - Start time: 2025-01-27 19:16:48
+2025-01-27 19:16:48,109 - INFO - Generating documents for a function with id : 219
+2025-01-27 19:16:48,109 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgInitializedName* SageInterface::getLoopIndexVariable(SgNode* loop)
+{
+  ROSE_ASSERT(loop != NULL);
+  SgInitializedName* ivarname=NULL;
+
+  // Fortran case ------------------
+  if (SgFortranDo * do_loop = isSgFortranDo(loop))
+  {
+    SgAssignOp* assign_op = isSgAssignOp (do_loop->get_initialization());
+    ROSE_ASSERT (assign_op != NULL);
+    SgVarRefExp* var = isSgVarRefExp(assign_op->get_lhs_operand());
+    ROSE_ASSERT (var != NULL);
+    ivarname = var->get_symbol()->get_declaration();
+    ROSE_ASSERT (ivarname != NULL);
+    return ivarname;
+  }
+  // C/C++ case ------------------------------
+  SgForStatement* fs = isSgForStatement(loop);
+  if (fs == NULL)
+  {
+    return NULL;
+  }
+  // we only handle C/C++ for loops and Fortran Do loops.
+  // Any other kinds of loops (while, do-while,etc.) are skipped and return NULL;
+  // ROSE_ASSERT (fs != NULL);
+
+  //Check initialization statement is something like i=xx;
+  SgStatementPtrList & init = fs->get_init_stmt();
+  if (init.size() !=1)
+  {
+    cerr<<"SageInterface::getLoopIndexVariable(), no or more than one initialization statements are encountered. Not supported yet "<<endl;
+    //ROSE_ASSERT(false);
+    return NULL;
+  }
+  SgStatement* init1 = init.front();
+  SgExpression* ivarast=NULL;
+
+  // DQ (3/20/2016): Note that GNU compiler reports these variables are set but not used.
+  //bool isCase1=false, isCase2=false;
+
+  //consider C99 style: for (int i=0;...)
+  if (isSgVariableDeclaration(init1))
+  {
+    SgVariableDeclaration* decl = isSgVariableDeclaration(init1);
+    ivarname = decl->get_variables().front();
+    ROSE_ASSERT(ivarname != NULL);
+    //SgInitializer * initor = ivarname->get_initializer();
+   // if (isSgAssignInitializer(initor))
+   //   isCase1 = true;
+  }// other regular case: for (i=0;..)
+  else if (isAssignmentStatement(init1, &ivarast))
+  {
+    SgVarRefExp* var = isSgVarRefExp(SkipCasting(ivarast));
+    if (var)
+    {
+      ivarname = var->get_symbol()->get_declaration();
+      //isCase2 = true;
+    }
+  }
+  else if (SgExprStatement* exp_stmt = isSgExprStatement(init1))
+  { //case like: for (i = 1, len1 = 0, len2=0; i <= n; i++)
+     // AST is: SgCommaOpExp -> SgAssignOp -> SgVarRefExp
+    if (SgCommaOpExp* comma_exp = isSgCommaOpExp(exp_stmt->get_expression()))
+    {
+      SgCommaOpExp* leaf_exp = comma_exp;
+      while (isSgCommaOpExp(leaf_exp->get_lhs_operand()))
+        leaf_exp = isSgCommaOpExp(leaf_exp->get_lhs_operand());
+      if (SgAssignOp* assign_op = isSgAssignOp(leaf_exp->get_lhs_operand()))
+      {
+        SgVarRefExp* var = isSgVarRefExp(assign_op->get_lhs_operand());
+        if (var)
+        {
+          ivarname = var->get_symbol()->get_declaration();
+        }
+      }
+    }
+  }
+  else
+  {
+
+    mlog[Sawyer::Message::Common::WARN] <<"Warning: SageInterface::getLoopIndexVariable(). Unhandled init_stmt type of SgForStatement"<<endl;
+    mlog[Sawyer::Message::Common::WARN] <<"Init statement is :"<<init1->class_name() <<" " <<init1->unparseToString()<<endl;
+    init1->get_file_info()->display("Debug");
+
+    return NULL;
+    //ROSE_ASSERT (false);
+  }
+  // Cannot be both true
+ // ROSE_ASSERT(!(isCase1&&isCase2));
+
+  //Check loop index's type
+  //ROSE_ASSERT(isStrictIntegerType(ivarname->get_type()));
+  return ivarname;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:17:16,773 - INFO - Response from llama3.1:70b for Function 219:
+2025-01-27 19:17:16,773 - INFO - /**
+ * @fn SgInitializedName* SageInterface::getLoopIndexVariable(SgNode* loop)
+ *
+ * @brief Retrieves the index variable of a for loop.
+ *
+ * This function takes a loop statement as input and returns the declaration
+ * of the index variable used in that loop. It supports both C/C++ style for
+ * loops and Fortran Do loops.
+ *
+ * The function iterates through the initialization statement of the loop to find
+ * the index variable, checking for various cases such as C99-style declarations,
+ * assignment statements, and comma-separated expressions. If the loop is not a
+ * for loop or if the initialization statement does not match any of the expected
+ * forms, the function returns NULL.
+ *
+ * @param loop The loop statement from which to retrieve the index variable.
+ *
+ * @return A pointer to the declaration of the index variable if found,
+ *         otherwise NULL.
+ *
+ * @warning This function assumes that the input loop is a for loop or a Fortran
+ *          Do loop. If the loop is not one of these types, the behavior is undefined.
+ *
+ * @pre The input loop must be non-NULL and have an initialization statement.
+ *
+ * @post The returned index variable declaration will be non-NULL if found.
+ *
+ * @note This function does not handle while loops or do-while loops. It also
+ *       assumes that the loop's initialization statement is a single statement,
+ *       either a variable declaration, an assignment statement, or an expression
+ *       statement with a comma-separated list of expressions.
+ *
+ * @example The following example demonstrates how to use this function:
+ *          @code
+ *           SgForStatement* for_loop = ...;
+ *           SgInitializedName* index_var = SageInterface::getLoopIndexVariable(for_loop);
+ *           if (index_var != NULL)
+ *             cout << "Index variable: " << index_var->get_name() << endl;
+ *          @endcode
+ */
+2025-01-27 19:17:16,773 - INFO - End time: 2025-01-27 19:17:16
+2025-01-27 19:17:16,773 - INFO - Duration: 28.66467022895813

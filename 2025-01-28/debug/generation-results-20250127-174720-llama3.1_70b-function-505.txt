@@ -1,0 +1,121 @@
+2025-01-27 21:10:24,690 - INFO - Start time: 2025-01-27 21:10:24
+2025-01-27 21:10:24,690 - INFO - Generating documents for a function with id : 505
+2025-01-27 21:10:24,690 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    */
+    static bool HasTrivialConstructor(const SgType * const inputType, bool checkPod){
+        //Strip typedef and array
+        SgType *type = inputType->stripType(SgType::STRIP_TYPEDEF_TYPE | SgType::STRIP_ARRAY_TYPE );
+        
+        if (checkPod && IsPod(type))
+            return true;
+        
+        ENSURE_CLASS_TYPE(type, false);
+        vector<SgMemberFunctionDeclaration*> allMemberFunctions =  GetAllMemberFunctionsInClassHierarchy(type);
+#if DEBUG_QUADRATIC_BEHAVIOR
+        printf ("In HasTrivialConstructor(): allMemberFunctions.size() = %zu \n",allMemberFunctions.size());
+#endif
+        foreach(SgMemberFunctionDeclaration* memberFunction,allMemberFunctions) {
+            if (memberFunction->get_specialFunctionModifier().isConstructor()){
+                return false;
+            }
+        }
+        return true;
+    }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 21:10:50,818 - INFO - Response from llama3.1:70b for Function 505:
+2025-01-27 21:10:50,818 - INFO - /**
+ * @fn static bool HasTrivialConstructor(const SgType* const inputType, bool checkPod)
+ *
+ * @brief Checks if a class has a trivial constructor.
+ *
+ * This function determines whether a given class has a trivial constructor,
+ * i.e., a constructor that performs no operations. It checks for the presence
+ * of any user-declared constructors in the class hierarchy and returns false
+ * if such a constructor is found. If checkPod is true, it also considers classes
+ * with POD (Plain Old Data) types as having trivial constructors.
+ *
+ * @param inputType The SgType object representing the class to be checked.
+ *                   Must not be null.
+ * @param checkPod  A boolean flag indicating whether to consider POD types
+ *                  as having trivial constructors. Defaults to false.
+ *
+ * @return True if the class has a trivial constructor, false otherwise.
+ *
+ * @warning This function assumes that the inputType is a valid SgType object
+ *          representing a class. If this assumption does not hold, undefined
+ *          behavior may occur.
+ *
+ * @pre The inputType must be a non-null pointer to an SgType object.
+ *
+ * @post None.
+ *
+ * @note This function uses the IsPod() and GetAllMemberFunctionsInClassHierarchy()
+ *       functions internally. Their documentation should be consulted for
+ *       further details on their behavior.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgType* myType = ...; // Obtain an SgType object representing a class
+ *           bool hasTrivialConstructor = HasTrivialConstructor(myType, false);
+ *           if (hasTrivialConstructor) {
+ *               printf("The class has a trivial constructor.\n");
+ *           } else {
+ *               printf("The class does not have a trivial constructor.\n");
+ *           }
+ *          @endcode
+ */
+2025-01-27 21:10:50,818 - INFO - End time: 2025-01-27 21:10:50
+2025-01-27 21:10:50,818 - INFO - Duration: 26.128557443618774

@@ -1,0 +1,144 @@
+2025-01-27 20:49:56,734 - INFO - Start time: 2025-01-27 20:49:56
+2025-01-27 20:49:56,734 - INFO - Generating documents for a function with id : 441
+2025-01-27 20:49:56,734 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    */
+    bool IsBaseOf(const SgType * const inputBaseType, const SgType * const inputDerivedType) {
+        //Strip typedef and array
+        SgType *baseType = inputBaseType->stripType(SgType::STRIP_TYPEDEF_TYPE | SgType::STRIP_MODIFIER_TYPE );
+        SgType *derivedType = inputDerivedType->stripType(SgType::STRIP_TYPEDEF_TYPE | SgType::STRIP_MODIFIER_TYPE );
+        
+        if (!IsClass(baseType) || !IsClass(derivedType)) {
+            return false;
+        }
+        
+        // derivedType must be complete type
+        ENSURE_CLASS_TYPE(derivedType, false);
+        SgClassType * baseClassType = isSgClassType(baseType);
+        SgClassType * derivedClassType = isSgClassType(derivedType);
+        SgClassType * sgClassType = isSgClassType(derivedClassType);
+        SgClassDeclaration* decl = isSgClassDeclaration(sgClassType->get_declaration());
+        ROSE_ASSERT(decl);
+        SgClassDeclaration * definingDeclaration = isSgClassDeclaration(decl->get_definingDeclaration ());
+        ROSE_ASSERT(definingDeclaration && "Requires a complete class type");
+        SgClassDefinition* classDef = definingDeclaration->get_definition();
+        ROSE_ASSERT(classDef);
+        
+        
+        //Find all superclasses
+        ClassHierarchyWrapper classHierarchy(getProject());
+        const ClassHierarchyWrapper::ClassDefSet& ancestors =  classHierarchy.getAncestorClasses(classDef);
+        set<SgClassDefinition*> inclusiveAncestors(ancestors.begin(), ancestors.end());
+        inclusiveAncestors.insert(classDef);
+#if DEBUG_QUADRATIC_BEHAVIOR
+        printf ("In HasVirtualDestructor(): inclusiveAncestors.size() = %zu \n",inclusiveAncestors.size());
+#endif
+        
+        // Match types
+        foreach(SgClassDefinition* c, inclusiveAncestors) {
+            if(c->get_declaration()->get_type()->stripType(SgType::STRIP_TYPEDEF_TYPE | SgType::STRIP_ARRAY_TYPE  | SgType::STRIP_MODIFIER_TYPE ) == baseClassType)
+                return true;
+        }
+        return false;
+        
+        
+    }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:50:26,423 - INFO - Response from llama3.1:70b for Function 441:
+2025-01-27 20:50:26,423 - INFO - /**
+ * @fn bool IsBaseOf(const SgType * const inputBaseType, const SgType * const inputDerivedType)
+ *
+ * @brief Checks if a given base type is a base of a derived type.
+ *
+ * This function determines whether the provided base type is a base class of
+ * the given derived type. It strips away typedef and array types from both
+ * inputs, checks that they are classes, and then uses a ClassHierarchyWrapper
+ * to find all superclasses of the derived type. If any of these ancestors
+ * match the base type, this function returns true.
+ *
+ * @param inputBaseType The base type to check against the derived type.
+ *                       Must be a class type.
+ * @param inputDerivedType The derived type to check for the presence of the base type.
+ *                          Must be a complete and non-array class type.
+ *
+ * @return True if the base type is found among the ancestors of the derived type,
+ *         false otherwise.
+ *
+ * @warning If the derived type is not a complete class type, this function will
+ *          return incorrect results. It is up to the caller to ensure that
+ *          inputDerivedType is a complete and non-array class type.
+ *
+ * @pre The input types must be valid and properly initialized SgType objects.
+ *      The derived type must be a complete class type.
+ *
+ * @post None.
+ *
+ * @note This function uses a ClassHierarchyWrapper to traverse the inheritance
+ *       hierarchy of the derived type. If this wrapper is not properly
+ *       initialized or configured, incorrect results may occur.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgType* baseType = ...; // some base type
+ *           SgType* derivedType = ...; // some derived type
+ *           if (IsBaseOf(baseType, derivedType)) {
+ *               printf("Base type is a base of the derived type.\n");
+ *           } else {
+ *               printf("Base type is not a base of the derived type.\n");
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:50:26,423 - INFO - End time: 2025-01-27 20:50:26
+2025-01-27 20:50:26,423 - INFO - Duration: 29.68903398513794

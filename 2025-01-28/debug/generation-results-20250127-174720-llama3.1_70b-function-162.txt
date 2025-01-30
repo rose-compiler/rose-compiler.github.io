@@ -1,0 +1,129 @@
+2025-01-27 18:53:55,336 - INFO - Start time: 2025-01-27 18:53:55
+2025-01-27 18:53:55,336 - INFO - Generating documents for a function with id : 162
+2025-01-27 18:53:55,336 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::addTextForUnparser ( SgNode* astNode, string s, AstUnparseAttribute::RelativePositionType inputlocation )
+   {
+  // printf ("addText(): using new attribute interface (s = %s) \n",s.c_str());
+
+     if (isSgType(astNode) != NULL)
+        {
+          printf ("Error: the mechanism to add text to be unparsed at IR nodes is not intended to operate on SgType IR nodes (since they are shared) \n");
+          ROSE_ABORT();
+        }
+
+     if (astNode->attributeExists(AstUnparseAttribute::markerName) == true)
+        {
+          AstUnparseAttribute* code = dynamic_cast<AstUnparseAttribute*>(astNode->getAttribute(AstUnparseAttribute::markerName));
+          ROSE_ASSERT(code != NULL);
+
+       // DQ (2/23/2009): commented added.
+       // Since there is at least one other string (there is an existing attribute) the relative order of the strings is significant.
+          code->addString(s,inputlocation);
+        }
+       else
+        {
+       // DQ (2/25/2016): I think it is significant, because inputlocation refers to the order relative to
+       // the statement, not relative to other AstUnparseAttribute objects. Fixed to use the inputlocation.
+       // DQ (2/23/2009): commented added.
+       // Note that this will be the only string in the attribute, so inputlocation is not significant (and e_before is the default used).
+       // AstUnparseAttribute* code = new AstUnparseAttribute(s,AstUnparseAttribute::e_before);
+          AstUnparseAttribute* code = new AstUnparseAttribute(s,inputlocation);
+          ROSE_ASSERT(code != NULL);
+
+          astNode->addNewAttribute(AstUnparseAttribute::markerName,code);
+        }
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:54:24,672 - INFO - Response from llama3.1:70b for Function 162:
+2025-01-27 18:54:24,672 - INFO - /**
+ * @fn void SageInterface::addTextForUnparser ( SgNode* astNode, string s, AstUnparseAttribute::RelativePositionType inputlocation )
+ *
+ * @brief Adds text to be unparsed at a given IR node.
+ *
+ * This function adds the specified text to be unparsed at the provided IR node. 
+ * It uses an attribute interface to store the text and its relative position.
+ *
+ * The function first checks if the IR node is of type SgType, in which case it prints
+ * an error message and aborts, as adding text to shared nodes is not intended.
+ * Then, it checks if the IR node already has an AstUnparseAttribute. If so, 
+ * it adds the new string to the existing attribute at the specified relative position.
+ * Otherwise, it creates a new AstUnparseAttribute with the given string and 
+ * relative position, and adds it to the IR node.
+ *
+ * @param astNode The IR node where the text is to be added. Must not be NULL.
+ * @param s The text to be added. Must not be empty.
+ * @param inputlocation The relative position of the text with respect to the IR node.
+ *
+ * @return None
+ *
+ * @warning This function assumes that the IR node and the AstUnparseAttribute are valid.
+ *
+ * @pre The IR node must exist and must not be of type SgType.
+ * @post The text is added to the IR node at the specified relative position.
+ *
+ * @note The relative position is significant only when there are multiple strings 
+ *       in the attribute. Otherwise, it defaults to e_before.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* astNode = ...; // obtain an IR node
+ *           string text = "some text";
+ *           AstUnparseAttribute::RelativePositionType position = AstUnparseAttribute::e_before;
+ *           SageInterface::addTextForUnparser(astNode, text, position);
+ *          @endcode
+ */
+2025-01-27 18:54:24,672 - INFO - End time: 2025-01-27 18:54:24
+2025-01-27 18:54:24,672 - INFO - Duration: 29.33656358718872

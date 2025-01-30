@@ -1,0 +1,151 @@
+2025-01-27 20:17:58,194 - INFO - Start time: 2025-01-27 20:17:58
+2025-01-27 20:17:58,194 - INFO - Generating documents for a function with id : 365
+2025-01-27 20:17:58,194 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::setFortranNumericLabel(SgStatement* stmt, int label_value,
+                                           SgLabelSymbol::label_type_enum label_type, SgScopeStatement* label_scope)
+   {
+     ROSE_ASSERT (stmt != NULL);
+     ROSE_ASSERT (label_value >0 && label_value <=99999); //five digits for Fortran label
+
+  // Added optional label_type and label_scope [Rasmussen 2019.01.20]
+     if (label_scope == NULL)
+        {
+           label_scope = getEnclosingFunctionDefinition(stmt);
+        }
+     ROSE_ASSERT (label_scope != NULL);
+     SgName label_name(StringUtility::numberToString(label_value));
+     SgLabelSymbol * symbol = label_scope->lookup_label_symbol (label_name);
+     if (symbol == NULL)
+        {
+       // DQ (12/4/2011): This is the correct handling for SgLabelStatement (always in the function scope, same as C and C++).
+       // DQ (2/2/2011): We want to call the old constructor (we now have another constructor that takes a SgInitializedName pointer).
+       // symbol = new SgLabelSymbol(NULL);
+          symbol = new SgLabelSymbol((SgLabelStatement*) NULL);
+          ROSE_ASSERT(symbol != NULL);
+          symbol->set_fortran_statement(stmt);
+          symbol->set_numeric_label_value(label_value);
+          label_scope->insert_symbol(label_name,symbol);
+        }
+       else
+        {
+          cerr<<"Error. SageInterface::setFortranNumericLabel() tries to set a duplicated label value!"<<endl;
+          ROSE_ASSERT (false);
+        }
+
+  // SgLabelRefExp
+     SgLabelRefExp* ref_exp = buildLabelRefExp(symbol);
+     ref_exp->set_parent(stmt);
+
+     switch(label_type)
+       {
+         case SgLabelSymbol::e_start_label_type:
+            {
+              stmt->set_numeric_label(ref_exp);
+              break;
+            }
+         case SgLabelSymbol::e_end_label_type:
+            {
+              stmt->set_end_numeric_label(ref_exp);
+              break;
+            }
+         default:
+            {
+               std::cerr << "SageInterface::setFortranNumericLabel: unimplemented for label_type " << label_type << "\n";
+               ROSE_ABORT();  // NOT IMPLEMENTED
+            }
+       }
+
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:18:29,734 - INFO - Response from llama3.1:70b for Function 365:
+2025-01-27 20:18:29,734 - INFO - /**
+ * @fn void SageInterface::setFortranNumericLabel(SgStatement* stmt, int label_value,
+ *                                              SgLabelSymbol::label_type_enum label_type, SgScopeStatement* label_scope)
+ *
+ * @brief Sets a Fortran numeric label for the given statement.
+ *
+ * This function associates a numeric label with a given statement in a Fortran program.
+ * It takes into account the type of label (start or end) and the scope in which the label is defined.
+ *
+ * The label value must be between 1 and 99999, as specified by the Fortran standard.
+ * If the label scope is not provided, it defaults to the enclosing function definition.
+ *
+ * @param stmt The statement for which the numeric label is to be set. Must not be NULL.
+ * @param label_value The numeric value of the label. Must be between 1 and 99999.
+ * @param label_type The type of label (start or end). Defaults to SgLabelSymbol::e_start_label_type if not provided.
+ * @param label_scope The scope in which the label is defined. If NULL, defaults to the enclosing function definition.
+ *
+ * @return None
+ *
+ * @warning If a label with the same value already exists in the given scope, an error message is printed and the program aborts.
+ *
+ * @pre stmt must not be NULL, label_value must be between 1 and 99999, and label_scope must be a valid SgScopeStatement pointer.
+ *
+ * @post The statement has been associated with a numeric label of the specified type and value in the given scope.
+ *
+ * @note This function modifies the abstract syntax tree (AST) of the program by inserting a new label symbol.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* stmt = ...; // some statement in the Fortran program
+ *           int label_value = 10;
+ *           SgLabelSymbol::label_type_enum label_type = SgLabelSymbol::e_start_label_type;
+ *           SgScopeStatement* label_scope = getEnclosingFunctionDefinition(stmt);
+ *           SageInterface::setFortranNumericLabel(stmt, label_value, label_type, label_scope);
+ *          @endcode
+ */
+2025-01-27 20:18:29,734 - INFO - End time: 2025-01-27 20:18:29
+2025-01-27 20:18:29,734 - INFO - Duration: 31.540002584457397

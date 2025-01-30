@@ -1,0 +1,115 @@
+2025-01-27 18:51:03,993 - INFO - Start time: 2025-01-27 18:51:03
+2025-01-27 18:51:03,993 - INFO - Generating documents for a function with id : 156
+2025-01-27 18:51:03,993 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::cutPreprocessingInfo (SgLocatedNode* src_node, PreprocessingInfo::RelativePositionType pos, AttachedPreprocessingInfoType& save_buf)
+{
+  ASSERT_not_null(src_node);
+
+  // [Rasmussen,Sottile 2023.01.10]: Replaced deleted bind2nd (as of 2017)
+  AttachedPreprocessingInfoType* info = src_node->get_attachedPreprocessingInfoPtr();
+  if (info)
+  {
+    // copy elements to save_buf where isRelPos() is false
+    remove_copy_if(info->begin(),
+                   info->end(),
+                   back_inserter(save_buf),
+                   [pos](auto x) { return !isRelPos(x, pos); }
+                  );
+
+    // delete copied elements from save_buf
+    AttachedPreprocessingInfoType::iterator
+    new_end = remove_if(info->begin(),
+                        info->end(),
+                        [pos](auto x) { return isRelPos(x, pos); }
+                       );
+    info->erase(new_end, info->end());
+  }
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:51:27,229 - INFO - Response from llama3.1:70b for Function 156:
+2025-01-27 18:51:27,229 - INFO - /**
+ * @fn void SageInterface::cutPreprocessingInfo(SgLocatedNode* src_node, PreprocessingInfo::RelativePositionType pos, AttachedPreprocessingInfoType& save_buf)
+ *
+ * @brief Cuts preprocessing information from the given source node and saves it to a buffer.
+ *
+ * This function removes certain elements from the attached preprocessing information of the given source node
+ * based on their relative position. The removed elements are copied to a provided buffer before being deleted.
+ * 
+ * @param src_node The source node whose attached preprocessing information is to be modified. Must not be null.
+ * @param pos The relative position type that determines which elements to remove and copy.
+ * @param save_buf The buffer where the removed elements will be saved.
+ *
+ * @return None
+ *
+ * @warning This function modifies the attached preprocessing information of the given source node in-place.
+ *
+ * @pre The src_node must not be null, and the pos must be a valid relative position type.
+ *
+ * @post The attached preprocessing information of the src_node has been modified according to the given relative position,
+ *       and the removed elements have been copied to the save_buf.
+ *
+ * @note This function uses the isRelPos() predicate to determine which elements to remove and copy based on their relative position.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgLocatedNode* src_node = ...;
+ *           PreprocessingInfo::RelativePositionType pos = ...;
+ *           AttachedPreprocessingInfoType save_buf;
+ *           SageInterface::cutPreprocessingInfo(src_node, pos, save_buf);
+ *          @endcode
+ */
+2025-01-27 18:51:27,229 - INFO - End time: 2025-01-27 18:51:27
+2025-01-27 18:51:27,229 - INFO - Duration: 23.236921072006226

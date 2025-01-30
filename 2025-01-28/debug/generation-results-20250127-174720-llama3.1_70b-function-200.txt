@@ -1,0 +1,99 @@
+2025-01-27 19:09:07,393 - INFO - Start time: 2025-01-27 19:09:07
+2025-01-27 19:09:07,393 - INFO - Generating documents for a function with id : 200
+2025-01-27 19:09:07,393 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool isUpcSharedArrayType (SgArrayType* array_type)
+  {
+    bool result = false;
+    ROSE_ASSERT(array_type);
+    SgType* base_type=getArrayElementType(array_type); 
+    if (isSgModifierType(base_type))
+      result = isUpcSharedModifierType(isSgModifierType(base_type));
+    return result;
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:09:28,339 - INFO - Response from llama3.1:70b for Function 200:
+2025-01-27 19:09:28,339 - INFO - /**
+ * @fn bool isUpcSharedArrayType(SgArrayType* array_type)
+ *
+ * @brief Checks if a given SgArrayType is of UPC shared array type.
+ *
+ * This function determines whether the provided SgArrayType represents a UPC (Unified Parallel C) shared array type. 
+ * It checks the base type of the array to see if it's a modifier type and then verifies if this modifier type is indeed a UPC shared type.
+ *
+ * @param array_type The SgArrayType object to be checked for being a UPC shared array type. Must not be NULL.
+ *
+ * @return True if the array type is a UPC shared array type, false otherwise.
+ *
+ * @warning This function assumes that the input array_type is valid and properly initialized.
+ *
+ * @pre The input array_type must not be NULL.
+ *
+ * @post The return value will indicate whether the array type is of UPC shared type or not.
+ *
+ * @note This function relies on the implementation details of SgArrayType and SgModifierType, which might change in future versions of ROSE.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Assuming 'array_type' is a valid SgArrayType object
+ *           if (isUpcSharedArrayType(array_type)) {
+ *             std::cout << "The array type is UPC shared." << std::endl;
+ *           } else {
+ *             std::cout << "The array type is not UPC shared." << std::endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:09:28,339 - INFO - End time: 2025-01-27 19:09:28
+2025-01-27 19:09:28,339 - INFO - Duration: 20.946697473526

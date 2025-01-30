@@ -1,0 +1,235 @@
+2025-01-27 19:24:58,985 - INFO - Start time: 2025-01-27 19:24:58
+2025-01-27 19:24:58,985 - INFO - Generating documents for a function with id : 237
+2025-01-27 19:24:58,985 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool SageInterface::loopUnrolling(SgForStatement* target_loop, size_t unrolling_factor)
+{
+#ifndef ROSE_USE_INTERNAL_FRONTEND_DEVELOPMENT
+  //Handle 0 and 1, which means no unrolling at all
+  if (unrolling_factor <= 1)
+    return true;
+
+  // normalize the target loop first
+
+  // DQ (3/25/2017): Fixed Clang warning: warning: if statement has empty body [-Wempty-body]
+  if (!forLoopNormalization(target_loop))
+  {
+    // the return value is not reliable
+    //    cerr<<"Error in SageInterface::loopUnrolling(): target loop cannot be normalized."<<endl;
+    //    dumpInfo(target_loop);
+    //    return false;
+  }
+  // grab the target loop's essential header information
+  SgInitializedName* ivar = NULL;
+  SgExpression* lb = NULL;
+  SgExpression* ub = NULL;
+  SgExpression* step = NULL;
+  SgStatement* orig_body = NULL;
+  if (!isCanonicalForLoop(target_loop, &ivar, &lb, &ub, &step, &orig_body))
+  {
+    cerr<<"Error in SageInterface::loopUnrolling(): target loop is not canonical."<<endl;
+    dumpInfo(target_loop);
+    return false;
+  }
+  ROSE_ASSERT(ivar&& lb && ub && step);
+  ROSE_ASSERT(isSgBasicBlock(orig_body));
+
+   // generate the fringe loop
+   bool needFringe = true;
+   SgForStatement* fringe_loop = deepCopy<SgForStatement>(target_loop);
+   insertStatementAfter(target_loop,fringe_loop);
+   removeStatement(fringe_loop->get_for_init_stmt());
+   fringe_loop->set_for_init_stmt(NULL);
+
+  // _lu_iter_count = (ub-lb+1)%step ==0?(ub-lb+1)/step: (ub-lb+1)/step+1;
+  SgExpression* raw_range_exp =buildSubtractOp(buildAddOp(copyExpression(ub),buildIntVal(1)),
+            copyExpression(lb));
+  raw_range_exp->set_need_paren(true);
+  SgExpression* range_d_step_exp = buildDivideOp(raw_range_exp,copyExpression(step));//(ub-lb+1)/step
+  SgExpression* condition_1 = buildEqualityOp(buildModOp(copyExpression(raw_range_exp),copyExpression(step)),buildIntVal(0)); //(ub-lb+1)%step ==0
+
+  SgExpression* iter_count_exp = buildConditionalExp(condition_1,range_d_step_exp, buildAddOp(copyExpression(range_d_step_exp),buildIntVal(1)));
+  // fringe = iteration_count%unroll_factor==0 ? 0:unroll_factor*step
+  SgExpression* condition_2 = buildEqualityOp(buildModOp(iter_count_exp, buildIntVal(unrolling_factor)), buildIntVal(0));
+  SgExpression* initor = buildConditionalExp(condition_2, buildIntVal(0), buildMultiplyOp(buildIntVal(unrolling_factor),copyExpression(step)));
+
+   SgScopeStatement* scope = target_loop->get_scope();
+   ROSE_ASSERT(scope != NULL);
+   string fringe_name = "_lu_fringe_"+ StringUtility::numberToString(++gensym_counter);
+   SgVariableDeclaration* fringe_decl = buildVariableDeclaration(fringe_name, buildIntType(),buildAssignInitializer(initor), scope);
+   insertStatementBefore(target_loop, fringe_decl);
+   attachComment(fringe_decl, "iter_count = (ub-lb+1)%step ==0?(ub-lb+1)/step: (ub-lb+1)/step+1;");
+   attachComment(fringe_decl, "fringe = iter_count%unroll_factor==0 ? 0:unroll_factor*step");
+
+  // compile-time evaluate to see if index is a constant of value 0
+  // if so, the iteration count can be divided even by the unrolling factor
+  // and no fringe loop is needed
+  // WE have to fold on its parent node to get a possible constant since
+  // constant folding only folds children nodes, not the current node to a constant
+   ConstantFolding::constantFoldingOptimization(fringe_decl,false);
+   SgInitializedName * ivarname = fringe_decl->get_variables().front();
+   ROSE_ASSERT(ivarname != NULL);
+   // points to a new address if constant folding happens
+   SgAssignInitializer * init1 = isSgAssignInitializer(ivarname->get_initializer());
+   if (init1)
+    if (isSgIntVal(init1->get_operand_i()))
+     if (isSgIntVal(init1->get_operand_i())->get_value() == 0)
+       needFringe = false;
+
+  // rewrite loop header ub --> ub -fringe; step --> step *unrolling_factor
+   SgBinaryOp* ub_bin_op = isSgBinaryOp(ub->get_parent());
+   ROSE_ASSERT(ub_bin_op);
+   if (needFringe)
+     ub_bin_op->set_rhs_operand(buildSubtractOp(copyExpression(ub),buildVarRefExp(fringe_name,scope)));
+   else
+   {
+     ub_bin_op->set_rhs_operand(copyExpression(ub));
+     removeStatement(fringe_decl);
+   }
+
+   SgBinaryOp* step_bin_op = isSgBinaryOp(step->get_parent());
+   ROSE_ASSERT(step_bin_op != NULL);
+   step_bin_op->set_rhs_operand(buildMultiplyOp(copyExpression(step),buildIntVal(unrolling_factor)));
+
+   bool isPlus = false;
+   if (isSgPlusAssignOp(step_bin_op))
+     isPlus = true;
+    else if (isSgMinusAssignOp(step_bin_op))
+      isPlus = false;
+    else
+    {
+      cerr<<"Error in SageInterface::loopUnrolling(): illegal incremental exp of a canonical loop"<<endl;
+      dumpInfo(step_bin_op);
+      ROSE_ABORT();
+    }
+
+   // copy loop body factor -1 times, and replace reference to ivar  with ivar +/- step*[1 to factor-1]
+   for (size_t i =1; i<unrolling_factor; i++)
+   {
+     SgBasicBlock* body = isSgBasicBlock(deepCopy(fringe_loop->get_loop_body())); // normalized loop has a BB body
+     ROSE_ASSERT(body);
+     std::vector<SgVarRefExp*> refs = querySubTree<SgVarRefExp> (body, V_SgVarRefExp);
+     for (std::vector<SgVarRefExp*>::iterator iter = refs.begin(); iter !=refs.end(); iter++)
+     {
+       SgVarRefExp* refexp = *iter;
+       if (refexp->get_symbol()==ivar->get_symbol_from_symbol_table())
+       {
+         // replace reference to ivar with ivar +/- step*i
+         SgExpression* new_exp = NULL;
+         //build replacement  expression for every appearance
+         if (isPlus) //ivar +/- step * i
+         new_exp = buildAddOp(buildVarRefExp(ivar,scope),buildMultiplyOp(copyExpression(step),buildIntVal(i)));
+         else
+         new_exp = buildSubtractOp(buildVarRefExp(ivar,scope),buildMultiplyOp(copyExpression(step),buildIntVal(i)));
+
+         // replace it with the right one
+         replaceExpression(refexp, new_exp);
+       }
+     }
+     // copy body to loop body, this should be a better choice
+     // to avoid redefinition of variables after unrolling (new scope is introduced to avoid this)
+     appendStatement(body,isSgBasicBlock(orig_body));
+    // moveStatementsBetweenBlocks(body,isSgBasicBlock(orig_body));
+   }
+
+   // remove the fringe loop if not needed finally
+   // it is used to buffering the original loop body before in either cases
+   if (!needFringe)
+     removeStatement(fringe_loop);
+
+   // constant folding for the transformed AST
+   ConstantFolding::constantFoldingOptimization(scope,false);
+   //ConstantFolding::constantFoldingOptimization(getProject(),false);
+
+#endif
+
+  return true;
+}
+#endif
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:25:18,114 - INFO - Response from llama3.1:70b for Function 237:
+2025-01-27 19:25:18,114 - INFO - /**
+ * @file loopUnrolling.cpp
+ * @author [Your Name]
+ * @date [Current Date]
+ *
+ * @brief This file contains a function to perform loop unrolling on a given canonical for loop.
+ *
+ * Loop unrolling is a compiler optimization technique that involves duplicating the body of a loop and adjusting the loop counter accordingly. 
+ * This can improve performance by reducing the number of iterations and increasing instruction-level parallelism.
+ */
+
+#include "rose.h"
+using namespace std;
+using namespace SageBuilder;
+using namespace SageInterface;
+
+/**
+ * @brief Performs loop unrolling on a given canonical for loop.
+ *
+ * This function takes a SgNode representing a canonical for loop as input, 
+ * and performs loop unrolling by duplicating the body of the loop and adjusting the loop counter accordingly.
+ *
+ * The number of times the loop is unrolled can be controlled using the 'unrolling_factor' parameter.
+ *
+ * @param orig_loop A pointer to the original SgNode representing a canonical for loop.
+ * @param unrolling_factor The factor by which the loop should be unrolled.
+ * @return True if the loop unrolling was successful, false otherwise.
+ */
+bool loopUnrolling(SgNode* orig_loop, int unrolling_factor) {
+  // ... rest of your code ...
+}
+2025-01-27 19:25:18,114 - INFO - End time: 2025-01-27 19:25:18
+2025-01-27 19:25:18,114 - INFO - Duration: 19.129292011260986

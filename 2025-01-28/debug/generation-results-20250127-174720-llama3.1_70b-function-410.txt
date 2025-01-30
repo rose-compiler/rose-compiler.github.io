@@ -1,0 +1,103 @@
+2025-01-27 20:37:44,062 - INFO - Start time: 2025-01-27 20:37:44
+2025-01-27 20:37:44,062 - INFO - Generating documents for a function with id : 410
+2025-01-27 20:37:44,062 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgBasicBlock* SageInterface::ensureBasicBlockAsBodyOfDoWhile(SgDoWhileStmt* fs) {
+    SgStatement* b = fs->get_body();
+    if (!isSgBasicBlock(b)) {
+      b = SageBuilder::buildBasicBlock(b);
+      fs->set_body(b);
+      b->set_parent(fs);
+
+   // DQ (1/21/2015): Save the SgBasicBlock that has been added so that we can undo this transformation later.
+      recordNormalizations(b);
+    }
+    ROSE_ASSERT (isSgBasicBlock(b));
+    return isSgBasicBlock(b);
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:38:06,901 - INFO - Response from llama3.1:70b for Function 410:
+2025-01-27 20:38:06,901 - INFO - /**
+ * @fn SgBasicBlock* SageInterface::ensureBasicBlockAsBodyOfDoWhile(SgDoWhileStmt* fs)
+ *
+ * @brief Ensures that the body of a do-while statement is a basic block.
+ *
+ * This function transforms the body of a do-while statement into a basic block if it's not already one. 
+ * It uses the SageBuilder to create a new basic block and replaces the original body with it.
+ * The newly created basic block is then recorded for potential later undoing of this transformation.
+ *
+ * @param fs The do-while statement whose body is to be transformed into a basic block.
+ *
+ * @return A pointer to the basic block that represents the body of the do-while statement. 
+ *         This will either be the original body if it was already a basic block, or the newly created one.
+ *
+ * @warning If the input fs is null, this function may crash or produce undefined behavior.
+ *
+ * @pre The input fs must be a valid SgDoWhileStmt pointer.
+ *
+ * @post The body of the do-while statement pointed to by fs will be a basic block.
+ *
+ * @note This function modifies the AST and records the transformation for potential later undoing.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgDoWhileStmt* doWhileStmt = ...; // some do-while statement
+ *           SageInterface sage;
+ *           SgBasicBlock* bodyAsBasicBlock = sage.ensureBasicBlockAsBodyOfDoWhile(doWhileStmt);
+ *           ROSE_ASSERT(isSgBasicBlock(bodyAsBasicBlock));
+ *          @endcode
+ */
+2025-01-27 20:38:06,901 - INFO - End time: 2025-01-27 20:38:06
+2025-01-27 20:38:06,901 - INFO - Duration: 22.839460372924805

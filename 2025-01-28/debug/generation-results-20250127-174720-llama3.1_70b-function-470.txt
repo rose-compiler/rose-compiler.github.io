@@ -1,0 +1,152 @@
+2025-01-27 21:02:08,372 - INFO - Start time: 2025-01-27 21:02:08
+2025-01-27 21:02:08,372 - INFO - Generating documents for a function with id : 470
+2025-01-27 21:02:08,372 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::detectCycleInType(SgType * type, const std::string & from) {
+#if 0
+  printf("In detectCycleInType():\n");
+  printf(" -- from = %s\n", from.c_str());
+  printf(" -- type = %p (%s)\n", type, type->class_name().c_str());
+#endif
+  std::vector<SgType *> seen_types;
+
+  while (type != NULL) {
+
+ // DQ (4/15/2019): Added assertion.
+    ROSE_ASSERT(type != NULL);
+
+    std::vector<SgType *>::const_iterator it = std::find(seen_types.begin(), seen_types.end(), type);
+    if (it != seen_types.end()) {
+      printf("ERROR: Cycle found in type = %p (%s):\n", type, type->class_name().c_str());
+      size_t i = 0;
+      for (; it != seen_types.end(); it++) {
+        printf("  [%zd] %p (%s)\n", i, *it, (*it)->class_name().c_str());
+        i++;
+      }
+      printf("-> detectCycleInType() was called from: %s\n", from.c_str());
+      ROSE_ABORT();
+    }
+    seen_types.push_back(type);
+
+    SgModifierType *  modType     = isSgModifierType(type);
+    SgPointerType *   pointType   = isSgPointerType(type);
+    SgReferenceType * refType     = isSgReferenceType(type);
+    SgArrayType *     arrayType   = isSgArrayType(type);
+    SgTypedefType *   typedefType = isSgTypedefType(type);
+
+#if 0
+ // DQ (4/15/2019): Don't count SgPointerMemberType (also fixed in SgType::stripType() function).
+    if (isSgPointerMemberType(type) != NULL)
+      {
+        pointType = NULL;
+      }
+#endif
+
+    if ( modType ) {
+      type = modType->get_base_type();
+    } else if ( refType ) {
+      type = refType->get_base_type();
+    } else if ( pointType ) {
+      type = pointType->get_base_type();
+ // } else if ( pointerMemberType ) {
+ //   type = pointerMemberType->get_base_type();
+    } else if ( arrayType ) {
+      type = arrayType->get_base_type();
+    } else if ( typedefType ) {
+      type = typedefType->get_base_type();
+    } else {
+      break;
+    }
+    ROSE_ASSERT(type != NULL);
+  }
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 21:02:33,127 - INFO - Response from llama3.1:70b for Function 470:
+2025-01-27 21:02:33,127 - INFO - /**
+ * @fn void SageInterface::detectCycleInType(SgType * type, const std::string & from)
+ *
+ * @brief Detects a cycle in the type hierarchy starting from the given type.
+ *
+ * This function traverses the type hierarchy upwards to detect cycles. It uses
+ * a recursive approach and keeps track of visited types to avoid infinite loops.
+ *
+ * The function takes two parameters: the type to start the traversal from, and
+ * the location (file and line number) where this function was called from.
+ *
+ * @param type The type to start the cycle detection from. Must be non-NULL.
+ * @param from The location (file and line number) where this function was called from.
+ *
+ * @return None. If a cycle is detected, an error message is printed and the program aborts.
+ *
+ * @warning This function uses assertions to check for invalid input and internal consistency.
+ *          If these assertions fail, it may indicate a programming error or corrupted data.
+ *
+ * @pre The type hierarchy must be properly initialized before calling this function.
+ *
+ * @post If no cycle is detected, the function returns without any side effects. If a cycle
+ *       is detected, an error message is printed and the program aborts.
+ *
+ * @note This function uses a recursive approach to traverse the type hierarchy. It may cause
+ *       a stack overflow if the hierarchy is very deep or contains cycles.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgType* myType = ...; // initialize myType
+ *           std::string from = "myFile.cpp:123";
+ *           SageInterface::detectCycleInType(myType, from);
+ *          @endcode
+ */
+2025-01-27 21:02:33,127 - INFO - End time: 2025-01-27 21:02:33
+2025-01-27 21:02:33,127 - INFO - Duration: 24.755136251449585

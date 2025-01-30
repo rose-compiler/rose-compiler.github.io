@@ -1,0 +1,106 @@
+2025-01-27 19:18:33,471 - INFO - Start time: 2025-01-27 19:18:33
+2025-01-27 19:18:33,471 - INFO - Generating documents for a function with id : 223
+2025-01-27 19:18:33,471 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::setLoopBody(SgScopeStatement* loopStmt, SgStatement* body) {
+    if (isSgWhileStmt(loopStmt)) {
+      isSgWhileStmt(loopStmt)->set_body(body);
+    } else if (isSgForStatement(loopStmt)) {
+      isSgForStatement(loopStmt)->set_loop_body(body);
+    } else if (isSgDoWhileStmt(loopStmt)) {
+      isSgDoWhileStmt(loopStmt)->set_body(body);
+    } else {
+      ROSE_ASSERT (!"Bad loop kind");
+    }
+    body->set_parent(loopStmt);
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:18:59,912 - INFO - Response from llama3.1:70b for Function 223:
+2025-01-27 19:18:59,912 - INFO - /**
+ * @fn void SageInterface::setLoopBody(SgScopeStatement* loopStmt, SgStatement* body)
+ *
+ * @brief Sets the loop body of a given loop statement.
+ *
+ * This function updates the loop body of a provided loop statement with a new statement. 
+ * It supports three types of loop statements: while, for, and do-while loops. The function checks
+ * the type of loop statement using the isSgWhileStmt(), isSgForStatement(), and isSgDoWhileStmt()
+ * functions, and then updates the corresponding body accordingly.
+ *
+ * @param loopStmt A pointer to an SgScopeStatement representing the loop statement whose body needs to be updated.
+ *                 Must not be NULL. The loop statement can be a while, for, or do-while loop.
+ *
+ * @param body A pointer to an SgStatement representing the new loop body. Must not be NULL.
+ *
+ * @return None
+ *
+ * @warning This function does not perform any checks on the validity of the provided loop statement and its body.
+ *          It assumes that the input is valid and can lead to undefined behavior if this assumption is violated.
+ *
+ * @pre The loopStmt parameter must point to a valid SgScopeStatement object, and the body parameter must point to a valid SgStatement object.
+ *
+ * @post The loop body of the provided loop statement will be updated with the new statement.
+ *
+ * @note This function modifies the AST by updating the loop body. It does not create any new nodes or edges in the AST.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgScopeStatement* loopStmt = ...; // obtain a valid loop statement
+ *           SgStatement* body = ...; // obtain a valid statement for the loop body
+ *           SageInterface sage;
+ *           sage.setLoopBody(loopStmt, body);
+ *          @endcode
+ */
+2025-01-27 19:18:59,912 - INFO - End time: 2025-01-27 19:18:59
+2025-01-27 19:18:59,912 - INFO - Duration: 26.44185781478882

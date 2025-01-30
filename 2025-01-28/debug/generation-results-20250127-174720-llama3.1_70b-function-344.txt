@@ -1,0 +1,141 @@
+2025-01-27 20:10:08,164 - INFO - Start time: 2025-01-27 20:10:08
+2025-01-27 20:10:08,164 - INFO - Generating documents for a function with id : 344
+2025-01-27 20:10:08,164 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::setOperand(SgExpression* target, SgExpression* operand)
+  {
+    ROSE_ASSERT(target);
+    ROSE_ASSERT(operand);
+    ROSE_ASSERT(target!=operand);
+    switch (target->variantT())
+    {
+      case V_SgActualArgumentExpression:
+        isSgActualArgumentExpression(target)->set_expression(operand);
+        break;
+      case V_SgAsmOp:
+        isSgAsmOp(target)->set_expression(operand);
+        break;
+      case V_SgSizeOfOp:
+        isSgSizeOfOp(target)->set_operand_expr(operand);
+        break;
+      case V_SgTypeIdOp:
+        isSgTypeIdOp(target)->set_operand_expr(operand);
+        break;
+      case V_SgVarArgOp:
+        isSgVarArgOp(target)->set_operand_expr(operand);
+        break;
+      case V_SgVarArgStartOneOperandOp:
+        isSgVarArgStartOneOperandOp(target)->set_operand_expr(operand);
+        break;
+      case V_SgAssignInitializer:
+         isSgAssignInitializer (target)->set_operand(operand);
+         break;
+      default:
+        if (isSgUnaryOp(target)!=NULL)
+          isSgUnaryOp(target)->set_operand_i(operand);
+        else
+          {
+            cerr<<"\tSageInterface::setOperand(): unhandled case for target expression of type "
+                <<target->class_name()<<endl;
+            ROSE_ABORT();
+          }
+    }// end switch
+    operand->set_parent(target);
+    markLhsValues(target);
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:10:36,353 - INFO - Response from llama3.1:70b for Function 344:
+2025-01-27 20:10:36,353 - INFO - /**
+ * @fn void SageInterface::setOperand(SgExpression* target, SgExpression* operand)
+ *
+ * @brief Sets the operand of a given expression.
+ *
+ * This function sets the operand of a given expression to a new value. It handles
+ * different types of expressions and updates their operands accordingly.
+ *
+ * The function takes two parameters: the target expression whose operand is to be set,
+ * and the new operand expression. It first checks if both parameters are valid, then
+ * uses a switch statement to handle different types of expressions.
+ *
+ * For each type of expression, it calls the corresponding setter method to update the
+ * operand. If the expression type is not handled by the switch statement, it checks if
+ * the expression is a unary operation and updates its operand accordingly. If none of
+ * these cases match, it prints an error message and aborts.
+ *
+ * Finally, the function sets the parent of the new operand to the target expression
+ * and marks the left-hand side values of the target expression.
+ *
+ * @param target The target expression whose operand is to be set. Must not be NULL.
+ * @param operand The new operand expression. Must not be NULL and must not be the same as the target expression.
+ *
+ * @return None
+ *
+ * @warning If the target expression is not one of the handled types, an error message will be printed and the program will abort.
+ *
+ * @pre The target expression and the operand expression must not be NULL. The target expression and the operand expression must not be the same.
+ *
+ * @post The operand of the target expression will be updated to the new value.
+ *
+ * @note This function assumes that the target expression and the operand expression are valid and have been properly initialized.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *            SgExpression* target = ...; // some expression
+ *            SgExpression* operand = ...; // some other expression
+ *            SageInterface::setOperand(target, operand);
+ *          @endcode
+ */
+2025-01-27 20:10:36,353 - INFO - End time: 2025-01-27 20:10:36
+2025-01-27 20:10:36,354 - INFO - Duration: 28.189905643463135

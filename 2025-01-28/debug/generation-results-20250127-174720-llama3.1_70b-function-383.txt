@@ -1,0 +1,199 @@
+2025-01-27 20:24:56,101 - INFO - Start time: 2025-01-27 20:24:56
+2025-01-27 20:24:56,101 - INFO - Generating documents for a function with id : 383
+2025-01-27 20:24:56,101 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::collectReadWriteRefs(SgStatement* stmt, std::vector<SgNode*>& readRefs, std::vector<SgNode*>& writeRefs, bool useCachedDefUse)
+{   // The type cannot be SgExpression since variable declarations have SgInitializedName as the reference, not SgVarRefExp.
+  bool retVal = true;
+
+  ROSE_ASSERT(stmt !=NULL);
+
+#ifndef ROSE_USE_INTERNAL_FRONTEND_DEVELOPMENT
+  // We should allow accumulate the effects for multiple statements
+  // ROSE_ASSERT(readRefs.size() == 0);
+  // ROSE_ASSERT(writeRefs.size() == 0);
+
+  // convert a request for a defining function declaration to its function body
+  SgFunctionDeclaration* funcDecl = isSgFunctionDeclaration(stmt);
+  if (funcDecl != NULL)
+  {
+    funcDecl= isSgFunctionDeclaration(funcDecl->get_definingDeclaration ());
+    if (funcDecl == NULL)
+    {
+      cerr<<"In collectReadWriteRefs(): cannot proceed without a function body!"<<endl;
+    }
+    else
+      stmt = funcDecl->get_definition()->get_body();
+  }
+
+  // get function level information
+  SgFunctionDefinition* funcDef = isSgFunctionDefinition(stmt);
+  if (!funcDef)
+     funcDef= SageInterface::getEnclosingFunctionDefinition(stmt);
+
+  ROSE_ASSERT(funcDef != NULL);
+  SgBasicBlock* funcBody = funcDef->get_body();
+  ROSE_ASSERT(funcBody!= NULL);
+
+  // prepare Loop transformation environment
+  AstInterfaceImpl faImpl(funcBody);
+  AstInterface fa(&faImpl);
+  ArrayAnnotation* annot = ArrayAnnotation::get_inst();
+  if( useCachedDefUse ){
+    ArrayInterface* array_interface = ArrayInterface::get_inst(*annot, fa, funcDef, AstNodePtrImpl(funcDef));
+    LoopTransformInterface::set_arrayInfo(array_interface);
+  } else {
+    ArrayInterface array_interface(*annot);
+ // Alias analysis and value propagation are called in initialize(). Turn both off for now.
+//    array_interface.initialize(fa, AstNodePtrImpl(funcDef));
+    array_interface.observe(fa);
+    LoopTransformInterface::set_arrayInfo(&array_interface);
+  }
+  LoopTransformInterface::set_astInterface(fa);
+  // Liao, 3/27/2015. connect to annotations for function side effect
+  LoopTransformInterface::set_sideEffectInfo(annot);
+
+  // variables to store results
+  DoublyLinkedListWrap<AstNodePtr> rRef1, wRef1;
+  CollectDoublyLinkedList<AstNodePtr> crRef1(rRef1),cwRef1(wRef1);
+  AstNodePtr s1 = AstNodePtrImpl(stmt);
+
+  // Actual side effect analysis
+  if (!AnalyzeStmtRefs(fa, s1, cwRef1, crRef1))
+  {
+    //False returned here just means that the function called a
+    //function that was not annotated with Qing's RWset annotation
+    //method.  This doesn't matter for my tool. -Jim Leek 03/21/2023
+    mlog[Sawyer::Message::Common::DEBUG] << "Function: " << funcDef->get_declaration()->get_qualified_name() << " calls at least one function that has not been annotated." << endl;
+    retVal = false;
+  }
+
+  // transfer results into STL containers.
+  for (DoublyLinkedEntryWrap<AstNodePtr>* p = rRef1.First(); p != 0; )
+  {
+    DoublyLinkedEntryWrap<AstNodePtr>* p1 = p;
+    p = rRef1.Next(p);
+    AstNodePtr cur = p1->GetEntry();
+    SgNode* sgRef = AstNodePtrImpl(cur).get_ptr();
+   ROSE_ASSERT(sgRef != NULL);
+    readRefs.push_back(sgRef);
+    //cout<<"read reference:"<<sgRef->unparseToString()<<" address "<<sgRef<<
+    //    " sage type:"<< sgRef->class_name()<< endl;
+  }
+
+  for (DoublyLinkedEntryWrap<AstNodePtr>* p = wRef1.First(); p != 0; )
+  {
+    DoublyLinkedEntryWrap<AstNodePtr>* p1 = p;
+    p = wRef1.Next(p);
+    AstNodePtr cur = p1->GetEntry();
+    SgNode* sgRef = AstNodePtrImpl(cur).get_ptr();
+    ROSE_ASSERT(sgRef != NULL);
+    writeRefs.push_back(sgRef);
+  //  cout<<"write reference:"<<sgRef->unparseToString()<<" address "<<sgRef<<
+  //      " sage type:"<< sgRef->class_name()<< endl;
+  }
+
+#endif
+
+  return retVal;
+}
+#if 0
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:25:33,501 - INFO - Response from llama3.1:70b for Function 383:
+2025-01-27 20:25:33,501 - INFO - /**
+ * @fn SageInterface::collectReadWriteRefs(SgStatement* stmt, std::vector<SgNode*>& readRefs, std::vector<SgNode*>& writeRefs, bool useCachedDefUse)
+ *
+ * @brief Collects the read and write references for a given statement.
+ *
+ * This function analyzes the side effects of a given statement in terms of its
+ * read and write references. It uses the ROSE compiler infrastructure to perform
+ * this analysis. The results are stored in two vectors: one for read references
+ * and another for write references.
+ *
+ * @param stmt The statement for which the read and write references are to be collected.
+ *             Must not be NULL.
+ * @param readRefs A vector to store the read references of the given statement.
+ *                 This parameter is passed by reference and will be modified by this function.
+ * @param writeRefs A vector to store the write references of the given statement.
+ *                  This parameter is passed by reference and will be modified by this function.
+ * @param useCachedDefUse A boolean flag indicating whether to use cached def-use information or not.
+ *
+ * @return True if the analysis was successful, false otherwise. Note that a return value
+ *         of false does not necessarily indicate an error; it may simply mean that the
+ *         function called another function that was not annotated with Qing's RWset annotation method.
+ *
+ *
+ * @warning This function assumes that the given statement is part of a valid ROSE AST.
+ *          If this assumption is violated, the behavior of this function is undefined.
+ *
+ * @pre The input statement must be non-NULL and part of a valid ROSE AST.
+ * @post The readRefs and writeRefs vectors will contain the read and write references
+ *       of the given statement, respectively. Note that these vectors may not be exhaustive;
+ *       they only contain those references that could be determined through static analysis.
+ *
+ * @note This function uses the ROSE compiler infrastructure to perform its analysis.
+ *       It also relies on Qing's RWset annotation method for accurate results.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* stmt = ...; // some statement in a ROSE AST
+ *           std::vector<SgNode*> readRefs;
+ *           std::vector<SgNode*> writeRefs;
+ *           bool useCachedDefUse = true;
+ *           SageInterface::collectReadWriteRefs(stmt, readRefs, writeRefs, useCachedDefUse);
+ *          @endcode
+ */
+2025-01-27 20:25:33,501 - INFO - End time: 2025-01-27 20:25:33
+2025-01-27 20:25:33,501 - INFO - Duration: 37.3997905254364

@@ -1,0 +1,234 @@
+2025-01-27 19:26:25,571 - INFO - Start time: 2025-01-27 19:26:25
+2025-01-27 19:26:25,571 - INFO - Generating documents for a function with id : 241
+2025-01-27 19:26:25,571 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool SageInterface::getForLoopInformations(
+  SgForStatement * for_loop,
+  SgVariableSymbol * & iterator,
+  SgExpression * & lower_bound,
+  SgExpression * & upper_bound,
+  SgExpression * & stride
+) {
+  /// \todo handle more case. For example: declaration in initialization
+  /// \todo replace most assertions by error messages and 'return false;'
+
+  iterator = NULL;
+  lower_bound = NULL;
+  upper_bound = NULL;
+  stride = NULL;
+
+  SgForInitStatement * for_init_stmt = for_loop->get_for_init_stmt();
+  const std::vector<SgStatement *> & init_stmts = for_init_stmt->get_init_stmt();
+  assert(init_stmts.size() == 1);
+  SgExprStatement * init_stmt = isSgExprStatement(init_stmts[0]);
+  assert(init_stmt != NULL);
+  SgExpression * init = init_stmt->get_expression();
+
+  SgAssignOp * assign_init = isSgAssignOp(init);
+  assert(assign_init != NULL);
+  SgVarRefExp * iterator_init_ref = isSgVarRefExp(assign_init->get_lhs_operand_i());
+  assert(iterator_init_ref != NULL);
+  iterator = iterator_init_ref->get_symbol();
+  assert(iterator != NULL);
+  lower_bound = assign_init->get_rhs_operand_i();
+
+  SgExprStatement * test_stmt = isSgExprStatement(for_loop->get_test());
+  assert(test_stmt != NULL);
+  SgExpression * test = test_stmt->get_expression();
+  SgBinaryOp * bin_test = isSgBinaryOp(test);
+  assert(bin_test);
+
+  SgExpression * lhs_exp = bin_test->get_lhs_operand_i();
+  while (isSgCastExp(lhs_exp)) lhs_exp = ((SgCastExp *)lhs_exp)->get_operand_i();
+  SgVarRefExp * lhs_var_ref = isSgVarRefExp(lhs_exp);
+  bool lhs_it = (lhs_var_ref != NULL) && (lhs_var_ref->get_symbol() == iterator);
+
+  SgExpression * rhs_exp = bin_test->get_rhs_operand_i();
+  while (isSgCastExp(rhs_exp)) rhs_exp = ((SgCastExp *)rhs_exp)->get_operand_i();
+  SgVarRefExp * rhs_var_ref = isSgVarRefExp(rhs_exp);
+#ifndef NDEBUG
+  bool rhs_it = (rhs_var_ref != NULL) && (rhs_var_ref->get_symbol() == iterator);
+
+// DQ (4/21/2016): Replacing use of bitwise xor with something more approriate for logical types.
+// Note that the xor logica operator does not exist in C/C++ and that this is a case of using the
+// bitwise xor operator on boolean values (not a great idea).  Note that logical "a xor b" is
+// equivalent to "!a != !b"  the use of "!" only make sure that the "!=" is applied to a boolean
+// value.  Since these are boolean typed values we can use "a != b", directly.
+// assert(lhs_it xor rhs_it);
+  assert(lhs_it != rhs_it);
+#endif
+
+  upper_bound = lhs_it ? bin_test->get_rhs_operand_i() : bin_test->get_lhs_operand_i();
+
+  bool inclusive;
+  bool reversed;
+
+  switch (test->variantT()) {
+    case V_SgGreaterOrEqualOp:
+      inclusive = lhs_it;
+      reversed = lhs_it;
+      break;
+    case V_SgGreaterThanOp:
+      inclusive = !lhs_it;
+      reversed = lhs_it;
+      break;
+    case V_SgLessOrEqualOp:
+      inclusive = lhs_it;
+      reversed = !lhs_it;
+      break;
+    case V_SgLessThanOp:
+      inclusive = !lhs_it;
+      reversed = !lhs_it;
+      break;
+    case V_SgEqualityOp:
+    case V_SgNotEqualOp:
+    default:
+      ROSE_ABORT();
+  }
+
+  SgExpression * increment = for_loop->get_increment();
+  switch (increment->variantT()) {
+    case V_SgPlusPlusOp:
+      assert(!reversed);
+      stride = SageBuilder::buildIntVal(1);
+      break;
+    case V_SgMinusMinusOp:
+      assert(reversed);
+      stride = SageBuilder::buildIntVal(-1);
+      break;
+    case V_SgPlusAssignOp:
+    {
+      SgBinaryOp * bin_op = (SgBinaryOp *)increment;
+#ifndef NDEBUG
+      SgVarRefExp * var_ref_lhs = isSgVarRefExp(bin_op->get_lhs_operand_i());
+      assert(var_ref_lhs != NULL && var_ref_lhs->get_symbol() == iterator);
+#endif
+      stride = bin_op->get_rhs_operand_i();
+      break;
+    }
+    case V_SgMinusAssignOp:
+    {
+      SgBinaryOp * bin_op = (SgBinaryOp *)increment;
+#ifndef NDEBUG
+      SgVarRefExp * var_ref_lhs = isSgVarRefExp(bin_op->get_lhs_operand_i());
+      assert(var_ref_lhs != NULL && var_ref_lhs->get_symbol() == iterator);
+#endif
+      stride = bin_op->get_rhs_operand_i();
+      break;
+    }
+    case V_SgAssignOp:
+    {
+      SgAssignOp * assign_op = (SgAssignOp *)increment;
+#ifndef NDEBUG
+      SgVarRefExp * inc_assign_lhs = isSgVarRefExp(assign_op->get_lhs_operand_i());
+      assert(inc_assign_lhs != NULL && inc_assign_lhs->get_symbol() == iterator);
+#endif
+      SgBinaryOp * inc_assign_rhs = isSgBinaryOp(assign_op->get_rhs_operand_i());
+      assert(inc_assign_rhs != NULL);
+      SgVarRefExp * inc_assign_rhs_lhs = isSgVarRefExp(inc_assign_rhs->get_lhs_operand_i());
+      if (inc_assign_rhs_lhs != NULL && inc_assign_rhs_lhs->get_symbol() == iterator)
+        stride = inc_assign_rhs->get_rhs_operand_i();
+      SgVarRefExp * inc_assign_rhs_rhs = isSgVarRefExp(inc_assign_rhs->get_rhs_operand_i());
+      if (inc_assign_rhs_rhs != NULL && inc_assign_rhs_rhs->get_symbol() == iterator)
+        stride = inc_assign_rhs->get_lhs_operand_i();
+      break;
+    }
+    default:
+      ROSE_ABORT();
+  }
+
+  // DQ (7/19/2015): Added braces to avoid compiler warning about ambigious "else" case.
+     if (!inclusive)
+        {
+          if (reversed)
+               upper_bound = SageBuilder::buildAddOp(upper_bound, SageBuilder::buildIntVal(1));
+            else
+               upper_bound = SageBuilder::buildSubtractOp(upper_bound, SageBuilder::buildIntVal(1));
+        }
+
+  return true;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:26:50,870 - INFO - Response from llama3.1:70b for Function 241:
+2025-01-27 19:26:50,870 - INFO - /**
+ * @fn bool SageInterface::getForLoopInformations(SgForStatement * for_loop, SgVariableSymbol * & iterator, SgExpression * & lower_bound, SgExpression * & upper_bound, SgExpression * & stride)
+ *
+ * @brief Extracts information about a for loop.
+ *
+ * This function takes a for loop statement as input and extracts the following information:
+ * - The loop iterator variable
+ * - The lower bound of the loop (inclusive or exclusive depending on the loop type)
+ * - The upper bound of the loop (inclusive or exclusive depending on the loop type)
+ * - The stride of the loop (i.e., the amount by which the loop variable is incremented/decremented in each iteration)
+ *
+ * @param for_loop The input for loop statement
+ * @param iterator Output parameter: the loop iterator variable
+ * @param lower_bound Output parameter: the lower bound of the loop
+ * @param upper_bound Output parameter: the upper bound of the loop
+ * @param stride Output parameter: the stride of the loop
+ *
+ * @return true if the information could be successfully extracted, false otherwise
+ */
+
+/**
+ * @details This function works by analyzing the for loop statement and its constituent parts.
+ * It first identifies the loop iterator variable and then determines the lower and upper bounds
+ * based on the comparison operator used in the loop condition. The stride is determined from the
+ * increment/decrement operation performed on the loop variable.
+ *
+ * @note This function assumes that the input for loop statement is well-formed and follows standard C++ syntax.
+ */
+2025-01-27 19:26:50,870 - INFO - End time: 2025-01-27 19:26:50
+2025-01-27 19:26:50,870 - INFO - Duration: 25.29887557029724

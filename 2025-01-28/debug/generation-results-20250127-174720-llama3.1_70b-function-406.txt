@@ -1,0 +1,130 @@
+2025-01-27 20:36:09,591 - INFO - Start time: 2025-01-27 20:36:09
+2025-01-27 20:36:09,591 - INFO - Generating documents for a function with id : 406
+2025-01-27 20:36:09,591 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::changeBreakStatementsToGotos(SgStatement* loopOrSwitch) {
+  using namespace SageBuilder;
+  SgStatement* body = NULL;
+  if (isSgWhileStmt(loopOrSwitch) || isSgDoWhileStmt(loopOrSwitch) ||
+      isSgForStatement(loopOrSwitch)) {
+    body = SageInterface::getLoopBody(isSgScopeStatement(loopOrSwitch));
+  } else if (isSgSwitchStatement(loopOrSwitch)) {
+    body = isSgSwitchStatement(loopOrSwitch)->get_body();
+  }
+  ROSE_ASSERT (body);
+  std::vector<SgBreakStmt*> breaks = SageInterface::findBreakStmts(body);
+  if (!breaks.empty()) {
+    static int breakLabelCounter = 0;
+    SgLabelStatement* breakLabel =
+      buildLabelStatement("breakLabel" +
+StringUtility::numberToString(++breakLabelCounter),
+                          buildBasicBlock(),
+                          isSgScopeStatement(loopOrSwitch->get_parent()));
+    insertStatement(loopOrSwitch, breakLabel, false);
+    for (size_t j = 0; j < breaks.size(); ++j) {
+      SgGotoStatement* newGoto = buildGotoStatement(breakLabel);
+
+  isSgStatement(breaks[j]->get_parent())->replace_statement(breaks[j],
+  newGoto);
+        newGoto->set_parent(breaks[j]->get_parent());
+      }
+    }
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:36:37,093 - INFO - Response from llama3.1:70b for Function 406:
+2025-01-27 20:36:37,093 - INFO - /**
+ * @fn void SageInterface::changeBreakStatementsToGotos(SgStatement* loopOrSwitch)
+ *
+ * @brief Replaces break statements with goto statements in a given loop or switch statement.
+ *
+ * This function takes a loop or switch statement as input and replaces all its break
+ * statements with equivalent goto statements. It does this by first identifying the
+ * body of the loop or switch statement, then finding all the break statements within
+ * that body. For each break statement found, it creates a new label statement and inserts
+ * it after the loop or switch statement, then replaces the break statement with a goto
+ * statement pointing to the newly created label.
+ *
+ * The function uses a recursive approach to traverse the abstract syntax tree (AST)
+ * of the input code and identify the relevant statements.
+ *
+ * @param loopOrSwitch A pointer to an SgStatement representing the loop or switch
+ *                     statement in which to replace break statements with goto
+ *                     statements. Must be non-NULL and point to a valid loop or
+ *                     switch statement.
+ *
+ * @return None (void function)
+ *
+ * @warning This function modifies the input code by replacing break statements
+ *          with goto statements. The original break statements are lost in this
+ *          process.
+ *
+ * @pre The input loopOrSwitch must be non-NULL and point to a valid loop or switch
+ *      statement.
+ *
+ * @post All break statements within the body of the input loop or switch statement
+ *       have been replaced with equivalent goto statements.
+ *
+ * @note This function uses a static counter to generate unique label names for
+ *       the newly created labels. This means that the function is not thread-safe
+ *       and should not be used concurrently by multiple threads.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* loop = ...; // some loop statement
+ *           SageInterface::changeBreakStatementsToGotos(loop);
+ *          @endcode
+ */
+2025-01-27 20:36:37,093 - INFO - End time: 2025-01-27 20:36:37
+2025-01-27 20:36:37,093 - INFO - Duration: 27.502580881118774

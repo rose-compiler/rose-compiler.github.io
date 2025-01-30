@@ -1,0 +1,151 @@
+2025-01-27 20:31:38,243 - INFO - Start time: 2025-01-27 20:31:38
+2025-01-27 20:31:38,243 - INFO - Generating documents for a function with id : 396
+2025-01-27 20:31:38,243 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    std::set<SgLabelStatement*> SageInterface::findUnusedLabels (SgNode* top)
+{
+  class FindUsedAndAllLabelsVisitor: public AstSimpleProcessing {
+    SgLabelStatementPtrSet& used;
+    SgLabelStatementPtrSet& all;
+
+    public:
+    FindUsedAndAllLabelsVisitor(SgLabelStatementPtrSet& used,
+        SgLabelStatementPtrSet& all):
+      used(used), all(all) {}
+
+    virtual void visit(SgNode* n) {
+      if (isSgGotoStatement(n)) {
+        used.insert(isSgGotoStatement(n)->get_label());
+      }
+      if (isSgLabelStatement(n)) {
+        all.insert(isSgLabelStatement(n));
+      }
+    }
+  };
+
+  SgLabelStatementPtrSet used;
+  SgLabelStatementPtrSet unused;
+  FindUsedAndAllLabelsVisitor(used, unused).traverse(top, preorder);
+
+  for (SgLabelStatementPtrSet::iterator i = used.begin();
+      i != used.end(); ++i) {
+    assert (unused.find(*i) != unused.end());
+    // std::cout << "Keeping used label " << (*i)->get_label().str() << std::endl;
+    unused.erase(*i);
+  }
+
+  return unused;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:32:19,049 - INFO - Response from llama3.1:70b for Function 396:
+2025-01-27 20:32:19,050 - INFO - /**
+ * @fn std::set<SgLabelStatement*> SageInterface::findUnusedLabels (SgNode* top)
+ *
+ * @brief Finds and returns a set of unused labels in the given AST.
+ *
+ * This function traverses the Abstract Syntax Tree (AST) rooted at the
+ * specified SgNode* 'top' to identify all labels that are not referenced by any
+ * goto statements. It uses a custom visitor class, FindUsedAndAllLabelsVisitor,
+ * which inherits from AstSimpleProcessing and overrides its visit() method.
+ *
+ * The function first initializes two sets: one for used labels (i.e., those
+ * referenced by goto statements) and another for all labels encountered during
+ * the traversal. It then traverses the AST in preorder, visiting each node to
+ * determine whether it's a goto statement or a label statement. If it's a goto
+ * statement, its target label is added to the set of used labels; if it's a label
+ * statement, it's added to the set of all labels.
+ *
+ * After traversal, the function iterates over the set of used labels and removes
+ * each corresponding label from the set of all labels. The remaining labels in
+ * this set are considered unused.
+ *
+ * @param top The root node of the AST to be traversed for finding unused labels.
+ *
+ * @return A set of SgLabelStatement* objects representing the unused labels in
+ *         the given AST.
+ *
+ * @warning This function assumes that the input AST is valid and well-formed.
+ *          If the AST contains ill-formed constructs, the behavior of this
+ *          function is undefined.
+ *
+ * @pre The input AST rooted at 'top' must be valid and well-formed.
+ *
+ * @post The returned set of SgLabelStatement* objects represents all unused
+ *       labels in the given AST. The sets of used and all labels are updated
+ *       accordingly.
+ *
+ * @note This function uses a preorder traversal strategy, which means that it
+ *       visits each node before its children. This allows for efficient
+ *       identification of unused labels by first collecting all labels and then
+ *       removing those referenced by goto statements.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create a sample AST with some labels and goto statements
+ *           SgNode* top = ...;  // Assume 'top' is the root of the sample AST
+ *
+ *           // Find unused labels in the AST
+ *           std::set<SgLabelStatement*> unusedLabels;
+ *           unusedLabels = SageInterface::findUnusedLabels(top);
+ *
+ *           // Print the names of unused labels
+ *           for (std::set<SgLabelStatement*>::iterator i = unusedLabels.begin();
+ *                i != unusedLabels.end(); ++i) {
+ *             std::cout << "Unused label: " << (*i)->get_label().str() << std::endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:32:19,050 - INFO - End time: 2025-01-27 20:32:19
+2025-01-27 20:32:19,050 - INFO - Duration: 40.80658936500549

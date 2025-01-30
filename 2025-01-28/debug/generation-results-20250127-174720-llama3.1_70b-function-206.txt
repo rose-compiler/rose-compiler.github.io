@@ -1,0 +1,122 @@
+2025-01-27 19:11:44,559 - INFO - Start time: 2025-01-27 19:11:44
+2025-01-27 19:11:44,559 - INFO - Generating documents for a function with id : 206
+2025-01-27 19:11:44,559 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    */
+  bool isUpcArrayWithThreads(SgArrayType* t)
+  {
+    ROSE_ASSERT(t!=NULL);
+    bool result = false;
+    SgExpression * exp = t->get_index();
+    SgMultiplyOp* multiply = isSgMultiplyOp(exp);
+
+  // DQ (7/22/2014): Fixed to remove compiler warning.
+  // if (multiply)
+     if (multiply != NULL)
+        {
+          if (isSgUpcThreads(multiply->get_rhs_operand()))
+             {
+               result = true;
+             }
+            else
+             {
+            // DQ (9/26/2011): Added else case to handle static compilation of UPC threads to be integer values.
+               if (isSgIntVal(multiply->get_rhs_operand()))
+                  {
+                    result = true;
+                  }
+             }
+       }
+
+    return result;  
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:12:06,826 - INFO - Response from llama3.1:70b for Function 206:
+2025-01-27 19:12:06,826 - INFO - /**
+ * @fn bool isUpcArrayWithThreads(SgArrayType* t)
+ *
+ * @brief Checks if an array type has UPC threads.
+ *
+ * This function examines the given array type to determine whether it represents
+ * a UPC (Unified Parallel C) array with threads. It does this by checking the
+ * array's index expression for the presence of a multiplication operation involving
+ * a UPC thread variable or an integer value, which is indicative of static compilation
+ * of UPC threads.
+ *
+ * @param t The SgArrayType object to be examined. Must not be NULL.
+ *
+ * @return True if the array type represents a UPC array with threads; false otherwise.
+ *
+ * @warning This function assumes that the input array type is valid and has an index expression.
+ *          If this is not the case, undefined behavior may result.
+ *
+ * @pre t != NULL
+ * @post The return value will be true if the array type represents a UPC array with threads; false otherwise.
+ *
+ * @note This function uses the ROSE_ASSERT macro to verify that the input parameter is non-NULL.
+ *       If this assertion fails, an error message will be printed and the program may terminate unexpectedly.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgArrayType* arrayType = ...; // Initialize array type object
+ *           if (isUpcArrayWithThreads(arrayType)) {
+ *              cout << "Array has UPC threads." << endl;
+ *           } else {
+ *              cout << "Array does not have UPC threads." << endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:12:06,826 - INFO - End time: 2025-01-27 19:12:06
+2025-01-27 19:12:06,826 - INFO - Duration: 22.267037630081177

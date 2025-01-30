@@ -1,0 +1,217 @@
+2025-01-27 19:25:51,594 - INFO - Start time: 2025-01-27 19:25:51
+2025-01-27 19:25:51,594 - INFO - Generating documents for a function with id : 239
+2025-01-27 19:25:51,594 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool SageInterface::loopTiling(SgForStatement* loopNest, size_t targetLevel, size_t tileSize)
+{
+  ROSE_ASSERT(loopNest != NULL);
+  ROSE_ASSERT(targetLevel >0);
+ // ROSE_ASSERT(tileSize>0);// 1 is allowed
+ // skip tiling if tiling size is 0 (no tiling), we allow 0 to get a reference value for the original code being tuned
+ // 1 (no need to tile)
+  if (tileSize<=1)
+    return true;
+  // Locate the target loop at level n
+  std::vector<SgForStatement* > loops= SageInterface::querySubTree<SgForStatement>(loopNest,V_SgForStatement);
+  ROSE_ASSERT(loops.size()>=targetLevel);
+  SgForStatement* target_loop = loops[targetLevel -1]; // adjust to numbering starting from 0
+
+  // DQ (3/25/2017): Fixed Clang warning: warning: if statement has empty body [-Wempty-body]
+  // normalize the target loop first
+  if (!forLoopNormalization(target_loop))
+  {// the return value is not reliable
+//    cerr<<"Error in SageInterface::loopTiling(): target loop cannot be normalized."<<endl;
+//    dumpInfo(target_loop);
+//    return false;
+  }
+   // grab the target loop's essential header information
+   SgInitializedName* ivar = NULL;
+   SgExpression* lb = NULL;
+   SgExpression* ub = NULL;
+   SgExpression* step = NULL;
+   if (!isCanonicalForLoop(target_loop, &ivar, &lb, &ub, &step, NULL))
+   {
+     cerr<<"Error in SageInterface::loopTiling(): target loop is not canonical."<<endl;
+     dumpInfo(target_loop);
+     return false;
+   }
+   ROSE_ASSERT(ivar&& lb && ub && step);
+
+  // Add a controlling loop around the top loop nest
+  // Ensure the parent can hold more than one children
+  SgLocatedNode* parent = NULL; //SageInterface::ensureBasicBlockAsParent(loopNest)
+  if (isBodyStatement(loopNest)) // if it is a single body statement (Already a for statement, not a basic block)
+   parent = makeSingleStatementBodyToBlock (loopNest);
+  else
+    parent = isSgLocatedNode(loopNest ->get_parent());
+
+  ROSE_ASSERT(parent!= NULL);
+     // Now we can prepend a controlling loop index variable: __lt_var_originalIndex
+  string ivar2_name = "_lt_var_"+ivar->get_name().getString();
+  SgScopeStatement* scope = loopNest->get_scope();
+  SgVariableDeclaration* loop_index_decl = buildVariableDeclaration
+  (ivar2_name, buildIntType(),NULL, scope);
+  insertStatementBefore(loopNest, loop_index_decl);
+   // init statement of the loop header, copy the lower bound
+   SgStatement* init_stmt = buildAssignStatement(buildVarRefExp(ivar2_name,scope), copyExpression(lb));
+   //two cases <= or >= for a normalized loop
+   SgExprStatement* cond_stmt = NULL;
+   SgExpression* orig_test = target_loop->get_test_expr();
+   if (isSgBinaryOp(orig_test))
+   {
+     if (isSgLessOrEqualOp(orig_test))
+       cond_stmt = buildExprStatement(buildLessOrEqualOp(buildVarRefExp(ivar2_name,scope),copyExpression(ub)));
+     else if (isSgGreaterOrEqualOp(orig_test))
+     {
+       cond_stmt = buildExprStatement(buildGreaterOrEqualOp(buildVarRefExp(ivar2_name,scope),copyExpression(ub)));
+       }
+     else
+     {
+       cerr<<"Error: illegal condition operator for a canonical loop"<<endl;
+       dumpInfo(orig_test);
+       ROSE_ABORT();
+     }
+   }
+   else
+   {
+     cerr<<"Error: illegal condition expression for a canonical loop"<<endl;
+     dumpInfo(orig_test);
+     ROSE_ABORT();
+   }
+   ROSE_ASSERT(cond_stmt != NULL);
+
+   // build loop incremental  I
+   // expression var+=up*tilesize or var-=upper * tilesize
+   SgExpression* incr_exp = NULL;
+   SgExpression* orig_incr_exp = target_loop->get_increment();
+   if( isSgPlusAssignOp(orig_incr_exp))
+   {
+     incr_exp = buildPlusAssignOp(buildVarRefExp(ivar2_name,scope), buildMultiplyOp(copyExpression(step), buildIntVal(tileSize)));
+   }
+    else if (isSgMinusAssignOp(orig_incr_exp))
+    {
+      incr_exp = buildMinusAssignOp(buildVarRefExp(ivar2_name,scope), buildMultiplyOp(copyExpression(step), buildIntVal(tileSize)));
+    }
+    else
+    {
+      cerr<<"Error: illegal increment expression for a canonical loop"<<endl;
+      dumpInfo(orig_incr_exp);
+      ROSE_ABORT();
+    }
+    SgForStatement* control_loop = buildForStatement(init_stmt, cond_stmt,incr_exp, buildBasicBlock());
+  insertStatementBefore(loopNest, control_loop);
+  // move loopNest into the control loop
+  removeStatement(loopNest);
+  appendStatement(loopNest,isSgBasicBlock(control_loop->get_loop_body()));
+
+  // rewrite the lower (i=lb), upper bounds (i<=/>= ub) of the target loop
+  SgAssignOp* assign_op  = isSgAssignOp(lb->get_parent());
+  ROSE_ASSERT(assign_op);
+  assign_op->set_rhs_operand(buildVarRefExp(ivar2_name,scope));
+    // ub< var_i+tileSize-1? ub:var_i+tileSize-1
+  SgBinaryOp* bin_op = isSgBinaryOp(ub->get_parent());
+  ROSE_ASSERT(bin_op);
+  SgExpression* ub2 = buildSubtractOp(buildAddOp(buildVarRefExp(ivar2_name,scope), buildIntVal(tileSize)), buildIntVal(1));
+  SgExpression* test_exp = buildLessThanOp(copyExpression(ub),ub2);
+  test_exp->set_need_paren(true);
+  ub->set_need_paren(true);
+  ub2->set_need_paren(true);
+  SgConditionalExp * triple_exp = buildConditionalExp(test_exp,copyExpression(ub), copyExpression(ub2));
+  bin_op->set_rhs_operand(triple_exp);
+  // constant folding
+  // folding entire loop may decrease the accuracy of floating point calculation
+  // we fold loop control expressions only
+  //constantFolding(control_loop->get_scope());
+  constantFolding(control_loop->get_test());
+  constantFolding(control_loop->get_increment());
+  return true;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:26:15,722 - INFO - Response from llama3.1:70b for Function 239:
+2025-01-27 19:26:15,722 - INFO - /**
+ * @fn bool SageInterface::loopTiling(SgForStatement* loopNest, size_t targetLevel, size_t tileSize)
+ *
+ * @brief Performs loop tiling on a given loop nest.
+ *
+ * This function takes a loop nest as input and performs loop tiling by inserting
+ * a controlling loop around the top loop nest. It normalizes the target loop,
+ * grabs its essential header information, and rewrites the lower and upper bounds
+ * of the target loop to achieve tiling.
+ *
+ * @param loopNest The loop nest to be tiled.
+ * @param targetLevel The level at which to perform tiling.
+ * @param tileSize The size of the tile.
+ *
+ * @return True if the operation is successful, false otherwise.
+ */
+
+/**
+ * @details This function performs the following steps:
+ *   1. Normalizes the target loop by ensuring it has a single entry and exit point.
+ *   2. Grabs the essential header information of the target loop, including its lower
+ *       and upper bounds.
+ *   3. Inserts a controlling loop around the top loop nest to achieve tiling.
+ *   4. Rewrites the lower and upper bounds of the target loop based on the tile size.
+ *
+ * @note This function assumes that the input loop nest is well-formed and can be
+ *       successfully tiled. It does not perform any error checking or handling.
+ */
+
+/**
+ * @warning This function modifies the input loop nest in-place. The original loop
+ *           nest is lost after tiling.
+ */
+2025-01-27 19:26:15,722 - INFO - End time: 2025-01-27 19:26:15
+2025-01-27 19:26:15,722 - INFO - Duration: 24.128645181655884

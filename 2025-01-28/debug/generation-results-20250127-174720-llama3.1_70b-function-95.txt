@@ -1,0 +1,99 @@
+2025-01-27 18:26:59,660 - INFO - Start time: 2025-01-27 18:26:59
+2025-01-27 18:26:59,660 - INFO - Generating documents for a function with id : 95
+2025-01-27 18:26:59,660 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool SageInterface::isStatic(SgDeclarationStatement* stmt)
+  {
+    ROSE_ASSERT(stmt);
+    return ((stmt->get_declarationModifier()).get_storageModifier()).isStatic();
+  } // isStatic()
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:27:19,872 - INFO - Response from llama3.1:70b for Function 95:
+2025-01-27 18:27:19,872 - INFO - /**
+ * @fn bool SageInterface::isStatic(SgDeclarationStatement* stmt)
+ *
+ * @brief Checks if a given declaration statement is static.
+ *
+ * This function determines whether a provided SgDeclarationStatement object
+ * represents a static declaration. The assessment is based on the storage
+ * modifier of the declaration's modifier set, which indicates whether the
+ * declaration is static or not.
+ *
+ * @param stmt A pointer to an SgDeclarationStatement object that is being checked for its static property.
+ *             Must not be NULL. If NULL, undefined behavior occurs.
+ *
+ * @return True if the statement represents a static declaration; false otherwise.
+ *
+ * @warning Passing a NULL pointer as the argument will result in undefined behavior.
+ *
+ * @pre The input SgDeclarationStatement pointer must be valid and not NULL.
+ *
+ * @post The function returns true if the statement is static, false otherwise.
+ *
+ * @note This function assumes that the input SgDeclarationStatement object is properly initialized
+ *       and its get_declarationModifier() method correctly returns a valid declaration modifier.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgDeclarationStatement* stmt = ...; // assume stmt is properly initialized
+ *           if (SageInterface::isStatic(stmt)) {
+ *               cout << "The statement is static." << endl;
+ *           } else {
+ *               cout << "The statement is not static." << endl;
+ *           }
+ *          @endcode
+ */
+2025-01-27 18:27:19,872 - INFO - End time: 2025-01-27 18:27:19
+2025-01-27 18:27:19,872 - INFO - Duration: 20.212185859680176

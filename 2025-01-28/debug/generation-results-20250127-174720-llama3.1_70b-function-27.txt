@@ -1,0 +1,155 @@
+2025-01-27 17:59:30,466 - INFO - Start time: 2025-01-27 17:59:30
+2025-01-27 17:59:30,466 - INFO - Generating documents for a function with id : 27
+2025-01-27 17:59:30,466 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::lookupVariableSymbolInParentScopes (const SgName &  name, SgScopeStatement *cscope)
+   {
+  // DQ (1/24/2011): This function is inconsistant with an implementation that would correctly handle SgAliasSymbols.
+  // Also this function might get a SgClassSymbol instead of a SgVariableSymbol when both names are used.
+  // This function needs to be fixed to handle the multi-map semantics of the symbol tables.
+
+#if 0
+  // DQ (5/7/2011): I think this implementation is not correct (does not resolve past hidden types) and so should
+  // be fixed to be consistant with the implementation of SageInterface::lookupClassSymbolInParentScopes().
+  // Since I don't know where this function is used, I don't want to change it just yet.
+     printf ("WARNING: SageInterface::lookupVariableSymbolInParentScopes() should be implemented similar to SageInterface::lookupClassSymbolInParentScopes() \n");
+
+     SgVariableSymbol* result = NULL;
+     SgSymbol* symbol=lookupSymbolInParentScopes(name,cscope);
+     if (symbol != NULL)
+        {
+          if (isSgAliasSymbol(symbol) != NULL)
+             {
+               printf ("Error: This SageInterface::lookupVariableSymbolInParentScopes() function does not handle SgAliasSymbols \n");
+               ROSE_ABORT();
+             }
+          result = isSgVariableSymbol(symbol);
+        }
+     return result;
+#else
+  // I think this is the better implementation.
+     SgVariableSymbol* symbol = NULL;
+     if (cscope == NULL)
+          cscope = SageBuilder::topScopeStack();
+     ROSE_ASSERT(cscope != NULL);
+
+     while ((cscope != NULL) && (symbol == NULL))
+        {
+       // I think this will resolve SgAliasSymbols to be a SgClassSymbol where the alias is of a SgClassSymbol.
+          symbol = cscope->lookup_variable_symbol(name);
+
+          if (cscope->get_parent() != NULL) // avoid calling get_scope when parent is not set
+               cscope = isSgGlobal(cscope) ? NULL : cscope->get_scope();
+            else
+               cscope = NULL;
+        }
+
+     return symbol;
+#endif
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:00:06,084 - INFO - Response from llama3.1:70b for Function 27:
+2025-01-27 18:00:06,084 - INFO - /**
+ * @fn SageInterface::lookupVariableSymbolInParentScopes(const SgName & name, SgScopeStatement *cscope)
+ *
+ * @brief Looks up a variable symbol in the parent scopes of a given scope.
+ *
+ * This function searches for a variable symbol with the specified name
+ * in the parent scopes of a given scope. If found, it returns the corresponding
+ * SgVariableSymbol; otherwise, it returns NULL.
+ *
+ * The search starts from the given scope and moves up to the global scope,
+ * checking each scope's symbol table for a matching variable symbol.
+ *
+ * Note that this function does not handle SgAliasSymbols correctly and may return
+ * a SgClassSymbol instead of a SgVariableSymbol if both names are used. This is due
+ * to the multi-map semantics of the symbol tables, which needs to be fixed in the future.
+ *
+ * @param name The name of the variable symbol to look up.
+ * @param cscope The scope from which to start searching for the variable symbol.
+ *               If NULL, the top scope stack will be used.
+ *
+ * @return The SgVariableSymbol corresponding to the specified name if found;
+ *         otherwise, NULL.
+ *
+ * @warning This function may not work correctly with SgAliasSymbols and may return
+ *          a SgClassSymbol instead of a SgVariableSymbol in some cases.
+ *
+ * @pre cscope is either NULL or a valid SgScopeStatement pointer.
+ *
+ * @post The returned symbol, if any, will be a valid SgVariableSymbol pointer.
+ *
+ * @note This function uses the lookup_variable_symbol() method of the SgScopeStatement class
+ *       to search for the variable symbol in each scope's symbol table.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create a sample scope and variable symbol
+ *           SgScopeStatement* scope = new SgScopeStatement();
+ *           SgVariableSymbol* varSym = new SgVariableSymbol("myVar");
+ *           scope->add_symbol(varSym);
+ *
+ *           // Look up the variable symbol in the parent scopes
+ *           SgVariableSymbol* foundSym = SageInterface::lookupVariableSymbolInParentScopes("myVar", scope);
+ *
+ *           if (foundSym != NULL) {
+ *               printf("Found variable symbol: %s\n", foundSym->get_name().c_str());
+ *           } else {
+ *               printf("Variable symbol not found.\n");
+ *           }
+ *          @endcode
+ */
+2025-01-27 18:00:06,084 - INFO - End time: 2025-01-27 18:00:06
+2025-01-27 18:00:06,084 - INFO - Duration: 35.6177544593811

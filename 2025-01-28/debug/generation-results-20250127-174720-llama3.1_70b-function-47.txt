@@ -1,0 +1,137 @@
+2025-01-27 18:08:52,787 - INFO - Start time: 2025-01-27 18:08:52
+2025-01-27 18:08:52,787 - INFO - Generating documents for a function with id : 47
+2025-01-27 18:08:52,787 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::templateDefinitionIsInClass( SgTemplateInstantiationMemberFunctionDecl* memberFunctionDeclaration )
+   {
+  // This function determines if the template declaration associated withthis member function instantiation is
+  // defined in the class or outside of the class.
+
+     bool result = false;
+
+#if 0
+  // Check if this is a template or non-template member function
+     if (isTemplateMemberFunction(memberFunctionDeclaration) == true)
+        {
+          SgTemplateDeclaration* templateDeclaration = memberFunctionDeclaration->get_templateDeclaration();
+          printf ("templateDeclaration = %p parent of templateDeclaration = %p \n",templateDeclaration,templateDeclaration->get_parent());
+
+       // SgTemplateInstantiationDecl* classTemplateInstantiation = memberFunctionDeclaration->get_class_scope()->get_declaration();
+          SgClassDeclaration* classDeclaration = memberFunctionDeclaration->get_class_scope()->get_declaration();
+          ROSE_ASSERT(classDeclaration != NULL);
+          SgTemplateInstantiationDecl* classTemplateInstantiation = isSgTemplateInstantiationDecl(classDeclaration);
+
+          if (classTemplateInstantiation != NULL)
+             {
+               SgTemplateDeclaration* classTemplateDeclaration = classTemplateInstantiation->get_templateDeclaration();
+               if (classTemplateDeclaration != NULL && classTemplateDeclaration != templateDeclaration)
+                  {
+                    result = true;
+                  }
+             }
+        }
+#endif
+
+  // Alternative approach
+  // SgTemplateDeclaration* templateDeclaration = memberFunctionDeclaration->get_templateDeclaration();
+     SgDeclarationStatement* templateDeclaration = memberFunctionDeclaration->get_templateDeclaration();
+//     printf ("In templateDefinitionIsInClass(): templateDeclaration = %p parent of templateDeclaration = %p = %s \n",templateDeclaration,
+//          templateDeclaration->get_parent(),templateDeclaration->get_parent()->class_name().c_str());
+
+    if (templateDeclaration != NULL && templateDeclaration->get_parent() != NULL)
+    {
+      SgScopeStatement* parentScope = isSgScopeStatement(templateDeclaration->get_parent());
+      if (isSgClassDefinition(parentScope) != NULL)
+         {
+           result = true;
+         }
+    }
+
+     return result;
+   }
+#if 0
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:09:16,097 - INFO - Response from llama3.1:70b for Function 47:
+2025-01-27 18:09:16,097 - INFO - /**
+ * @fn bool SageInterface::templateDefinitionIsInClass(SgTemplateInstantiationMemberFunctionDecl* memberFunctionDeclaration)
+ *
+ * @brief Determines if a template declaration associated with a member function instantiation is defined in the class or outside of it.
+ *
+ * This function checks whether the template declaration of a given member function instantiation is defined within the class or not. 
+ * It uses the ROSE compiler infrastructure to navigate the AST and check the parent scopes of the template declarations.
+ *
+ * @param memberFunctionDeclaration A pointer to an SgTemplateInstantiationMemberFunctionDecl object representing the member function instantiation.
+ *
+ * @return True if the template declaration is defined in the class, false otherwise.
+ *
+ * @warning This function assumes that the input memberFunctionDeclaration is a valid and non-null pointer. 
+ *          If this assumption is not met, undefined behavior may occur.
+ *
+ * @pre The input memberFunctionDeclaration must be a valid SgTemplateInstantiationMemberFunctionDecl object.
+ *
+ * @post The return value indicates whether the template declaration is defined in the class or not.
+ *
+ * @note This function uses an alternative approach to check if the template declaration is defined in the class. 
+ *       It first retrieves the parent scope of the template declaration and then checks if it is a class definition.
+ *
+ * @example
+ *          @code
+ *           SgTemplateInstantiationMemberFunctionDecl* memberFunctionDeclaration = ...; // assume this is initialized
+ *           bool result = SageInterface::templateDefinitionIsInClass(memberFunctionDeclaration);
+ *           printf("Template declaration defined in class: %s\n", result ? "yes" : "no");
+ *          @endcode
+ */
+2025-01-27 18:09:16,097 - INFO - End time: 2025-01-27 18:09:16
+2025-01-27 18:09:16,097 - INFO - Duration: 23.310702800750732

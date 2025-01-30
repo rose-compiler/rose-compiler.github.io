@@ -1,0 +1,140 @@
+2025-01-27 20:17:25,182 - INFO - Start time: 2025-01-27 20:17:25
+2025-01-27 20:17:25,182 - INFO - Generating documents for a function with id : 364
+2025-01-27 20:17:25,182 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::fixLabelStatement(SgLabelStatement* stmt, SgScopeStatement* scope)
+   {
+     SgLabelStatement* label_stmt = isSgLabelStatement(stmt);
+     ROSE_ASSERT(label_stmt);
+     SgName name = label_stmt->get_label();
+
+   // PP (07/18/23): In Ada, label symbols should be inserted in the current scope's symbol table
+     const bool        symbolAtFunctionLevel = !is_Ada_language();
+     SgScopeStatement* label_scope = symbolAtFunctionLevel ? getEnclosingFunctionDefinition(scope,true)
+                                                           : scope;
+
+  // DQ (11/16/2014): Added error checking for when the input scope is the SgFunctionDefinition instead of a nested scope.
+     if (isSgFunctionDefinition(scope) != nullptr)
+        {
+          ASSERT_not_null(label_scope);
+        }
+
+     if (label_scope) //Should we assert this instead? No for bottom up AST building
+        {
+          label_stmt->set_scope(label_scope);
+          SgLabelSymbol* lsymbol = label_scope->lookup_label_symbol(name);
+
+          if (lsymbol == nullptr)
+             {
+            // SgLabelStatement should always be in the function scope
+            //  PP (07/18/23): in Ada symbols should be at the innermost scope
+               lsymbol= new SgLabelSymbol(label_stmt);
+               ASSERT_not_null(lsymbol);
+               label_scope->insert_symbol(lsymbol->get_name(), lsymbol);
+             }
+        }
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:17:58,194 - INFO - Response from llama3.1:70b for Function 364:
+2025-01-27 20:17:58,194 - INFO - /**
+ * @fn void SageInterface::fixLabelStatement(SgLabelStatement* stmt, SgScopeStatement* scope)
+ *
+ * @brief Fixes the label statement by setting its scope correctly.
+ *
+ * This function adjusts the scope of a given label statement to ensure it is
+ * properly inserted into the symbol table. In languages other than Ada,
+ * the label symbol should be at the function level, while in Ada, it should be
+ * at the innermost scope.
+ *
+ * @param stmt The SgLabelStatement that needs its scope fixed.
+ *             Must not be NULL and must be a valid SgLabelStatement.
+ *
+ * @param scope The SgScopeStatement that is expected to contain the label statement.
+ *              Should ideally be a nested scope within a function definition,
+ *              but can also be an SgFunctionDefinition itself.
+ *
+ * @return None
+ *
+ * @warning If the input scope is not a valid SgScopeStatement or if the label
+ *          statement does not have a valid name, the behavior of this function
+ *          is undefined.
+ *
+ * @pre The input stmt must be a non-NULL and valid SgLabelStatement. The input
+ *      scope should ideally be a nested scope within an SgFunctionDefinition,
+ *      but it can also be an SgFunctionDefinition itself.
+ *
+ * @post The label statement's scope will be correctly set to either the function
+ *       level (for non-Ada languages) or the innermost scope (for Ada). If the label
+ *       symbol does not exist in the scope, a new one will be created and inserted.
+ *
+ * @note This function assumes that the input label statement has already been
+ *       correctly parsed and is syntactically valid. It also assumes that the
+ *       input scope is a valid SgScopeStatement.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create an SgLabelStatement with a name
+ *           SgName label_name = "my_label";
+ *           SgLabelStatement* stmt = new SgLabelStatement(label_name);
+ *
+ *           // Get the current scope (assuming it's a valid SgScopeStatement)
+ *           SgScopeStatement* scope = get_current_scope();
+ *
+ *           // Fix the label statement's scope
+ *           SageInterface::fixLabelStatement(stmt, scope);
+ *          @endcode
+ */
+2025-01-27 20:17:58,194 - INFO - End time: 2025-01-27 20:17:58
+2025-01-27 20:17:58,194 - INFO - Duration: 33.01152443885803

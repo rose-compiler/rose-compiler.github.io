@@ -1,0 +1,122 @@
+2025-01-27 19:14:54,769 - INFO - Start time: 2025-01-27 19:14:54
+2025-01-27 19:14:54,769 - INFO - Generating documents for a function with id : 214
+2025-01-27 19:14:54,769 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::addStepToLoopBody(SgScopeStatement* loopStmt, SgStatement* step) {
+  using namespace SageBuilder;
+  SgScopeStatement* proc = SageInterface::getEnclosingProcedure(loopStmt);
+  SgStatement* old_body = SageInterface::getLoopBody(loopStmt);
+  SgBasicBlock* new_body = buildBasicBlock();
+// printf ("Building IR node #13: new SgBasicBlock = %p \n",new_body);
+  SgName labelname = "rose_label__";
+  labelname << ++gensym_counter;
+  SgLabelStatement* labelstmt = buildLabelStatement(labelname,
+buildBasicBlock(), proc);
+  changeContinuesToGotos(old_body, labelstmt);
+  appendStatement(old_body, new_body);
+  appendStatement(labelstmt, new_body);
+  appendStatement(step, new_body);
+  SageInterface::setLoopBody(loopStmt, new_body);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:15:30,033 - INFO - Response from llama3.1:70b for Function 214:
+2025-01-27 19:15:30,036 - INFO - /**
+ * @fn void SageInterface::addStepToLoopBody(SgScopeStatement* loopStmt, SgStatement* step)
+ *
+ * @brief Adds a statement to the body of a loop.
+ *
+ * This function modifies the loop body by adding a new statement and updating
+ * the control flow accordingly. It takes into account the existing statements in
+ * the loop body and ensures that the new statement is properly linked with the
+ * rest of the code.
+ *
+ * The function first retrieves the enclosing procedure of the given loop statement,
+ * then it creates a new basic block to serve as the updated loop body. It also
+ * generates a unique label for this new basic block.
+ *
+ * Next, it updates the existing loop body by changing any continue statements to
+ * goto statements that target the newly created label. The old loop body is then
+ * appended to the new basic block, followed by the new statement and finally the
+ * label statement.
+ *
+ * @param loopStmt A pointer to the SgScopeStatement representing the loop whose body is to be modified.
+ * @param step     A pointer to the SgStatement that is to be added to the loop body.
+ *
+ * @return None. This function modifies its inputs in-place and does not return any value.
+ *
+ * @warning This function assumes that the input loop statement is valid and has an existing body.
+ *          It also assumes that the new statement being added does not introduce any semantic errors
+ *          into the code, such as undefined variables or type mismatches.
+ *
+ * @pre The input loop statement must have a valid enclosing procedure.
+ *      The new statement to be added must be a valid SgStatement object.
+ *
+ * @post The loop body of the input loop statement will have been modified to include the new statement.
+ *       Any continue statements in the original loop body will have been updated to goto statements targeting
+ *       the newly created label.
+ *
+ * @note This function uses a recursive algorithm to update the existing loop body, which may lead to performance
+ *       issues for very large loop bodies. Additionally, this function does not perform any semantic checks on the
+ *       new statement being added, so it is up to the caller to ensure that the code remains valid after modification.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgScopeStatement* loopStmt = ...; // some existing loop statement
+ *           SgStatement* step = buildAssignStatement(...); // some new assignment statement
+ *           SageInterface::addStepToLoopBody(loopStmt, step);
+ *          @endcode
+ */
+2025-01-27 19:15:30,036 - INFO - End time: 2025-01-27 19:15:30
+2025-01-27 19:15:30,037 - INFO - Duration: 35.26745581626892

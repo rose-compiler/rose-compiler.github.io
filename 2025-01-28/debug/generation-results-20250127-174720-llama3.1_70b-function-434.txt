@@ -1,0 +1,116 @@
+2025-01-27 20:47:31,613 - INFO - Start time: 2025-01-27 20:47:31
+2025-01-27 20:47:31,613 - INFO - Generating documents for a function with id : 434
+2025-01-27 20:47:31,613 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    */
+    bool HasNoThrowCopy(const SgType * const inputType){
+        //Strip typedef and array
+        SgType * type = inputType->stripType(SgType::STRIP_TYPEDEF_TYPE | SgType::STRIP_ARRAY_TYPE );
+        
+        if(HasTrivialCopy(type))
+            return true;
+        
+        ENSURE_CLASS_TYPE(type, false);
+        vector<SgMemberFunctionDeclaration*> allMemberFunctions =  GetAllMemberFunctionsInClassHierarchy(type);
+#if DEBUG_QUADRATIC_BEHAVIOR
+        printf ("In HasNoThrowCopy(): allMemberFunctions.size() = %zu \n",allMemberFunctions.size());
+#endif
+        foreach(SgMemberFunctionDeclaration* memberFunction,allMemberFunctions) {
+            if (memberFunction->get_specialFunctionModifier().isConstructor()){
+                // function must have exactly one argument and the argument type must match class type after stripping typedef, const, and ref
+                if(CheckIfFunctionAcceptsArgumentIgnoreConstRefAndTypedef(memberFunction)) {
+                    //TODO: C++11 accepts noexcept expression which we need to check when we support it.
+                    if(memberFunction->get_functionModifier().isGnuAttributeNoThrow () == false)
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:47:52,784 - INFO - Response from llama3.1:70b for Function 434:
+2025-01-27 20:47:52,784 - INFO - /**
+ * @fn bool HasNoThrowCopy(const SgType * const inputType)
+ *
+ * @brief Checks if a type has a no-throw copy constructor.
+ *
+ * This function checks if the given type has a copy constructor that does not throw any exceptions. 
+ * It first strips away typedef and array types, then checks if the remaining type has a trivial copy constructor. 
+ * If not, it iterates over all member functions in the class hierarchy of the given type to find a copy constructor with the noexcept attribute.
+ *
+ * @param inputType The type for which to check the no-throw copy constructor property.
+ *
+ * @return True if the type has a no-throw copy constructor, false otherwise.
+ *
+ * @warning This function may return incorrect results if the class hierarchy of the given type contains constructors that cannot be parsed correctly.
+ *
+ * @pre inputType must not be null.
+ *
+ * @post The result is true if and only if the type has a no-throw copy constructor.
+ *
+ * @note This function does not support C++11 noexcept expressions yet.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgType* myType = ...; // assume some type is assigned here
+ *           if (HasNoThrowCopy(myType)) {
+ *               printf("The type has a no-throw copy constructor.\n");
+ *           } else {
+ *               printf("The type does not have a no-throw copy constructor.\n");
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:47:52,784 - INFO - End time: 2025-01-27 20:47:52
+2025-01-27 20:47:52,784 - INFO - Duration: 21.171560287475586

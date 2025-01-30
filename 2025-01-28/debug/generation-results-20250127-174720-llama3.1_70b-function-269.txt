@@ -1,0 +1,106 @@
+2025-01-27 19:38:46,306 - INFO - Start time: 2025-01-27 19:38:46
+2025-01-27 19:38:46,306 - INFO - Generating documents for a function with id : 269
+2025-01-27 19:38:46,306 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgOmpClauseBodyStatement* SageInterface::findEnclosingOmpClauseBodyStatement(SgStatement* s) {
+  while (s && !isSgOmpClauseBodyStatement(s)) {
+    s = isSgStatement(s->get_parent());
+  }
+  // ROSE_ASSERT (s); // s is allowed to be NULL.
+  if (s==NULL)
+    return NULL;
+  return isSgOmpClauseBodyStatement(s);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:39:12,797 - INFO - Response from llama3.1:70b for Function 269:
+2025-01-27 19:39:12,797 - INFO - /**
+ * @fn SgOmpClauseBodyStatement* SageInterface::findEnclosingOmpClauseBodyStatement(SgStatement* s)
+ *
+ * @brief Finds the enclosing OpenMP clause body statement for a given statement.
+ *
+ * This function traverses the AST upwards from the input statement to find
+ * the nearest enclosing OpenMP clause body statement. It uses a recursive
+ * approach, checking each parent node until it finds an SgOmpClauseBodyStatement
+ * or reaches the root of the AST.
+ *
+ * @param s The statement for which to find the enclosing OpenMP clause body statement.
+ *          Must be a non-NULL pointer to an SgStatement object.
+ *
+ * @return A pointer to the enclosing SgOmpClauseBodyStatement if found, NULL otherwise.
+ *
+ * @warning If the input statement is not contained within an OpenMP clause body,
+ *          this function will return NULL. It is up to the caller to handle this case.
+ *
+ * @pre The input statement must be a valid non-NULL pointer to an SgStatement object.
+ *
+ * @post The returned pointer, if non-NULL, points to a valid SgOmpClauseBodyStatement object.
+ *
+ * @note This function does not perform any checks for the validity of the OpenMP clause
+ *       or its contents. It simply traverses the AST and returns the first matching statement.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* stmt = ...; // some statement in the AST
+ *           SgOmpClauseBodyStatement* enclosingStmt =
+ *               SageInterface::findEnclosingOmpClauseBodyStatement(stmt);
+ *           if (enclosingStmt != NULL) {
+ *             // do something with the enclosing OpenMP clause body statement
+ *           } else {
+ *             // handle the case where no enclosing OpenMP clause body statement is found
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:39:12,797 - INFO - End time: 2025-01-27 19:39:12
+2025-01-27 19:39:12,797 - INFO - Duration: 26.490885019302368

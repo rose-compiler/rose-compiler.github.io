@@ -1,0 +1,111 @@
+2025-01-27 20:32:19,050 - INFO - Start time: 2025-01-27 20:32:19
+2025-01-27 20:32:19,050 - INFO - Generating documents for a function with id : 397
+2025-01-27 20:32:19,050 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::removeConsecutiveLabels(SgNode* top)
+   {
+     Rose_STL_Container<SgNode*> gotos = NodeQuery::querySubTree(top,V_SgGotoStatement);
+     for (size_t i = 0; i < gotos.size(); ++i)
+        {
+          SgGotoStatement* gs = isSgGotoStatement(gotos[i]);
+          SgLabelStatement* ls = gs->get_label();
+          SgBasicBlock* lsParent = isSgBasicBlock(ls->get_parent());
+          if (!lsParent) continue;
+          SgStatementPtrList& bbStatements = lsParent->get_statements();
+
+          size_t j = std::find(bbStatements.begin(), bbStatements.end(), ls) - bbStatements.begin();
+
+          ROSE_ASSERT (j != bbStatements.size());
+
+          while (j < bbStatements.size() - 1 && isSgLabelStatement(bbStatements[j + 1]))
+             {
+               ++j;
+             }
+          gs->set_label(isSgLabelStatement(bbStatements[j]));
+        }
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:32:36,156 - INFO - Response from llama3.1:70b for Function 397:
+2025-01-27 20:32:36,156 - INFO - /**
+ * @fn SageInterface::removeConsecutiveLabels(SgNode* top)
+ *
+ * @brief Removes consecutive labels from goto statements in a given AST.
+ *
+ * This function traverses the abstract syntax tree (AST) rooted at the
+ * specified node and removes consecutive labels from goto statements.
+ * It iterates over all SgGotoStatement nodes, retrieves their corresponding
+ * label statements, and then updates the label statement if it is followed
+ * by another label statement in the same basic block.
+ *
+ * @param top The root node of the AST to be processed. Must not be NULL.
+ *
+ * @return None (void function).
+ *
+ * @warning This function modifies the input AST by updating the labels of goto statements.
+ *
+ * @pre The input AST must be well-formed and valid.
+ *
+ * @post The input AST is modified to remove consecutive labels from goto statements.
+ *
+ * @note This function assumes that the input AST has already been parsed and validated.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *            SgNode* astRoot = ...; // obtain the root node of the AST
+ *            SageInterface::removeConsecutiveLabels(astRoot);
+ *          @endcode
+ */
+2025-01-27 20:32:36,156 - INFO - End time: 2025-01-27 20:32:36
+2025-01-27 20:32:36,156 - INFO - Duration: 17.105963706970215

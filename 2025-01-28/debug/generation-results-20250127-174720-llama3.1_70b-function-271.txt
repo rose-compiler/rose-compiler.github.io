@@ -1,0 +1,99 @@
+2025-01-27 19:39:45,128 - INFO - Start time: 2025-01-27 19:39:45
+2025-01-27 19:39:45,128 - INFO - Generating documents for a function with id : 271
+2025-01-27 19:39:45,128 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::getEnclosingFunctionDeclaration (SgNode * astNode,bool includingSelf) {
+    return getEnclosingNode<SgFunctionDeclaration>(astNode, includingSelf);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:40:11,699 - INFO - Response from llama3.1:70b for Function 271:
+2025-01-27 19:40:11,700 - INFO - /**
+ * @fn SageInterface::getEnclosingFunctionDeclaration(SgNode * astNode, bool includingSelf)
+ *
+ * @brief Retrieves the enclosing function declaration of a given AST node.
+ *
+ * This function traverses the abstract syntax tree (AST) to find the nearest
+ * enclosing function declaration for a specified node. It uses a recursive
+ * approach to navigate up the AST until it encounters an SgFunctionDeclaration
+ * node, which represents a function definition in the source code.
+ *
+ * @param astNode The node in the AST from which to start searching for the enclosing function declaration.
+ *                Must be a valid pointer to an SgNode object.
+ * @param includingSelf A flag indicating whether to consider the input node itself as a potential match.
+ *                      If true, the function will return the input node if it is an SgFunctionDeclaration;
+ *                      otherwise, it will continue searching up the AST.
+ *
+ * @return The enclosing function declaration of the input node, or NULL if no such declaration is found.
+ *
+ * @warning This function assumes that the input node is part of a valid AST and does not perform any error checking on the input parameters.
+ *
+ * @pre The input node must be a valid SgNode object.
+ *
+ * @post The returned value will either be an SgFunctionDeclaration node or NULL, depending on whether an enclosing function declaration was found.
+ *
+ * @note This function is part of the SageInterface class and provides a convenient way to access AST nodes in the context of the Sage compiler infrastructure.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode *node = ...; // some node in the AST
+ *           SgFunctionDeclaration *enclosingFuncDecl = 
+ *               SageInterface::getEnclosingFunctionDeclaration(node, true);
+ *           if (enclosingFuncDecl != NULL) {
+ *               // do something with the enclosing function declaration
+ *           }
+ *          @endcode
+ */
+2025-01-27 19:40:11,700 - INFO - End time: 2025-01-27 19:40:11
+2025-01-27 19:40:11,700 - INFO - Duration: 26.57157301902771

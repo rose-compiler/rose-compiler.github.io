@@ -1,0 +1,178 @@
+2025-01-27 20:05:47,009 - INFO - Start time: 2025-01-27 20:05:47
+2025-01-27 20:05:47,009 - INFO - Generating documents for a function with id : 333
+2025-01-27 20:05:47,009 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    (SgExpression* expression, SgScopeStatement* scope, bool initializeInDeclaration, SgAssignOp** reEvaluate)
+{
+    SgType* expressionType = expression->get_type();
+    SgType* variableType = expressionType;
+
+    //If the expression has a reference type, we need to use a pointer type for the temporary variable.
+    //Else, re-assigning the variable is not possible
+    bool isReferenceType = SageInterface::isReferenceType(expressionType);
+    if (isReferenceType)
+    {
+        SgType* expressionBaseType = expressionType->stripType(SgType::STRIP_TYPEDEF_TYPE | SgType::STRIP_REFERENCE_TYPE | SgType::STRIP_RVALUE_REFERENCE_TYPE);
+        variableType = SageBuilder::buildPointerType(expressionBaseType);
+    }
+
+    //MS 10/24/2018: If the expression has array type, we need to use a pointer type referring to the base type for the temporary variable.
+    if (SgArrayType* arrayType=isSgArrayType(expressionType)) {
+      if(SgArrayType* strippedArrayType = isSgArrayType(arrayType->stripType(SgType::STRIP_TYPEDEF_TYPE))) {
+        SgType* strippedArrayBaseType = strippedArrayType->get_base_type();
+        variableType = SageBuilder::buildPointerType(strippedArrayBaseType);
+      }
+    }
+
+    // If the expression is a dereferenced pointer, use a reference to hold it.
+    if (isSgPointerDerefExp(expression))
+        variableType = SageBuilder::buildReferenceType(variableType);
+
+    //Generate a unique variable name
+    string name = generateUniqueVariableName(scope);
+
+    //Initialize the temporary variable to an evaluation of the expression
+    SgExpression* tempVarInitExpression = SageInterface::copyExpression(expression);
+    ROSE_ASSERT(tempVarInitExpression != NULL);
+    if (isReferenceType)
+    {
+        //FIXME: the next line is hiding a bug in ROSE. Remove this line and talk to Dan about the resulting assert
+        tempVarInitExpression->set_lvalue(false);
+
+        tempVarInitExpression = SageBuilder::buildAddressOfOp(tempVarInitExpression);
+    }
+
+    //Optionally initialize the variable in its declaration
+    SgAssignInitializer* initializer = NULL;
+    if (initializeInDeclaration)
+    {
+        SgExpression* initExpressionCopy = SageInterface::copyExpression(tempVarInitExpression);
+        initializer = SageBuilder::buildAssignInitializer(initExpressionCopy);
+    }
+
+    SgVariableDeclaration* tempVarDeclaration = SageBuilder::buildVariableDeclaration(name, variableType, initializer, scope);
+    ROSE_ASSERT(tempVarDeclaration != NULL);
+
+    //Now create the assignment op for reevaluating the expression
+    if (reEvaluate != NULL)
+    {
+        SgVarRefExp* tempVarReference = SageBuilder::buildVarRefExp(tempVarDeclaration);
+        *reEvaluate = SageBuilder::buildAssignOp(tempVarReference, tempVarInitExpression);
+    }
+
+    //Build the variable reference expression that can be used in place of the original expression
+    SgExpression* varRefExpression = SageBuilder::buildVarRefExp(tempVarDeclaration);
+    if (isReferenceType)
+    {
+        //The temp variable is a pointer type, so dereference it before using it
+        varRefExpression = SageBuilder::buildPointerDerefExp(varRefExpression);
+    }
+
+    return std::make_pair(tempVarDeclaration, varRefExpression);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:06:25,487 - INFO - Response from llama3.1:70b for Function 333:
+2025-01-27 20:06:25,487 - INFO - /**
+ * @fn std::pair<SgVariableDeclaration*, SgExpression*> rose::createTemporaryVariableForRValue(SgExpression* expression, SgScopeStatement* scope, bool initializeInDeclaration, SgAssignOp** reEvaluate)
+ *
+ * @brief Creates a temporary variable to hold the value of an r-value expression.
+ *
+ * This function generates a unique temporary variable declaration and assigns
+ * it the value of the given r-value expression. The variable is declared in the
+ * specified scope. Optionally, the variable can be initialized with the value
+ * of the expression at its point of declaration.
+ *
+ * @param expression The r-value expression for which a temporary variable is to be created.
+ *
+ * @param scope The scope in which the temporary variable will be declared.
+ *
+ * @param initializeInDeclaration If true, the temporary variable will be initialized with the value
+ *          of the expression at its point of declaration. Otherwise, it will not be initialized until later.
+ *
+ * @param reEvaluate A pointer to a location where an assignment operator can be stored that re-evaluates
+ *          the original expression and assigns its result back to the temporary variable.
+ *
+ * @return A pair containing the declaration for the temporary variable and an expression referencing the variable.
+ * 
+ * @warning If the input expression is of reference type, the generated temporary variable will have a pointer type,
+ *          and re-assigning the value of the variable may not be possible. Also, if the expression has array type,
+ *          the generated temporary variable will have a pointer type referring to the base type.
+ *
+ * @pre The input expression must be non-null and of r-value type.
+ * 
+ * @post A unique temporary variable declaration is created in the specified scope, and an expression referencing
+ *       the variable is returned. If initializeInDeclaration is true, the variable is initialized with the value of
+ *       the expression at its point of declaration.
+ *
+ * 
+ * @note This function modifies the input AST by adding a new variable declaration to it.
+ *
+ * 
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgExpression* expr = ...; // some r-value expression
+ *           SgScopeStatement* scope = ...; // some scope
+ *           bool initializeInDeclaration = true;
+ *           SgAssignOp** reEvaluate = NULL;
+ * 
+ *           std::pair<SgVariableDeclaration*, SgExpression*> result =
+ *               rose::createTemporaryVariableForRValue(expr, scope, initializeInDeclaration, reEvaluate);
+ * 
+ *           SgVariableDeclaration* tempVarDecl = result.first;
+ *           SgExpression* varRefExpr = result.second;
+ *          @endcode
+ */
+2025-01-27 20:06:25,487 - INFO - End time: 2025-01-27 20:06:25
+2025-01-27 20:06:25,487 - INFO - Duration: 38.478596210479736

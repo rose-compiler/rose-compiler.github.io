@@ -1,0 +1,117 @@
+2025-01-27 20:12:59,222 - INFO - Start time: 2025-01-27 20:12:59
+2025-01-27 20:12:59,222 - INFO - Generating documents for a function with id : 352
+2025-01-27 20:12:59,222 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::isTemplateInstantiationNode(SgNode* node)
+   {
+  // DQ (7/19/2015): I think we want to focus exclusively on declarations.
+     if (isSgTemplateInstantiationDefn(node) != NULL)
+        {
+#if 0
+          printf ("Note: In SageInterface::isTemplateInstantiationNode(): skipping SgTemplateInstantiationDefn \n");
+#endif
+        }
+
+     return isSgTemplateInstantiationDecl(node)
+      // DQ (1/3/2016): Allow SgTemplateInstantiationDefn IR nodes.
+//       || isSgTemplateInstantiationDefn(node)
+         || isSgTemplateInstantiationDefn(node)
+         || isSgTemplateInstantiationFunctionDecl(node)
+         || isSgTemplateInstantiationMemberFunctionDecl(node)
+         || isSgTemplateInstantiationTypedefDeclaration(node)
+         || isSgTemplateInstantiationDirectiveStatement(node)
+         ;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:13:22,148 - INFO - Response from llama3.1:70b for Function 352:
+2025-01-27 20:13:22,148 - INFO - /**
+ * @fn bool SageInterface::isTemplateInstantiationNode(SgNode* node)
+ *
+ * @brief Checks if a given SgNode represents a template instantiation.
+ *
+ * This function determines whether the provided node corresponds to a template
+ * instantiation in the source code. It checks for various types of nodes that can
+ * represent template instantiations, including declarations and definitions.
+ *
+ * @param node The SgNode to be checked for template instantiation.
+ *
+ * @return True if the node represents a template instantiation; false otherwise.
+ *
+ * @warning This function may return incorrect results if the input node is not
+ * properly initialized or if it does not correspond to a valid template
+ * instantiation in the source code.
+ *
+ * @pre The input node must be non-null and represent a valid SgNode in the ROSE AST.
+ *
+ * @post The function will return true if the node represents a template instantiation;
+ * false otherwise. No side effects are guaranteed.
+ *
+ * @note This function uses a combination of checks to determine whether the node
+ * represents a template instantiation, including checking for specific types of
+ * declarations and definitions.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* node = ...; // Initialize node with some value
+ *           bool isTemplateInstantiation = SageInterface::isTemplateInstantiationNode(node);
+ *           if (isTemplateInstantiation) {
+ *               printf("Node represents a template instantiation\n");
+ *           } else {
+ *               printf("Node does not represent a template instantiation\n");
+ *           }
+ *          @endcode
+ */
+2025-01-27 20:13:22,148 - INFO - End time: 2025-01-27 20:13:22
+2025-01-27 20:13:22,148 - INFO - Duration: 22.92650842666626

@@ -1,0 +1,159 @@
+2025-01-27 18:55:17,643 - INFO - Start time: 2025-01-27 18:55:17
+2025-01-27 18:55:17,643 - INFO - Generating documents for a function with id : 166
+2025-01-27 18:55:17,643 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::preOrderCollectPreprocessingInfo(SgNode* current, vector<PreprocessingInfo*>& infoList, int depth)
+{
+  // stop condition
+  if (current == NULL)
+    return;
+
+  // Three possible locations: before, inside, and after
+  // immediately add prepression info that is before and inside of current node
+  // delayed additions of these that are located after the current node
+  vector<PreprocessingInfo*> afterList;
+  if (SgLocatedNode* locatedNode = isSgLocatedNode(current))
+  {
+    AttachedPreprocessingInfoType* comments = locatedNode->getAttachedPreprocessingInfo();
+
+    if (comments != nullptr)
+    {
+      AttachedPreprocessingInfoType::iterator i;
+      int idx=0;
+      for (i = comments->begin (); i != comments->end (); i++)
+      {
+        PreprocessingInfo* info= *i;
+
+        // prepare the data just in case
+        PreprocessingInfoData data;
+        data.container=comments;
+        data.index = idx;
+        data.depth = depth;
+
+        // put directives with before location into the infoList
+        if (info->getRelativePosition () == PreprocessingInfo::before
+	   )
+        {
+          infoList.push_back (info);
+          infoMap[info] = data;
+        }
+	// How about inside position?
+	// why it should be intepreted as the last one after all inner statment's preprocessingInfo?
+	// because if it should be unparsed before all of them,  it should have been attached to the first stmt's before location instead!
+        else if (info->getRelativePosition () == PreprocessingInfo::after
+              || info->getRelativePosition () == PreprocessingInfo::inside
+	        )
+        {
+          afterList.push_back (info); // if attached to be after, save to afterList
+          infoMap[info] = data;
+        }
+        else
+        {
+          cerr<<"Warning: unhandled relative position value:" <<info->getRelativePosition () <<endl;
+          // ROSE_ASSERT (false); // Jovial has end_of
+        }
+
+        idx++;
+      } // end for
+    }
+  } // end if
+
+  // handling children nodes
+  std::vector<SgNode* > children = current->get_traversalSuccessorContainer();
+  for (auto c: children)
+    preOrderCollectPreprocessingInfo (c, infoList, depth +1);
+
+  // append after locations after recursively handling children nodes.
+  for (auto fi : afterList)
+    infoList.push_back(fi);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:55:47,289 - INFO - Response from llama3.1:70b for Function 166:
+2025-01-27 18:55:47,289 - INFO - /**
+ * @fn void SageInterface::preOrderCollectPreprocessingInfo(SgNode* current, vector<PreprocessingInfo*>& infoList, int depth)
+ *
+ * @brief Collects preprocessing information from an Abstract Syntax Tree (AST) node and its children in a pre-order traversal.
+ *
+ * This function recursively traverses the AST starting from the given node, collecting preprocessing information
+ * attached to each node. It handles three possible locations for this information: before, inside, and after
+ * the current node. Information located before or inside the current node is immediately added to the infoList,
+ * while information located after the current node is delayed until its children have been processed.
+ *
+ * @param current The current AST node being processed.
+ * @param infoList A list of preprocessing information objects to be populated by this function.
+ * @param depth The current recursion depth, used to track the nesting level of nodes in the AST.
+ *
+ * @return None
+ *
+ * @warning This function does not perform any error checking on the input parameters. It is assumed that
+ *          the caller has ensured that the current node and infoList are valid.
+ *
+ * @pre The current node must be a non-null pointer to an SgNode object, and the infoList must be a valid vector of PreprocessingInfo pointers.
+ * @post The infoList will contain all preprocessing information attached to the current node and its children,
+ *       with the information located before or inside the current node appearing first in the list, followed
+ *       by the information located after the current node.
+ *
+ * @note This function uses a recursive approach to traverse the AST. It is possible that this could lead to stack overflows for very deeply nested ASTs.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* root = ...; // obtain the root node of the AST
+ *           vector<PreprocessingInfo*> infoList;
+ *           SageInterface::preOrderCollectPreprocessingInfo(root, infoList, 0);
+ *           // infoList now contains all preprocessing information from the AST
+ *          @endcode
+ */
+2025-01-27 18:55:47,289 - INFO - End time: 2025-01-27 18:55:47
+2025-01-27 18:55:47,289 - INFO - Duration: 29.64601755142212

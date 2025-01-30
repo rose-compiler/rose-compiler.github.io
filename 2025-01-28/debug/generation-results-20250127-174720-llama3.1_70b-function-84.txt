@@ -1,0 +1,108 @@
+2025-01-27 18:22:36,545 - INFO - Start time: 2025-01-27 18:22:36
+2025-01-27 18:22:36,545 - INFO - Generating documents for a function with id : 84
+2025-01-27 18:22:36,545 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgNode * SageInterface::deepCopyNode (const SgNode* n)
+{
+  SgNode* rt = NULL;
+  SgTreeCopy g_treeCopy; // should use a copy object each time of usage!
+  if (n!= NULL)
+  {
+     rt = n->copy (g_treeCopy);
+     SageInterface::setSourcePositionForTransformation (rt);
+  }
+  //  return n ? n->copy (g_treeCopy) : 0;
+  return rt;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:23:02,209 - INFO - Response from llama3.1:70b for Function 84:
+2025-01-27 18:23:02,209 - INFO - /**
+ * @fn SgNode* SageInterface::deepCopyNode(const SgNode* n)
+ *
+ * @brief Creates a deep copy of a given SgNode.
+ *
+ * This function creates a new SgNode that is an exact copy of the input node,
+ * including all its children and attributes. It uses the SgTreeCopy object to
+ * perform the copy operation. If the input node is NULL, the function returns NULL.
+ *
+ * The copied node's source position is set using the SageInterface::setSourcePositionForTransformation() function.
+ *
+ * @param n The SgNode to be copied. Can be NULL.
+ *
+ * @return A deep copy of the input node, or NULL if the input node is NULL.
+ *
+ * @warning If the input node has a large number of children or attributes,
+ *          the copying process may take significant time and memory.
+ *
+ * @pre The input node must be a valid SgNode pointer. If the node is not valid,
+ *      the behavior of this function is undefined.
+ *
+ * @post The returned node is a deep copy of the input node, including all its
+ *       children and attributes. If the input node is NULL, the returned node is also NULL.
+ *
+ * @note This function uses a SgTreeCopy object to perform the copy operation.
+ *       It is recommended to use a new SgTreeCopy object each time this function is called.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgNode* originalNode = ...; // assume originalNode is initialized
+ *           SgNode* copiedNode = SageInterface::deepCopyNode(originalNode);
+ *           if (copiedNode != NULL) {
+ *               // Use the copied node as needed
+ *           }
+ *          @endcode
+ */
+2025-01-27 18:23:02,209 - INFO - End time: 2025-01-27 18:23:02
+2025-01-27 18:23:02,209 - INFO - Duration: 25.664297103881836

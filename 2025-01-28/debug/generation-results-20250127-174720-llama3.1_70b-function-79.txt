@@ -1,0 +1,140 @@
+2025-01-27 18:20:11,827 - INFO - Start time: 2025-01-27 18:20:11
+2025-01-27 18:20:11,827 - INFO - Generating documents for a function with id : 79
+2025-01-27 18:20:11,827 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgDeclarationStatement*
+SageInterface::getNonInstantiatonDeclarationForClass ( SgTemplateInstantiationMemberFunctionDecl* memberFunctionInstantiation )
+   {
+  // DQ (11/4/2007): This function is used in the markTemplateInstantiationsForOutput.C
+  // DQ (11/4/2007): Get the associated declaration that will be in the original source code,
+  // if it is part of a template instantiation then get the original template declaration.
+
+     SgDeclarationStatement* parentDeclaration = nullptr;
+
+     SgScopeStatement* defn = memberFunctionInstantiation->get_class_scope();
+     ASSERT_not_null(defn);
+
+  // SgTemplateDeclaration* templateDeclaration = memberFunctionInstantiation->get_templateDeclaration();
+     SgDeclarationStatement* templateDeclaration = memberFunctionInstantiation->get_templateDeclaration();
+     ASSERT_not_null(templateDeclaration);
+
+  // If it is a template instatiation, then we have to find the temple declaration (not the template instantiation declaration), else we want the class declaration.
+     SgClassDefinition* cdefn = isSgClassDefinition(defn);
+     SgDeclarationScope* nrscope = isSgDeclarationScope(defn);
+     SgTemplateInstantiationDefn* templateInstatiationClassDefinition = isSgTemplateInstantiationDefn(defn);
+     if (templateInstatiationClassDefinition != nullptr)
+        {
+       // This is the case of a template member function in a templated class (see test2005_172.C).
+          SgTemplateInstantiationDefn* parentTemplateInstantiationDefinition = isSgTemplateInstantiationDefn(templateDeclaration->get_scope());
+          ASSERT_not_null(parentTemplateInstantiationDefinition);
+          SgTemplateInstantiationDecl* parentTemplateInstantiationDeclaration = isSgTemplateInstantiationDecl(parentTemplateInstantiationDefinition->get_declaration());
+          ASSERT_not_null(parentTemplateInstantiationDeclaration);
+
+          parentDeclaration = parentTemplateInstantiationDeclaration->get_templateDeclaration();
+          ASSERT_not_null(parentDeclaration);
+        }
+       else if (cdefn != nullptr)
+        {
+       // This is the case of a template member function in a class definition (see test2005_168.C).
+          parentDeclaration = cdefn->get_declaration();
+          ASSERT_not_null(parentDeclaration);
+        }
+       else if (nrscope != nullptr)
+        {
+          parentDeclaration = isSgDeclarationStatement(nrscope->get_parent());
+          ASSERT_not_null(parentDeclaration);
+        }
+       else
+        {
+          ROSE_ABORT();
+        }
+
+      return parentDeclaration;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 18:20:40,010 - INFO - Response from llama3.1:70b for Function 79:
+2025-01-27 18:20:40,010 - INFO - /**
+ * @fn SgDeclarationStatement* SageInterface::getNonInstantiatonDeclarationForClass ( SgTemplateInstantiationMemberFunctionDecl* memberFunctionInstantiation )
+ *
+ * @brief Retrieves the non-instantiation declaration for a class from a given template instantiation member function.
+ *
+ * This function is used to obtain the original declaration of a class that corresponds to a given template instantiation member function. 
+ * It traverses the scope hierarchy to find the associated declaration, handling cases where the class definition is part of a template instantiation or not.
+ *
+ * @param memberFunctionInstantiation A pointer to an SgTemplateInstantiationMemberFunctionDecl object representing the template instantiation member function.
+ *
+ * @return A pointer to the SgDeclarationStatement object representing the non-instantiation declaration for the class, or nullptr if not found.
+ *
+ * @warning This function assumes that the input parameter is a valid SgTemplateInstantiationMemberFunctionDecl object and does not perform extensive error checking.
+ *
+ * @pre The input parameter memberFunctionInstantiation must be a valid pointer to an SgTemplateInstantiationMemberFunctionDecl object.
+ *
+ * @post The returned pointer will be either a valid SgDeclarationStatement object or nullptr, depending on whether the associated declaration was found.
+ *
+ * @note This function uses various ROSE assertions to ensure that the input parameters and intermediate results are valid. If any of these assertions fail, the program will abort with an error message.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgTemplateInstantiationMemberFunctionDecl* memberFunctionInstantiation = ...;
+ *           SgDeclarationStatement* parentDeclaration = SageInterface::getNonInstantiatonDeclarationForClass(memberFunctionInstantiation);
+ *           if (parentDeclaration != nullptr) {
+ *               // Process the parent declaration...
+ *           } else {
+ *               // Handle the case where no parent declaration was found...
+ *           }
+ *          @endcode
+ */
+2025-01-27 18:20:40,010 - INFO - End time: 2025-01-27 18:20:40
+2025-01-27 18:20:40,010 - INFO - Duration: 28.183552026748657

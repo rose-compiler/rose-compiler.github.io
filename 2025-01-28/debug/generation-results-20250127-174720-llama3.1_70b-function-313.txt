@@ -1,0 +1,115 @@
+2025-01-27 19:57:08,350 - INFO - Start time: 2025-01-27 19:57:08
+2025-01-27 19:57:08,350 - INFO - Generating documents for a function with id : 313
+2025-01-27 19:57:08,350 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::prependStatement(SgStatement *stmt, SgForInitStatement* for_init_stmt)
+{
+  ROSE_ASSERT (stmt != NULL);
+  ROSE_ASSERT (for_init_stmt != NULL);
+
+#if 0
+     printf ("In SageInterface::prependStatement(): stmt = %p = %s scope = %p = %s (resetInternalMapsForTargetStatement: stmt) \n",stmt,stmt->class_name().c_str(),scope,scope->class_name().c_str());
+#endif
+
+  // DQ (12/2/2015): If this is a moved statement then cause it to update internal data structures
+  // to record it being moved (and thus the macroExpansions that it might be associated with having
+  // to force the macroExpansion's associated statements to be marked as a transformation.
+     resetInternalMapsForTargetStatement(stmt);
+
+#if 0
+     printf ("In SageInterface::prependStatement(): stmt = %p = %s scope = %p = %s (resetInternalMapsForTargetStatement: scope) \n",stmt,stmt->class_name().c_str(),scope,scope->class_name().c_str());
+#endif
+
+  // DQ (12/2/2015): Also look at the statements on either side of the location where this statement
+  // is being inserted to make sure that they are not a part of a macro expansion. In the case of
+  // prepend, we only need to look at the scope.
+     resetInternalMapsForTargetStatement(for_init_stmt);
+
+  for_init_stmt->prepend_init_stmt (stmt);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:57:29,947 - INFO - Response from llama3.1:70b for Function 313:
+2025-01-27 19:57:29,947 - INFO - /**
+ * @fn void SageInterface::prependStatement(SgStatement* stmt, SgForInitStatement* for_init_stmt)
+ *
+ * @brief Prepends a statement to a for-init statement in the AST.
+ *
+ * This function prepends a given statement to a for-init statement in the abstract syntax tree (AST).
+ * It first checks if the input statements are valid and then updates internal data structures
+ * to record the movement of the statement. Additionally, it ensures that neighboring statements
+ * are not part of a macro expansion.
+ *
+ * @param stmt The statement to be prepended. Must not be NULL.
+ * @param for_init_stmt The for-init statement where the given statement is to be prepended. Must not be NULL.
+ *
+ * @return None
+ *
+ * @warning This function does not check if the input statements are syntactically correct or semantically valid.
+ *
+ * @pre The input statements must not be NULL and must exist in the AST.
+ * @post The internal data structures are updated to reflect the movement of the statement, and neighboring statements are checked for macro expansions.
+ *
+ * @note This function is used internally by the SageInterface class and should not be called directly by users.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgStatement* stmt = ...; // initialize stmt
+ *           SgForInitStatement* for_init_stmt = ...; // initialize for_init_stmt
+ *           SageInterface sage_interface;
+ *           sage_interface.prependStatement(stmt, for_init_stmt);
+ *          @endcode
+ */
+2025-01-27 19:57:29,947 - INFO - End time: 2025-01-27 19:57:29
+2025-01-27 19:57:29,947 - INFO - Duration: 21.597503900527954

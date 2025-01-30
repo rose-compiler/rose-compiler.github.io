@@ -1,0 +1,674 @@
+2025-01-27 17:49:57,654 - INFO - Start time: 2025-01-27 17:49:57
+2025-01-27 17:49:57,654 - INFO - Generating documents for a function with id : 3
+2025-01-27 17:49:57,654 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    string
+SageInterface::get_name ( const SgDeclarationStatement* declaration )
+   {
+     string name = "undefined_name";
+
+     ROSE_ASSERT(declaration != NULL);
+
+  // DQ (11/23/2008): Handle the case of a Cpp directive...
+     const SgC_PreprocessorDirectiveStatement* directive = isSgC_PreprocessorDirectiveStatement(declaration);
+     if (directive != NULL)
+        {
+          return SageInterface::get_name (directive);
+        }
+
+     switch (declaration->variantT())
+        {
+          case V_SgTemplateMemberFunctionDeclaration:
+               name = isSgTemplateMemberFunctionDeclaration(declaration)->get_name().str();
+               break;
+
+          case V_SgTemplateFunctionDeclaration:
+               name = isSgTemplateFunctionDeclaration(declaration)->get_name().str();
+               break;
+
+          case V_SgTemplateClassDeclaration:
+               name = isSgTemplateClassDeclaration(declaration)->get_name().str();
+               break;
+
+          case V_SgTemplateDeclaration:
+               name = isSgTemplateDeclaration(declaration)->get_name().str();
+               break;
+
+          case V_SgTemplateInstantiationDecl:
+               name = isSgTemplateInstantiationDecl(declaration)->get_templateName().str();
+               break;
+
+          case V_SgClassDeclaration:
+          case V_SgDerivedTypeStatement:
+          case V_SgJovialTableStatement:
+               name = isSgClassDeclaration(declaration)->get_name().str();
+               break;
+
+       // Rasmussen (8/2/2019): Added SgJovialDefineDeclaration and SgJovialDirectiveStatement
+       // I'm not sure class_name() is correct. Probably get_name() should be fixed.
+          case V_SgJovialDefineDeclaration:
+          case V_SgJovialDirectiveStatement:
+          case V_SgJovialCompoolStatement:
+               name = "__" + declaration->class_name() + "_";
+               name += StringUtility::numberToString(declaration);
+               break;
+
+          case V_SgJovialLabelDeclaration:
+               name = isSgJovialLabelDeclaration(declaration)->get_label();
+               break;
+
+          case V_SgEnumDeclaration:
+               name = isSgEnumDeclaration(declaration)->get_name().str();
+               break;
+
+       // DQ (11/5/2014): Adding support for template typedef declarations (C++11 feature).
+          case V_SgTemplateInstantiationTypedefDeclaration:
+       // DQ (11/3/2014): Adding support for template typedef declarations (C++11 feature).
+          case V_SgTemplateTypedefDeclaration:
+          case V_SgTypedefDeclaration:
+               name = isSgTypedefDeclaration(declaration)->get_name().str();
+               break;
+
+          case V_SgFunctionDeclaration:
+          case V_SgProgramHeaderStatement:
+          case V_SgProcedureHeaderStatement:
+          case V_SgMemberFunctionDeclaration:
+          case V_SgTemplateInstantiationFunctionDecl:
+          case V_SgTemplateInstantiationMemberFunctionDecl:
+          case V_SgAdaFunctionRenamingDecl:
+          case V_SgAdaEntryDecl:
+               name = isSgFunctionDeclaration(declaration)->get_name().str();
+               break;
+
+          case V_SgNamespaceDeclarationStatement:
+               name = isSgNamespaceDeclarationStatement(declaration)->get_name().str();
+               break;
+
+       // DQ (2/12/2006): Added support to get name of SgFunctionParameterList
+          case V_SgFunctionParameterList:
+             {
+            // Parents should be set prior to calling these functions (if not we might have to implement that case)
+               ROSE_ASSERT(declaration->get_parent() != NULL);
+
+               if (SgFunctionDeclaration* functionDeclaration = isSgFunctionDeclaration(declaration->get_parent()))
+               {
+                 name = get_name(functionDeclaration);
+               }
+               else if (SgScopeStatement* scopeStmt = isSgScopeStatement(declaration->get_parent()))
+               {
+                 name = get_name(scopeStmt);
+               }
+               else ROSE_ABORT();
+
+               name += "_parameter_list_";
+               break;
+             }
+
+       // DQ (2/10/2012): Added support for template variable declarations (using base class support).
+          case V_SgTemplateVariableDeclaration:
+
+       // DQ (3/8/2006): Implemented case for variable declaration (forgot this case)
+          case V_SgVariableDeclaration:
+             {
+            // DQ (2/11/2007): Modified to return names that can be used as variables (required
+            // because we use this mechanism to generate names for unnamed structs and enums).
+               name = "_variable_declaration_";
+               const SgVariableDeclaration* variableDeclaration = isSgVariableDeclaration(declaration);
+               ROSE_ASSERT(variableDeclaration != NULL);
+               SgInitializedNamePtrList::const_iterator i = variableDeclaration->get_variables().begin();
+
+            // Make sure that we have at least one variable in the list
+               ROSE_ASSERT(i != variableDeclaration->get_variables().end());
+               do {
+                 // name += string(" ") + string((*i)->get_name().str());
+                    name += string((*i)->get_name().str());
+                    i++;
+                  }
+               while (i != variableDeclaration->get_variables().end());
+               break;
+             }
+
+
+       // DQ (3/8/2006): Implemented case for variable declaration (forgot this case)
+          case V_SgVariableDefinition:
+             {
+            // DQ (2/11/2007): Modified to return names that can be used as variables (required
+            // because we use this mechanism to generate names for unnamed structs and enums).
+               name = "_variable_definition_";
+               const SgVariableDefinition* variableDefinition = isSgVariableDefinition(declaration);
+               ROSE_ASSERT(variableDefinition != NULL);
+
+            // define this in terms of the associated SgInitializedName
+               ROSE_ASSERT(variableDefinition->get_vardefn() != NULL);
+               name += get_name(variableDefinition->get_vardefn());
+               break;
+             }
+
+       // DQ (3/17/2006): Implemented case for pragma declaration (forgot this case)
+          case V_SgPragmaDeclaration:
+             {
+               name = "_pragma_declaration_";
+               const SgPragmaDeclaration* pragmaDeclaration = isSgPragmaDeclaration(declaration);
+               ROSE_ASSERT(pragmaDeclaration != NULL);
+               ROSE_ASSERT(pragmaDeclaration->get_pragma() != NULL);
+               name += get_name(pragmaDeclaration->get_pragma());
+               break;
+             }
+
+       // DQ (4/15/2007): Implemented case for using directive statement (forgot this case)
+          case V_SgUsingDirectiveStatement:
+             {
+               name = "_using_directive_statement_";
+               const SgUsingDirectiveStatement* usingDeclaration = isSgUsingDirectiveStatement(declaration);
+               ROSE_ASSERT(usingDeclaration != NULL);
+               ROSE_ASSERT(usingDeclaration->get_namespaceDeclaration() != NULL);
+               name += get_name(usingDeclaration->get_namespaceDeclaration());
+               break;
+             }
+
+       // DQ (6/20/2007): Added new case!
+          case V_SgNamespaceAliasDeclarationStatement:
+             {
+               name = "_namespace_alias_directive_statement_";
+               const SgNamespaceAliasDeclarationStatement* namespaceAliasDeclaration = isSgNamespaceAliasDeclarationStatement(declaration);
+               ROSE_ASSERT(namespaceAliasDeclaration != NULL);
+               ROSE_ASSERT(namespaceAliasDeclaration->get_name().is_null() == false);
+               name += namespaceAliasDeclaration->get_name();
+               break;
+             }
+
+       // DQ (6/20/2007): Added new case!
+          case V_SgUsingDeclarationStatement:
+             {
+               name = "_using_declaration_statement_";
+               const SgUsingDeclarationStatement* usingDeclaration = isSgUsingDeclarationStatement(declaration);
+               ROSE_ASSERT(usingDeclaration != NULL);
+               if (usingDeclaration->get_declaration() != NULL)
+                  {
+                    name += get_name(usingDeclaration->get_declaration());
+                  }
+                 else
+                  {
+                    ROSE_ASSERT(usingDeclaration->get_initializedName() != NULL);
+                    name += get_name(usingDeclaration->get_initializedName());
+                  }
+               break;
+             }
+
+       // DQ (6/20/2007): Added new case!
+          case V_SgTemplateInstantiationDirectiveStatement:
+             {
+               name = "_template_instantiation_directive_statement_";
+               ROSE_ASSERT(declaration != NULL);
+               const SgTemplateInstantiationDirectiveStatement* templateInstantiationDirective = isSgTemplateInstantiationDirectiveStatement(declaration);
+               ROSE_ASSERT(templateInstantiationDirective != NULL);
+               ROSE_ASSERT(templateInstantiationDirective->get_declaration() != NULL);
+#if 0
+               printf ("declaration->get_declaration() = %p = %s \n",templateInstantiationDirective->get_declaration(),templateInstantiationDirective->get_declaration()->class_name().c_str());
+#endif
+               name += get_name(templateInstantiationDirective->get_declaration());
+               break;
+             }
+
+          case V_SgCtorInitializerList:
+             {
+               name = "_ctor_list_";
+               const SgCtorInitializerList* ctorDeclaration = isSgCtorInitializerList(declaration);
+               ROSE_ASSERT(ctorDeclaration != NULL);
+               ROSE_ASSERT(ctorDeclaration->get_parent() != NULL);
+               name += get_name(ctorDeclaration->get_parent());
+               break;
+             }
+
+       // DQ (8/9/2007): Added case for SgAsmStmt
+          case V_SgAsmStmt:
+             {
+               name = "_asm_stmt_";
+               const SgAsmStmt* asmStatement = isSgAsmStmt(declaration);
+               ROSE_ASSERT(asmStatement != NULL);
+               ROSE_ASSERT(asmStatement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgAsmStmt*>(asmStatement));
+               break;
+             }
+
+       // DQ (8/22/2007): Added case for SgImplicitStatement
+          case V_SgImplicitStatement:
+             {
+               name = "_fortran_implicit_";
+               const SgImplicitStatement* implicitStatement = isSgImplicitStatement(declaration);
+               ROSE_ASSERT(implicitStatement != NULL);
+               ROSE_ASSERT(implicitStatement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgImplicitStatement*>(implicitStatement));
+               break;
+             }
+
+       // DQ (8/22/2007): Added case for SgNamelistStatement
+          case V_SgNamelistStatement:
+             {
+               name = "_fortran_namelist_";
+               const SgNamelistStatement* namelistStatement = isSgNamelistStatement(declaration);
+               ROSE_ASSERT(namelistStatement != NULL);
+               ROSE_ASSERT(namelistStatement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgNamelistStatement*>(namelistStatement));
+               break;
+             }
+
+       // DQ (11/21/2007): Added case for SgEquivalenceStatement
+          case V_SgEquivalenceStatement:
+             {
+               name = "_fortran_equivalence_";
+               const SgEquivalenceStatement* equivalenceStatement = isSgEquivalenceStatement(declaration);
+               ROSE_ASSERT(equivalenceStatement != NULL);
+               ROSE_ASSERT(equivalenceStatement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgEquivalenceStatement*>(equivalenceStatement));
+               break;
+             }
+
+
+       // DQ (11/21/2007): Added case for SgCommonBlock
+          case V_SgCommonBlock:
+             {
+               name = "_fortran_common_block_";
+               const SgCommonBlock* commonBlockStatement = isSgCommonBlock(declaration);
+               ROSE_ASSERT(commonBlockStatement != NULL);
+               ROSE_ASSERT(commonBlockStatement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgCommonBlock*>(commonBlockStatement));
+               break;
+             }
+
+       // DQ (11/21/2007): Added case for SgImportStatement
+          case V_SgImportStatement:
+             {
+               name = "_fortran_import_stmt_";
+               const SgImportStatement* importStatement = isSgImportStatement(declaration);
+               ROSE_ASSERT(importStatement != NULL);
+               ROSE_ASSERT(importStatement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgImportStatement*>(importStatement));
+               break;
+             }
+
+       // DQ (11/21/2007): Added case for SgFormatStatement
+          case V_SgFormatStatement:
+             {
+               name = "_fortran_format_stmt_";
+               const SgFormatStatement* formatStatement = isSgFormatStatement(declaration);
+               ROSE_ASSERT(formatStatement != NULL);
+               ROSE_ASSERT(formatStatement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgFormatStatement*>(formatStatement));
+               break;
+             }
+
+       // DQ (12/27/2007): Added case for SgModuleStatement
+          case V_SgModuleStatement:
+             {
+               name = "_fortran_module_stmt_";
+               const SgModuleStatement* moduleStatement = isSgModuleStatement(declaration);
+               ROSE_ASSERT(moduleStatement != NULL);
+               ROSE_ASSERT(moduleStatement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgModuleStatement*>(moduleStatement));
+               break;
+             }
+
+       // DQ (12/27/2007): Added case for SgUseStatement
+          case V_SgUseStatement:
+             {
+               name = "_fortran_use_stmt_";
+               const SgUseStatement* useStatement = isSgUseStatement(declaration);
+               ROSE_ASSERT(useStatement != NULL);
+               ROSE_ASSERT(useStatement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgUseStatement*>(useStatement));
+               break;
+             }
+
+       // DQ (12/28/2007): Added case for SgContainsStatement
+          case V_SgContainsStatement:
+             {
+               name = "_fortran_contains_stmt_";
+               const SgContainsStatement* containsStatement = isSgContainsStatement(declaration);
+               ROSE_ASSERT(containsStatement != NULL);
+               ROSE_ASSERT(containsStatement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgContainsStatement*>(containsStatement));
+               break;
+             }
+
+       // DQ (1/20/2008): Added case for SgEntryStatement
+          case V_SgEntryStatement:
+             {
+               name = "_fortran_entry_stmt_";
+               const SgEntryStatement* entryStatement = isSgEntryStatement(declaration);
+               ROSE_ASSERT(entryStatement != NULL);
+               ROSE_ASSERT(entryStatement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgEntryStatement*>(entryStatement));
+               break;
+             }
+
+       // DQ (1/23/2008): Added case for SgAttributeSpecificationStatement
+          case V_SgAttributeSpecificationStatement:
+             {
+               name = "_fortran_attribute_specification_stmt_";
+               const SgAttributeSpecificationStatement* statement = isSgAttributeSpecificationStatement(declaration);
+               ROSE_ASSERT(statement != NULL);
+               ROSE_ASSERT(statement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgAttributeSpecificationStatement*>(statement));
+               break;
+             }
+
+           case V_SgInterfaceStatement:
+             {
+               name = "_fortran_interface_stmt_";
+               const SgInterfaceStatement* statement = isSgInterfaceStatement(declaration);
+               ROSE_ASSERT(statement != NULL);
+               ROSE_ASSERT(statement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgInterfaceStatement*>(statement));
+               break;
+             }
+
+           case V_SgFortranIncludeLine:
+             {
+               name = "_fortran_include_line_stmt_";
+               const SgFortranIncludeLine* statement = isSgFortranIncludeLine(declaration);
+               ROSE_ASSERT(statement != NULL);
+               ROSE_ASSERT(statement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgFortranIncludeLine*>(statement));
+               break;
+             }
+
+        // DQ (4/16/2011): Added Java import statment support.
+           case V_SgJavaImportStatement:
+             {
+               name = "_java_import_stmt_";
+               const SgJavaImportStatement* statement = isSgJavaImportStatement(declaration);
+               ROSE_ASSERT(statement != NULL);
+               ROSE_ASSERT(statement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgJavaImportStatement*>(statement));
+               break;
+             }
+
+           case V_SgJavaPackageDeclaration:
+             {
+               name = "_java_package_declaration_";
+               const SgJavaPackageDeclaration* package_declaration = isSgJavaPackageDeclaration(declaration);
+               ROSE_ASSERT(package_declaration != NULL);
+               ROSE_ASSERT(package_declaration->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgJavaPackageDeclaration*>(package_declaration));
+               break;
+             }
+
+           case V_SgJavaPackageStatement:
+             {
+               name = "_java_package_stmt_";
+               const SgJavaPackageStatement* statement = isSgJavaPackageStatement(declaration);
+               ROSE_ASSERT(statement != NULL);
+               ROSE_ASSERT(statement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgJavaPackageStatement*>(statement));
+               break;
+             }
+
+       // DQ (1/21/2018): Added case for C++11 SgStaticAssertionDeclaration
+          case V_SgStaticAssertionDeclaration:
+             {
+               name = "_static_assertion_declaration_stmt_";
+               const SgStaticAssertionDeclaration* statement = isSgStaticAssertionDeclaration(declaration);
+               ROSE_ASSERT(statement != NULL);
+               ROSE_ASSERT(statement->get_parent() != NULL);
+               name += StringUtility::numberToString(const_cast<SgStaticAssertionDeclaration*>(statement));
+               break;
+             }
+
+          case V_SgNonrealDecl:
+             {
+               const SgNonrealDecl * nrdecl = isSgNonrealDecl(declaration);
+               ROSE_ASSERT(nrdecl != NULL);
+               name = nrdecl->get_name();
+               break;
+             }
+
+       // DQ (3/26/2019): Adding support for new declaration.
+          case V_SgEmptyDeclaration:
+             {
+               const SgEmptyDeclaration * emptyDeclaration = isSgEmptyDeclaration(declaration);
+               ROSE_ASSERT(emptyDeclaration != NULL);
+               name = string("emptyDeclaration") + StringUtility::numberToString(const_cast<SgDeclarationStatement*>(declaration));
+               break;
+             }
+
+          case V_SgAdaPackageSpecDecl:
+            {
+              name = genericGetName(isSgAdaPackageSpecDecl(declaration));
+              break;
+            }
+
+          case V_SgAdaPackageBodyDecl:
+            {
+              name = genericGetName(isSgAdaPackageBodyDecl(declaration));
+              break;
+            }
+
+          case V_SgAdaFormalTypeDecl:
+             {
+               name = genericGetName(isSgAdaFormalTypeDecl(declaration));
+               break;
+             }
+
+          case V_SgAdaGenericDecl:
+            {
+              // need to look inside the declaration wrapped by the generic.
+              const SgAdaGenericDecl* gendcl = isSgAdaGenericDecl(declaration);
+              name = get_name(gendcl->get_declaration());
+              break;
+#if OBSOLETE_CODE
+              if (isSgFunctionDeclaration(dcl->get_declaration())) {
+                name = "_ada_generic_decl_" + genericGetName(isSgFunctionDeclaration(dcl->get_declaration()));
+                break;
+              }
+              if (isSgAdaPackageSpecDecl(dcl->get_declaration())) {
+                name = "_ada_generic_decl_" + genericGetName(isSgAdaPackageSpecDecl(dcl->get_declaration()));
+                break;
+              }
+
+              // something malformed in the tree if we get here
+              ROSE_ABORT();
+              break;
+#endif /* OBSOLETE_CODE */
+            }
+
+            case V_SgAdaDiscriminatedTypeDecl:
+            {
+              const SgAdaDiscriminatedTypeDecl* dcl = isSgAdaDiscriminatedTypeDecl(declaration);
+              ROSE_ASSERT(dcl);
+
+              if (const SgDeclarationStatement* discrDcl = dcl->get_discriminatedDecl())
+              {
+                name = get_name(discrDcl);
+              }
+              else
+              {
+                name = "_incomplete_Ada_discriminated_type_";
+              }
+
+              break;
+            }
+
+            case V_SgAdaVariantDecl:
+            {
+              name = "_ada_variant_decl_";
+              break;
+            }
+
+            case V_SgAdaAttributeClause:
+            {
+              name = "_ada_attribute_clause_";
+              break;
+            }
+
+            case V_SgAdaRepresentationClause:
+            {
+              name = "_ada_representation_clause_";
+              break;
+            }
+
+            case V_SgAdaEnumRepresentationClause:
+            {
+              name = "_ada_enum_representation_clause_";
+              break;
+            }
+
+            case V_SgAdaComponentClause:
+            {
+              name = "_ada_component_clause_";
+              break;
+            }
+
+            case V_SgAdaTaskTypeDecl:
+            {
+              name = genericGetName(isSgAdaTaskTypeDecl(declaration));
+              break;
+            }
+
+            case V_SgAdaProtectedTypeDecl:
+            {
+              name = genericGetName(isSgAdaProtectedTypeDecl(declaration));
+              break;
+            }
+
+            case V_SgAdaTaskBodyDecl:
+            {
+              name = genericGetName(isSgAdaTaskBodyDecl(declaration));
+              break;
+            }
+
+            case V_SgAdaProtectedBodyDecl:
+            {
+              name = genericGetName(isSgAdaProtectedBodyDecl(declaration));
+              break;
+            }
+
+            case V_SgAdaRenamingDecl:
+            {
+              name = genericGetName(isSgAdaRenamingDecl(declaration));
+              break;
+            }
+
+            case V_SgAdaTaskSpecDecl:
+            {
+              name = genericGetName(isSgAdaTaskSpecDecl(declaration));
+              break;
+            }
+
+            case V_SgAdaProtectedSpecDecl:
+            {
+              name = genericGetName(isSgAdaProtectedSpecDecl(declaration));
+              break;
+            }
+
+            case V_SgAdaGenericInstanceDecl:
+            {
+              name = genericGetName(isSgAdaGenericInstanceDecl(declaration));
+              break;
+            }
+
+            case V_SgAdaFormalPackageDecl:
+            {
+              name = genericGetName(isSgAdaFormalPackageDecl(declaration));
+              break;
+            }
+
+            case V_SgAdaParameterList:
+            {
+              const SgAdaParameterList* plst = isSgAdaParameterList(declaration);
+              ROSE_ASSERT(plst);
+
+              name = std::accumulate( plst->get_parameters().begin(), plst->get_parameters().end(),
+                                      std::string{"_ada_parameter_list_"},
+                                      [](std::string n, SgDeclarationStatement* rhs) -> std::string
+                                      {
+                                        n += SageInterface::get_name(rhs);
+                                        return n;
+                                      }
+                                    );
+              break;
+            }
+
+       // Note that the case for SgVariableDeclaration is not implemented
+          default:
+               printf ("Warning: default case reached in SageInterface::get_name ( const SgDeclarationStatement* declaration ), declaration = %p = %s \n",
+                    declaration,declaration->class_name().c_str());
+               ROSE_ABORT();
+        }
+
+     return name;
+   }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 17:50:09,356 - INFO - Response from llama3.1:70b for Function 3:
+2025-01-27 17:50:09,356 - INFO - /**
+ * @brief Returns a string representing the name of the declaration.
+ *
+ * This function takes a SgDeclarationStatement as input and returns a string
+ * that represents the name of the declaration. The returned string is used to
+ * identify the declaration in Doxygen-style comments.
+ *
+ * The function handles different types of declarations, such as Ada package
+ * specifications, Ada task type declarations, Ada protected type declarations,
+ * etc. It also handles cases where a generic declaration wraps another
+ * declaration.
+ *
+ * @param declaration A pointer to a SgDeclarationStatement object.
+ * @return A string representing the name of the declaration.
+ */
+std::string get_name(const SgDeclarationStatement* declaration) {
+  // ... function implementation ...
+}
+2025-01-27 17:50:09,356 - INFO - End time: 2025-01-27 17:50:09
+2025-01-27 17:50:09,356 - INFO - Duration: 11.702982425689697

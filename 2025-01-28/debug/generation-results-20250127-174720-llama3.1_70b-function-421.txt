@@ -1,0 +1,173 @@
+2025-01-27 20:41:59,693 - INFO - Start time: 2025-01-27 20:41:59
+2025-01-27 20:41:59,693 - INFO - Generating documents for a function with id : 421
+2025-01-27 20:41:59,693 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    bool SageInterface::isBodyStatement (SgStatement* s)
+{
+  bool rt = false;
+  ROSE_ASSERT(s);
+  SgLocatedNode* p = isSgLocatedNode(s->get_parent());
+  ROSE_ASSERT(p);
+
+  switch (p->variantT())
+  {
+    case V_SgForStatement:
+      {
+        if (isSgForStatement(p)->get_loop_body() == s)
+          rt = true;
+        break;
+      }
+    case V_SgUpcForAllStatement: // PP
+      {
+        SgUpcForAllStatement& upcforall = *isSgUpcForAllStatement(p);
+        if (upcforall.get_loop_body() == s)
+          rt = true;
+        break;
+      }
+    case V_SgWhileStmt:
+      {
+        if (isSgWhileStmt(p)->get_body() == s)
+          rt = true;
+        break;
+      }
+    case V_SgDoWhileStmt:
+      {
+        if (isSgDoWhileStmt(p)->get_body() == s)
+          rt = true;
+        break;
+      }
+    case V_SgSwitchStatement:
+      {
+        if (isSgSwitchStatement(p)->get_body() == s)
+          rt = true;
+        break;
+      }
+    case V_SgCaseOptionStmt:
+      {
+          if (isSgCaseOptionStmt(p)->get_body() == s)
+              rt = true;
+          break;
+      }
+    case V_SgDefaultOptionStmt:
+      {
+          if (isSgDefaultOptionStmt(p)->get_body() == s)
+              rt = true;
+          break;
+      }
+    case V_SgCatchOptionStmt:
+      {
+        if (isSgCatchOptionStmt(p)->get_body() == s)
+          rt = true;
+        break;
+      }
+    case V_SgIfStmt:
+      {
+        if (isSgIfStmt(p)->get_true_body() == s)
+          rt = true;
+        else if (isSgIfStmt(p)->get_false_body() == s)
+          rt = true;
+        break;
+      }
+    default:
+      {
+        if (isSgOmpBodyStatement(p))
+          rt = true;
+        break;
+      }
+  }
+  return rt;
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:42:23,238 - INFO - Response from llama3.1:70b for Function 421:
+2025-01-27 20:42:23,238 - INFO - /**
+ * @fn bool SageInterface::isBodyStatement (SgStatement* s)
+ *
+ * @brief Checks if a given statement is a body statement.
+ *
+ * This function checks if the input SgStatement pointer represents a body
+ * statement within its parent node. A body statement is defined as a
+ * statement that serves as the body of a control flow construct, such as a loop,
+ * conditional, or switch statement.
+ *
+ * The function uses a recursive approach to traverse the abstract syntax tree
+ * and determine if the input statement matches any known body statements.
+ *
+ * @param s The SgStatement pointer to be checked. Must not be NULL.
+ *
+ * @return True if the statement is a body statement; false otherwise.
+ *
+ * @warning This function assumes that the input statement has already been
+ *          validated as a non-NULL, valid SgStatement object.
+ *
+ * @pre The input statement must have a parent node in the abstract syntax tree.
+ *
+ * @post If this function returns true, the statement is guaranteed to be a body
+ *       statement within its parent node.
+ *
+ * @note This function uses a switch statement to handle different types of
+ *       statements. New cases may need to be added if additional statement types
+ *       are introduced in the future.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *            SgStatement* stmt = ...; // obtain an SgStatement pointer
+ *            bool isBodyStmt = SageInterface::isBodyStatement(stmt);
+ *            if (isBodyStmt) {
+ *              // handle the statement as a body statement
+ *            }
+ *          @endcode
+ */
+2025-01-27 20:42:23,238 - INFO - End time: 2025-01-27 20:42:23
+2025-01-27 20:42:23,238 - INFO - Duration: 23.544946432113647

@@ -1,0 +1,100 @@
+2025-01-27 19:41:01,731 - INFO - Start time: 2025-01-27 19:41:01
+2025-01-27 19:41:01,731 - INFO - Generating documents for a function with id : 274
+2025-01-27 19:41:01,731 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SageInterface::getEnclosingClassDefinition(SgNode* astNode, const bool includingSelf/* =false*/) {
+    return getEnclosingNode<SgClassDefinition>(astNode, includingSelf);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:41:28,881 - INFO - Response from llama3.1:70b for Function 274:
+2025-01-27 19:41:28,881 - INFO - /**
+ * @fn SgClassDefinition* SageInterface::getEnclosingClassDefinition(SgNode* astNode, const bool includingSelf)
+ *
+ * @brief Retrieves the enclosing class definition of a given AST node.
+ *
+ * This function navigates through the Abstract Syntax Tree (AST) to find the
+ * closest enclosing class definition for the provided SgNode. The search is
+ * performed recursively upwards in the AST until a matching SgClassDefinition
+ * is found or the root of the tree is reached.
+ *
+ * @param astNode The SgNode for which to retrieve the enclosing class definition.
+ *                Must not be NULL.
+ * @param includingSelf Flag indicating whether to include the node itself in the search.
+ *                       If true, the function checks if the provided node is a
+ *                       SgClassDefinition and returns it immediately. Default: false.
+ *
+ * @return A pointer to the enclosing SgClassDefinition or NULL if no enclosing class definition was found.
+ *
+ * @warning The returned SgClassDefinition may be NULL if the search fails or if the input AST node has no valid enclosing class.
+ *
+ * @pre astNode must not be NULL and must represent a valid node in the AST.
+ * @post The returned SgClassDefinition is guaranteed to be non-NULL only if an enclosing class definition was found.
+ *
+ * @note This function does not perform any syntax checks on the provided AST node. It assumes that the input node represents valid code.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *             SgNode* astNode = ...; // assuming a valid SgNode is created or retrieved
+ *             SageInterface sage;
+ *             SgClassDefinition* enclosingClassDef = sage.getEnclosingClassDefinition(astNode);
+ *             if (enclosingClassDef != NULL) {
+ *                 // Process the found class definition
+ *             } else {
+ *                 // Handle the case where no enclosing class was found
+ *             }
+ *          @endcode
+ */
+2025-01-27 19:41:28,881 - INFO - End time: 2025-01-27 19:41:28
+2025-01-27 19:41:28,881 - INFO - Duration: 27.150397539138794

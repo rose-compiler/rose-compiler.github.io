@@ -1,0 +1,111 @@
+2025-01-27 20:02:24,049 - INFO - Start time: 2025-01-27 20:02:24
+2025-01-27 20:02:24,049 - INFO - Generating documents for a function with id : 325
+2025-01-27 20:02:24,049 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::insertStatementListBeforeFirstNonDeclaration(const std::vector<SgStatement*> &newStmts,SgScopeStatement *scope)
+{
+    ROSE_ASSERT(scope!=NULL);
+    BOOST_FOREACH (SgStatement *targetStmt, scope->generateStatementList()) {
+        if (!isSgDeclarationStatement(targetStmt)) {
+            insertStatementListBefore(targetStmt, newStmts);
+            return;
+        }
+    }
+    appendStatementList(newStmts, scope);
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:02:54,727 - INFO - Response from llama3.1:70b for Function 325:
+2025-01-27 20:02:54,727 - INFO - /**
+ * @fn void SageInterface::insertStatementListBeforeFirstNonDeclaration(const std::vector<SgStatement*> &newStmts,SgScopeStatement *scope)
+ *
+ * @brief Inserts a list of statements before the first non-declaration statement in a scope.
+ *
+ * This function takes a vector of new statements and a scope as input, and inserts these
+ * statements before the first non-declaration statement found within this scope. If no such
+ * statement is found, it appends the new statements at the end of the scope instead.
+ *
+ * The implementation uses a BOOST_FOREACH loop to iterate over all statements in the given
+ * scope, checking each one to see if it's a declaration or not. If a non-declaration statement is
+ * found, it inserts the new statements immediately before this statement using the
+ * insertStatementListBefore helper function. Otherwise, it appends the new statements at the
+ * end of the scope.
+ *
+ * @param newStmts A vector of SgStatement pointers representing the new statements to be inserted.
+ * @param scope   An SgScopeStatement pointer representing the scope in which to insert the new statements.
+ *
+ * @return None (void function)
+ *
+ * @warning The input scope must not be NULL, otherwise a ROSE_ASSERT will trigger. Also,
+ *          if the input vector of new statements is empty, this function has no effect.
+ *
+ * @pre  The input scope and all its contained statements must have been properly initialized
+ *       before calling this function.
+ *
+ * @post If a non-declaration statement was found in the scope, the new statements will be inserted
+ *        immediately before it. Otherwise, they will be appended at the end of the scope.
+ *
+ * @note This function modifies the input scope's statement list by inserting or appending new
+ *       statements.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgScopeStatement* myScope = ...; // initialize a scope statement
+ *           std::vector<SgStatement*> newStmts; // create an empty vector of statements
+ *           // populate the vector with some new statements...
+ *           SageInterface::insertStatementListBeforeFirstNonDeclaration(newStmts, myScope);
+ *          @endcode
+ */
+2025-01-27 20:02:54,727 - INFO - End time: 2025-01-27 20:02:54
+2025-01-27 20:02:54,727 - INFO - Duration: 30.678046941757202

@@ -1,0 +1,120 @@
+2025-01-27 20:39:41,357 - INFO - Start time: 2025-01-27 20:39:41
+2025-01-27 20:39:41,357 - INFO - Generating documents for a function with id : 415
+2025-01-27 20:39:41,357 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    SgBasicBlock* SageInterface::ensureBasicBlockAsFalseBodyOfIf(SgIfStmt* fs , bool createEmptyBody /* = true*/) {
+    SgStatement* b = fs->get_false_body();
+    // if no false body at all AND no-create-empty-body
+    if (!createEmptyBody && (b == NULL || isSgNullStatement(b)))
+      return NULL;
+    if (!isSgBasicBlock(b)) {
+      b = SageBuilder::buildBasicBlock(b); // This works if b is NULL as well (producing an empty block)
+      fs->set_false_body(b);
+      b->set_parent(fs);
+
+   // DQ (1/18/2015): Save the SgBasicBlock that has been added so that we can undo this transformation later.
+      recordNormalizations(b);
+    }
+    ROSE_ASSERT (isSgBasicBlock(b));
+    return isSgBasicBlock(b);
+  }
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 20:40:18,099 - INFO - Response from llama3.1:70b for Function 415:
+2025-01-27 20:40:18,099 - INFO - /**
+ * @fn SgBasicBlock* SageInterface::ensureBasicBlockAsFalseBodyOfIf(SgIfStmt* fs , bool createEmptyBody /* = true*/)
+ *
+ * @brief Ensures that the false body of an if statement is a basic block.
+ *
+ * This function checks if the false body of an if statement is already a basic block. 
+ * If it is not, and the input flag createEmptyBody is set to true (default), 
+ * this function creates a new empty basic block as the false body of the if statement.
+ * Otherwise, if the flag is set to false, it returns NULL without modifying the if statement,
+ * but only if there was no existing false body or the existing false body is a null statement.
+ *
+ * @param fs The input if statement whose false body is to be ensured as a basic block.
+ *          Must not be NULL.
+ * @param createEmptyBody A flag indicating whether an empty basic block should be created 
+ *                        as the false body of the if statement when it does not already exist. 
+ *                        Defaults to true.
+ *
+ * @return The SgBasicBlock that is ensured as the false body of the input if statement, 
+ *         or NULL if createEmptyBody is set to false and there was no existing false body 
+ *         or the existing false body is a null statement.
+ *
+ * @warning This function modifies the input if statement by setting its false body 
+ *          to a new basic block if necessary. It also records the added SgBasicBlock 
+ *          for potential future undo operations.
+ *
+ * @pre The input if statement fs must not be NULL.
+ * @post If createEmptyBody is set to true, the returned SgBasicBlock is guaranteed to be non-NULL.
+ *
+ * @note This function uses SageBuilder::buildBasicBlock() to create a new basic block 
+ *       from the existing false body of the if statement when necessary. It also calls 
+ *       recordNormalizations() to save the added SgBasicBlock for potential future undo operations.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           // Create an if statement with no initial false body
+ *           SgIfStmt* fs = SageBuilder::buildIfStmt(...);
+ *           
+ *           // Ensure the false body of the if statement is a basic block
+ *           SgBasicBlock* b = SageInterface::ensureBasicBlockAsFalseBodyOfIf(fs, true);
+ *           
+ *           // Verify that the returned basic block is non-NULL and set as the false body of the if statement
+ *           ROSE_ASSERT(b != NULL && fs->get_false_body() == b);
+ *          @endcode
+ */
+2025-01-27 20:40:18,099 - INFO - End time: 2025-01-27 20:40:18
+2025-01-27 20:40:18,099 - INFO - Duration: 36.74283790588379

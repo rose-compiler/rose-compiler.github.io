@@ -1,0 +1,187 @@
+2025-01-27 19:54:39,560 - INFO - Start time: 2025-01-27 19:54:39
+2025-01-27 19:54:39,560 - INFO - Generating documents for a function with id : 307
+2025-01-27 19:54:39,560 - INFO - Prompt: 
+    You are tasked to generate comprehensive Doxygen-style comments for a given C++ function. 
+    
+    The generated comments should include sections for the function's 
+    * brief description as a short, one-sentence summary or tagline that concisely describes the purpose of the function or entity.
+    * detailed description for background context, implementation details including algorithms used if applicable
+    * parameters, 
+    * return value, 
+    * warnings, 
+    * preconditions, 
+    * postconditions,
+    * any relevant notes 
+    * examples using this function.
+
+    Make sure your generated comments are clear and follow Doxygen formatting conventions
+    * The comments should be suitable to be directly saved into a separated dox file later 
+    * Please use @tag_name instead of 	ag_name in the comments
+    * The comments must start with a line including @fn full_qualified_function_signature, without its function body.         
+    * Please do not use markdown syntax, use plain text instead
+    * Please do not output anything other the comments
+    * Code example should be enclosed within @code ... @endcode
+    * Please follow the example below:
+/**
+ * @fn long long calculateFactorial(int n)
+ *
+ * @brief Calculates the factorial of a non-negative integer.
+ *
+ * This function computes the factorial of a given non-negative integer using
+ * a recursive algorithm. The factorial of a number n is defined as the product
+ * of all positive integers less than or equal to n. 
+ *
+ * @param n The non-negative integer for which the factorial is to be calculated.
+ *          Must be greater than or equal to 0. If n is greater than 20, the result
+ *          may overflow a 64-bit integer.
+ *
+ * @return The factorial of the input integer n. Returns 1 if n is 0, as 0! is defined as 1.
+ *
+ * ... other details are omitted here  
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           //code example here omitted 
+ *          @endcode
+ */
+
+    Below is the full C++ function definition:
+    ```cpp
+    void SageInterface::moveVariableDeclaration(SgVariableDeclaration* decl, SgScopeStatement* target_scope)
+{
+  ROSE_ASSERT (decl!= NULL);
+  ROSE_ASSERT (target_scope != NULL);
+  ROSE_ASSERT (target_scope != decl->get_scope());
+
+#if 0 // at this stage, we focus on legal move only, any scope adjustment should be done earlier!
+  // Special handling for If-Stmt, may need to climb up one level of scope when:
+  // two bodies of if uses the same variable, but cannot be pushed down into each body.
+  // If-stmt will be the innermost common scope for the variable.
+  // But we should not move the declaration to if-stmt. We can only move it to the parent scope of if-stmt.
+  if (isSgIfStmt (target_scope))
+  {
+    target_scope = SageInterface::getEnclosingScope (target_scope, false);
+    if (target_scope == )
+  }
+# endif
+
+  // Move the declaration
+  //TODO: consider another way: copy the declaration, insert the copy, replace varRefExp, and remove (delete) the original declaration
+  SageInterface::removeStatement(decl);
+
+  switch (target_scope->variantT())
+  {
+    case V_SgBasicBlock:
+      {
+        SageInterface::prependStatement (decl, target_scope);
+        break;
+      }
+#if 0 // this check should be done earlier before any side effects can happen
+    case V_SgIfStmt:
+    {
+       // adjust to parent scope of if-stmt
+       break;
+    }
+#endif
+    case V_SgForStatement:
+      {
+        // we move int i; to be for (int i=0; ...);
+        SgForStatement* stmt = isSgForStatement (target_scope);
+        ROSE_ASSERT(stmt != NULL);
+        SgStatementPtrList& stmt_list = stmt->get_init_stmt();
+        // Try to match a pattern like for (i=0; ...) here
+        // assuming there is only one assignment like i=0
+        // We don't yet handle more complex cases
+        if (stmt_list.size() !=1)
+        {
+          cerr<<"Error in moveVariableDeclaration(): only single init statement is handled for SgForStatement now."<<endl;
+          ROSE_ASSERT (stmt_list.size() ==1);
+        }
+        SgExprStatement* exp_stmt = isSgExprStatement(stmt_list[0]);
+        ROSE_ASSERT (exp_stmt != NULL);
+        SgAssignOp* assign_op = isSgAssignOp(exp_stmt->get_expression());
+        ROSE_ASSERT (assign_op != NULL);
+
+        // remove the existing i=0; preserve its right hand operand
+        SgExpression * rhs = SageInterface::copyExpression(assign_op->get_rhs_operand());
+        stmt_list.clear();
+        SageInterface::deepDelete (exp_stmt);
+
+        // modify the decl's rhs to be the new one
+        SgInitializedName * init_name = SageInterface::getFirstInitializedName (decl);
+        SgAssignInitializer * initor = SageBuilder::buildAssignInitializer (rhs);
+        if (init_name->get_initptr() != NULL)
+          SageInterface::deepDelete (init_name->get_initptr());
+        init_name->set_initptr(initor);
+        initor->set_parent(init_name);
+
+        stmt_list.insert (stmt_list.begin(),  decl );
+        break;
+      }
+
+    default:
+      {
+        cerr<<"Error. Unhandled target scope type:"<<target_scope->class_name()<<endl;
+        ROSE_ASSERT  (false);
+      }
+  }
+
+  //make sure the symbol is moved also since prependStatement() (in fact fixVariableDeclaration()) does not handle this detail.
+  SgVariableSymbol* sym = SageInterface::getFirstVarSym(decl);
+  ROSE_ASSERT(sym != NULL);
+  SgScopeStatement* orig_scope = sym->get_scope();
+  if (orig_scope != target_scope)
+  {
+    // SageInterface::fixVariableDeclaration() cannot switch the scope for init name.
+    // it somehow always reuses previously associated scope.
+    SgInitializedName* init_name = SageInterface::getFirstInitializedName (decl);
+    init_name->set_scope(target_scope);
+    SgName sname = sym->get_name();
+    orig_scope->remove_symbol(sym);
+    target_scope->insert_symbol(sname, sym);
+  }
+  // This is difficult since C++ variables have namespaces
+  // Details are in SageInterface::fixVariableDeclaration()
+  ROSE_ASSERT (target_scope->symbol_exists(sym));
+}
+    ```     
+    
+    If the function definition is empty or ill-formed, output the following:
+/** 
+ * @brief Empty function or ill-formed function detected. 
+ * /   
+    If the function definition looks complete, follow all instructions above and generate its Doxygen-style comments after this line:
+    
+2025-01-27 19:55:06,323 - INFO - Response from llama3.1:70b for Function 307:
+2025-01-27 19:55:06,323 - INFO - /**
+ * @fn void SageInterface::moveVariableDeclaration(SgVariableDeclaration* decl, SgScopeStatement* target_scope)
+ *
+ * @brief Moves a variable declaration to a different scope.
+ *
+ * This function relocates the declaration of a variable from its original
+ * scope to a new target scope. It handles various cases such as moving the
+ * declaration to the beginning of a basic block, or adjusting it for if-statements,
+ * or even modifying the initialization expression in a for-statement.
+ *
+ * @param decl The SgVariableDeclaration object representing the variable declaration to be moved.
+ * @param target_scope The SgScopeStatement object representing the new scope where the variable declaration should be moved.
+ *
+ * @return None
+ *
+ * @warning This function assumes that the input parameters are valid and does not perform any checks for null pointers or invalid scopes.
+ *
+ * @pre The decl parameter is a non-null pointer to a valid SgVariableDeclaration object, and the target_scope parameter is a non-null pointer to a valid SgScopeStatement object. The target scope must be different from the original scope of the variable declaration.
+ *
+ * @post The variable declaration has been successfully moved to the new target scope, and all relevant symbol tables have been updated accordingly.
+ *
+ * @note This function uses various utility functions such as SageInterface::removeStatement(), SageInterface::prependStatement(), and SageInterface::getEnclosingScope() to perform the relocation of the variable declaration.
+ *
+ * @example This example demonstrates how to use this function:
+ *          @code
+ *           SgVariableDeclaration* decl = ...; // assume a valid variable declaration object
+ *           SgScopeStatement* target_scope = ...; // assume a valid scope statement object
+ *           SageInterface::moveVariableDeclaration(decl, target_scope);
+ *          @endcode
+ */
+2025-01-27 19:55:06,323 - INFO - End time: 2025-01-27 19:55:06
+2025-01-27 19:55:06,323 - INFO - Duration: 26.762971878051758
