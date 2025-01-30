@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ensure_5fclass_5ftype',['ENSURE_CLASS_TYPE',['../sageInterface__type_8C.html#a2b4f8df179d2eb3f262acb3bd7b65f63',1,'sageInterface_type.C']]]
+  ['trans_5ffile',['TRANS_FILE',['../sageInterface_8h.html#a0f29691a809d5f799ffb9f3369dab99a',1,'sageInterface.h']]]
 ];

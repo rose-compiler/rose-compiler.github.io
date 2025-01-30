@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['flatarraytypebase',['FlatArrayTypeBase',['../namespaceSageInterface_1_1Ada.html#a3f8603f6c96c5dac4bf2a622bce112df',1,'SageInterface::Ada']]],
-  ['funcdecllist_5ft',['FuncDeclList_t',['../structSageInterface_1_1DeferredTransformation.html#a714643557f056f7dd4e557e59dc57cde',1,'SageInterface::DeferredTransformation']]]
+  ['myscope',['myScope',['../sageInterface-v0_811_8145_8202_8dox.html#a3d9c6cf8a20dbcfd1db2f8e11e4d8078',1,'sageInterface-v0.11.145.202.dox']]]
 ];

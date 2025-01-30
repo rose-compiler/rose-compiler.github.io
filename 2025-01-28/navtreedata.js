@@ -24,15 +24,12 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "SageInterface", "index.html", [
-    [ "Todo List", "todo.html", null ],
-    [ "Deprecated List", "deprecated.html", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", "namespacemembers_dup" ],
         [ "Functions", "namespacemembers_func.html", "namespacemembers_func" ],
-        [ "Variables", "namespacemembers_vars.html", null ],
-        [ "Typedefs", "namespacemembers_type.html", null ]
+        [ "Variables", "namespacemembers_vars.html", null ]
       ] ]
     ] ],
     [ "Classes", "annotated.html", [
@@ -65,11 +62,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "An-example.html",
-"sageInterfaceAda_8C.html#a9424a600fefabb399d539ad37e6fe1e3",
-"sageInterfaceAda_8h.html#aeab189505b5fe4d846f50ec48ced39a7",
-"sageInterface_8h.html#a6f1a171284027fd38c91507a33a12023",
-"sageInterface_8h.html#aefd2952993930c9f5cbc4478a4de5a24",
-"structSageInterface_1_1Transformation__Record.html#ae95d38400a324596de61dbb9a04b69e6"
+"sageInterface_8h.html#a59e04784cdceb8789cec5bcbdada445b",
+"sageInterface_8h.html#ae348901720d34fdb3f333e552bcd5253"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

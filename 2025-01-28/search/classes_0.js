@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['aggregateinfo',['AggregateInfo',['../structSageInterface_1_1Ada_1_1AggregateInfo.html',1,'SageInterface::Ada']]],
-  ['andopgenerator',['AndOpGenerator',['../classSageInterface_1_1AndOpGenerator.html',1,'SageInterface']]]
+  ['const_5fint_5fexpr_5ft',['const_int_expr_t',['../structSageInterface_1_1const__int__expr__t.html',1,'SageInterface']]]
 ];
