@@ -1,0 +1,304 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="SharedMemory_8C" kind="file" language="C++">
+    <compoundname>SharedMemory.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="197940">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="197937">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="197938" relation="include">
+        </childnode>
+        <childnode refid="197939" relation="include">
+        </childnode>
+        <childnode refid="197940" relation="include">
+        </childnode>
+      </node>
+      <node id="197939">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="197936">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/Concolic/SharedMemory.C</label>
+        <link refid="SharedMemory_8C"/>
+        <childnode refid="197937" relation="include">
+        </childnode>
+      </node>
+      <node id="197938">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="197937" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_CONCOLIC_TESTING</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SharedMemory_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/SharedMemory.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Concolic_2Architecture_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/Architecture.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Callback_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/Callback.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="ConcolicExecutor_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/ConcolicExecutor.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="ExecutionEvent_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/ExecutionEvent.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="InputVariables_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/InputVariables.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="TestCase_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/TestCase.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="BaseSemantics_2SValue_8h" kindref="compound">Rose/BinaryAnalysis/InstructionSemantics/BaseSemantics/SValue.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SymbolicExpression_8h" kindref="compound">Rose/BinaryAnalysis/SymbolicExpression.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="StringUtility_2Diagnostics_8h" kindref="compound">Rose/StringUtility/Diagnostics.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceSawyer_1_1Message_1_1Common" kindref="compound">Sawyer::Message::Common</ref>;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">IS<sp/>=<sp/>Rose::BinaryAnalysis::InstructionSemantics;</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">BS<sp/>=<sp/>IS::BaseSemantics;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose" kindref="compound">Rose</ref><sp/>{</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">BinaryAnalysis<sp/>{</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Concolic<sp/>{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="comment">//<sp/>SharedMemoryContext</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal">SharedMemoryContext::SharedMemoryContext(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::Ptr<sp/>&amp;architecture,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ExecutionEvent::Ptr<sp/>&amp;sharedMemoryEvent)</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>phase(<ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic_1aea7b00f7ca540b514607fac2cdb81a21" kindref="member">ConcolicPhase</ref>::REPLAY),<sp/>architecture(architecture),<sp/>ip(sharedMemoryEvent-&gt;instructionPointer()),</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>accessedVas(sharedMemoryEvent-&gt;memoryLocation()),<sp/><ref refid="namespacestringify_1_1CGFunction_1_1iterator_1ab5386b4538f070b149114533f7d45962" kindref="member">direction</ref>(<ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic_1a5fb4831246c89a4a43c2982aa1559487" kindref="member">IoDirection</ref>::READ),<sp/>sharedMemoryEvent(sharedMemoryEvent),</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>valueRead(sharedMemoryEvent-&gt;value())<sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(architecture);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(sharedMemoryEvent);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(sharedMemoryEvent-&gt;action()<sp/>==<sp/>ExecutionEvent::Action::OS_SHARED_MEMORY);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal">SharedMemoryContext::SharedMemoryContext(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::Ptr<sp/>&amp;architecture,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Emulation::RiscOperators::Ptr<sp/>&amp;<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>,</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ExecutionEvent::Ptr<sp/>&amp;sharedMemoryEvent)</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>phase(<ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic_1aea7b00f7ca540b514607fac2cdb81a21" kindref="member">ConcolicPhase</ref>::EMULATION),<sp/>architecture(architecture),<sp/><ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>(<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>),<sp/>ip(sharedMemoryEvent-&gt;instructionPointer()),</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>accessedVas(sharedMemoryEvent-&gt;memoryLocation()),<sp/><ref refid="namespacestringify_1_1CGFunction_1_1iterator_1ab5386b4538f070b149114533f7d45962" kindref="member">direction</ref>(<ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic_1a5fb4831246c89a4a43c2982aa1559487" kindref="member">IoDirection</ref>::READ),<sp/>sharedMemoryEvent(sharedMemoryEvent),</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>valueRead(sharedMemoryEvent-&gt;inputVariable())<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(architecture);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(sharedMemoryEvent);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal">SharedMemoryContext::SharedMemoryContext(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::Ptr<sp/>&amp;architecture,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Emulation::RiscOperators::Ptr<sp/>&amp;<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>,</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>accessingInstructionVa,<sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>accessedVa,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SymbolicExpression::Ptr<sp/>&amp;value)</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>phase(<ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic_1aea7b00f7ca540b514607fac2cdb81a21" kindref="member">ConcolicPhase</ref>::EMULATION),<sp/>architecture(architecture),<sp/><ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>(<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>),<sp/>ip(accessingInstructionVa),</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>accessedVas(AddressInterval::baseSize(accessedVa,<sp/>(value-&gt;<ref refid="namespaceRose_1_1BitOps_1ae9375b93faf484bcd87fbbc78a6d94e5" kindref="member">nBits</ref>()+7)/8)),<sp/><ref refid="namespacestringify_1_1CGFunction_1_1iterator_1ab5386b4538f070b149114533f7d45962" kindref="member">direction</ref>(<ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic_1a5fb4831246c89a4a43c2982aa1559487" kindref="member">IoDirection</ref>::WRITE),</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>valueWritten(value)<sp/>{</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(architecture);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(value);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal">SharedMemoryContext::~SharedMemoryContext()<sp/>{}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="comment">//<sp/>SharedMemoryCallback</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>SAWYER_THREAD_TRAITS::Mutex<sp/>registryMutex;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::vector&lt;SharedMemoryCallback::Ptr&gt;<sp/>registry;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>boost::once_flag<sp/>registryInitFlag<sp/>=<sp/>BOOST_ONCE_INIT;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal">initRegistryHelper()<sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>SAWYER_THREAD_TRAITS::LockGuard<sp/>lock(registryMutex);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>registry.push_back(Callback::MemoryExit::factory());</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>registry.push_back(Callback::MemoryInput::factory());</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>registry.push_back(Callback::MemoryTime::factory());</highlight></codeline>
+<codeline lineno="73"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal">initRegistry()<sp/>{</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::call_once(&amp;initRegistryHelper,<sp/>registryInitFlag);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal">SharedMemoryCallback::~SharedMemoryCallback()<sp/>{}</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal">SharedMemoryCallback::SharedMemoryCallback(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;name)</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>name_(<ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a5bf94698243e55044b0733246ba8d881" kindref="member">ASSERT_forbid</ref>(<ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref>.empty());</highlight></codeline>
+<codeline lineno="85"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal">SharedMemoryCallback::SharedMemoryCallback(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>AddressInterval<sp/>&amp;<ref refid="stringifyEnums_8C_1aa290077f858c90b4a9507a5d10269e9d" kindref="member">where</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;name)</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>registrationVas_(<ref refid="stringifyEnums_8C_1aa290077f858c90b4a9507a5d10269e9d" kindref="member">where</ref>),<sp/>name_(<ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a5bf94698243e55044b0733246ba8d881" kindref="member">ASSERT_forbid</ref>(<ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref>.empty());</highlight></codeline>
+<codeline lineno="90"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal">SharedMemoryCallback::registerFactory(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Ptr<sp/>&amp;factory)<sp/>{</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(factory);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(factory-&gt;isFactory());</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>initRegistry();</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>SAWYER_THREAD_TRAITS::LockGuard<sp/>lock(registryMutex);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>registry.push_back(factory);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal">SharedMemoryCallback::deregisterFactory(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Ptr<sp/>&amp;factory)<sp/>{</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(factory);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(factory-&gt;isFactory());</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>initRegistry();</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>SAWYER_THREAD_TRAITS::LockGuard<sp/>lock(registryMutex);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>iter<sp/>=<sp/>registry.rbegin();<sp/>iter<sp/>!=<sp/>registry.rend();<sp/>++iter)<sp/>{</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(*iter<sp/>==<sp/>factory)<sp/>{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>registry.erase(std::next(iter).base());</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal">std::vector&lt;SharedMemoryCallback::Ptr&gt;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal">SharedMemoryCallback::registeredFactories()<sp/>{</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>initRegistry();</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;Ptr&gt;<sp/>retval;</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>SAWYER_THREAD_TRAITS::LockGuard<sp/>lock(registryMutex);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>retval.reserve(registry.size());</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Ptr<sp/>&amp;factory:<sp/>registry)</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>retval.push_back(factory);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>retval;</highlight></codeline>
+<codeline lineno="125"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal">SharedMemoryCallback::matchFactory(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Yaml::Node<sp/>&amp;config)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(isFactory());</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>config[</highlight><highlight class="stringliteral">&quot;driver&quot;</highlight><highlight class="normal">].as&lt;std::string&gt;()<sp/>==<sp/><ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref>();</highlight></codeline>
+<codeline lineno="131"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal">SharedMemoryCallback::Ptr</highlight></codeline>
+<codeline lineno="134"><highlight class="normal">SharedMemoryCallback::forge(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>AddressInterval<sp/>&amp;<ref refid="stringifyEnums_8C_1aa290077f858c90b4a9507a5d10269e9d" kindref="member">where</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Yaml::Node<sp/>&amp;config)<sp/>{</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a5bf94698243e55044b0733246ba8d881" kindref="member">ASSERT_forbid</ref>(<ref refid="stringifyEnums_8C_1aa290077f858c90b4a9507a5d10269e9d" kindref="member">where</ref>.isEmpty());</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>initRegistry();</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>SAWYER_THREAD_TRAITS::LockGuard<sp/>lock(registryMutex);</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>factory<sp/>=<sp/>registry.rbegin();<sp/>factory<sp/>!=<sp/>registry.rend();<sp/>++factory)<sp/>{</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((*factory)-&gt;matchFactory(config))</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(*factory)-&gt;instanceFromFactory(<ref refid="stringifyEnums_8C_1aa290077f858c90b4a9507a5d10269e9d" kindref="member">where</ref>,<sp/>config);</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{};</highlight></codeline>
+<codeline lineno="143"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal">SharedMemoryCallback::Ptr</highlight></codeline>
+<codeline lineno="146"><highlight class="normal">SharedMemoryCallback::instanceFromFactory(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>AddressInterval&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Yaml::Node&amp;)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a0522699b0314d17d5ee4f2dccae957e4" kindref="member">ASSERT_not_reachable</ref>(</highlight><highlight class="stringliteral">&quot;subclasses<sp/>that<sp/>use<sp/>factories<sp/>must<sp/>implement<sp/>this<sp/>method;<sp/>optional<sp/>otherwise&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="148"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal">SharedMemoryCallback::isFactory()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>registrationVas_.isEmpty();</highlight></codeline>
+<codeline lineno="153"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">SharedMemoryCallback::name</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>name_;</highlight></codeline>
+<codeline lineno="158"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">SharedMemoryCallback::name</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;s)<sp/>{</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a5bf94698243e55044b0733246ba8d881" kindref="member">ASSERT_forbid</ref>(s.empty());</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/>name_<sp/>=<sp/>s;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>AddressInterval&amp;</highlight></codeline>
+<codeline lineno="167"><highlight class="normal">SharedMemoryCallback::registrationVas()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>registrationVas_;</highlight></codeline>
+<codeline lineno="169"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal">SharedMemoryCallback::registrationVas(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>AddressInterval<sp/>&amp;i)<sp/>{</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>registrationVas_<sp/>=<sp/>i;</highlight></codeline>
+<codeline lineno="174"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal">SharedMemoryCallback::hello(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SharedMemoryContext<sp/>&amp;<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSawyer_1_1Message_1_1Stream" kindref="compound">Sawyer::Message::Stream</ref><sp/>out<sp/>=<sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="matcherparser_8h_1a15c9f7bd2f0e9686df5d9df4f3314aa9a0116b78582fbf1fd6e069fde8dd308c4" kindref="member">WHERE</ref>]<sp/>?<sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="matcherparser_8h_1a15c9f7bd2f0e9686df5d9df4f3314aa9a0116b78582fbf1fd6e069fde8dd308c4" kindref="member">WHERE</ref>]<sp/>:<sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>];</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(out)<sp/>{</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.phase)<sp/>{</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>ConcolicPhase::REPLAY:</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;replaying<sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>ConcolicPhase::EMULATION:</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;calling<sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>ConcolicPhase::POST_EMULATION:</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;finishing<sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;shared<sp/>memory<sp/>\&quot;&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref>()<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\&quot;<sp/>at<sp/>instruction<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="namespaceRose_1_1StringUtility_1a7e6c11f56f268bb4ff4a7063aa20634c" kindref="member">StringUtility::addrToString</ref>(<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.ip)</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;,<sp/>addresses<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="namespaceRose_1_1StringUtility_1a7e6c11f56f268bb4ff4a7063aa20634c" kindref="member">StringUtility::addrToString</ref>(<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.accessedVas)</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/>(&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="namespaceRose_1_1StringUtility_1abf7821b02ca01054a3b4303aff3086e2" kindref="member">StringUtility::plural</ref>(<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.accessedVas.size(),<sp/></highlight><highlight class="stringliteral">&quot;bytes&quot;</highlight><highlight class="normal">)<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;)\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>]<sp/>&amp;&amp;<sp/>ConcolicPhase::REPLAY<sp/>==<sp/><ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.phase)<sp/>{</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.sharedMemoryEvent);</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(SymbolicExpression::Ptr<sp/>value<sp/>=<sp/><ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.sharedMemoryEvent-&gt;value())<sp/>{</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Message_8h_1a9f840b500a608085e85f863f9914b399" kindref="member">SAWYER_MESG</ref>(<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>])<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/><sp/>value<sp/>=<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="namespaceLibadalang__ROSE__Translation_1a9242f619ebd4a274d16e5f96611e19ef" kindref="member">toString</ref>(value)<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Message_8h_1a9f840b500a608085e85f863f9914b399" kindref="member">SAWYER_MESG</ref>(<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>])<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/><sp/>no<sp/>concrete<sp/>value<sp/>(treated<sp/>as<sp/>non-shared<sp/>memory)\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="203"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal">SharedMemoryCallback::normalRead(SharedMemoryContext<sp/>&amp;<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Message_8h_1a9f840b500a608085e85f863f9914b399" kindref="member">SAWYER_MESG</ref>(<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>])<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/>canceled:<sp/>this<sp/>read<sp/>will<sp/>be<sp/>treated<sp/>as<sp/>non-shared<sp/>memory\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.ops-&gt;inputVariables()-&gt;deactivate(<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.sharedMemoryEvent);</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.sharedMemoryEvent-&gt;variable(SymbolicExpression::Ptr());</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.valueRead<sp/>=<sp/>SymbolicExpression::Ptr();</highlight></codeline>
+<codeline lineno="211"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal">SharedMemoryCallback::notAnInput(SharedMemoryContext<sp/>&amp;<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Message_8h_1a9f840b500a608085e85f863f9914b399" kindref="member">SAWYER_MESG</ref>(<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>])<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/>this<sp/>shared<sp/>memory<sp/>read<sp/>will<sp/>not<sp/>be<sp/>treated<sp/>as<sp/>a<sp/>test<sp/>case<sp/>input\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.ops-&gt;inputVariables()-&gt;deactivate(<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.sharedMemoryEvent);</highlight></codeline>
+<codeline lineno="217"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal">SharedMemoryCallback::returns(SharedMemoryContext<sp/>&amp;<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SymbolicExpression::Ptr<sp/>&amp;value)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(value);</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Message_8h_1a9f840b500a608085e85f863f9914b399" kindref="member">SAWYER_MESG</ref>(<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>])<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/>returning<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="namespaceLibadalang__ROSE__Translation_1a9242f619ebd4a274d16e5f96611e19ef" kindref="member">toString</ref>(value)<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(value-&gt;isConstant())<sp/>{</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.ops-&gt;inputVariables()-&gt;deactivate(<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.sharedMemoryEvent);</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.sharedMemoryEvent-&gt;variable(SymbolicExpression::Ptr());</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.valueRead<sp/>=<sp/>value;</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Message_8h_1a9f840b500a608085e85f863f9914b399" kindref="member">SAWYER_MESG</ref>(<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>])<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/>this<sp/>shared<sp/>memory<sp/>read<sp/>will<sp/>not<sp/>be<sp/>treated<sp/>as<sp/>a<sp/>test<sp/>case<sp/>input\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.valueRead<sp/>=<sp/>value;</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="231"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"></highlight></codeline>
+<codeline lineno="233"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="234"><highlight class="normal">SharedMemoryCallback::returns(SharedMemoryContext<sp/>&amp;<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::SValue::Ptr<sp/>&amp;value)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/>SymbolicExpression::Ptr<sp/><ref refid="namespaceFortran_1_1parser_1a3af18db366f87e7588e79bc736d7cadd" kindref="member">expr</ref><sp/>=<sp/>IS::SymbolicSemantics::SValue::promote(value)-&gt;get_expression();</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/>returns(<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>,<sp/><ref refid="namespaceFortran_1_1parser_1a3af18db366f87e7588e79bc736d7cadd" kindref="member">expr</ref>);</highlight></codeline>
+<codeline lineno="237"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"></highlight></codeline>
+<codeline lineno="239"><highlight class="normal">SymbolicExpression::Ptr</highlight></codeline>
+<codeline lineno="240"><highlight class="normal">SharedMemoryCallback::inputVariable(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SharedMemoryContext<sp/>&amp;<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.sharedMemoryEvent-&gt;inputVariable();</highlight></codeline>
+<codeline lineno="242"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="245"><highlight class="normal">SharedMemoryCallback::operator()(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">/*handled*/</highlight><highlight class="normal">,<sp/>SharedMemoryContext<sp/>&amp;<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.phase)<sp/>{</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>ConcolicPhase::REPLAY:</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>playback(<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>);</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>ConcolicPhase::EMULATION:</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>handlePreSharedMemory(<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>);</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>ConcolicPhase::POST_EMULATION:</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>handlePostSharedMemory(<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>);</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="258"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"></highlight></codeline>
+<codeline lineno="260"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="262"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"></highlight></codeline>
+<codeline lineno="264"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/Concolic/SharedMemory.C"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,260 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="xercesc_2parser_8cc" kind="file" language="C++">
+    <compoundname>parser.cc</compoundname>
+    <includes local="no">cassert</includes>
+    <includes local="no">iostream</includes>
+    <includes local="no">sstream</includes>
+    <includes local="no">vector</includes>
+    <includes refid="general_8hh" local="yes">rosehpct/util/general.hh</includes>
+    <includes refid="include_2rosehpct_2xml-xercesc_2xml_8hh" local="yes">rosehpct/xml-xercesc/xml.hh</includes>
+    <incdepgraph>
+      <node id="228688">
+        <label>functional</label>
+      </node>
+      <node id="228693">
+        <label>xercesc/util/XMLString.hpp</label>
+      </node>
+      <node id="228690">
+        <label>rosehpct/util/types.hh</label>
+        <link refid="types_8hh"/>
+        <childnode refid="228683" relation="include">
+        </childnode>
+      </node>
+      <node id="228677">
+        <label>cassert</label>
+      </node>
+      <node id="228682">
+        <label>string</label>
+      </node>
+      <node id="228683">
+        <label>map</label>
+      </node>
+      <node id="228686">
+        <label>ostream</label>
+      </node>
+      <node id="228691">
+        <label>xercesc/sax/HandlerBase.hpp</label>
+      </node>
+      <node id="228685">
+        <label>rosehpct/xml-xercesc/xml.hh</label>
+        <link refid="include_2rosehpct_2xml-xercesc_2xml_8hh"/>
+        <childnode refid="228686" relation="include">
+        </childnode>
+        <childnode refid="228680" relation="include">
+        </childnode>
+        <childnode refid="228687" relation="include">
+        </childnode>
+        <childnode refid="228688" relation="include">
+        </childnode>
+        <childnode refid="228689" relation="include">
+        </childnode>
+        <childnode refid="228681" relation="include">
+        </childnode>
+        <childnode refid="228691" relation="include">
+        </childnode>
+        <childnode refid="228692" relation="include">
+        </childnode>
+        <childnode refid="228693" relation="include">
+        </childnode>
+      </node>
+      <node id="228676">
+        <label>/home/liao6/workspace/rose-github/src/roseExtensions/roseHPCToolkit/src/xml-xercesc/parser.cc</label>
+        <link refid="xercesc_2parser_8cc"/>
+        <childnode refid="228677" relation="include">
+        </childnode>
+        <childnode refid="228678" relation="include">
+        </childnode>
+        <childnode refid="228679" relation="include">
+        </childnode>
+        <childnode refid="228680" relation="include">
+        </childnode>
+        <childnode refid="228681" relation="include">
+        </childnode>
+        <childnode refid="228685" relation="include">
+        </childnode>
+      </node>
+      <node id="228687">
+        <label>stack</label>
+      </node>
+      <node id="228680">
+        <label>vector</label>
+      </node>
+      <node id="228679">
+        <label>sstream</label>
+      </node>
+      <node id="228692">
+        <label>xercesc/parsers/SAXParser.hpp</label>
+      </node>
+      <node id="228684">
+        <label>cstdlib</label>
+      </node>
+      <node id="228678">
+        <label>iostream</label>
+      </node>
+      <node id="228689">
+        <label>rosehpct/util/tree2.hh</label>
+        <link refid="tree2_8hh"/>
+        <childnode refid="228680" relation="include">
+        </childnode>
+        <childnode refid="228683" relation="include">
+        </childnode>
+        <childnode refid="228690" relation="include">
+        </childnode>
+      </node>
+      <node id="228681">
+        <label>rosehpct/util/general.hh</label>
+        <link refid="general_8hh"/>
+        <childnode refid="228678" relation="include">
+        </childnode>
+        <childnode refid="228679" relation="include">
+        </childnode>
+        <childnode refid="228682" relation="include">
+        </childnode>
+        <childnode refid="228680" relation="include">
+        </childnode>
+        <childnode refid="228683" relation="include">
+        </childnode>
+        <childnode refid="228684" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+<para>XML parser. </para>    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="rcs"><title>Id</title><para>parser.cc,v 1.1 2008/01/08 02:56:43 dquinlan Exp </para></simplesect>
+</para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//<sp/>-*-<sp/>mode:C++;<sp/>tab-width:8;<sp/>indent-tabs-mode:nil<sp/>-*-</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"></highlight><highlight class="preprocessor">#include<sp/>&lt;cassert&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;sstream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="general_8hh" kindref="compound">rosehpct/util/general.hh</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="include_2rosehpct_2xml-xercesc_2xml_8hh" kindref="compound">rosehpct/xml-xercesc/xml.hh</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceGenUtil" kindref="compound">GenUtil</ref>;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceXMLUtil" kindref="compound">XMLUtil</ref>;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classXMLUtil_1_1XMLParser_1a939aed74ddb3174306d9d69a847a7c72" kindref="member">XMLUtil::XMLParser::did_init_</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><ref refid="classXMLUtil_1_1XMLParser_1accbb2c3c5c49ce44c774fbef0e44c5f9" kindref="member">XMLUtil::XMLParser::XMLParser</ref><sp/>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="25"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/>init<sp/>();</highlight></codeline>
+<codeline lineno="27"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><ref refid="classXMLUtil_1_1XMLParser_1accbb2c3c5c49ce44c774fbef0e44c5f9" kindref="member">XMLUtil::XMLParser::XMLParser</ref><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>infile)</highlight></codeline>
+<codeline lineno="30"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/>init<sp/>();</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><ref refid="namespaceSawyer_1ab7a7698e6d0e5068df898cbe4c7ce995" kindref="member">parse</ref><sp/>(infile);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><ref refid="classXMLUtil_1_1XMLParser_1accbb2c3c5c49ce44c774fbef0e44c5f9" kindref="member">XMLUtil::XMLParser::XMLParser</ref><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal">&amp;<sp/>infile)</highlight></codeline>
+<codeline lineno="36"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/>init<sp/>();</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><ref refid="namespaceSawyer_1ab7a7698e6d0e5068df898cbe4c7ce995" kindref="member">parse</ref><sp/>(infile);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><ref refid="classXMLUtil_1_1XMLParser_1a85e48d509c6c0db772e3cb7ef593bf83" kindref="member">XMLUtil::XMLParser::~XMLParser</ref><sp/>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="42"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(parser_<sp/>!=<sp/>NULL)</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>parser_;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(handler_<sp/>!=<sp/>NULL)</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>handler_;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(errhandler_<sp/>!=<sp/>NULL)</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>errhandler_;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><ref refid="classXMLUtil_1_1XMLParser_1addb30dfebd4f2b1f9a961645c753d8ff" kindref="member">XMLUtil::XMLParser::init</ref><sp/>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="53"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!did_init_)</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">try</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>XMLPlatformUtils::Initialize<sp/>();</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>did_init_<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">catch</highlight><highlight class="normal"><sp/>(XMLException&amp;<sp/>e)</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;[***<sp/>ERROR<sp/>***]<sp/>Can&apos;t<sp/>initialize<sp/>XML<sp/>library&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/><ref refid="namespaceLibadalang__ROSE__Translation_1a9242f619ebd4a274d16e5f96611e19ef" kindref="member">toString</ref><sp/>(e.getMessage<sp/>())<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(did_init_)</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>parser_<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>SAXParser<sp/>();</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>parser_-&gt;setDoValidation<sp/>(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>parser_-&gt;setDoNamespaces<sp/>(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>handler_<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classXMLUtil_1_1XMLHandler" kindref="compound">XMLHandler</ref>();</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>parser_-&gt;setDocumentHandler<sp/>(handler_);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>errhandler_<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>HandlerBase();</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>parser_-&gt;setErrorHandler<sp/>(errhandler_);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>did_parse_<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>parser_<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>handler_<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>errhandler_<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="88"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><ref refid="classXMLUtil_1_1XMLParser_1abfd68384a4ce1885e0e40d0d51462002" kindref="member">XMLUtil::XMLParser::didParse</ref><sp/>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="92"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>did_parse_;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><ref refid="classXMLUtil_1_1XMLParser_1a2997492db216bde7f57364be94140756" kindref="member">XMLUtil::XMLParser::parse</ref><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal">&amp;<sp/>infile)</highlight></codeline>
+<codeline lineno="98"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceSawyer_1ab7a7698e6d0e5068df898cbe4c7ce995" kindref="member">parse</ref><sp/>(infile.c_str<sp/>());</highlight></codeline>
+<codeline lineno="100"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><ref refid="classXMLUtil_1_1XMLParser_1a2997492db216bde7f57364be94140756" kindref="member">XMLUtil::XMLParser::parse</ref><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>infile)</highlight></codeline>
+<codeline lineno="104"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/>did_parse_<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(infile<sp/>!=<sp/>NULL<sp/>&amp;&amp;<sp/>parser_<sp/>!=<sp/>NULL)</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">try</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>parser_-&gt;parse<sp/>(infile);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>did_parse_<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">catch</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>XMLException&amp;<sp/>e)</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;[***<sp/>ERROR<sp/>***]<sp/>XML<sp/>exception&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/><ref refid="namespaceLibadalang__ROSE__Translation_1a9242f619ebd4a274d16e5f96611e19ef" kindref="member">toString</ref><sp/>(e.getMessage<sp/>())<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">catch</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SAXParseException&amp;<sp/>e)</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;[***<sp/>ERROR<sp/>***]<sp/>Occurred<sp/>while<sp/>parsing&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/><ref refid="namespaceLibadalang__ROSE__Translation_1a9242f619ebd4a274d16e5f96611e19ef" kindref="member">toString</ref><sp/>(e.getMessage<sp/>())<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">catch</highlight><highlight class="normal"><sp/>(...)</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;[***<sp/>ERROR<sp/>***]<sp/>Unexpected<sp/>exception&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>did_parse_;</highlight></codeline>
+<codeline lineno="129"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classTrees_1_1Tree" kindref="compound">XMLUtil::XMLHandler::node_t</ref><sp/>*</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><ref refid="classXMLUtil_1_1XMLParser_1a61c449a6de2f2f2d4876d2fe16dd0914" kindref="member">XMLUtil::XMLParser::getDoc</ref><sp/>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="133"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(didParse()<sp/>&amp;&amp;<sp/>handler_<sp/>!=<sp/>NULL)<sp/>?<sp/>handler_-&gt;getRoot<sp/>()<sp/>:<sp/>NULL;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>eof<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/roseExtensions/roseHPCToolkit/src/xml-xercesc/parser.cc"/>
+  </compounddef>
+</doxygen>

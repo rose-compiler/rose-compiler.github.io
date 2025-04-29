@@ -1,0 +1,26 @@
+var classScopeStack =
+[
+    [ "begin", "classScopeStack.html#a050966476ed317ab1dbe2c290e87ddf9", null ],
+    [ "empty", "classScopeStack.html#a86a8219419d18f33d520bdce5b07acaa", null ],
+    [ "end", "classScopeStack.html#adeeeafad020e78d9f8eab32b454ad7fd", null ],
+    [ "pop", "classScopeStack.html#a1f29622d9b455a023759b14e1507be70", null ],
+    [ "popBasicBlock", "classScopeStack.html#a4c2c5586abf45e5db227f2d508622a2d", null ],
+    [ "popCatchOptionStmt", "classScopeStack.html#a4d2cf5fff2922c8346a2d92da64b9268", null ],
+    [ "popClassDefinition", "classScopeStack.html#af25a622e439da48cdd7b3f82fb5324a4", null ],
+    [ "popDoWhileStmt", "classScopeStack.html#ac175aa4a06c1495a71e9776604a21b9c", null ],
+    [ "popForStatement", "classScopeStack.html#a4c3c32e2dee4a4e4532311ba598519da", null ],
+    [ "popFunctionDefinition", "classScopeStack.html#a9803576959c6d9ba48d2d971b139ef50", null ],
+    [ "popGlobal", "classScopeStack.html#a42424a3738243e0d49b6d5c862a1bf8f", null ],
+    [ "popIfStmt", "classScopeStack.html#a716c973d9e6a33365aed6ee00ac63cb2", null ],
+    [ "popJavaForEachStatement", "classScopeStack.html#a76192ac93a3cb1ffb8c97cff3dd328b3", null ],
+    [ "popJavaLabelStatement", "classScopeStack.html#a9c097e591fb2b8108a891108248827c1", null ],
+    [ "popNamespaceDefinitionStatement", "classScopeStack.html#a0aad4d064b7d7e4e3709b5253cb16e12", null ],
+    [ "popPackage", "classScopeStack.html#ab32f72c8a1562fd42ad4a22d40e124b5", null ],
+    [ "popSwitchStatement", "classScopeStack.html#ad1cd2a7c4cbe71b287d469cdbed703c0", null ],
+    [ "popWhileStmt", "classScopeStack.html#a0c378e6a5a2905c5dcbfcac96ac17ec9", null ],
+    [ "push", "classScopeStack.html#ae683b8e24a84d0177026969da840759e", null ],
+    [ "rbegin", "classScopeStack.html#a82b069a41024520f27573809fb9d0f9c", null ],
+    [ "rend", "classScopeStack.html#a49101cbed3a001d95b6b940d167ad783", null ],
+    [ "size", "classScopeStack.html#abde9a458a40c100ae1d40ade6ecfecc5", null ],
+    [ "top", "classScopeStack.html#a25ffb3abdc7b68dd5721c88282869d28", null ]
+];

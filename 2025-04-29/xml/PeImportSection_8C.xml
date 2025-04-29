@@ -1,0 +1,297 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="PeImportSection_8C" kind="file" language="C++">
+    <compoundname>PeImportSection.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="45326">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="45323">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="45324" relation="include">
+        </childnode>
+        <childnode refid="45325" relation="include">
+        </childnode>
+        <childnode refid="45326" relation="include">
+        </childnode>
+      </node>
+      <node id="45325">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="45322">
+        <label>/home/liao6/workspace/rose-github/src/frontend/BinaryFormats/PeImportSection.C</label>
+        <link refid="PeImportSection_8C"/>
+        <childnode refid="45323" relation="include">
+        </childnode>
+      </node>
+      <node id="45324">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="45323" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>SgAsmPEImportSection,<sp/>normally<sp/>named<sp/>&quot;.idata&quot;<sp/>if<sp/>it<sp/>appears<sp/>in<sp/>the<sp/>section<sp/>table.<sp/>Most<sp/>modern<sp/>PE<sp/>executables<sp/>don&apos;t<sp/>create<sp/>a</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>special<sp/>section<sp/>in<sp/>the<sp/>section<sp/>table,<sp/>but<sp/>rather<sp/>have<sp/>the<sp/>SgAsmPEFileHeader::PAIR_IMPORTS<sp/>RVA/Size<sp/>pair<sp/>point<sp/>to<sp/>part<sp/>of<sp/>the</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>memory<sp/>mapped<sp/>from<sp/>another<sp/>read-only<sp/>section,<sp/>such<sp/>as<sp/>the<sp/>&quot;.text&quot;<sp/>section.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="sage3basic_8h" kindref="compound">sage3basic.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Hexdump_8h" kindref="compound">Rose/BinaryAnalysis/Hexdump.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="RelativeVirtualAddress_8h" kindref="compound">Rose/BinaryAnalysis/RelativeVirtualAddress.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Diagnostics_8h" kindref="compound">Rose/Diagnostics.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose_1_1Diagnostics" kindref="compound">Rose::Diagnostics</ref>;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="classSgAsmPEImportSection_1afb94098d7859a0c4da64f26aadc6d725" kindref="member">SgAsmPEImportSection::mesg_nprinted</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1a778260345c0adfdd4b45572565fc7551" kindref="member">SgAsmPEImportSection::show_import_mesg</ref>()</highlight></codeline>
+<codeline lineno="19"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>showImportMessage();</highlight></codeline>
+<codeline lineno="21"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1aa20b809a1566e95cf60de95c226d7975" kindref="member">SgAsmPEImportSection::showImportMessage</ref>()</highlight></codeline>
+<codeline lineno="25"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>max_to_print=15;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>++mesg_nprinted<sp/>&lt;=<sp/>max_to_print;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1a416f817a4770f65bb68cf0d1ed3da3a5" kindref="member">SgAsmPEImportSection::import_mesg_reset</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>importMessageReset();</highlight></codeline>
+<codeline lineno="33"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1a66b83ddeabc3b0ab8b17d9a2505201b9" kindref="member">SgAsmPEImportSection::importMessageReset</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>mesg_nprinted=0;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1ab2b50d163527d690712c7a6483fbe3d4" kindref="member">SgAsmPEImportSection::SgAsmPEImportSection</ref>(<ref refid="classSgAsmPEFileHeader" kindref="compound">SgAsmPEFileHeader</ref><sp/>*fhdr)</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/><ref refid="classSgAsmPESection" kindref="compound">SgAsmPESection</ref>(fhdr)<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>initializeProperties();</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>set_synthesized(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmBasicString" kindref="compound">SgAsmBasicString</ref><sp/>*<ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmBasicString" kindref="compound">SgAsmBasicString</ref>(</highlight><highlight class="stringliteral">&quot;PE<sp/>Section<sp/>Table&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSageInterface_1a1bbf335d0e6ee069e94e73a62660b8da" kindref="member">set_name</ref>(<ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref>);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref>-&gt;set_parent(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>set_purpose(SP_HEADER);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Parse<sp/>a<sp/>PE<sp/>Import<sp/>Section.<sp/><sp/>This<sp/>parses<sp/>an<sp/>entire<sp/>PE<sp/>Import<sp/>Section,<sp/>by<sp/>recursively<sp/>parsing<sp/>the<sp/>section&apos;s<sp/>Import</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/>Directories.<sp/><sp/>An<sp/>Import<sp/>Section<sp/>is<sp/>a<sp/>sequence<sp/>of<sp/>Import<sp/>Directories<sp/>terminated<sp/>by<sp/>a<sp/>zero-filled<sp/>Import<sp/>Directory<sp/>struct.</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/>The<sp/>terminating<sp/>entry<sp/>is<sp/>not<sp/>stored<sp/>explicitly<sp/>in<sp/>the<sp/>section&apos;s<sp/>list<sp/>of<sp/>directories.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><ref refid="classSgAsmPEImportSection" kindref="compound">SgAsmPEImportSection</ref>*</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1aaddbbf722583348154997f55a55b7fbf" kindref="member">SgAsmPEImportSection::parse</ref>()</highlight></codeline>
+<codeline lineno="58"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmPEImportSection_1a66b83ddeabc3b0ab8b17d9a2505201b9" kindref="member">importMessageReset</ref>();</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericSection_1a06e6f2a4c28be5858d6a0b92573908d7" kindref="member">SgAsmPESection::parse</ref>();</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmPEFileHeader" kindref="compound">SgAsmPEFileHeader</ref><sp/>*fhdr<sp/>=<sp/>isSgAsmPEFileHeader(get_header());</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(fhdr!=NULL);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(<ref refid="classSgAsmGenericSection_1a0128ff49841b82db716952b7e37e39d9" kindref="member">isMapped</ref>());</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref><sp/>idir_va<sp/>=<sp/>get_mappedActualVa();</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Some<sp/>compilers<sp/>don&apos;t<sp/>actually<sp/>terminate<sp/>the<sp/>Import<sp/>Directory<sp/>list<sp/>with<sp/>an<sp/>all-zero<sp/>entry<sp/>as<sp/>specified<sp/>in<sp/>Microsoft&apos;s<sp/>PE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>format<sp/>documenttion.<sp/>Instead,<sp/>they<sp/>apparently<sp/>assume<sp/>that<sp/>that<sp/>loader<sp/>uses<sp/>the<sp/>size<sp/>of<sp/>the<sp/>import<sp/>section<sp/>to<sp/>calculate</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>the<sp/>length<sp/>of<sp/>the<sp/>list<sp/>and<sp/>that<sp/>it<sp/>never<sp/>actually<sp/>reads<sp/>the<sp/>final<sp/>entry<sp/>which<sp/>is<sp/>normally<sp/>all<sp/>zero.<sp/><sp/>These<sp/>compilers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>seem<sp/>to<sp/>have<sp/>garbage<sp/>in<sp/>the<sp/>last<sp/>entry.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref><sp/>nBytes<sp/>=<sp/><ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>();</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(nBytes<sp/>&gt;<sp/>0);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nEntries<sp/>=<sp/>nBytes<sp/>/<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="structSgAsmPEImportDirectory_1_1PEImportDirectory__disk" kindref="compound">SgAsmPEImportDirectory::PEImportDirectory_disk</ref>);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Parse<sp/>each<sp/>Import<sp/>Directory.<sp/>The<sp/>list<sp/>of<sp/>directories<sp/>is<sp/>terminated<sp/>with<sp/>a<sp/>zero-filled<sp/>entry,<sp/>which<sp/>is<sp/>not<sp/>added<sp/>to<sp/>this</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>import<sp/>section.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>nEntries;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Import<sp/>directory<sp/>entry<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmPEImportDirectory" kindref="compound">SgAsmPEImportDirectory</ref><sp/>*idir<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmPEImportDirectory" kindref="compound">SgAsmPEImportDirectory</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(NULL==idir-&gt;<ref refid="classSgAsmPEImportDirectory_1a9c59f992e1fc1de1bf212fe58e86d635" kindref="member">parse</ref>(idir_va,<sp/>i+1<sp/>==<sp/>nEntries))<sp/>{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>We&apos;ve<sp/>reached<sp/>the<sp/>zero<sp/>entry.<sp/>Remove<sp/>this<sp/>directory<sp/>from<sp/>the<sp/>section<sp/>and<sp/>delete<sp/>it.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmPEImportSection_1af14b159480f8d45c74d0fb6c976a178b" kindref="member">removeImportDirectory</ref>(idir);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceSageInterface_1a57437bbbb806858dda0cea7444fbafef" kindref="member">SageInterface::deleteAST</ref>(idir);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>idir_va<sp/>+=<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="structSgAsmPEImportDirectory_1_1PEImportDirectory__disk" kindref="compound">SgAsmPEImportDirectory::PEImportDirectory_disk</ref>);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>1<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>FIXME:<sp/>Do<sp/>we<sp/>really<sp/>want<sp/>this<sp/>stuff<sp/>duplicated<sp/>in<sp/>the<sp/>AST?<sp/>[RPM<sp/>2008-12-12]<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericString" kindref="compound">SgAsmGenericString</ref><sp/>*name2<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmBasicString" kindref="compound">SgAsmBasicString</ref>(idir-&gt;get_dllName()-&gt;get_string());</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>fhdr-&gt;<ref refid="classSgAsmGenericHeader_1abea6d3364b5726d1b3edbc7309389364" kindref="member">addDll</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmGenericDLL" kindref="compound">SgAsmGenericDLL</ref>(name2));</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1a96d2663d491e6aa4952acbc853f5676e" kindref="member">SgAsmPEImportSection::add_import_directory</ref>(<ref refid="classSgAsmPEImportDirectory" kindref="compound">SgAsmPEImportDirectory</ref><sp/>*d)</highlight></codeline>
+<codeline lineno="98"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmPEImportSection_1ac0e4ed1fc04906a8159a817feba9c550" kindref="member">addImportDirectory</ref>(d);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1ac0e4ed1fc04906a8159a817feba9c550" kindref="member">SgAsmPEImportSection::addImportDirectory</ref>(<ref refid="classSgAsmPEImportDirectory" kindref="compound">SgAsmPEImportDirectory</ref><sp/>*d)</highlight></codeline>
+<codeline lineno="104"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(get_importDirectories()!=NULL);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>SgAsmPEImportDirectoryPtrList<sp/>&amp;dirlist<sp/>=<sp/>get_importDirectories()-&gt;get_vector();</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Make<sp/>sure<sp/>it&apos;s<sp/>not<sp/>already<sp/>on<sp/>the<sp/>list<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(dirlist.end()==std::find(dirlist.begin(),<sp/>dirlist.end(),<sp/>d));</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>dirlist.push_back(d);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>get_importDirectories()-&gt;set_isModified(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>d-&gt;set_parent(get_importDirectories());</highlight></codeline>
+<codeline lineno="114"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1a7f076cab2e98416855dcb6f0386ff569" kindref="member">SgAsmPEImportSection::remove_import_directory</ref>(<ref refid="classSgAsmPEImportDirectory" kindref="compound">SgAsmPEImportDirectory</ref><sp/>*d)</highlight></codeline>
+<codeline lineno="118"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmPEImportSection_1af14b159480f8d45c74d0fb6c976a178b" kindref="member">removeImportDirectory</ref>(d);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1af14b159480f8d45c74d0fb6c976a178b" kindref="member">SgAsmPEImportSection::removeImportDirectory</ref>(<ref refid="classSgAsmPEImportDirectory" kindref="compound">SgAsmPEImportDirectory</ref><sp/>*d)</highlight></codeline>
+<codeline lineno="124"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>SgAsmPEImportDirectoryPtrList<sp/>&amp;dirlist<sp/>=<sp/>get_importDirectories()-&gt;get_vector();</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>SgAsmPEImportDirectoryPtrList::iterator<sp/>found<sp/>=<sp/>std::find(dirlist.begin(),<sp/>dirlist.end(),<sp/>d);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(found!=dirlist.end())<sp/>{</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dirlist.erase(found);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d-&gt;set_parent(NULL);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="131"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Reallocate<sp/>space<sp/>for<sp/>the<sp/>import<sp/>section<sp/>if<sp/>necessary.<sp/><sp/>This<sp/>will<sp/>likely<sp/>not<sp/>work<sp/>correctly<sp/>because<sp/>it<sp/>moves<sp/>the<sp/>import</highlight></codeline>
+<codeline lineno="134"><highlight class="comment"><sp/>*<sp/>address<sp/>tables.<sp/><sp/>Unlike<sp/>ELF,<sp/>which<sp/>tends<sp/>to<sp/>have<sp/>dynamic<sp/>linking<sp/>trampolines<sp/>and<sp/>tables<sp/>(PLT<sp/>and<sp/>GOT)<sp/>in<sp/>well<sp/>defined</highlight></codeline>
+<codeline lineno="135"><highlight class="comment"><sp/>*<sp/>locations,<sp/>PE<sp/>executables<sp/>seem<sp/>to<sp/>have<sp/>them<sp/>haphazardly<sp/>scattered<sp/>throughout<sp/>virtual<sp/>memory.<sp/><sp/>That<sp/>means<sp/>there&apos;s<sp/>no<sp/>easy</highlight></codeline>
+<codeline lineno="136"><highlight class="comment"><sp/>*<sp/>way<sp/>to<sp/>fix<sp/>things<sp/>if<sp/>we<sp/>have<sp/>to<sp/>move<sp/>the<sp/>import<sp/>address<sp/>table.<sp/><sp/>This<sp/>whole<sp/>subject<sp/>of<sp/>Import<sp/>reallocation<sp/>needs<sp/>much</highlight></codeline>
+<codeline lineno="137"><highlight class="comment"><sp/>*<sp/>improvement.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1aa8a7ce93d48a33088e93dd329cab168a" kindref="member">SgAsmPEImportSection::reallocate</ref>()</highlight></codeline>
+<codeline lineno="140"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmPEImportSection_1a66b83ddeabc3b0ab8b17d9a2505201b9" kindref="member">importMessageReset</ref>();</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>reallocated<sp/>=<sp/><ref refid="classSgAsmPESection_1a84338b8a6744a87d8ffaf62c608036a9" kindref="member">SgAsmPESection::reallocate</ref>();</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>Rose::BinaryAnalysis::RelativeVirtualAddress<sp/>end_rva(this-&gt;get_mappedPreferredRva(),<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>SgAsmPEImportDirectoryPtrList<sp/>&amp;dirlist<sp/>=<sp/>get_importDirectories()-&gt;get_vector();</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Space<sp/>needed<sp/>for<sp/>the<sp/>list<sp/>of<sp/>import<sp/>directory<sp/>structs.<sp/>The<sp/>list<sp/>is<sp/>terminated<sp/>with<sp/>a<sp/>zero<sp/>entry.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nimports<sp/>=<sp/>dirlist.size();</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>end_rva.increment((1<sp/>+<sp/>nimports)<sp/>*<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="structSgAsmPEImportDirectory_1_1PEImportDirectory__disk" kindref="compound">SgAsmPEImportDirectory::PEImportDirectory_disk</ref>));</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Space<sp/>needed<sp/>for<sp/>the<sp/>data<sp/>of<sp/>each<sp/>import<sp/>directory.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i=0;<sp/>i&lt;nimports;<sp/>i++)</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>end_rva.increment(dirlist[i]-&gt;reallocate(end_rva));</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Adjust<sp/>the<sp/>section<sp/>size<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref><sp/>need<sp/>=<sp/>end_rva.boundOffset().orElse(end_rva.rva());</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(need<sp/>&lt;<sp/><ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="classSgAsmGenericSection_1a0128ff49841b82db716952b7e37e39d9" kindref="member">isMapped</ref>())</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericSection_1a12ca37a67c3bc1cfa7f460742c49706c" kindref="member">set_mappedSize</ref>(need);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericSection_1ad84a6151fefa7ed0a3f402db21e25e20" kindref="member">set_size</ref>(need);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>reallocated<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(need<sp/>&gt;<sp/><ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>get_file()-&gt;shiftExtend(</highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>0,<sp/>need-<ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>(),<sp/><ref refid="classSgAsmGenericFile_1ae86e310e8abb3d0a044ee16e1bc6c9ebaaf608aa529572cd9033f53dcac68097c" kindref="member">SgAsmGenericFile::ADDRSP_ALL</ref>,<sp/><ref refid="classSgAsmGenericFile_1af29ae621857658ed39d2524011eef404a4f653980791bcbb59a1d18d808cd41a9" kindref="member">SgAsmGenericFile::ELASTIC_HOLE</ref>);</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>reallocated<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>reallocated;</highlight></codeline>
+<codeline lineno="167"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1a27fc86725f28aa8eb260cb730a9abfe5" kindref="member">SgAsmPEImportSection::reallocate_iats</ref>(Rose::BinaryAnalysis::RelativeVirtualAddress<sp/>start_at)</highlight></codeline>
+<codeline lineno="171"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classSgAsmPEImportSection_1ad97410935af8371d86b3c41c49d07526" kindref="member">reallocateIats</ref>(start_at);</highlight></codeline>
+<codeline lineno="173"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1ad97410935af8371d86b3c41c49d07526" kindref="member">SgAsmPEImportSection::reallocateIats</ref>(Rose::BinaryAnalysis::RelativeVirtualAddress<sp/>start_at)</highlight></codeline>
+<codeline lineno="177"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/>Rose::BinaryAnalysis::RelativeVirtualAddress<sp/><ref refid="SgAsmPESectionTableEntry_8h_1a428af6b898632e49e1a78a6b75c35597" kindref="member">rva</ref><sp/>=<sp/>start_at;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SgAsmPEImportDirectoryPtrList<sp/>&amp;dirs<sp/>=<sp/>get_importDirectories()-&gt;get_vector();</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(SgAsmPEImportDirectoryPtrList::const_iterator<sp/>di=dirs.begin();<sp/>di!=dirs.end();<sp/>++di)<sp/>{</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*di)-&gt;set_iat_rva(<ref refid="SgAsmPESectionTableEntry_8h_1a428af6b898632e49e1a78a6b75c35597" kindref="member">rva</ref>);</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>need<sp/>=<sp/>(*di)-&gt;iatRequiredSize();</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*di)-&gt;set_iat_nalloc(need);</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="SgAsmPESectionTableEntry_8h_1a428af6b898632e49e1a78a6b75c35597" kindref="member">rva</ref>.increment(need);</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="SgAsmPESectionTableEntry_8h_1a428af6b898632e49e1a78a6b75c35597" kindref="member">rva</ref>.boundOffset().orElse(<ref refid="SgAsmPESectionTableEntry_8h_1a428af6b898632e49e1a78a6b75c35597" kindref="member">rva</ref>.rva())<sp/>-<sp/>start_at.boundOffset().orElse(start_at.rva());</highlight></codeline>
+<codeline lineno="187"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Write<sp/>the<sp/>import<sp/>section<sp/>back<sp/>to<sp/>disk<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1afc96ac3328bdab8daa41f8dc491c296f" kindref="member">SgAsmPEImportSection::unparse</ref>(std::ostream<sp/>&amp;<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="193"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmPEImportSection_1a66b83ddeabc3b0ab8b17d9a2505201b9" kindref="member">importMessageReset</ref>();</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>1<sp/></highlight><highlight class="comment">/*<sp/>DEBUGGING<sp/>[RPM<sp/>2010-11-09]<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="msvc__stdint_8h_1a9a941819355e6f658991890ff66b4b0e" kindref="member">uint8_t</ref><sp/><ref refid="PTracer_8h_1a2b7e7856b48ec3327148ac994ad95cd5" kindref="member">byte</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i=0;<sp/>i&lt;<ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>();<sp/>i++)</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericSection_1abb48917ca0e83f66faa0f0fe045c3c5a" kindref="member">write</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>i,<sp/>1,<sp/>&amp;<ref refid="PTracer_8h_1a2b7e7856b48ec3327148ac994ad95cd5" kindref="member">byte</ref>);</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericSection_1ab5e89c690394cb2c6cec5bed8d28cca3" kindref="member">unparseHoles</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>);</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Import<sp/>Directory<sp/>Entries<sp/>and<sp/>all<sp/>they<sp/>point<sp/>to<sp/>(even<sp/>in<sp/>other<sp/>sections)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i=0;<sp/>i&lt;get_importDirectories()-&gt;get_vector().size();<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmPEImportDirectory" kindref="compound">SgAsmPEImportDirectory</ref><sp/>*idir<sp/>=<sp/>get_importDirectories()-&gt;get_vector()[i];</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">try</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>idir-&gt;<ref refid="classSgAsmPEImportDirectory_1a352ee75e141dfc73b6bede536b28ccd6" kindref="member">unparse</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>i);</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">catch</highlight><highlight class="normal">(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ShortWrite&amp;)<sp/>{</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="classSgAsmPEImportSection_1aa20b809a1566e95cf60de95c226d7975" kindref="member">showImportMessage</ref>())</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmExecutableFileFormat_1a0baa46cabcd118e86d9d49e3585bef13" kindref="member">mlog</ref>[<ref refid="namespaceSawyer_1_1Message_1abfb4d3240797db3a74bbf691f708a1c9a52f8e5eea9bfc070f3e0a152e3d1537a" kindref="member">WARN</ref>]<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;SgAsmImportSection::unparse:<sp/>Import<sp/>Directory<sp/>#&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;i<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/>skipped<sp/>(short<sp/>write)\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Zero<sp/>terminated<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structSgAsmPEImportDirectory_1_1PEImportDirectory__disk" kindref="compound">SgAsmPEImportDirectory::PEImportDirectory_disk</ref><sp/>zero;</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/>memset(&amp;zero,<sp/>0,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal"><sp/>zero);</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericSection_1abb48917ca0e83f66faa0f0fe045c3c5a" kindref="member">write</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>get_importDirectories()-&gt;get_vector().<ref refid="classSgAsmGenericSection_1a0ab2193e19f1cc0626f0f8e2db135b6b" kindref="member">size</ref>()*</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(zero),<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal"><sp/>zero,<sp/>&amp;zero);</highlight></codeline>
+<codeline lineno="220"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"></highlight></codeline>
+<codeline lineno="222"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Print<sp/>debugging<sp/>info<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="223"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1abbd679668cb1b922f9f562905b5b6bf7" kindref="member">SgAsmPEImportSection::dump</ref>(FILE<sp/>*<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*prefix,<sp/>ssize_t<sp/>idx)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="225"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>p[4096];</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(idx&gt;=0)<sp/>{</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>snprintf(p,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(p),<sp/></highlight><highlight class="stringliteral">&quot;%sPEImportSection[%zd].&quot;</highlight><highlight class="normal">,<sp/>prefix,<sp/>idx);</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>snprintf(p,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(p),<sp/></highlight><highlight class="stringliteral">&quot;%sPEImportSection.&quot;</highlight><highlight class="normal">,<sp/>prefix);</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"></highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>w<sp/>=<sp/><ref refid="qeditor_8cpp_1a0f22fef15e1a46d7611e58390b23a1f5" kindref="member">std::max</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">{1},<sp/><ref refid="namespaceRose_1ab840359592003b8a4a47cc12e2c79223" kindref="member">Rose::DUMP_FIELD_WIDTH</ref><sp/>-<sp/>strlen(p));</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmPESection_1aba5591e532829dbfa2ce2c0b073cc2b1" kindref="member">SgAsmPESection::dump</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>p,<sp/>-1);</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/>fprintf(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/></highlight><highlight class="stringliteral">&quot;%s%-*s<sp/>=<sp/>%&quot;</highlight><highlight class="normal"><sp/>PRIuPTR<sp/></highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">,<sp/>p,<sp/>w,<sp/></highlight><highlight class="stringliteral">&quot;ndirectories&quot;</highlight><highlight class="normal">,<sp/>p_importDirectories-&gt;get_vector().size());</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i=0;<sp/>i&lt;p_importDirectories-&gt;get_vector().size();<sp/>i++)</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_importDirectories-&gt;get_vector()[i]-&gt;dump(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>p,<sp/>i);</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"></highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(variantT()<sp/>==<sp/>V_SgAsmPEImportSection)<sp/></highlight><highlight class="comment">//unless<sp/>a<sp/>base<sp/>class</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Rose::BinaryAnalysis::hexdump(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>0,<sp/>std::string(p)+</highlight><highlight class="stringliteral">&quot;data<sp/>at<sp/>&quot;</highlight><highlight class="normal">,<sp/>p_data);</highlight></codeline>
+<codeline lineno="242"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><ref refid="classSgAsmPEImportDirectoryList" kindref="compound">SgAsmPEImportDirectoryList</ref>*</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1ac302498a2aa91f7b3a74c62fe3ca4426" kindref="member">SgAsmPEImportSection::get_import_directories</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>get_importDirectories();</highlight></codeline>
+<codeline lineno="247"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><ref refid="classSgAsmPEImportSection_1ab963f252c4790edee2404cac91fe328b" kindref="member">SgAsmPEImportSection::set_import_directories</ref>(<ref refid="classSgAsmPEImportDirectoryList" kindref="compound">SgAsmPEImportDirectoryList</ref><sp/>*<ref refid="test04_8C_1a6150e0515f7202e2fb518f7206ed97dc" kindref="member">x</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/>set_importDirectories(<ref refid="test04_8C_1a6150e0515f7202e2fb518f7206ed97dc" kindref="member">x</ref>);</highlight></codeline>
+<codeline lineno="252"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/frontend/BinaryFormats/PeImportSection.C"/>
+  </compounddef>
+</doxygen>

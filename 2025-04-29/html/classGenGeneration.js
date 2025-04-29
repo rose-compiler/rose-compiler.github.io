@@ -1,0 +1,27 @@
+var classGenGeneration =
+[
+    [ "GenGeneration", "classGenGeneration.html#a2f6962dd1a21f76d973b425a4a523731", null ],
+    [ "~ GenGeneration", "classGenGeneration.html#a407598e374214b13aef841683ab31508", null ],
+    [ "buildTypedefTranslationTable", "classGenGeneration.html#a48dde67713d9f0ce693a1c989f9a2aee", null ],
+    [ "clear", "classGenGeneration.html#ab7f3b5ff67293dedf38bd2e1bfcacd8a", null ],
+    [ "generateCodeFindActiveUnionVariableTypeName", "classGenGeneration.html#a465b5e23078ea0a50ccfd286df1bf097", null ],
+    [ "getPtrStaticGenRepresentation", "classGenGeneration.html#a6653b9b702884f3a88b9962d5bab5e55", null ],
+    [ "graphTypedefTranslationTable", "classGenGeneration.html#a2a89e7f3f61b15c5498e2e223603dd57", null ],
+    [ "graphTypedefTranslationTable", "classGenGeneration.html#adb3aee8cd5ece8252065840fd6985c38", null ],
+    [ "printClass", "classGenGeneration.html#a038a78d7731fb3ac8bf996c90c5d5f24", null ],
+    [ "printClassNotPrinted", "classGenGeneration.html#a15f790159f3305a12ae9652bb0a9ef43", null ],
+    [ "printCSVariables", "classGenGeneration.html#a00bec71db642b7f991d01e04db1f373d", null ],
+    [ "printStruct", "classGenGeneration.html#a23312a947c613405b3353a60a854f233", null ],
+    [ "printUnionVariables", "classGenGeneration.html#a01e0d7882c05d04e2dc46641832549fb", null ],
+    [ "queryClassNotPrinted", "classGenGeneration.html#ac49b0cd8d972799caa59c78aee4b610c", null ],
+    [ "queryFindUnionControlVariableDeclaration", "classGenGeneration.html#a7c84c24581a3154e73453676bd801109", null ],
+    [ "writeStaticGraphToFile", "classGenGeneration.html#a641555d331203ecd4d68ad6d4314bf25", null ],
+    [ "writeToFile", "classGenGeneration.html#aa86e18d295840b49015f5e46c1fec9d9", null ],
+    [ "classPointerName", "classGenGeneration.html#ab55f3ba84c5e5815419626cf55c76a8c", null ],
+    [ "dotout", "classGenGeneration.html#ac90b26b3b1fae610b71adb2b1bf7e19f", null ],
+    [ "method_prefix", "classGenGeneration.html#a746a0e4c144ddf0eecf03857c9aae1e5", null ],
+    [ "nameOfConstructedClass", "classGenGeneration.html#a8f2dd8357b22fc7ee9497378336e85eb", null ],
+    [ "printedClasses", "classGenGeneration.html#ac1162df4d9d87417b3b07c883ccab55e", null ],
+    [ "staticDataGraph", "classGenGeneration.html#a757acd77673ab9910803ab01c64eecf9", null ],
+    [ "typedefTranslationTable", "classGenGeneration.html#aafb397d759a83748ef58cb94a1e48382", null ]
+];

@@ -1,0 +1,28 @@
+var namespaceSawyer_1_1Message =
+[
+    [ "ColorSet", "classSawyer_1_1Message_1_1ColorSet.html", "classSawyer_1_1Message_1_1ColorSet" ],
+    [ "ColorSpec", "structSawyer_1_1Message_1_1ColorSpec.html", "structSawyer_1_1Message_1_1ColorSpec" ],
+    [ "Destination", "classSawyer_1_1Message_1_1Destination.html", "classSawyer_1_1Message_1_1Destination" ],
+    [ "Facilities", "classSawyer_1_1Message_1_1Facilities.html", "classSawyer_1_1Message_1_1Facilities" ],
+    [ "FacilitiesGuard", "classSawyer_1_1Message_1_1FacilitiesGuard.html", "classSawyer_1_1Message_1_1FacilitiesGuard" ],
+    [ "Facility", "classSawyer_1_1Message_1_1Facility.html", "classSawyer_1_1Message_1_1Facility" ],
+    [ "FdSink", "classSawyer_1_1Message_1_1FdSink.html", "classSawyer_1_1Message_1_1FdSink" ],
+    [ "FileSink", "classSawyer_1_1Message_1_1FileSink.html", "classSawyer_1_1Message_1_1FileSink" ],
+    [ "Filter", "classSawyer_1_1Message_1_1Filter.html", "classSawyer_1_1Message_1_1Filter" ],
+    [ "Gang", "classSawyer_1_1Message_1_1Gang.html", "classSawyer_1_1Message_1_1Gang" ],
+    [ "HighWater", "classSawyer_1_1Message_1_1HighWater.html", "classSawyer_1_1Message_1_1HighWater" ],
+    [ "ImportanceFilter", "classSawyer_1_1Message_1_1ImportanceFilter.html", "classSawyer_1_1Message_1_1ImportanceFilter" ],
+    [ "Initializer", "classSawyer_1_1Message_1_1Initializer.html", "classSawyer_1_1Message_1_1Initializer" ],
+    [ "Mesg", "classSawyer_1_1Message_1_1Mesg.html", "classSawyer_1_1Message_1_1Mesg" ],
+    [ "MesgProps", "structSawyer_1_1Message_1_1MesgProps.html", "structSawyer_1_1Message_1_1MesgProps" ],
+    [ "Multiplexer", "classSawyer_1_1Message_1_1Multiplexer.html", "classSawyer_1_1Message_1_1Multiplexer" ],
+    [ "Prefix", "classSawyer_1_1Message_1_1Prefix.html", "classSawyer_1_1Message_1_1Prefix" ],
+    [ "SequenceFilter", "classSawyer_1_1Message_1_1SequenceFilter.html", "classSawyer_1_1Message_1_1SequenceFilter" ],
+    [ "SProxy", "classSawyer_1_1Message_1_1SProxy.html", "classSawyer_1_1Message_1_1SProxy" ],
+    [ "Stream", "classSawyer_1_1Message_1_1Stream.html", "classSawyer_1_1Message_1_1Stream" ],
+    [ "StreamBuf", "classSawyer_1_1Message_1_1StreamBuf.html", "classSawyer_1_1Message_1_1StreamBuf" ],
+    [ "StreamSink", "classSawyer_1_1Message_1_1StreamSink.html", "classSawyer_1_1Message_1_1StreamSink" ],
+    [ "SyslogSink", "classSawyer_1_1Message_1_1SyslogSink.html", "classSawyer_1_1Message_1_1SyslogSink" ],
+    [ "TimeFilter", "classSawyer_1_1Message_1_1TimeFilter.html", "classSawyer_1_1Message_1_1TimeFilter" ],
+    [ "UnformattedSink", "classSawyer_1_1Message_1_1UnformattedSink.html", "classSawyer_1_1Message_1_1UnformattedSink" ]
+];

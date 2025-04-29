@@ -1,0 +1,463 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="boostGraphCFG_8h" kind="file" language="C++">
+    <compoundname>boostGraphCFG.h</compoundname>
+    <includes local="no">boost/graph/adjacency_list.hpp</includes>
+    <includes local="no">boost/bind/bind.hpp</includes>
+    <includes local="no">boost/tuple/tuple.hpp</includes>
+    <includes local="no">boost/graph/graphviz.hpp</includes>
+    <includes local="no">boost/graph/dominator_tree.hpp</includes>
+    <includes local="no">boost/graph/reverse_graph.hpp</includes>
+    <includes local="no">boost/graph/transpose_graph.hpp</includes>
+    <includes local="no">boost/algorithm/string.hpp</includes>
+    <includedby refid="iteratedDominanceFrontier_8h" local="no">/home/liao6/workspace/rose-github/src/midend/programAnalysis/staticSingleAssignment/iteratedDominanceFrontier.h</includedby>
+    <incdepgraph>
+      <node id="168917">
+        <label>boost/algorithm/string.hpp</label>
+      </node>
+      <node id="168912">
+        <label>boost/tuple/tuple.hpp</label>
+      </node>
+      <node id="168914">
+        <label>boost/graph/dominator_tree.hpp</label>
+      </node>
+      <node id="168913">
+        <label>boost/graph/graphviz.hpp</label>
+      </node>
+      <node id="168915">
+        <label>boost/graph/reverse_graph.hpp</label>
+      </node>
+      <node id="168911">
+        <label>boost/bind/bind.hpp</label>
+      </node>
+      <node id="168916">
+        <label>boost/graph/transpose_graph.hpp</label>
+      </node>
+      <node id="168909">
+        <label>/home/liao6/workspace/rose-github/src/midend/programAnalysis/staticSingleAssignment/boostGraphCFG.h</label>
+        <link refid="boostGraphCFG_8h"/>
+        <childnode refid="168910" relation="include">
+        </childnode>
+        <childnode refid="168911" relation="include">
+        </childnode>
+        <childnode refid="168912" relation="include">
+        </childnode>
+        <childnode refid="168913" relation="include">
+        </childnode>
+        <childnode refid="168914" relation="include">
+        </childnode>
+        <childnode refid="168915" relation="include">
+        </childnode>
+        <childnode refid="168916" relation="include">
+        </childnode>
+        <childnode refid="168917" relation="include">
+        </childnode>
+      </node>
+      <node id="168910">
+        <label>boost/graph/adjacency_list.hpp</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="168919">
+        <label>/home/liao6/workspace/rose-github/src/midend/programAnalysis/staticSingleAssignment/iteratedDominanceFrontier.h</label>
+        <link refid="iteratedDominanceFrontier_8h"/>
+        <childnode refid="168920" relation="include">
+        </childnode>
+        <childnode refid="168921" relation="include">
+        </childnode>
+      </node>
+      <node id="168920">
+        <label>/home/liao6/workspace/rose-github/src/midend/programAnalysis/ssaUnfilteredCfg/ssaUnfilteredCfgCalculation.C</label>
+        <link refid="ssaUnfilteredCfgCalculation_8C"/>
+      </node>
+      <node id="168918">
+        <label>/home/liao6/workspace/rose-github/src/midend/programAnalysis/staticSingleAssignment/boostGraphCFG.h</label>
+        <link refid="boostGraphCFG_8h"/>
+        <childnode refid="168919" relation="include">
+        </childnode>
+      </node>
+      <node id="168921">
+        <label>/home/liao6/workspace/rose-github/src/midend/programAnalysis/staticSingleAssignment/staticSingleAssignmentCalculation.C</label>
+        <link refid="staticSingleAssignmentCalculation_8C"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classssa__private_1_1CFG" prot="public">ssa_private::CFG</innerclass>
+    <innerclass refid="structssa__private_1_1CFG_1_1VertexCopier" prot="protected">ssa_private::CFG::VertexCopier</innerclass>
+    <innerclass refid="structssa__private_1_1CFG_1_1EdgeCopier" prot="protected">ssa_private::CFG::EdgeCopier</innerclass>
+    <innernamespace refid="namespacessa__private">ssa_private</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/>DQ<sp/>(10/5/2014):<sp/>This<sp/>is<sp/>more<sp/>strict<sp/>now<sp/>that<sp/>we<sp/>include<sp/>rose_config.h<sp/>in<sp/>the<sp/>sage3basic.h.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//<sp/>#include<sp/>&quot;rose.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>rose.h<sp/>and<sp/>sage3basic.h<sp/>should<sp/>not<sp/>be<sp/>included<sp/>in<sp/>librose<sp/>header<sp/>files.<sp/>[Robb<sp/>P.<sp/>Matzke<sp/>2014-10-15]</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="comment">//<sp/>#include<sp/>&quot;sage3basic.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/graph/adjacency_list.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/bind/bind.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/tuple/tuple.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/graph/graphviz.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/graph/dominator_tree.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/graph/reverse_graph.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/graph/transpose_graph.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/algorithm/string.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18" refid="namespacessa__private" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacessa__private" kindref="compound">ssa_private</ref></highlight></codeline>
+<codeline lineno="19"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGNodeT,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGEdgeT&gt;</highlight></codeline>
+<codeline lineno="23" refid="classssa__private_1_1CFG" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classssa__private_1_1CFG" kindref="compound">CFG</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>boost::adjacency_list&lt;boost::vecS,<sp/>boost::vecS,<sp/>boost::bidirectionalS,<sp/></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>boost::shared_ptr&lt;CFGNodeT&gt;,<sp/>boost::shared_ptr&lt;CFGEdgeT&gt;<sp/>&gt;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="27" refid="classssa__private_1_1CFG_1aca1d521a0260ad465e453c7981ebbc40" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>boost::graph_traits&lt;CFG&lt;CFGNodeT,<sp/>CFGEdgeT&gt;<sp/>&gt;<sp/><ref refid="classssa__private_1_1CFG_1aca1d521a0260ad465e453c7981ebbc40" kindref="member">GraphTraits</ref>;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="classssa__private_1_1CFG_1a0ca4f8f5f8f114a31fd22e11ab24eb1d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>CFGNodeT<sp/><ref refid="classssa__private_1_1CFG_1a0ca4f8f5f8f114a31fd22e11ab24eb1d" kindref="member">CFGNodeType</ref>;</highlight></codeline>
+<codeline lineno="31" refid="classssa__private_1_1CFG_1afdf82c913584ff2ef6afb85d03d9b9ab" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>CFGEdgeT<sp/><ref refid="classssa__private_1_1CFG_1afdf82c913584ff2ef6afb85d03d9b9ab" kindref="member">CFGEdgeType</ref>;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="classssa__private_1_1CFG_1ac904f52da10e2450a222192e33a7c314" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>boost::shared_ptr&lt;CFGNodeType&gt;<sp/><ref refid="classssa__private_1_1CFG_1ac904f52da10e2450a222192e33a7c314" kindref="member">CFGNodePtr</ref>;</highlight></codeline>
+<codeline lineno="34" refid="classssa__private_1_1CFG_1a08e9877b17f8988806b4e73cfc93466b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>boost::shared_ptr&lt;CFGEdgeType&gt;<sp/><ref refid="classssa__private_1_1CFG_1a08e9877b17f8988806b4e73cfc93466b" kindref="member">CFGEdgePtr</ref>;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="classssa__private_1_1CFG_1a0736a9e816039dab5eee4cdd85a3bb5e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>GraphTraits::vertex_descriptor<sp/><ref refid="classssa__private_1_1CFG_1a0736a9e816039dab5eee4cdd85a3bb5e" kindref="member">Vertex</ref>;</highlight></codeline>
+<codeline lineno="37" refid="classssa__private_1_1CFG_1a8952816afecfe66fa83764d3d63645f0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>GraphTraits::edge_descriptor<sp/><ref refid="classssa__private_1_1CFG_1a8952816afecfe66fa83764d3d63645f0" kindref="member">Edge</ref>;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="classssa__private_1_1CFG_1ac82eee8ecae08ab147a5663b3143c6fe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>std::map&lt;Vertex,<sp/>Vertex&gt;<sp/><ref refid="classssa__private_1_1CFG_1ac82eee8ecae08ab147a5663b3143c6fe" kindref="member">VertexVertexMap</ref>;</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="classssa__private_1_1CFG_1ae3458aa12a49ef7d805ccfee46e1906e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>SgFunctionDefinition*<sp/><ref refid="classssa__private_1_1CFG_1ae3458aa12a49ef7d805ccfee46e1906e" kindref="member">funcDef_</ref>;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="classssa__private_1_1CFG_1ad1a68bd5363821500502727ba8d7a04e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structVertex" kindref="compound">Vertex</ref><sp/><ref refid="classssa__private_1_1CFG_1ad1a68bd5363821500502727ba8d7a04e" kindref="member">entry_</ref>;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50" refid="classssa__private_1_1CFG_1a658115c507da1efa997a649a8d50eb18" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structVertex" kindref="compound">Vertex</ref><sp/><ref refid="classssa__private_1_1CFG_1a658115c507da1efa997a649a8d50eb18" kindref="member">exit_</ref>;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="classssa__private_1_1CFG_1a53e9b32060e7095ebf1b1ce221690a54" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;CFGNodeType,<sp/>Vertex&gt;<sp/><ref refid="classssa__private_1_1CFG_1a53e9b32060e7095ebf1b1ce221690a54" kindref="member">nodesToVertices_</ref>;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="classssa__private_1_1CFG_1a3726d451e193e726d62bd0f26f53a84c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classssa__private_1_1CFG_1ac82eee8ecae08ab147a5663b3143c6fe" kindref="member">VertexVertexMap</ref><sp/><ref refid="classssa__private_1_1CFG_1a3726d451e193e726d62bd0f26f53a84c" kindref="member">dominatorTree_</ref>;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="classssa__private_1_1CFG_1a1663e3e17e050afa4b886ca8ccd8b4e0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classssa__private_1_1CFG_1ac82eee8ecae08ab147a5663b3143c6fe" kindref="member">VertexVertexMap</ref><sp/><ref refid="classssa__private_1_1CFG_1a1663e3e17e050afa4b886ca8ccd8b4e0" kindref="member">postdominatorTree_</ref>;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64" refid="classssa__private_1_1CFG_1aad6a9554ac1632b8cdb92a7b0a7ec545" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classssa__private_1_1CFG_1aad6a9554ac1632b8cdb92a7b0a7ec545" kindref="member">CFG</ref>()</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/><sp/><sp/><sp/><ref refid="classssa__private_1_1CFG_1ae3458aa12a49ef7d805ccfee46e1906e" kindref="member">funcDef_</ref>(NULL),</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classssa__private_1_1CFG_1ad1a68bd5363821500502727ba8d7a04e" kindref="member">entry_</ref>(<ref refid="classssa__private_1_1CFG_1aca1d521a0260ad465e453c7981ebbc40" kindref="member">GraphTraits</ref>::<ref refid="namespaceboost_1ad52f87003e4bccad12fd88fc61f09ad0" kindref="member">null_vertex</ref>()),</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classssa__private_1_1CFG_1a658115c507da1efa997a649a8d50eb18" kindref="member">exit_</ref>(<ref refid="classssa__private_1_1CFG_1aca1d521a0260ad465e453c7981ebbc40" kindref="member">GraphTraits</ref>::<ref refid="namespaceboost_1ad52f87003e4bccad12fd88fc61f09ad0" kindref="member">null_vertex</ref>())</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72" refid="classssa__private_1_1CFG_1ad5b3b519fbb380de5af72fc71cc02371" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1ad5b3b519fbb380de5af72fc71cc02371" kindref="member">CFG</ref>(SgFunctionDefinition*<sp/>funcDef)</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/><sp/><sp/><sp/><ref refid="classssa__private_1_1CFG_1ae3458aa12a49ef7d805ccfee46e1906e" kindref="member">funcDef_</ref>(funcDef),</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classssa__private_1_1CFG_1ad1a68bd5363821500502727ba8d7a04e" kindref="member">entry_</ref>(<ref refid="classssa__private_1_1CFG_1aca1d521a0260ad465e453c7981ebbc40" kindref="member">GraphTraits</ref>::<ref refid="namespaceboost_1ad52f87003e4bccad12fd88fc61f09ad0" kindref="member">null_vertex</ref>()),</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classssa__private_1_1CFG_1a658115c507da1efa997a649a8d50eb18" kindref="member">exit_</ref>(<ref refid="classssa__private_1_1CFG_1aca1d521a0260ad465e453c7981ebbc40" kindref="member">GraphTraits</ref>::<ref refid="namespaceboost_1ad52f87003e4bccad12fd88fc61f09ad0" kindref="member">null_vertex</ref>())</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classssa__private_1_1CFG_1a89cd517e7a8742509cbad0da078bc6b7" kindref="member">build</ref>(funcDef);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1a89cd517e7a8742509cbad0da078bc6b7" kindref="member">build</ref>(SgFunctionDefinition*<sp/>funcDef);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84" refid="classssa__private_1_1CFG_1a825012df4cab0d5a0f85cd453fc0e33c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>SgFunctionDefinition*<sp/><ref refid="classssa__private_1_1CFG_1a825012df4cab0d5a0f85cd453fc0e33c" kindref="member">getFunctionDefinition</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="85"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1ae3458aa12a49ef7d805ccfee46e1906e" kindref="member">funcDef_</ref>;<sp/>}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88" refid="classssa__private_1_1CFG_1a8aef33ef7f0c361d7674b19290dd3879" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structVertex" kindref="compound">Vertex</ref>&amp;<sp/><ref refid="classssa__private_1_1CFG_1a8aef33ef7f0c361d7674b19290dd3879" kindref="member">getEntry</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="89"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1ad1a68bd5363821500502727ba8d7a04e" kindref="member">entry_</ref>;<sp/>}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92" refid="classssa__private_1_1CFG_1a58b6df7e3df49bfa645cb374c8aafdc2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structVertex" kindref="compound">Vertex</ref>&amp;<sp/><ref refid="classssa__private_1_1CFG_1a58b6df7e3df49bfa645cb374c8aafdc2" kindref="member">getExit</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="93"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1a658115c507da1efa997a649a8d50eb18" kindref="member">exit_</ref>;<sp/>}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1ac82eee8ecae08ab147a5663b3143c6fe" kindref="member">VertexVertexMap</ref>&amp;<sp/><ref refid="classssa__private_1_1CFG_1ae55c00057e0a883e78c0032cf0803c1a" kindref="member">getDominatorTree</ref>();</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1ac82eee8ecae08ab147a5663b3143c6fe" kindref="member">VertexVertexMap</ref>&amp;<sp/><ref refid="classssa__private_1_1CFG_1ab5c11f2718a926d3ece59ee402cc8a3b" kindref="member">getPostdominatorTree</ref>();</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classssa__private_1_1CFG" kindref="compound">CFG&lt;CFGNodeT, CFGEdgeT&gt;</ref><sp/><ref refid="classssa__private_1_1CFG_1a62979f2bd3ff4f8b3647496c8aa0f617" kindref="member">makeReverseCopy</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;CFGNodePtr&gt;<sp/><ref refid="classssa__private_1_1CFG_1ae1564c98220ac4a6f40c6a8e8972bec4" kindref="member">getAllNodes</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;CFGEdgePtr&gt;<sp/><ref refid="classssa__private_1_1CFG_1aefc24da3111255f27564a5580bff238e" kindref="member">getAllEdges</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structVertex" kindref="compound">Vertex</ref><sp/><ref refid="classssa__private_1_1CFG_1a0db2fb002c714df085722f0e87f48c57" kindref="member">getVertexForNode</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1a0ca4f8f5f8f114a31fd22e11ab24eb1d" kindref="member">CFGNodeType</ref><sp/>&amp;<ref refid="structnode" kindref="compound">node</ref>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;Edge&gt;<sp/><ref refid="classssa__private_1_1CFG_1aadd78d831044e42f8d6cd4067e1872d6" kindref="member">getAllBackEdges</ref>();</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;Vertex&gt;<sp/><ref refid="classssa__private_1_1CFG_1a8ed6a8f75b371516aac78fb3dc24b69b" kindref="member">getAllLoopHeaders</ref>();</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1ac265a4d28cc1130aea8878c7c3b2f455" kindref="member">buildCFG</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1a0ca4f8f5f8f114a31fd22e11ab24eb1d" kindref="member">CFGNodeType</ref>&amp;<sp/><ref refid="structnode" kindref="compound">node</ref>,</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;CFGNodeType,<sp/>Vertex&gt;&amp;<sp/>nodesAdded,</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::set&lt;CFGNodeType&gt;&amp;<sp/>nodesProcessed);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1a027346a60b676639f19fd06df7f186a6" kindref="member">setEntryAndExit</ref>();</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132" refid="structssa__private_1_1CFG_1_1VertexCopier" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structssa__private_1_1CFG_1_1VertexCopier" kindref="compound">VertexCopier</ref></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="134" refid="structssa__private_1_1CFG_1_1VertexCopier_1a55a05b25b78f36690181b70b0f66872b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structssa__private_1_1CFG_1_1VertexCopier_1a55a05b25b78f36690181b70b0f66872b" kindref="member">VertexCopier</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG" kindref="compound">CFG&lt;CFGNodeT, CFGEdgeT&gt;</ref>&amp;<sp/>g1,<sp/><ref refid="classssa__private_1_1CFG" kindref="compound">CFG&lt;CFGNodeT, CFGEdgeT&gt;</ref>&amp;<sp/>g2)</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="structssa__private_1_1CFG_1_1VertexCopier_1ae998ea49c910f9f053526d6550819830" kindref="member">cfg1</ref>(g1),<sp/><ref refid="structssa__private_1_1CFG_1_1VertexCopier_1a8304d3ba56cb0fb68e359cfebee1b6d7" kindref="member">cfg2</ref>(g2)<sp/>{}</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137" refid="structssa__private_1_1CFG_1_1VertexCopier_1aae3a74985dffd5d6ccd5763c4082eab9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structssa__private_1_1CFG_1_1VertexCopier_1aae3a74985dffd5d6ccd5763c4082eab9" kindref="member">operator()</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structVertex" kindref="compound">Vertex</ref>&amp;<sp/>v1,<sp/><ref refid="structVertex" kindref="compound">Vertex</ref>&amp;<sp/>v2)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="138"><highlight class="keyword"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{<sp/><ref refid="structssa__private_1_1CFG_1_1VertexCopier_1a8304d3ba56cb0fb68e359cfebee1b6d7" kindref="member">cfg2</ref>[v2]<sp/>=<sp/><ref refid="structssa__private_1_1CFG_1_1VertexCopier_1ae998ea49c910f9f053526d6550819830" kindref="member">cfg1</ref>[v1];<sp/>}</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="140" refid="structssa__private_1_1CFG_1_1VertexCopier_1ae998ea49c910f9f053526d6550819830" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG" kindref="compound">CFG&lt;CFGNodeT, CFGEdgeT&gt;</ref>&amp;<sp/><ref refid="structssa__private_1_1CFG_1_1VertexCopier_1ae998ea49c910f9f053526d6550819830" kindref="member">cfg1</ref>;</highlight></codeline>
+<codeline lineno="141" refid="structssa__private_1_1CFG_1_1VertexCopier_1a8304d3ba56cb0fb68e359cfebee1b6d7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classssa__private_1_1CFG" kindref="compound">CFG&lt;CFGNodeT, CFGEdgeT&gt;</ref>&amp;<sp/><ref refid="structssa__private_1_1CFG_1_1VertexCopier_1a8304d3ba56cb0fb68e359cfebee1b6d7" kindref="member">cfg2</ref>;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="145" refid="structssa__private_1_1CFG_1_1EdgeCopier" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structssa__private_1_1CFG_1_1EdgeCopier" kindref="compound">EdgeCopier</ref></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="147" refid="structssa__private_1_1CFG_1_1EdgeCopier_1ac70ab0cf68c50b7bb09d180574bb62c8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structssa__private_1_1CFG_1_1EdgeCopier_1ac70ab0cf68c50b7bb09d180574bb62c8" kindref="member">EdgeCopier</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG" kindref="compound">CFG&lt;CFGNodeT, CFGEdgeT&gt;</ref>&amp;<sp/>g1,<sp/><ref refid="classssa__private_1_1CFG" kindref="compound">CFG&lt;CFGNodeT, CFGEdgeT&gt;</ref>&amp;<sp/>g2)</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="structssa__private_1_1CFG_1_1EdgeCopier_1aa24b2c6e82b2170561d577cf701f6d01" kindref="member">cfg1</ref>(g1),<sp/><ref refid="structssa__private_1_1CFG_1_1EdgeCopier_1a465f9fcb6dde165938b1d4a3c6e6bbfd" kindref="member">cfg2</ref>(g2)<sp/>{}</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150" refid="structssa__private_1_1CFG_1_1EdgeCopier_1a6130d3ec633b863d09f1539548771c08" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structssa__private_1_1CFG_1_1EdgeCopier_1a6130d3ec633b863d09f1539548771c08" kindref="member">operator()</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structEdge" kindref="compound">Edge</ref>&amp;<sp/>e1,<sp/><ref refid="structEdge" kindref="compound">Edge</ref>&amp;<sp/>e2)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="151"><highlight class="keyword"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{<sp/><ref refid="structssa__private_1_1CFG_1_1EdgeCopier_1a465f9fcb6dde165938b1d4a3c6e6bbfd" kindref="member">cfg2</ref>[e2]<sp/>=<sp/><ref refid="structssa__private_1_1CFG_1_1EdgeCopier_1aa24b2c6e82b2170561d577cf701f6d01" kindref="member">cfg1</ref>[e1];<sp/>}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153" refid="structssa__private_1_1CFG_1_1EdgeCopier_1aa24b2c6e82b2170561d577cf701f6d01" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG" kindref="compound">CFG&lt;CFGNodeT, CFGEdgeT&gt;</ref>&amp;<sp/><ref refid="structssa__private_1_1CFG_1_1EdgeCopier_1aa24b2c6e82b2170561d577cf701f6d01" kindref="member">cfg1</ref>;</highlight></codeline>
+<codeline lineno="154" refid="structssa__private_1_1CFG_1_1EdgeCopier_1a465f9fcb6dde165938b1d4a3c6e6bbfd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classssa__private_1_1CFG" kindref="compound">CFG&lt;CFGNodeT, CFGEdgeT&gt;</ref>&amp;<sp/><ref refid="structssa__private_1_1CFG_1_1EdgeCopier_1a465f9fcb6dde165938b1d4a3c6e6bbfd" kindref="member">cfg2</ref>;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="156"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGNodeT,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGEdgeT&gt;</highlight></codeline>
+<codeline lineno="163" refid="classssa__private_1_1CFG_1a89cd517e7a8742509cbad0da078bc6b7" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1a89cd517e7a8742509cbad0da078bc6b7" kindref="member">CFG&lt;CFGNodeT, CFGEdgeT&gt;::build</ref>(SgFunctionDefinition*<sp/>funcDef)</highlight></codeline>
+<codeline lineno="164"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(funcDef);</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>funcDef_<sp/>=<sp/>funcDef;</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>following<sp/>two<sp/>variables<sp/>are<sp/>used<sp/>to<sp/>record<sp/>the<sp/>nodes<sp/>traversed.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/>nodesToVertices_.clear();</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/>std::set&lt;CFGNodeType&gt;<sp/>nodesProcessed;</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Remove<sp/>all<sp/>nodes<sp/>and<sp/>edges<sp/>first.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>this-&gt;<ref refid="namespaceRose_1_1AST_1_1IO_1ad381296b9da841e9c2aaca003c0972ad" kindref="member">clear</ref>();</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/>entry_<sp/>=<sp/><ref refid="namespaceboost_1ad52f87003e4bccad12fd88fc61f09ad0" kindref="member">GraphTraits::null_vertex</ref>();</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/>exit_<sp/>=<sp/><ref refid="namespaceboost_1ad52f87003e4bccad12fd88fc61f09ad0" kindref="member">GraphTraits::null_vertex</ref>();</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/>buildCFG(<ref refid="classssa__private_1_1CFG_1a0ca4f8f5f8f114a31fd22e11ab24eb1d" kindref="member">CFGNodeType</ref>(funcDef-&gt;cfgForBeginning()),<sp/>nodesToVertices_,<sp/>nodesProcessed);</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Find<sp/>the<sp/>entry<sp/>and<sp/>exit<sp/>of<sp/>this<sp/>CFG.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/>setEntryAndExit();</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(isSgFunctionDefinition((*</highlight><highlight class="keyword">this</highlight><highlight class="normal">)[entry_]-&gt;<ref refid="namespaceTransformationTracking_1aeeaadc78ab225f2c42ac934f3282dc23" kindref="member">getNode</ref>()));</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(isSgFunctionDefinition((*</highlight><highlight class="keyword">this</highlight><highlight class="normal">)[exit_]-&gt;<ref refid="namespaceTransformationTracking_1aeeaadc78ab225f2c42ac934f3282dc23" kindref="member">getNode</ref>()));</highlight></codeline>
+<codeline lineno="184"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGNodeT,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGEdgeT&gt;</highlight></codeline>
+<codeline lineno="187" refid="classssa__private_1_1CFG_1a027346a60b676639f19fd06df7f186a6" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1a027346a60b676639f19fd06df7f186a6" kindref="member">CFG&lt;CFGNodeT, CFGEdgeT&gt;::setEntryAndExit</ref>()</highlight></codeline>
+<codeline lineno="188"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/>BOOST_FOREACH<sp/>(<ref refid="structVertex" kindref="compound">Vertex</ref><sp/>v,<sp/><ref refid="namespaceboost_1a55ef8368d95ee3fd64fd949c3a4655f1" kindref="member">boost::vertices</ref>(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">))</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classssa__private_1_1CFG_1ac904f52da10e2450a222192e33a7c314" kindref="member">CFGNodePtr</ref><sp/><ref refid="structnode" kindref="compound">node</ref><sp/>=<sp/>(*this)[v];</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(isSgFunctionDefinition(<ref refid="structnode" kindref="compound">node</ref>-&gt;getNode()))</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="structnode" kindref="compound">node</ref>-&gt;getIndex()<sp/>==<sp/>0)</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>entry_<sp/>=<sp/>v;</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="structnode" kindref="compound">node</ref>-&gt;getIndex()<sp/>==<sp/>3)</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>exit_<sp/>=<sp/>v;</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//In<sp/>graphs<sp/>with<sp/>an<sp/>infinite<sp/>loop,<sp/>we<sp/>might<sp/>never<sp/>get<sp/>to<sp/>the<sp/>end<sp/>vertex</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//In<sp/>those<sp/>cases,<sp/>we<sp/>need<sp/>to<sp/>add<sp/>it<sp/>explicitly</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(exit_<sp/>==<sp/><ref refid="namespaceboost_1ad52f87003e4bccad12fd88fc61f09ad0" kindref="member">GraphTraits::null_vertex</ref>())</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;This<sp/>function<sp/>may<sp/>contain<sp/>an<sp/>infinite<sp/>loop<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;inside<sp/>so<sp/>that<sp/>its<sp/>CFG<sp/>cannot<sp/>be<sp/>built&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>exit_<sp/>=<sp/><ref refid="namespaceboost_1a0987c2ddc52b75f5b3673cb2e933efce" kindref="member">add_vertex</ref>(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*this)[exit_]<sp/>=<sp/><ref refid="namespaceStaticCFG_1adf38e5bbe7a518c94116e60835dd50ef" kindref="member">CFGNodePtr</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1a0ca4f8f5f8f114a31fd22e11ab24eb1d" kindref="member">CFGNodeType</ref>(funcDef_-&gt;cfgForEnd()));</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(entry_<sp/>!=<sp/><ref refid="namespaceboost_1ad52f87003e4bccad12fd88fc61f09ad0" kindref="member">GraphTraits::null_vertex</ref>());</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(exit_<sp/>!=<sp/><ref refid="namespaceboost_1ad52f87003e4bccad12fd88fc61f09ad0" kindref="member">GraphTraits::null_vertex</ref>());</highlight></codeline>
+<codeline lineno="213"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGNodeT,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGEdgeT&gt;</highlight></codeline>
+<codeline lineno="216" refid="classssa__private_1_1CFG_1ac265a4d28cc1130aea8878c7c3b2f455" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1ac265a4d28cc1130aea8878c7c3b2f455" kindref="member">CFG&lt;CFGNodeT, CFGEdgeT&gt;::buildCFG</ref>(</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1a0ca4f8f5f8f114a31fd22e11ab24eb1d" kindref="member">CFGNodeType</ref>&amp;<sp/><ref refid="structnode" kindref="compound">node</ref>,</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;CFGNodeType,<sp/>Vertex&gt;&amp;<sp/>nodesAdded,</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::set&lt;CFGNodeType&gt;&amp;<sp/>nodesProcessed)</highlight></codeline>
+<codeline lineno="220"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(<ref refid="structnode" kindref="compound">node</ref>.getNode());</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"></highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nodesProcessed.count(<ref refid="structnode" kindref="compound">node</ref>)<sp/>&gt;<sp/>0)</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/>nodesProcessed.insert(<ref refid="structnode" kindref="compound">node</ref>);</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>std::map&lt;CFGNodeType,<sp/>Vertex&gt;::iterator<sp/>iter;</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>inserted;</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structVertex" kindref="compound">Vertex</ref><sp/>from,<sp/>to;</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Add<sp/>the<sp/>source<sp/>node.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1a0ca4f8f5f8f114a31fd22e11ab24eb1d" kindref="member">CFGNodeType</ref>&amp;<sp/>src<sp/>=<sp/><ref refid="extension-functions_8c_1ace29f146c273d2654669dc2c710603e2" kindref="member">node</ref>;</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(src.getNode());</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::tie(iter,<sp/>inserted)<sp/>=<sp/>nodesAdded.insert(std::make_pair(src,<sp/><ref refid="namespacelegacy_1_1PRE_1a59ac0a528948ebd8128661b7c458738c" kindref="member">Vertex</ref>()));</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(inserted)</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>from<sp/>=<sp/><ref refid="namespaceboost_1a0987c2ddc52b75f5b3673cb2e933efce" kindref="member">add_vertex</ref>(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*this)[from]<sp/>=<sp/><ref refid="namespaceStaticCFG_1adf38e5bbe7a518c94116e60835dd50ef" kindref="member">CFGNodePtr</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1a0ca4f8f5f8f114a31fd22e11ab24eb1d" kindref="member">CFGNodeType</ref>(src));</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iter-&gt;second<sp/>=<sp/>from;</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>from<sp/>=<sp/>iter-&gt;second;</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"></highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;CFGEdgeType&gt;<sp/><ref refid="namespaceStaticCFG_1a69e305234c8972a9caeb96fa21f8c49b" kindref="member">outEdges</ref><sp/>=<sp/><ref refid="structnode" kindref="compound">node</ref>.outEdges();</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"></highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/>BOOST_FOREACH(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1afdf82c913584ff2ef6afb85d03d9b9ab" kindref="member">CFGEdgeType</ref>&amp;<sp/>cfgEdge,<sp/><ref refid="namespaceStaticCFG_1a69e305234c8972a9caeb96fa21f8c49b" kindref="member">outEdges</ref>)</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>For<sp/>each<sp/>out<sp/>edge,<sp/>add<sp/>the<sp/>target<sp/>node.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classssa__private_1_1CFG_1a0ca4f8f5f8f114a31fd22e11ab24eb1d" kindref="member">CFGNodeType</ref><sp/>tar<sp/>=<sp/>cfgEdge.target();</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(tar.getNode());</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>boost::tie(iter,<sp/>inserted)<sp/>=<sp/>nodesAdded.insert(std::make_pair(tar,<sp/><ref refid="namespacelegacy_1_1PRE_1a59ac0a528948ebd8128661b7c458738c" kindref="member">Vertex</ref>()));</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"></highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(inserted)</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>to<sp/>=<sp/><ref refid="namespaceboost_1a0987c2ddc52b75f5b3673cb2e933efce" kindref="member">add_vertex</ref>(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*this)[to]<sp/>=<sp/><ref refid="namespaceStaticCFG_1adf38e5bbe7a518c94116e60835dd50ef" kindref="member">CFGNodePtr</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1a0ca4f8f5f8f114a31fd22e11ab24eb1d" kindref="member">CFGNodeType</ref>(tar));</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iter-&gt;second<sp/>=<sp/>to;</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>to<sp/>=<sp/>iter-&gt;second;</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"></highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Add<sp/>the<sp/>edge.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structEdge" kindref="compound">Edge</ref><sp/><ref refid="namespacedot_1a09bab4a7f028a8ec468e5134bbfb14fe" kindref="member">edge</ref><sp/>=<sp/><ref refid="namespaceboost_1a772a3fb804a194da8d269118abff816d" kindref="member">add_edge</ref>(from,<sp/>to,<sp/>*</highlight><highlight class="keyword">this</highlight><highlight class="normal">).first;</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*this)[<ref refid="namespacedot_1a09bab4a7f028a8ec468e5134bbfb14fe" kindref="member">edge</ref>]<sp/>=<sp/><ref refid="namespaceStaticCFG_1aa112c4d64afad778d6678eb3a0f92e62" kindref="member">CFGEdgePtr</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1afdf82c913584ff2ef6afb85d03d9b9ab" kindref="member">CFGEdgeType</ref>(cfgEdge));</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"></highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Build<sp/>the<sp/>CFG<sp/>recursively.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>buildCFG(tar,<sp/>nodesAdded,<sp/>nodesProcessed);</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="276"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"></highlight></codeline>
+<codeline lineno="278"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGNodeT,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGEdgeT&gt;</highlight></codeline>
+<codeline lineno="279" refid="classssa__private_1_1CFG_1ae55c00057e0a883e78c0032cf0803c1a" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1ac82eee8ecae08ab147a5663b3143c6fe" kindref="member">CFG&lt;CFGNodeT, CFGEdgeT&gt;::VertexVertexMap</ref>&amp;<sp/><ref refid="classssa__private_1_1CFG_1ae55c00057e0a883e78c0032cf0803c1a" kindref="member">CFG&lt;CFGNodeT, CFGEdgeT&gt;::getDominatorTree</ref>()</highlight></codeline>
+<codeline lineno="280"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!dominatorTree_.empty())</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dominatorTree_;</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::associative_property_map&lt;VertexVertexMap&gt;<sp/>domTreePredMap(dominatorTree_);</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"></highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Here<sp/>we<sp/>use<sp/>the<sp/>algorithm<sp/>in<sp/>boost::graph<sp/>to<sp/>build<sp/>a<sp/>map<sp/>from<sp/>each<sp/>node<sp/>to<sp/>its<sp/>immediate<sp/>dominator.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::lengauer_tarjan_dominator_tree(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>entry_,<sp/>domTreePredMap);</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dominatorTree_;</highlight></codeline>
+<codeline lineno="289"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"></highlight></codeline>
+<codeline lineno="291"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGNodeT,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGEdgeT&gt;</highlight></codeline>
+<codeline lineno="292" refid="classssa__private_1_1CFG_1ab5c11f2718a926d3ece59ee402cc8a3b" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1ac82eee8ecae08ab147a5663b3143c6fe" kindref="member">CFG&lt;CFGNodeT, CFGEdgeT&gt;::VertexVertexMap</ref>&amp;<sp/><ref refid="classssa__private_1_1CFG_1ab5c11f2718a926d3ece59ee402cc8a3b" kindref="member">CFG&lt;CFGNodeT, CFGEdgeT&gt;::getPostdominatorTree</ref>()</highlight></codeline>
+<codeline lineno="293"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!postdominatorTree_.empty())</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>postdominatorTree_;</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::associative_property_map&lt;VertexVertexMap&gt;<sp/>postdomTreePredMap(postdominatorTree_);</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"></highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Here<sp/>we<sp/>use<sp/>the<sp/>algorithm<sp/>in<sp/>boost::graph<sp/>to<sp/>build<sp/>an<sp/>map<sp/>from<sp/>each<sp/>node<sp/>to<sp/>its<sp/>immediate<sp/>dominator.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::lengauer_tarjan_dominator_tree(boost::make_reverse_graph(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">),<sp/>exit_,<sp/>postdomTreePredMap);</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>postdominatorTree_;</highlight></codeline>
+<codeline lineno="302"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"></highlight></codeline>
+<codeline lineno="304"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGNodeT,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGEdgeT&gt;</highlight></codeline>
+<codeline lineno="305" refid="classssa__private_1_1CFG_1a62979f2bd3ff4f8b3647496c8aa0f617" refkind="member"><highlight class="normal"><ref refid="classssa__private_1_1CFG" kindref="compound">CFG&lt;CFGNodeT, CFGEdgeT&gt;</ref><sp/><ref refid="classssa__private_1_1CFG_1a62979f2bd3ff4f8b3647496c8aa0f617" kindref="member">CFG&lt;CFGNodeT, CFGEdgeT&gt;::makeReverseCopy</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="306"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classssa__private_1_1CFG" kindref="compound">CFG&lt;CFGNodeT, CFGEdgeT&gt;</ref><sp/>reverseCFG;</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>following<sp/>function<sp/>makes<sp/>a<sp/>reverse<sp/>CFG<sp/>copy.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::transpose_graph(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>reverseCFG,<sp/></highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>boost::vertex_copy(<ref refid="structssa__private_1_1CFG_1_1VertexCopier" kindref="compound">VertexCopier</ref>(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>reverseCFG)).</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>edge_copy(<ref refid="structssa__private_1_1CFG_1_1EdgeCopier" kindref="compound">EdgeCopier</ref>(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>reverseCFG)));</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"></highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Swap<sp/>entry<sp/>and<sp/>exit.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/>reverseCFG.<ref refid="classssa__private_1_1CFG_1ad1a68bd5363821500502727ba8d7a04e" kindref="member">entry_</ref><sp/>=<sp/>this-&gt;exit_;</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/>reverseCFG.<ref refid="classssa__private_1_1CFG_1a658115c507da1efa997a649a8d50eb18" kindref="member">exit_</ref><sp/>=<sp/>this-&gt;entry_;</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>reverseCFG;</highlight></codeline>
+<codeline lineno="317"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"></highlight></codeline>
+<codeline lineno="319"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGNodeT,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGEdgeT&gt;</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"><ref refid="namespaceStaticCFG_1adf38e5bbe7a518c94116e60835dd50ef" kindref="member">std::vector&lt;typename CFG&lt;CFGNodeT, CFGEdgeT&gt;::CFGNodePtr</ref>&gt;</highlight></codeline>
+<codeline lineno="321" refid="classssa__private_1_1CFG_1ae1564c98220ac4a6f40c6a8e8972bec4" refkind="member"><highlight class="normal"><ref refid="classssa__private_1_1CFG_1ae1564c98220ac4a6f40c6a8e8972bec4" kindref="member">CFG&lt;CFGNodeT, CFGEdgeT&gt;::getAllNodes</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="322"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;CFGNodePtr&gt;<sp/>allNodes;</highlight></codeline>
+<codeline lineno="324"><highlight class="normal"><sp/><sp/><sp/><sp/>BOOST_FOREACH<sp/>(<ref refid="structVertex" kindref="compound">Vertex</ref><sp/>v,<sp/><ref refid="namespaceboost_1a55ef8368d95ee3fd64fd949c3a4655f1" kindref="member">boost::vertices</ref>(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">))</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>allNodes.push_back((*</highlight><highlight class="keyword">this</highlight><highlight class="normal">)[v]);</highlight></codeline>
+<codeline lineno="326"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>allNodes;</highlight></codeline>
+<codeline lineno="327"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="328"><highlight class="normal"></highlight></codeline>
+<codeline lineno="329"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGNodeT,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGEdgeT&gt;</highlight></codeline>
+<codeline lineno="330"><highlight class="normal"><ref refid="namespaceStaticCFG_1aa112c4d64afad778d6678eb3a0f92e62" kindref="member">std::vector&lt;typename CFG&lt;CFGNodeT, CFGEdgeT&gt;::CFGEdgePtr</ref>&gt;</highlight></codeline>
+<codeline lineno="331" refid="classssa__private_1_1CFG_1aefc24da3111255f27564a5580bff238e" refkind="member"><highlight class="normal"><ref refid="classssa__private_1_1CFG_1aefc24da3111255f27564a5580bff238e" kindref="member">CFG&lt;CFGNodeT, CFGEdgeT&gt;::getAllEdges</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="332"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;CFGEdgePtr&gt;<sp/>allEdges;</highlight></codeline>
+<codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/>BOOST_FOREACH<sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structEdge" kindref="compound">Edge</ref>&amp;<sp/>e,<sp/><ref refid="namespaceboost_1a38610b1e25e89acc52c0f6d6f37fb2a8" kindref="member">boost::edges</ref>(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">))</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>allEdges.push_back((*</highlight><highlight class="keyword">this</highlight><highlight class="normal">)[e]);</highlight></codeline>
+<codeline lineno="336"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>allEdges;</highlight></codeline>
+<codeline lineno="337"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"></highlight></codeline>
+<codeline lineno="339"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGNodeT,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGEdgeT&gt;</highlight></codeline>
+<codeline lineno="340" refid="classssa__private_1_1CFG_1a0db2fb002c714df085722f0e87f48c57" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1a0736a9e816039dab5eee4cdd85a3bb5e" kindref="member">CFG&lt;CFGNodeT, CFGEdgeT&gt;::Vertex</ref><sp/><ref refid="classssa__private_1_1CFG_1a0db2fb002c714df085722f0e87f48c57" kindref="member">CFG&lt;CFGNodeT, CFGEdgeT&gt;::getVertexForNode</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG_1a0ca4f8f5f8f114a31fd22e11ab24eb1d" kindref="member">CFGNodeType</ref><sp/>&amp;<ref refid="structnode" kindref="compound">node</ref>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="341"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>std::map&lt;CFGNodeType,<sp/>Vertex&gt;::const_iterator<sp/>vertexIter<sp/>=<sp/>nodesToVertices_.find(<ref refid="structnode" kindref="compound">node</ref>);</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(vertexIter<sp/>==<sp/>nodesToVertices_.end())</highlight></codeline>
+<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceboost_1ad52f87003e4bccad12fd88fc61f09ad0" kindref="member">GraphTraits::null_vertex</ref>();</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="346"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(*(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">)[vertexIter-&gt;second]<sp/>==<sp/><ref refid="structnode" kindref="compound">node</ref>);</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>vertexIter-&gt;second;</highlight></codeline>
+<codeline lineno="349"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="350"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="351"><highlight class="normal"></highlight></codeline>
+<codeline lineno="352"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGNodeT,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGEdgeT&gt;</highlight></codeline>
+<codeline lineno="353" refid="classssa__private_1_1CFG_1aadd78d831044e42f8d6cd4067e1872d6" refkind="member"><highlight class="normal"><ref refid="namespacelegacy_1_1PRE_1a3d8306a1db1dc36f819a5842ea13378c" kindref="member">std::vector&lt;typename CFG&lt;CFGNodeT, CFGEdgeT&gt;::Edge</ref>&gt;<sp/><ref refid="classssa__private_1_1CFG_1aadd78d831044e42f8d6cd4067e1872d6" kindref="member">CFG&lt;CFGNodeT, CFGEdgeT&gt;::getAllBackEdges</ref>()</highlight></codeline>
+<codeline lineno="354"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="355"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;Edge&gt;<sp/>backEdges;</highlight></codeline>
+<codeline lineno="356"><highlight class="normal"></highlight></codeline>
+<codeline lineno="357"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>If<sp/>the<sp/>dominator<sp/>tree<sp/>is<sp/>not<sp/>built<sp/>yet,<sp/>build<sp/>it<sp/>now.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="358"><highlight class="normal"><sp/><sp/><sp/><sp/>getDominatorTree();</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"></highlight></codeline>
+<codeline lineno="360"><highlight class="normal"><sp/><sp/><sp/><sp/>BOOST_FOREACH<sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structEdge" kindref="compound">Edge</ref>&amp;<sp/>e,<sp/><ref refid="namespaceboost_1a38610b1e25e89acc52c0f6d6f37fb2a8" kindref="member">boost::edges</ref>(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">))</highlight></codeline>
+<codeline lineno="361"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="362"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structVertex" kindref="compound">Vertex</ref><sp/>src<sp/>=<sp/><ref refid="namespaceboost_1a8a3da50180aeb20594d655b101452220" kindref="member">boost::source</ref>(e,<sp/>*</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="363"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structVertex" kindref="compound">Vertex</ref><sp/>tar<sp/>=<sp/><ref refid="namespaceboost_1aa69bee9c2ca90f17dd42dfdfda52293f" kindref="member">boost::target</ref>(e,<sp/>*</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="364"><highlight class="normal"></highlight></codeline>
+<codeline lineno="365"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Vertex<sp/>v<sp/>=<sp/>*(dominatorTree.find(src));</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="366"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>VertexVertexMap::const_iterator<sp/>iter<sp/>=<sp/>dominatorTree_.find(src);</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(iter<sp/>!=<sp/>dominatorTree_.end())</highlight></codeline>
+<codeline lineno="368"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="369"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(iter-&gt;second<sp/>==<sp/>tar)</highlight></codeline>
+<codeline lineno="370"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="371"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>backEdges.push_back(e);</highlight></codeline>
+<codeline lineno="372"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">//<sp/>break<sp/>the<sp/>while<sp/>loop</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="373"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="374"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iter<sp/>=<sp/>dominatorTree_.find(iter-&gt;second);</highlight></codeline>
+<codeline lineno="375"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="376"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"></highlight></codeline>
+<codeline lineno="378"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>backEdges;</highlight></codeline>
+<codeline lineno="379"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="380"><highlight class="normal"></highlight></codeline>
+<codeline lineno="381"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGNodeT,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFGEdgeT&gt;</highlight></codeline>
+<codeline lineno="382" refid="classssa__private_1_1CFG_1a8ed6a8f75b371516aac78fb3dc24b69b" refkind="member"><highlight class="normal"><ref refid="namespacelegacy_1_1PRE_1a59ac0a528948ebd8128661b7c458738c" kindref="member">std::vector&lt;typename CFG&lt;CFGNodeT, CFGEdgeT&gt;::Vertex</ref>&gt;<sp/><ref refid="classssa__private_1_1CFG_1a8ed6a8f75b371516aac78fb3dc24b69b" kindref="member">CFG&lt;CFGNodeT, CFGEdgeT&gt;::getAllLoopHeaders</ref>()</highlight></codeline>
+<codeline lineno="383"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="384"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;Edge&gt;<sp/>backEdges<sp/>=<sp/>getAllBackEdges();</highlight></codeline>
+<codeline lineno="385"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;Vertex&gt;<sp/>headers;</highlight></codeline>
+<codeline lineno="386"><highlight class="normal"><sp/><sp/><sp/><sp/>BOOST_FOREACH<sp/>(<ref refid="structEdge" kindref="compound">Edge</ref><sp/>e,<sp/>backEdges)</highlight></codeline>
+<codeline lineno="387"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>headers.push_back(<ref refid="namespaceboost_1aa69bee9c2ca90f17dd42dfdfda52293f" kindref="member">boost::target</ref>(e,<sp/>*</highlight><highlight class="keyword">this</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="388"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>headers;</highlight></codeline>
+<codeline lineno="389"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="390"><highlight class="normal"></highlight></codeline>
+<codeline lineno="391"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="392"><highlight class="normal"></highlight></codeline>
+<codeline lineno="393"><highlight class="normal"></highlight></codeline>
+<codeline lineno="394"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/staticSingleAssignment/boostGraphCFG.h"/>
+  </compounddef>
+</doxygen>

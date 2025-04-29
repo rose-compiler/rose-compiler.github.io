@@ -1,0 +1,7 @@
+var classEasyStorage_3_01std_1_1string_01_4 =
+[
+    [ "Base", "classEasyStorage_3_01std_1_1string_01_4.html#ad507a0fbae8fa6b902f15816d6fdb115", null ],
+    [ "EasyStorage", "classEasyStorage_3_01std_1_1string_01_4.html#a19d8de24f441eab6838b8e59837a1902", null ],
+    [ "rebuildDataStoredInEasyStorageClass", "classEasyStorage_3_01std_1_1string_01_4.html#a6f6430155443de43777abb4f9ede1fbe", null ],
+    [ "storeDataInEasyStorageClass", "classEasyStorage_3_01std_1_1string_01_4.html#a6d604a1e8f9132f9693275deea45a260", null ]
+];

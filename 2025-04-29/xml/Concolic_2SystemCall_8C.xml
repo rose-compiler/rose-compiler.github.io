@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="Concolic_2SystemCall_8C" kind="file" language="C++">
+    <compoundname>SystemCall.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="197968">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="197965">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="197966" relation="include">
+        </childnode>
+        <childnode refid="197967" relation="include">
+        </childnode>
+        <childnode refid="197968" relation="include">
+        </childnode>
+      </node>
+      <node id="197967">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="197964">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/Concolic/SystemCall.C</label>
+        <link refid="Concolic_2SystemCall_8C"/>
+        <childnode refid="197965" relation="include">
+        </childnode>
+      </node>
+      <node id="197966">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="197965" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_CONCOLIC_TESTING</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Concolic_2SystemCall_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/SystemCall.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Concolic_2Architecture_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/Architecture.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="ConcolicExecutor_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/ConcolicExecutor.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="ExecutionEvent_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/ExecutionEvent.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="InputVariables_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/InputVariables.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SymbolicExpression_8h" kindref="compound">Rose/BinaryAnalysis/SymbolicExpression.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceSawyer_1_1Message_1_1Common" kindref="compound">Sawyer::Message::Common</ref>;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose" kindref="compound">Rose</ref><sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">BinaryAnalysis<sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Concolic<sp/>{</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="comment">//<sp/>SyscallContext</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal">SyscallContext::SyscallContext(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::Ptr<sp/>&amp;architecture,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ExecutionEvent::Ptr<sp/>&amp;syscallEvent,</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;ExecutionEvent::Ptr&gt;<sp/>&amp;relatedEvents)</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>phase(<ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic_1aea7b00f7ca540b514607fac2cdb81a21" kindref="member">ConcolicPhase</ref>::REPLAY),<sp/>architecture(architecture),<sp/>ip(syscallEvent-&gt;instructionPointer()),</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>argsConcrete(syscallEvent-&gt;syscallArguments()),<sp/>syscallEvent(syscallEvent),<sp/>relatedEvents(relatedEvents)<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(architecture);</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(syscallEvent);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal">SyscallContext::SyscallContext(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::Ptr<sp/>&amp;architecture,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Emulation::RiscOperators::Ptr<sp/>&amp;<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>,</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ExecutionEvent::Ptr<sp/>&amp;syscallEvent)</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>phase(<ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic_1aea7b00f7ca540b514607fac2cdb81a21" kindref="member">ConcolicPhase</ref>::EMULATION),<sp/>architecture(architecture),<sp/><ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>(<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>),<sp/>ip(syscallEvent-&gt;instructionPointer()),</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>argsConcrete(syscallEvent-&gt;syscallArguments()),<sp/>syscallEvent(syscallEvent)<sp/>{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(architecture);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(syscallEvent);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal">SyscallContext::~SyscallContext()<sp/>{}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="comment">//<sp/>SyscallCallback</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal">SyscallCallback::hello(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;myName,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SyscallContext<sp/>&amp;<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSawyer_1_1Message_1_1Stream" kindref="compound">Sawyer::Message::Stream</ref><sp/>out<sp/>=<sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="matcherparser_8h_1a15c9f7bd2f0e9686df5d9df4f3314aa9a0116b78582fbf1fd6e069fde8dd308c4" kindref="member">WHERE</ref>]<sp/>?<sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="matcherparser_8h_1a15c9f7bd2f0e9686df5d9df4f3314aa9a0116b78582fbf1fd6e069fde8dd308c4" kindref="member">WHERE</ref>]<sp/>:<sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>];</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(out)<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.phase)<sp/>{</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>ConcolicPhase::REPLAY:</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;replaying<sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>ConcolicPhase::EMULATION:</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;calling<sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>ConcolicPhase::POST_EMULATION:</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a8e121c0191b716c493352e7bb05a6422" kindref="member">ASSERT_not_implemented</ref>(</highlight><highlight class="stringliteral">&quot;should<sp/>be<sp/>called<sp/>here&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out<sp/>&lt;&lt;(myName.empty()<sp/>?<sp/><ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.syscallEvent-&gt;name()<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>system<sp/>call&quot;</highlight><highlight class="normal"><sp/>:<sp/>myName)</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/>at<sp/>instruction<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="namespaceRose_1_1StringUtility_1a7e6c11f56f268bb4ff4a7063aa20634c" kindref="member">StringUtility::addrToString</ref>(<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.ip)<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal">SyscallCallback::notAnInput(SyscallContext<sp/>&amp;<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ExecutionEvent::Ptr<sp/>&amp;event)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(event);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Message_8h_1a9f840b500a608085e85f863f9914b399" kindref="member">SAWYER_MESG</ref>(<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>])<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/><sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;</highlight><highlight class="keyword">event</highlight><highlight class="normal">-&gt;printableName(<ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.ops-&gt;database())<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/>is<sp/>now<sp/>not<sp/>an<sp/>input<sp/>variable\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.ops-&gt;inputVariables()-&gt;deactivate(event);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Ada__to__ROSE_8C_1a3d9f81b5dc256fb7e54e038bc5bb33a8" kindref="member">ctx</ref>.symbolicReturn<sp/>=<sp/>SymbolicExpression::Ptr();</highlight></codeline>
+<codeline lineno="69"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/Concolic/SystemCall.C"/>
+  </compounddef>
+</doxygen>

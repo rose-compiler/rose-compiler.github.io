@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="Disassembler_2Aarch32_8h" kind="file" language="C++">
+    <compoundname>Aarch32.h</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="198178">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="198175">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="198176" relation="include">
+        </childnode>
+        <childnode refid="198177" relation="include">
+        </childnode>
+        <childnode refid="198178" relation="include">
+        </childnode>
+      </node>
+      <node id="198177">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="198174">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/Disassembler/Aarch32.h</label>
+        <link refid="Disassembler_2Aarch32_8h"/>
+        <childnode refid="198175" relation="include">
+        </childnode>
+      </node>
+      <node id="198176">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="198175" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>ROSE_BinaryAnalysis_Disassembler_Aarch32_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ROSE_BinaryAnalysis_Disassembler_Aarch32_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_ASM_AARCH32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Disassembler_2Base_8h" kindref="compound">Rose/BinaryAnalysis/Disassembler/Base.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="BinaryAnalysis_2Architecture_2BasicTypes_8h" kindref="compound">Rose/BinaryAnalysis/Architecture/BasicTypes.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;capstone/capstone.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose" kindref="compound">Rose</ref><sp/>{</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">BinaryAnalysis<sp/>{</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="structDisassembler" kindref="compound">Disassembler</ref><sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="keyword">class<sp/></highlight><highlight class="normal">Aarch32:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>Base<sp/>{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Ptr<sp/>=<sp/>Aarch32Ptr;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="namespacestringify_1_1Rose_1_1AST_1_1cmdline_1_1graphviz__t_1abe45f5f070e84ea1a75e396a2c487fab" kindref="member">Mode</ref><sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ARM32<sp/>=<sp/>CS_MODE_ARM,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>probably<sp/>zero,<sp/>not<sp/>really<sp/>a<sp/>bit<sp/>flag</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>THUMB<sp/>=<sp/>CS_MODE_THUMB,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MCLASS<sp/>=<sp/>CS_MODE_MCLASS,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>V8<sp/>=<sp/>CS_MODE_V8<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Modes<sp/>=<sp/>BitFlags&lt;Mode&gt;;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>Modes<sp/>modes_;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>a<sp/>subset<sp/>of<sp/>Capstone&apos;s<sp/>cs_mode<sp/>constants<sp/>(warning:<sp/>nonorthoganal<sp/>concepts)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>csh<sp/>capstone_;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>the<sp/>capstone<sp/>handle</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>capstoneOpened_<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>whether<sp/>capstone_<sp/>is<sp/>initialized</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Constructor<sp/>for<sp/>specific<sp/>architecture.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/>Aarch32(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::BaseConstPtr&amp;,<sp/>Modes<sp/>=<sp/>Modes());</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>Ptr<sp/>instanceA32(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::BaseConstPtr&amp;);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>Ptr<sp/>instanceT32(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::BaseConstPtr&amp;);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>Ptr<sp/>instance(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::BaseConstPtr&amp;);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>~Aarch32();</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>overrides</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>Base::Ptr<sp/>clone()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmInstruction" kindref="compound">SgAsmInstruction</ref>*<sp/>disassembleOne(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>MemoryMap::Ptr&amp;,<sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>startVa,<sp/>AddressSet<sp/>*successors=</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmInstruction" kindref="compound">SgAsmInstruction</ref>*<sp/>makeUnknownInstruction(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classException" kindref="compound">Exception</ref>&amp;)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Open<sp/>the<sp/>capstone<sp/>library<sp/>connection</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>openCapstone();</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Convert<sp/>the<sp/>instruction<sp/>bytes<sp/>to<sp/>a<sp/>32-<sp/>or<sp/>16-<sp/>bit<sp/>integer.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="msvc__stdint_8h_1a6eb1e68cc391dd753bc8ce896dbb8315" kindref="member">uint32_t</ref><sp/>bytesToWord(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nBytes,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="msvc__stdint_8h_1a9a941819355e6f658991890ff66b4b0e" kindref="member">uint8_t</ref><sp/>*bytes);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Replace<sp/>instruction-pointer<sp/>expressions<sp/>with<sp/>constants<sp/>if<sp/>possible,<sp/>leaving<sp/>a<sp/>comment<sp/>in<sp/>its<sp/>place.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>commentIpRelative(<ref refid="classSgAsmInstruction" kindref="compound">SgAsmInstruction</ref>*);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Make<sp/>a<sp/>ROSE<sp/>instruction<sp/>operand<sp/>from<sp/>a<sp/>Capstone<sp/>operand</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmExpression" kindref="compound">SgAsmExpression</ref>*<sp/>makeOperand(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>cs_insn&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>cs_arm_op&amp;);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Add<sp/>shift<sp/>or<sp/>rotate<sp/>operations<sp/>to<sp/>an<sp/>expression<sp/>based<sp/>on<sp/>the<sp/>Capstone<sp/>operand.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmExpression" kindref="compound">SgAsmExpression</ref>*<sp/>shiftOrRotate(<ref refid="classSgAsmExpression" kindref="compound">SgAsmExpression</ref>*,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>cs_arm_op&amp;);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Change<sp/>a<sp/>memory<sp/>reference<sp/>expression&apos;s<sp/>address<sp/>by<sp/>wrapping<sp/>it<sp/>in<sp/>a<sp/>SgAsmPreIncrementExpression<sp/>or<sp/>SgAsmPostIncrement</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>expression<sp/>if<sp/>necessary.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>wrapPrePostIncrement(SgAsmAarch32Instruction*,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>cs_insn&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="msvc__stdint_8h_1a6eb1e68cc391dd753bc8ce896dbb8315" kindref="member">uint32_t</ref><sp/>insnWord);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Convert<sp/>a<sp/>Capstone<sp/>register<sp/>number<sp/>to<sp/>a<sp/>ROSE<sp/>register<sp/>descriptor.<sp/>ROSE&apos;s<sp/>register<sp/>descriptor<sp/>are<sp/>a<sp/>lot<sp/>more<sp/>than<sp/>just<sp/>an</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>ID<sp/>number.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>RegisterDescriptor<sp/>makeRegister(arm_reg);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Convert<sp/>a<sp/>Capstone<sp/>system<sp/>register<sp/>number<sp/>to<sp/>a<sp/>ROSE<sp/>expression.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmExpression" kindref="compound">SgAsmExpression</ref>*<sp/>makeSystemRegister(arm_sysreg);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Create<sp/>a<sp/>register<sp/>descriptor<sp/>for<sp/>a<sp/>coprocessor<sp/>register.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>RegisterDescriptor<sp/>makeCoprocRegister(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>registerNumber);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Restrict<sp/>a<sp/>register<sp/>to<sp/>just<sp/>part<sp/>of<sp/>a<sp/>register</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>RegisterDescriptor<sp/>subRegister(RegisterDescriptor,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>idx);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Return<sp/>a<sp/>type<sp/>for<sp/>register.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmType" kindref="compound">SgAsmType</ref>*<sp/>registerType(RegisterDescriptor);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Capstone<sp/>doesn&apos;t<sp/>return<sp/>information<sp/>about<sp/>how<sp/>much<sp/>memory<sp/>is<sp/>read<sp/>for<sp/>a<sp/>memory<sp/>read<sp/>operand.<sp/>Therefore,<sp/>we<sp/>need<sp/>to</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>partially<sp/>decode<sp/>instructions<sp/>ourselves<sp/>to<sp/>get<sp/>this<sp/>information.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmType" kindref="compound">SgAsmType</ref>*<sp/>typeForMemoryRead(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>cs_insn&amp;);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Returns<sp/>the<sp/>opcode<sp/>as<sp/>a<sp/>32-bit<sp/>value.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="msvc__stdint_8h_1a6eb1e68cc391dd753bc8ce896dbb8315" kindref="member">uint32_t</ref><sp/>opcode(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>cs_insn&amp;);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/Disassembler/Aarch32.h"/>
+  </compounddef>
+</doxygen>

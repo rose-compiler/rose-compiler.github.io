@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="SemanticCallbacks_8C" kind="file" language="C++">
+    <compoundname>SemanticCallbacks.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="200459">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="200455">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/ModelChecker/SemanticCallbacks.C</label>
+        <link refid="SemanticCallbacks_8C"/>
+        <childnode refid="200456" relation="include">
+        </childnode>
+      </node>
+      <node id="200456">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="200457" relation="include">
+        </childnode>
+        <childnode refid="200458" relation="include">
+        </childnode>
+        <childnode refid="200459" relation="include">
+        </childnode>
+      </node>
+      <node id="200458">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="200457">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="200456" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_MODEL_CHECKER</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SemanticCallbacks_8h" kindref="compound">Rose/BinaryAnalysis/ModelChecker/SemanticCallbacks.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="As_8h" kindref="compound">Rose/As.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="ExecutionUnit_8h" kindref="compound">Rose/BinaryAnalysis/ModelChecker/ExecutionUnit.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Path_8h" kindref="compound">Rose/BinaryAnalysis/ModelChecker/Path.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="ModelChecker_2Settings_8h" kindref="compound">Rose/BinaryAnalysis/ModelChecker/Settings.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Tag_8h" kindref="compound">Rose/BinaryAnalysis/ModelChecker/Tag.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="BaseSemantics_2State_8h" kindref="compound">Rose/BinaryAnalysis/InstructionSemantics/BaseSemantics/State.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SymbolicSemantics_8h" kindref="compound">Rose/BinaryAnalysis/InstructionSemantics/SymbolicSemantics.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SymbolicExpression_8h" kindref="compound">Rose/BinaryAnalysis/SymbolicExpression.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="NumberToString_8h" kindref="compound">Rose/StringUtility/NumberToString.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceSawyer_1_1Message_1_1Common" kindref="compound">Sawyer::Message::Common</ref>;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">BS<sp/>=<sp/>Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">IS<sp/>=<sp/>Rose::BinaryAnalysis::InstructionSemantics;</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">P2<sp/>=<sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2" kindref="compound">Rose::BinaryAnalysis::Partitioner2</ref>;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose" kindref="compound">Rose</ref><sp/>{</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">BinaryAnalysis<sp/>{</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">ModelChecker<sp/>{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal">SemanticCallbacks::SemanticCallbacks(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Settings::Ptr<sp/>&amp;<ref refid="namespaceRosebud_1af576c5d42b1390aaa97e3101d45fb68c" kindref="member">settings</ref>)</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>mcSettings_(<ref refid="namespaceRosebud_1af576c5d42b1390aaa97e3101d45fb68c" kindref="member">settings</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(<ref refid="namespaceRosebud_1af576c5d42b1390aaa97e3101d45fb68c" kindref="member">settings</ref>);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal">SemanticCallbacks::~SemanticCallbacks()<sp/>{}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal">Settings::Ptr</highlight></codeline>
+<codeline lineno="32"><highlight class="normal">SemanticCallbacks::mcSettings()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>no<sp/>lock<sp/>necessary<sp/>since<sp/>the<sp/>pointer<sp/>is<sp/>const</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>mcSettings_;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal">BS::SValue::Ptr</highlight></codeline>
+<codeline lineno="38"><highlight class="normal">SemanticCallbacks::protoval()<sp/>{</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>IS::SymbolicSemantics::SValue::instance();</highlight></codeline>
+<codeline lineno="40"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal">BS::State::Ptr</highlight></codeline>
+<codeline lineno="43"><highlight class="normal">SemanticCallbacks::createInitialState()<sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>BS::RegisterState::Ptr<sp/>registers<sp/>=<sp/>createInitialRegisters();</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>BS::MemoryState::Ptr<sp/>memory<sp/>=<sp/>createInitialMemory();</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>BS::State::instance(registers,<sp/>memory);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal">BS::RiscOperators::Ptr</highlight></codeline>
+<codeline lineno="50"><highlight class="normal">SemanticCallbacks::configureRiscOperators(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::RiscOperators::Ptr<sp/>&amp;<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal">SemanticCallbacks::initializeState(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::RiscOperators::Ptr&amp;)<sp/>{}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal">std::pair&lt;bool,<sp/>const<sp/>char*&gt;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal">SemanticCallbacks::skipExecution(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Path::Ptr&amp;)<sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{</highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">};</highlight></codeline>
+<codeline lineno="60"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal">std::vector&lt;Tag::Ptr&gt;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal">SemanticCallbacks::preExecute(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>PathNodePtr&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::RiscOperators::Ptr&amp;)<sp/>{</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{};</highlight></codeline>
+<codeline lineno="65"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal">std::vector&lt;Tag::Ptr&gt;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal">SemanticCallbacks::postExecute(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>PathNodePtr&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::RiscOperators::Ptr&amp;)<sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{};</highlight></codeline>
+<codeline lineno="70"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal">SemanticCallbacks::CodeAddresses</highlight></codeline>
+<codeline lineno="73"><highlight class="normal">SemanticCallbacks::nextCodeAddresses(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::RiscOperators::Ptr<sp/>&amp;<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>CodeAddresses<sp/>retval;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>retval.ip<sp/>=<sp/>instructionPointer(<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>retval.isComplete<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Message_8h_1a9f840b500a608085e85f863f9914b399" kindref="member">SAWYER_MESG</ref>(<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>])<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/>finding<sp/>next<sp/>code<sp/>addresses<sp/>from<sp/>ip<sp/>=<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;*retval.ip<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>va<sp/>=<sp/>retval.ip-&gt;toUnsigned())<sp/>{</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>retval.addresses.insert(*va);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(IS::SymbolicSemantics::SValue::Ptr<sp/>ipSymbolic<sp/>=<sp/>as&lt;IS::SymbolicSemantics::SValue&gt;(retval.ip))<sp/>{</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SymbolicExpression::Ptr<sp/><ref refid="namespaceFortran_1_1parser_1a3af18db366f87e7588e79bc736d7cadd" kindref="member">expr</ref><sp/>=<sp/>ipSymbolic-&gt;get_expression();</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(SymbolicExpression::OP_ITE<sp/>==<sp/><ref refid="namespaceFortran_1_1parser_1a3af18db366f87e7588e79bc736d7cadd" kindref="member">expr</ref>-&gt;getOperator())<sp/>{</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>va<sp/>=<sp/><ref refid="namespaceFortran_1_1parser_1a3af18db366f87e7588e79bc736d7cadd" kindref="member">expr</ref>-&gt;child(1)-&gt;toUnsigned())<sp/>{</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>retval.addresses.insert(*va);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>retval.isComplete<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>va<sp/>=<sp/><ref refid="namespaceFortran_1_1parser_1a3af18db366f87e7588e79bc736d7cadd" kindref="member">expr</ref>-&gt;child(2)-&gt;toUnsigned())<sp/>{</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>retval.addresses.insert(*va);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>retval.isComplete<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">T1:<sp/>SymbolicExpression::Visitor<sp/>{</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>std::set&lt;const<sp/>SymbolicExpression::Node*&gt;<sp/>SeenNodes;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SeenNodes<sp/>seen;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CodeAddresses<sp/>&amp;retval;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T1(CodeAddresses<sp/>&amp;retval):<sp/>retval(retval)<sp/>{}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1SymbolicExpression_1af7820b4121f3968550b25d7cfd4e0f11" kindref="member">SymbolicExpression::VisitAction</ref><sp/>preVisit(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SymbolicExpression::Ptr<sp/>&amp;<ref refid="structnode" kindref="compound">node</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(seen.insert(<ref refid="namespaceSawyer_1a561c15d8310b84e502e0237e925daddb" kindref="member">getRawPointer</ref>(<ref refid="structnode" kindref="compound">node</ref>)).second)<sp/>{</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>va<sp/>=<sp/><ref refid="structnode" kindref="compound">node</ref>-&gt;toUnsigned())</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>retval.addresses.insert(*va);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="poet__yacc_8c_1ab711666ad09d7f6c0b91576525ea158e" kindref="member">SymbolicExpression::CONTINUE</ref>;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SymbolicExpression::TRUNCATE;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1SymbolicExpression_1af7820b4121f3968550b25d7cfd4e0f11" kindref="member">SymbolicExpression::VisitAction</ref><sp/>postVisit(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SymbolicExpression::Ptr&amp;)<sp/>{</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="poet__yacc_8c_1ab711666ad09d7f6c0b91576525ea158e" kindref="member">SymbolicExpression::CONTINUE</ref>;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/>visitor(retval);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceFortran_1_1parser_1a3af18db366f87e7588e79bc736d7cadd" kindref="member">expr</ref>-&gt;depthFirstTraversal(visitor);</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>retval.isComplete<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>retval.isComplete<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>])<sp/>{</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>va:<sp/>retval.addresses)</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>]<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/><sp/><sp/>address:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="namespaceRose_1_1StringUtility_1a7e6c11f56f268bb4ff4a7063aa20634c" kindref="member">StringUtility::addrToString</ref>(va)<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!retval.isComplete)</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>]<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/><sp/><sp/>address:<sp/>undetermined\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>retval;</highlight></codeline>
+<codeline lineno="129"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/ModelChecker/SemanticCallbacks.C"/>
+  </compounddef>
+</doxygen>

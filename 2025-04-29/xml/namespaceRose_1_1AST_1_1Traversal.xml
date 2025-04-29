@@ -1,0 +1,357 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="namespaceRose_1_1AST_1_1Traversal" kind="namespace" language="C++">
+    <compoundname>Rose::AST::Traversal</compoundname>
+    <innernamespace refid="namespaceRose_1_1AST_1_1Traversal_1_1detail">Rose::AST::Traversal::detail</innernamespace>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespaceRose_1_1AST_1_1Traversal_1a90bba053dcc7262a982a06b1e27b33a8" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>Order</name>
+        <enumvalue id="namespaceRose_1_1AST_1_1Traversal_1a90bba053dcc7262a982a06b1e27b33a8ad5b582ed9ed4002bf2bcb386a68519cf" prot="public">
+          <name>PRE</name>
+          <initializer>= 0x01</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Visitor is called before visiting the node&apos;s children. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceRose_1_1AST_1_1Traversal_1a90bba053dcc7262a982a06b1e27b33a8aa02439ec229d8be0e74b0c1602392310" prot="public">
+          <name>POST</name>
+          <initializer>= 0x02</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Visitor is called after visiting the node&apos;s children. </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Order that visitor is called for node w.r.t. children. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" line="19" column="1" bodyfile="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" bodystart="19" bodyend="22"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceRose_1_1AST_1_1Traversal_1a125247a0240bdc1f1efd6ad04ada4036" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class <ref refid="NEW__ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" kindref="member">T</ref></type>
+          </param>
+          <param>
+            <type>class Functor</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Rose::AST::Traversal::forward</definition>
+        <argsstring>(SgNode *ast, Functor functor)</argsstring>
+        <name>forward</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>ast</declname>
+        </param>
+        <param>
+          <type>Functor</type>
+          <declname>functor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Traverse an <ref refid="namespaceRose_1_1AST" kindref="compound">AST</ref> in a forward direction.</para><para>This function traverses the specified <computeroutput>ast</computeroutput> by following the child edges of the tree. It calls specified functor at each node along the way that can be dynamically cast to a <computeroutput>T</computeroutput> pointer, and again when backtracking. In other words, when called for node <computeroutput>n</computeroutput>, this traversal invokes the functor with the arguments <computeroutput>n</computeroutput> and <ref refid="namespaceRose_1_1AST_1_1Traversal_1a90bba053dcc7262a982a06b1e27b33a8ad5b582ed9ed4002bf2bcb386a68519cf" kindref="member">Order::PRE</ref>, then it recursively visits each child of <computeroutput>n</computeroutput>, then it invokes the visitor a second time with arguments <computeroutput>n</computeroutput> and <ref refid="namespaceRose_1_1AST_1_1Traversal_1a90bba053dcc7262a982a06b1e27b33a8aa02439ec229d8be0e74b0c1602392310" kindref="member">Order::POST</ref>. The node argument of the functor is of type <computeroutput>T*</computeroutput>.</para><para>Example: Here&apos;s an example comparing the original <computeroutput><ref refid="classAstPrePostProcessing" kindref="compound">AstPrePostProcessing</ref></computeroutput> to this newer function:</para><para><programlisting><codeline><highlight class="normal">//<sp/>old<sp/>code<sp/>from<sp/>prePostTraversal.C<sp/>tutorial</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;sage3basic.h&gt;<sp/>//<sp/>recursively<sp/>about<sp/>600,000<sp/>lines<sp/>of<sp/>ROSE<sp/>code<sp/>plus<sp/>various<sp/>STL<sp/>headers.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Define<sp/>the<sp/>visitor</highlight></codeline>
+<codeline><highlight class="normal">class<sp/>PreAndPostOrderTraversal:<sp/>public<sp/>AstPrePostProcessing<sp/>{</highlight></codeline>
+<codeline><highlight class="normal">public:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/>preOrderVisit(SgNode<sp/>*node)<sp/>override<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(isSgForStatement(node))</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;&quot;entering<sp/>`for`<sp/>loop...\n&quot;;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/>postOrderVisit(SgNode<sp/>*node)<sp/>override<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(isSgForStatement(node))</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;&quot;leaving<sp/>`for`<sp/>loop...\n&quot;;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">void<sp/>debugForLoop(SgNode<sp/>*node)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(node)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PreAndPostOrderTraversal<sp/>exampleTraversal;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>exampleTraversal.traverse(node);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para><para>Here&apos;s the corresponding code for the newer style traversals:</para><para><programlisting><codeline><highlight class="normal">//<sp/>New<sp/>code<sp/>replacing<sp/>prePostTraversal.C<sp/>tutorial</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;Rose/AST/Traversal.h&gt;<sp/><sp/>//<sp/>recursively<sp/>includes<sp/>a<sp/>few<sp/>hundred<sp/>lines<sp/>of<sp/>code</highlight></codeline>
+<codeline><highlight class="normal">void<sp/>debugForLoop(SgNode<sp/>*node)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Rose::AST::Traversal::forward&lt;SgForStatement&gt;(node,<sp/>[](SgForStatement*,<sp/>Rose::AST::Traversal::Order<sp/>order)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;(Rose::AST::Traversal::Order::PRE<sp/>==<sp/>order<sp/>?<sp/>&quot;entering&quot;<sp/>:<sp/>&quot;leaving&quot;)<sp/>&lt;&lt;&quot;<sp/>for<sp/>loop...\n&quot;;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" line="183" column="1" bodyfile="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" bodystart="183" bodyend="185"/>
+        <references refid="namespaceRose_1_1AST_1_1Traversal_1_1detail_1a87a6cc6b51bb833b42b1a708bbf0dad2" compoundref="Traversal_8C" startline="28" endline="31">Rose::AST::Traversal::detail::forwardHelper</references>
+        <referencedby refid="classqrs_1_1Q3TextDocument_1a36bd3685f85a8a0790f1fec2d7e07de1" compoundref="q3richtextx_8C" startline="3068" endline="3108">qrs::Q3TextDocument::find</referencedby>
+        <referencedby refid="namespaceLibadalang__ROSE__Translation_1ab6b7eee7c5269874cc928e7884e3c217" compoundref="Experimental__Libadalang__ROSE__Connection_2AdaMaker_8C" startline="2153" endline="2166">Libadalang_ROSE_Translation::mkForLoopIncrement</referencedby>
+        <referencedby refid="namespaceAda__ROSE__Translation_1a5cdc9cf4178341705875f339c3adf980" compoundref="Experimental__Ada__ROSE__Connection_2AdaMaker_8C" startline="2232" endline="2241">Ada_ROSE_Translation::mkForLoopIncrement</referencedby>
+        <referencedby refid="classQtGradientStopsWidget_1a0ac6fb33e96ae9c4aec5b34c3fb2d1c3" compoundref="qtgradientstopswidget_8cpp" startline="539" endline="686">QtGradientStopsWidget::mouseMoveEvent</referencedby>
+        <referencedby refid="classQtGradientStopsModel_1a9f4621cfddbc65a6345432428207d80e" compoundref="qtgradientstopsmodel_8cpp" startline="347" endline="416">QtGradientStopsModel::moveStops</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceRose_1_1AST_1_1Traversal_1aa5492338197001ddb0d0d00cd39cf9f3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class <ref refid="NEW__ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" kindref="member">T</ref></type>
+          </param>
+          <param>
+            <type>class Functor</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Rose::AST::Traversal::forwardPre</definition>
+        <argsstring>(SgNode *ast, Functor functor)</argsstring>
+        <name>forwardPre</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>ast</declname>
+        </param>
+        <param>
+          <type>Functor</type>
+          <declname>functor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Traverse an <ref refid="namespaceRose_1_1AST" kindref="compound">AST</ref> in a forward direction with pre-visit only.</para><para>This function is similar to the plain <ref refid="namespaceRose_1_1AST_1_1Traversal_1a125247a0240bdc1f1efd6ad04ada4036" kindref="member">forward</ref> traversal but instead of calling the functor both before and after visiting a node&apos;s children, this traversal calls the functor only before visiting the children. The functor is called with one argument: a non-null pointer to the node being visited, and this argument is of type <computeroutput>T*</computeroutput>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" line="193" column="1" bodyfile="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" bodystart="193" bodyend="195"/>
+        <references refid="namespaceRose_1_1AST_1_1Traversal_1_1detail_1a87a6cc6b51bb833b42b1a708bbf0dad2" compoundref="Traversal_8C" startline="28" endline="31">Rose::AST::Traversal::detail::forwardHelper</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceRose_1_1AST_1_1Traversal_1a8e97423ae9767a7826695adeb177c315" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class <ref refid="NEW__ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" kindref="member">T</ref></type>
+          </param>
+          <param>
+            <type>class Functor</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Rose::AST::Traversal::forwardPost</definition>
+        <argsstring>(SgNode *ast, Functor functor)</argsstring>
+        <name>forwardPost</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>ast</declname>
+        </param>
+        <param>
+          <type>Functor</type>
+          <declname>functor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Traverse an <ref refid="namespaceRose_1_1AST" kindref="compound">AST</ref> in a forward direction with post-visit only.</para><para>This function is similar to the plain <ref refid="namespaceRose_1_1AST_1_1Traversal_1a125247a0240bdc1f1efd6ad04ada4036" kindref="member">forward</ref> traversal but instead of calling the functor both before and after visiting a node&apos;s children, this traversal calls the functor only after visiting the children. The functor is called with one argument: a non-null pointer to the node being visited, and this argument is of type <computeroutput>T*</computeroutput>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" line="203" column="1" bodyfile="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" bodystart="203" bodyend="205"/>
+        <references refid="namespaceRose_1_1AST_1_1Traversal_1_1detail_1a87a6cc6b51bb833b42b1a708bbf0dad2" compoundref="Traversal_8C" startline="28" endline="31">Rose::AST::Traversal::detail::forwardHelper</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceRose_1_1AST_1_1Traversal_1aec194980721de1e31b42107a66b4fe90" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class <ref refid="NEW__ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" kindref="member">T</ref></type>
+          </param>
+          <param>
+            <type>class Functor</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Rose::AST::Traversal::reverse</definition>
+        <argsstring>(SgNode *ast, Functor functor)</argsstring>
+        <name>reverse</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>ast</declname>
+        </param>
+        <param>
+          <type>Functor</type>
+          <declname>functor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Traverse an <ref refid="namespaceRose_1_1AST" kindref="compound">AST</ref> in the reverse direction.</para><para>Traverses the specified <ref refid="namespaceRose_1_1AST" kindref="compound">AST</ref> following the child-to-parent edges. The functor is called for each node before and after its parent is visited. The functor is called with two arguments, the node pointer and an indication of when the functor is being called. The second argument being <ref refid="namespaceRose_1_1AST_1_1Traversal_1a90bba053dcc7262a982a06b1e27b33a8ad5b582ed9ed4002bf2bcb386a68519cf" kindref="member">Order::PRE</ref> before the node&apos;s parent is visited, and <ref refid="namespaceRose_1_1AST_1_1Traversal_1a90bba053dcc7262a982a06b1e27b33a8aa02439ec229d8be0e74b0c1602392310" kindref="member">Order::POST</ref> after the parent is visited. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" line="214" column="1" bodyfile="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" bodystart="214" bodyend="216"/>
+        <references refid="namespaceRose_1_1AST_1_1Traversal_1_1detail_1acdf2331858737bf1c16df3eb218a87f8" compoundref="Traversal_8C" startline="34" endline="42">Rose::AST::Traversal::detail::reverseHelper</references>
+        <referencedby refid="classSawyer_1_1Tree_1_1Vertex_1_1EdgeBase_1a75534338c21918515ee3626cc4116c74" compoundref="Sawyer_2Tree_8h" startline="311" endline="317">Sawyer::Tree::Vertex&lt; B &gt;::EdgeBase::baseEdgeList</referencedby>
+        <referencedby refid="namespaceRosebud_1af678dcbbb9fd5680e9b71df90b2875b1" compoundref="ud_2Utility_8C" startline="633" endline="675">Rosebud::checkClassHierarchy</referencedby>
+        <referencedby refid="classSawyer_1_1Tree_1_1Vertex_1ab9afb3d01af45a09ac593f1577ff2bc3" compoundref="Sawyer_2Tree_8h" startline="1349" endline="1361">Sawyer::Tree::Vertex&lt; Node &gt;::child</referencedby>
+        <referencedby refid="classRose_1_1EditDistance_1_1TreeEditDistance_1_1Analysis_1a305ca0d938e31168ba16835ee1ea8d38" compoundref="TreeEditDistance_8C" startline="235" endline="269">Rose::EditDistance::TreeEditDistance::Analysis::edits</referencedby>
+        <referencedby refid="classRosebud_1_1Ast_1_1CppStack_1ad1c251f77e241e2b9058a2ddf5f0e179" compoundref="Ast_8C" startline="154" endline="165">Rosebud::Ast::CppStack::emitClose</referencedby>
+        <referencedby refid="namespaceVirtualCFG_1a8bf9a713be3db9739657b5ef8060f894" compoundref="virtualCFG_8C" startline="643" endline="731">VirtualCFG::genericWindUnwind</referencedby>
+        <referencedby refid="namespaceSawyer_1_1Container_1_1Algorithm_1a1b60b61ef69fc5f908ea7c6a80cf8394" compoundref="GraphAlgorithm_8h" startline="1263" endline="1351">Sawyer::Container::Algorithm::graphDirectedDominators</referencedby>
+        <referencedby refid="classRosebud_1_1Generator_1a7a805f1475ff7fea5f7cd43bc39d774a" compoundref="Generator_8C" startline="42" endline="49">Rosebud::Generator::lookup</referencedby>
+        <referencedby refid="classRosebud_1_1Serializer_1af0a42edd1d963605b0d021d142aec03e" compoundref="Serializer_8C" startline="39" endline="46">Rosebud::Serializer::lookup</referencedby>
+        <referencedby refid="classDAG_1_1NodeTopoOrderIndex_1af690e2d5c677ddc745eba79595e3feb7" compoundref="DAG_8h" startline="59" endline="64">DAG&lt; Node, Edge &gt;::NodeTopoOrderIndex::operator()</referencedby>
+        <referencedby refid="classDAG_1_1EdgeOrderLessThan_1a6af3cf1daba69f0008b7ef55099944d9" compoundref="DAG_8h" startline="84" endline="94">DAG&lt; Node, Edge &gt;::EdgeOrderLessThan::operator()</referencedby>
+        <referencedby refid="structSawyer_1_1Container_1_1BitVectorSupport_1_1ToString_1a1083edc6681b297fda4cecf76e603e4c" compoundref="BitVectorSupport_8h" startline="1425" endline="1435">Sawyer::Container::BitVectorSupport::ToString&lt; Word, bitsPerDigit &gt;::result</referencedby>
+        <referencedby refid="namespaceRose_1_1Combinatorics_1a826417a8a59d8f84c17a694d76738587" compoundref="Combinatorics_8C" startline="21" endline="33">Rose::Combinatorics::toBase62String</referencedby>
+        <referencedby refid="classSCCGraphCreate_1a888d3db79ec6014f1f4e5178adc86e50" compoundref="SCCAnalysis_8C" startline="144" endline="151">SCCGraphCreate::TopoSort</referencedby>
+        <referencedby refid="classDAGBaseGraphImpl_1a4643e1ec19c1c5bfbe7c8f0538f72f16" compoundref="DGBaseGraphImpl_8h" startline="72" endline="73">DAGBaseGraphImpl::TopoSort</referencedby>
+        <referencedby refid="classCompSliceDepGraphCreate_1ae7c565a962f24bf121abd3e14c60bc14" compoundref="CompSliceDepGraph_8C" startline="70" endline="73">CompSliceDepGraphCreate::TopoSort</referencedby>
+        <referencedby refid="classDAG_1ad4e1859038a14739c9afbd28a0111827" compoundref="DAG_8h" startline="146" endline="156">DAG&lt; DAGBaseNodeImpl, DAGBaseEdgeImpl &gt;::TopoSort</referencedby>
+        <referencedby refid="classValGetBound_1ad7112789b49e4269fdc65b4c3f4bcb6a" compoundref="SymbolicBound_8C" startline="83" endline="120">ValGetBound::VisitExpr</referencedby>
+        <referencedby refid="classRose_1_1builder_1_1SageTreeBuilder_1a6e290e362e5c0f97dbdfb32444037421" compoundref="SageTreeBuilder_8C" startline="2505" endline="2539">Rose::builder::SageTreeBuilder::wrapStmtWithLabels</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceRose_1_1AST_1_1Traversal_1aff93e50554487bf020d846e2ee996a12" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class <ref refid="NEW__ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" kindref="member">T</ref></type>
+          </param>
+          <param>
+            <type>class Functor</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Rose::AST::Traversal::reversePre</definition>
+        <argsstring>(SgNode *ast, Functor functor)</argsstring>
+        <name>reversePre</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>ast</declname>
+        </param>
+        <param>
+          <type>Functor</type>
+          <declname>functor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Traverse an <ref refid="namespaceRose_1_1AST" kindref="compound">AST</ref> in the reverse with pre-visit only.</para><para>This function is similar to the plain <ref refid="namespaceRose_1_1AST_1_1Traversal_1aec194980721de1e31b42107a66b4fe90" kindref="member">reverse</ref> traversal, but only calls the functor before visiting the node&apos;s parents. The functor takes only one argument: a pointer to the node being visited. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" line="223" column="1" bodyfile="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" bodystart="223" bodyend="225"/>
+        <references refid="namespaceRose_1_1AST_1_1Traversal_1_1detail_1acdf2331858737bf1c16df3eb218a87f8" compoundref="Traversal_8C" startline="34" endline="42">Rose::AST::Traversal::detail::reverseHelper</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceRose_1_1AST_1_1Traversal_1a893938284f41887d972a1301094184fc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class <ref refid="NEW__ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" kindref="member">T</ref></type>
+          </param>
+          <param>
+            <type>class Functor</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Rose::AST::Traversal::reversePost</definition>
+        <argsstring>(SgNode *ast, Functor functor)</argsstring>
+        <name>reversePost</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>ast</declname>
+        </param>
+        <param>
+          <type>Functor</type>
+          <declname>functor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Traverse an <ref refid="namespaceRose_1_1AST" kindref="compound">AST</ref> in the reverse with post-visit only.</para><para>This function is similar to the plain <ref refid="namespaceRose_1_1AST_1_1Traversal_1aec194980721de1e31b42107a66b4fe90" kindref="member">reverse</ref> traversal, but only calls the functor after visiting the node&apos;s parents. The functor takes only one argument: a pointer to the node being visited. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" line="232" column="1" bodyfile="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" bodystart="232" bodyend="234"/>
+        <references refid="namespaceRose_1_1AST_1_1Traversal_1_1detail_1acdf2331858737bf1c16df3eb218a87f8" compoundref="Traversal_8C" startline="34" endline="42">Rose::AST::Traversal::detail::reverseHelper</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceRose_1_1AST_1_1Traversal_1a55c377132666242ae6b5529772f194ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class <ref refid="NEW__ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" kindref="member">T</ref></type>
+          </param>
+          <param>
+            <type>class Functor</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="NEW__ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" kindref="member">T</ref> *</type>
+        <definition>T* Rose::AST::Traversal::findParentSatisying</definition>
+        <argsstring>(SgNode *ast, Functor functor)</argsstring>
+        <name>findParentSatisying</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>ast</declname>
+        </param>
+        <param>
+          <type>Functor</type>
+          <declname>functor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reverse traversal that finds the first node satisfying the predicate.</para><para>This is a reverse traversal starting at the specified node and following child-to-parent edges to find the first node having dynamic type <computeroutput>T</computeroutput> and for which the user-specified predicate returns true. The predicate takes one argument: a pointer to a node. The return value might be the same node as the argument. If the argument is null or if no satisfying node is found, then this function returns null. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" line="244" column="1" bodyfile="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" bodystart="244" bodyend="248"/>
+        <references refid="namespaceRose_1_1AST_1_1Traversal_1_1detail_1a0a06e36465f7aa84b26df58a6a590fe2" compoundref="Traversal_8C" startline="45" endline="52">Rose::AST::Traversal::detail::findReverseHelper</references>
+        <references refid="classRose_1_1AST_1_1Traversal_1_1detail_1_1FinderBase_1a6880fb156251e7902bc9d775354bd1d4" compoundref="AST_2Traversal_8h" startline="97">Rose::AST::Traversal::detail::FinderBase::found</references>
+        <references refid="ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" compoundref="ControlDependenceGraph_8C" startline="141">T</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceRose_1_1AST_1_1Traversal_1a9bb0fb0a9636486be1753cc39b43a077" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class <ref refid="NEW__ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" kindref="member">T</ref></type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="NEW__ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" kindref="member">T</ref> *</type>
+        <definition>T* Rose::AST::Traversal::findParentTyped</definition>
+        <argsstring>(SgNode *ast)</argsstring>
+        <name>findParentTyped</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>ast</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Find the closest parent of specified type.</para><para>Traverses the specified <ref refid="namespaceRose_1_1AST" kindref="compound">AST</ref> and returns a pointer to the closest parent of the specified type. The return value might be the argument itself. If the argument is null or if no such node type can be found, then this function returns null. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" line="256" column="1" bodyfile="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" bodystart="256" bodyend="261"/>
+        <references refid="namespaceRose_1_1AST_1_1Traversal_1_1detail_1a0a06e36465f7aa84b26df58a6a590fe2" compoundref="Traversal_8C" startline="45" endline="52">Rose::AST::Traversal::detail::findReverseHelper</references>
+        <references refid="classRose_1_1AST_1_1Traversal_1_1detail_1_1FinderBase_1a6880fb156251e7902bc9d775354bd1d4" compoundref="AST_2Traversal_8h" startline="97">Rose::AST::Traversal::detail::FinderBase::found</references>
+        <references refid="ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" compoundref="ControlDependenceGraph_8C" startline="141">T</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceRose_1_1AST_1_1Traversal_1a27d06185ed793b441a260220014a8a16" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class <ref refid="NEW__ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" kindref="member">T</ref></type>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; <ref refid="NEW__ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" kindref="member">T</ref> * &gt;</type>
+        <definition>std::vector&lt;T*&gt; Rose::AST::Traversal::findDescendantsTyped</definition>
+        <argsstring>(SgNode *ast)</argsstring>
+        <name>findDescendantsTyped</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>ast</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Find all descendants of specified type.</para><para>Traverses the specified <ref refid="namespaceRose_1_1AST" kindref="compound">AST</ref> in depth-first pre-order and builds a vector that points to all the nodes of the tree that are of the specified type. All returned pointers are non-null. The specified root of the <ref refid="namespaceRose_1_1AST" kindref="compound">AST</ref> might be one of the pointers returned. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" line="269" column="1" bodyfile="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.h" bodystart="269" bodyend="275"/>
+        <references refid="ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" compoundref="ControlDependenceGraph_8C" startline="141">T</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Abstract syntax tree traversals. </para>    </detaileddescription>
+    <location file="/home/liao6/workspace/rose-github/src/Rose/AST/Traversal.C" line="6" column="1"/>
+  </compounddef>
+</doxygen>

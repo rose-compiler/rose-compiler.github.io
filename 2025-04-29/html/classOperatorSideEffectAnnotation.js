@@ -1,0 +1,28 @@
+var classOperatorSideEffectAnnotation =
+[
+    [ "const_iterator", "classOperatorSideEffectAnnotation.html#af081ee0394ccdc2f2a0c3a81b49e3717", null ],
+    [ "OperatorSideEffectAnnotation", "classOperatorSideEffectAnnotation.html#aace0c82254887619903c1c83068d6c6e", null ],
+    [ "add_call", "classOperatorSideEffectAnnotation.html#a09bd7c0c31cbd54f15a45d82e31de1a3", null ],
+    [ "add_kill", "classOperatorSideEffectAnnotation.html#acdf2108b1293aaf7c1770fda92d4850f", null ],
+    [ "add_modify", "classOperatorSideEffectAnnotation.html#a38d3159a7d22a4f2227ba8341caaa50c", null ],
+    [ "add_read", "classOperatorSideEffectAnnotation.html#a2101974e93edfdb4a97a7c9200135ac0", null ],
+    [ "Dump", "classOperatorSideEffectAnnotation.html#a51f2275ae3fe83e5f319eec46d1eca9b", null ],
+    [ "get_call", "classOperatorSideEffectAnnotation.html#a25fdcb4a6e0779e35689a315b7304072", null ],
+    [ "get_call_descriptor", "classOperatorSideEffectAnnotation.html#aabb43ac8f6c32d31e0041d51c8dce03f", null ],
+    [ "get_inst", "classOperatorSideEffectAnnotation.html#a09dcc71629f121e02851d1efb66181dc", null ],
+    [ "get_kill", "classOperatorSideEffectAnnotation.html#a8537094a46b07a9da715e96a56e8219c", null ],
+    [ "get_kill_descriptor", "classOperatorSideEffectAnnotation.html#a2394e83b0bcd797fbd358d57c2b1fef4", null ],
+    [ "get_modify", "classOperatorSideEffectAnnotation.html#aa21f6cb47b8839020354c228a79b32c1", null ],
+    [ "get_modify_descriptor", "classOperatorSideEffectAnnotation.html#a85b10fab70aa9619e006e825eda386a6", null ],
+    [ "get_modify_descriptor", "classOperatorSideEffectAnnotation.html#a06ff460ff49abfc8590d4cc1b401eed9", null ],
+    [ "get_read", "classOperatorSideEffectAnnotation.html#aa39ebb1e5a6277b3ce3f1dfeaf3c78b1", null ],
+    [ "get_read_descriptor", "classOperatorSideEffectAnnotation.html#a1aee65665217804d56bdb681261b85dc", null ],
+    [ "get_read_descriptor", "classOperatorSideEffectAnnotation.html#a03622b2ea2704e4f34adcd0e43990f2e", null ],
+    [ "register_annot", "classOperatorSideEffectAnnotation.html#ac5c3340ab72e10876dd6c7850888fcef", null ],
+    [ "write", "classOperatorSideEffectAnnotation.html#a810089a9b2fe3d24efc55c72489810a6", null ],
+    [ "callInfo", "classOperatorSideEffectAnnotation.html#aaca596297209429e23c66515429c6c48", null ],
+    [ "inst", "classOperatorSideEffectAnnotation.html#a991ff237c01aeb5a6353f99873bbcefe", null ],
+    [ "killInfo", "classOperatorSideEffectAnnotation.html#aa1df2adb2b1d8fef57af0d21d9b51a9e", null ],
+    [ "modInfo", "classOperatorSideEffectAnnotation.html#a6a6ece92342b916621418add34189f83", null ],
+    [ "readInfo", "classOperatorSideEffectAnnotation.html#aa19904072c7d392714cd379d59e327fc", null ]
+];

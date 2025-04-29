@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="AstSerialization_8h" kind="file" language="C++">
+    <compoundname>AstSerialization.h</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>ROSE_AstSerialization_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ROSE_AstSerialization_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BOOST_SERIALIZATION</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Diagnostics_8h" kindref="compound">Rose/Diagnostics.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;SgNode.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Cxx_GrammarSerialization.h&gt;</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>the<sp/>compile-time<sp/>generated<sp/>support</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="AST_2Utility_8h" kindref="compound">Rose/AST/Utility.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BOOST_SERIALIZATION</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/serialization/list.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose" kindref="compound">Rose</ref><sp/>{</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Archive&gt;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>saveAst(Archive<sp/>&amp;archive,<sp/>SgNode<sp/>*<ref refid="namespaceRose_1_1AST" kindref="compound">ast</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">SaveRestoreRootParent<sp/>{<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>for<sp/>exception<sp/>safe<sp/>clearing<sp/>and<sp/>restoring<sp/>the<sp/>root&apos;s<sp/>parent</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgNode<sp/>*<ref refid="extension-functions_8c_1ace29f146c273d2654669dc2c710603e2" kindref="member">node</ref>,<sp/>*parent;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SaveRestoreRootParent(SgNode<sp/>*<ref refid="structnode" kindref="compound">node</ref>):<sp/><ref refid="structnode" kindref="compound">node</ref>(<ref refid="structnode" kindref="compound">node</ref>),<sp/>parent(<ref refid="structnode" kindref="compound">node</ref><sp/>?<sp/><ref refid="structnode" kindref="compound">node</ref>-&gt;get_parent()<sp/>:<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="structnode" kindref="compound">node</ref>)</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structnode" kindref="compound">node</ref>-&gt;set_parent(NULL);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>~SaveRestoreRootParent()<sp/>{</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="structnode" kindref="compound">node</ref>)</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structnode" kindref="compound">node</ref>-&gt;set_parent(parent);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/>saveRestoreRootParent(<ref refid="namespaceRose_1_1AST" kindref="compound">ast</ref>);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1ae23b34935b53f2e7ddab6f202ee68093" kindref="member">ASSERT_always_require</ref>(<ref refid="namespaceRose_1_1AST_1_1Utility_1a91af8f24213351bcff5b514afcb67321" kindref="member">AST::Utility::checkParentPointers</ref>(<ref refid="namespaceRose_1_1AST" kindref="compound">ast</ref>,<sp/><ref refid="namespaceRose_1_1Diagnostics_1a4017fad3a33cdd3349ffdfda2ebaaf01" kindref="member">Diagnostics::mlog</ref>[<ref refid="namespaceSawyer_1_1Message_1abfb4d3240797db3a74bbf691f708a1c9abb7c0d080435a4a981ba171d08dc3bb7" kindref="member">Sawyer::Message::FATAL</ref>]));</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Serialize<sp/>the<sp/>AST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>roseAstSerializationRegistration(archive);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>archive<sp/>&lt;&lt;BOOST_SERIALIZATION_NVP(<ref refid="namespaceRose_1_1AST" kindref="compound">ast</ref>);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Archive&gt;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal">SgNode*<sp/>restoreAst(Archive<sp/>&amp;archive)<sp/>{</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>roseAstSerializationRegistration(archive);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>SgNode<sp/>*<ref refid="namespaceRose_1_1AST" kindref="compound">ast</ref><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>archive<sp/>&gt;&gt;BOOST_SERIALIZATION_NVP(<ref refid="namespaceRose_1_1AST" kindref="compound">ast</ref>);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1AST_1_1Utility_1a3a1d67df24cd3aff4403fbf64685ef95" kindref="member">AST::Utility::repairParentPointers</ref>(<ref refid="namespaceRose_1_1AST" kindref="compound">ast</ref>);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceRose_1_1AST" kindref="compound">ast</ref>;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Archive,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Node&gt;</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>std::enable_if&lt;std::is_same&lt;typename<sp/>Archive::is_saving,<sp/>boost::mpl::bool_&lt;true&gt;&gt;::value,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">&gt;::type</highlight></codeline>
+<codeline lineno="96"><highlight class="normal">transferAst(Archive<sp/>&amp;archive,<sp/>Node<sp/>*<ref refid="namespaceRose_1_1AST" kindref="compound">ast</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>saveAst(archive,<sp/><ref refid="namespaceRose_1_1AST" kindref="compound">ast</ref>);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Archive,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Node&gt;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>std::enable_if&lt;std::is_same&lt;typename<sp/>Archive::is_saving,<sp/>boost::mpl::bool_&lt;false&gt;&gt;::value,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">&gt;::type</highlight></codeline>
+<codeline lineno="101"><highlight class="normal">transferAst(Archive<sp/>&amp;archive,<sp/>Node*<sp/>&amp;<ref refid="namespaceRose_1_1AST" kindref="compound">ast</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1AST" kindref="compound">ast</ref><sp/>=<sp/></highlight><highlight class="keyword">dynamic_cast&lt;</highlight><highlight class="normal">Node*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(restoreAst(archive));</highlight></codeline>
+<codeline lineno="103"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="106"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="comment">//<sp/>Partial<sp/>specialization<sp/>for<sp/>SgNode<sp/>until<sp/>we&apos;re<sp/>able<sp/>to<sp/>add<sp/>SgNode::serialize.<sp/>Eventually<sp/>all<sp/>the<sp/>node&apos;s<sp/>data<sp/>members<sp/>should</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="comment">//<sp/>be<sp/>serialized.<sp/>These<sp/>three<sp/>functions<sp/>are<sp/>more<sp/>complicated<sp/>here<sp/>than<sp/>if<sp/>we<sp/>move<sp/>them<sp/>to<sp/>SgNode<sp/>because<sp/>they<sp/>have<sp/>to<sp/>deal<sp/>with</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight><highlight class="comment">//<sp/>the<sp/>fact<sp/>that<sp/>the<sp/>data<sp/>members<sp/>they&apos;re<sp/>trying<sp/>to<sp/>serialize<sp/>are<sp/>protected.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceboost" kindref="compound">boost</ref><sp/>{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">serialization<sp/>{</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Archive&gt;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>save(Archive<sp/>&amp;archive,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SgNode<sp/>&amp;<ref refid="structnode" kindref="compound">node</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">/*version*/</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Parent<sp/>pointers<sp/>don&apos;t<sp/>need<sp/>to<sp/>be<sp/>stored<sp/>because<sp/>they<sp/>can<sp/>be<sp/>reconstructed<sp/>from<sp/>the<sp/>child<sp/>pointers.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isModified<sp/>=<sp/><ref refid="structnode" kindref="compound">node</ref>.get_isModified();</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>containsTransformation<sp/>=<sp/><ref refid="structnode" kindref="compound">node</ref>.get_containsTransformation();</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>archive<sp/>&lt;&lt;BOOST_SERIALIZATION_NVP(isModified);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>archive<sp/>&lt;&lt;BOOST_SERIALIZATION_NVP(containsTransformation);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Archive&gt;</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceRose_1_1AST_1_1IO_1a935c7a9be3c93f70ebf5002b11af42aa" kindref="member">load</ref>(Archive<sp/>&amp;archive,<sp/>SgNode<sp/>&amp;<ref refid="structnode" kindref="compound">node</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">/*version*/</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isModified=</highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/>containsTransformation=</highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>archive<sp/>&gt;&gt;BOOST_SERIALIZATION_NVP(isModified);</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>archive<sp/>&gt;&gt;BOOST_SERIALIZATION_NVP(containsTransformation);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structnode" kindref="compound">node</ref>.set_isModified(isModified);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structnode" kindref="compound">node</ref>.set_containsTransformation(containsTransformation);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Archive&gt;</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSageInterface_1a0624d0bcd181266ce3613509efcccebf" kindref="member">serialize</ref>(Archive<sp/>&amp;archive,<sp/>SgNode<sp/>&amp;<ref refid="structnode" kindref="compound">node</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>version)<sp/>{</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::serialization::split_free(archive,<sp/><ref refid="structnode" kindref="compound">node</ref>,<sp/>version);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/astFileIO/AstSerialization.h"/>
+  </compounddef>
+</doxygen>

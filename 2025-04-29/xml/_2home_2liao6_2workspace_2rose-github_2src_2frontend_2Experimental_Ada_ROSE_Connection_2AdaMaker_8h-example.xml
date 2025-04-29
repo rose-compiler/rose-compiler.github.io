@@ -1,0 +1,688 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="_2home_2liao6_2workspace_2rose-github_2src_2frontend_2Experimental_Ada_ROSE_Connection_2AdaMaker_8h-example" kind="example">
+    <compoundname>/home/liao6/workspace/rose-github/src/frontend/Experimental_Ada_ROSE_Connection/AdaMaker.h</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>returns a representation of an Ada Attribute in expression context <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the attribute&apos;s prefix expression </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ident</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the attribute identifier </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the attribute&apos;s arguments</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+Arr&apos;<ref refid="classRange" kindref="compound">Range(1)</ref> -&gt; exp&apos;ident(args) <programlisting filename="/home/liao6/workspace/rose-github/src/frontend/Experimental_Ada_ROSE_Connection/AdaMaker.h"><codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_ADA_MAKER_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_ADA_MAKER_H<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//~<sp/>#include<sp/>&quot;sage3basic.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;type_traits&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="sageBuilder_8h" kindref="compound">sageBuilder.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="sageGeneric_8h" kindref="compound">sageGeneric.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>PP(22/2/24)</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>THIS<sp/>is<sp/>the<sp/>ONLY<sp/>INSTALLED<sp/>HEADER<sp/>from<sp/>the<sp/>Ada<sp/>frontend<sp/>!!!</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>MUST<sp/>NOT<sp/>include<sp/>any<sp/>non-installed<sp/>headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>NO<sp/>other<sp/>headers<sp/>from<sp/>the<sp/>Ada<sp/>frontend.</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>NO<sp/>headers<sp/>in<sp/>ROSE<sp/>that<sp/>are<sp/>not<sp/>installed.</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>\todo<sp/>consider<sp/>moving<sp/>this<sp/>into<sp/>SageBuilder..</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceAda__ROSE__Translation" kindref="compound">Ada_ROSE_Translation</ref></highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>file<sp/>info<sp/>objects</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\todo<sp/>currently<sp/>generateDefaultCompilerGenerated<sp/>is<sp/>used</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/>-&gt;<sp/>replace<sp/>with<sp/>info<sp/>object<sp/>that<sp/>indicates<sp/>compiler<sp/>generated.</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline><highlight class="comment"><sp/><sp/>Sg_File_Info&amp;<sp/>mkFileInfo();</highlight></codeline>
+<codeline><highlight class="comment"></highlight></codeline>
+<codeline><highlight class="comment"><sp/><sp/>Sg_File_Info&amp;<sp/>mkFileInfo(const<sp/>std::string&amp;<sp/>file,<sp/>int<sp/>line,<sp/>int<sp/>col);</highlight></codeline>
+<codeline><highlight class="comment"><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceAda__ROSE__Translation_1ac744d000e5eba26b77f0d6351a2e0ce3" kindref="member">markCompilerGenerated</ref>(SgLocatedNode&amp;<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceAda__ROSE__Translation_1ac744d000e5eba26b77f0d6351a2e0ce3" kindref="member">markCompilerGenerated</ref>(SgExpression&amp;<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceAda__ROSE__Translation_1aa79bd7083c8c45f0bcfb8596763053e0" kindref="member">setDefaultFileInfo</ref>(SgPragma&amp;<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceAda__ROSE__Translation_1aa79bd7083c8c45f0bcfb8596763053e0" kindref="member">setDefaultFileInfo</ref>(SgLocatedNode&amp;<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceAda__ROSE__Translation_1aa79bd7083c8c45f0bcfb8596763053e0" kindref="member">setDefaultFileInfo</ref>(SgExpression&amp;<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceAda__ROSE__Translation_1afa148450b569122ac2de15eb1aa79551" kindref="member">setSymbolTableCaseSensitivity</ref>(SgScopeStatement&amp;<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">SageNode,<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SageNode&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a0930e4dc573020b66a2695566233272d" kindref="member">mkBareNode</ref>(Args...<sp/><ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="sageGeneric_8h_1af2564ee690e29a43df6ed711f5023cc0" kindref="member">SG_DEREF</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>SageNode(<ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>...));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">SageNode,<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SageNode&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a4315d1274a491170a746cb3c8168dcef" kindref="member">mkLocatedNode</ref>(Args...<sp/><ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>SageNode&amp;<sp/><ref refid="AdaStatement_8C_1afb971714263c08d59374c278c1aae314" kindref="member">sgnode</ref><sp/>=<sp/>mkBareNode&lt;SageNode&gt;(<ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>...);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1aa79bd7083c8c45f0bcfb8596763053e0" kindref="member">setDefaultFileInfo</ref>(<ref refid="AdaStatement_8C_1afb971714263c08d59374c278c1aae314" kindref="member">sgnode</ref>);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="AdaStatement_8C_1afb971714263c08d59374c278c1aae314" kindref="member">sgnode</ref>;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">SageNode,<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SageNode&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a807dbc09cdf5aef885ef763cfc9f95cf" kindref="member">mkScopeStmt</ref>(Args...<sp/><ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>SageNode&amp;<sp/><ref refid="AdaStatement_8C_1afb971714263c08d59374c278c1aae314" kindref="member">sgnode</ref><sp/>=<sp/>mkLocatedNode&lt;SageNode&gt;(<ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>...);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1afa148450b569122ac2de15eb1aa79551" kindref="member">setSymbolTableCaseSensitivity</ref>(<ref refid="AdaStatement_8C_1afb971714263c08d59374c278c1aae314" kindref="member">sgnode</ref>);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="AdaStatement_8C_1afb971714263c08d59374c278c1aae314" kindref="member">sgnode</ref>;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Type<sp/>Makers</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaRangeConstraint&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a023cf1e5f0249659c4201f814c7599c2" kindref="member">mkAdaRangeConstraint</ref>(SgExpression&amp;<sp/><ref refid="namespaceSageInterface_1_1Ada_1af8cdc59e44204f5aabb49532d060ada8" kindref="member">range</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaIndexConstraint&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a0429aaa45c4d71b9697dc1213efdafd0" kindref="member">mkAdaIndexConstraint</ref>(<ref refid="SageTreeBuilder_8h_1a3e7ca563887e794ecb5b17cc99a1c0d1" kindref="member">SgExpressionPtrList</ref><sp/>ranges);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaDigitsConstraint&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a3e38873ee3bf3e51c7f9f353b3cd7bf4" kindref="member">mkAdaDigitsConstraint</ref>(SgExpression&amp;<sp/>digits,<sp/>SgAdaTypeConstraint*<sp/>constraint_opt);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaNullConstraint&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ae053e70e51eefb526880054dd261868a" kindref="member">mkAdaNullConstraint</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaDeltaConstraint&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a28c1108eb39c5f4cb416664539cd094a" kindref="member">mkAdaDeltaConstraint</ref>(SgExpression&amp;<sp/>digits,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isDecimal,<sp/>SgAdaTypeConstraint*<sp/>constraint_opt);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaDiscriminantConstraint&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a47a80161cbc6adf4dd2a686a84283c0a" kindref="member">mkAdaDiscriminantConstraint</ref>(<ref refid="SageTreeBuilder_8h_1a3e7ca563887e794ecb5b17cc99a1c0d1" kindref="member">SgExpressionPtrList</ref><sp/>discriminants);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaSubtype&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a354eddd2a60c5f4e7f78ea8dc9ce0d13" kindref="member">mkAdaSubtype</ref>(<ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>superty,<sp/>SgAdaTypeConstraint&amp;<sp/>constr,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>fromRoot<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaDerivedType&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1aa3effd7c7c7fe03fa37844bc950fb42d" kindref="member">mkAdaDerivedType</ref>(<ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>basetype);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgRangeType&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a1c773a047300b8fda2f15997415444ac" kindref="member">mkRangeType</ref>(<ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>basetype);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/><ref refid="namespaceAda__ROSE__Translation_1a363fbff34bc9579b32b8fb1db294c100" kindref="member">mkQualifiedType</ref>(SgExpression&amp;<sp/>ref,<sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>base);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaModularType&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a73a37bc5e7d36cbe9fe7aedc640c4110" kindref="member">mkAdaModularType</ref>(SgExpression&amp;<sp/>modexpr);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\no<sp/>longer<sp/>used</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//SgAdaFloatType&amp;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//mkAdaFloatType(SgExpression&amp;<sp/>digits,<sp/>SgAdaRangeConstraint*<sp/>range_opt);</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\todo<sp/>revise<sp/>Exception<sp/>representation</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/>Exceptions<sp/>are<sp/>currently<sp/>represented<sp/>in<sp/>the<sp/>following<sp/>way</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/>A<sp/>type<sp/>&quot;Exception&quot;<sp/>exists,<sp/>and<sp/>any<sp/>declared<sp/>exception<sp/>becomes<sp/>a<sp/>variable</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/>declaration<sp/>that<sp/>has<sp/>type<sp/>exception.<sp/>The<sp/>type<sp/>of<sp/>these<sp/>declared<sp/>exceptions</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/>are<sp/>represented<sp/>as<sp/>decl<sp/>type<sp/>of<sp/>a<sp/>variable<sp/>reference.</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgDeclType&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a796abb70e563c4005820d27cfafbf57d" kindref="member">mkExceptionType</ref>(SgExpression&amp;<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaDiscreteType&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a02b4a16022a8f3d66c619616f1b46479" kindref="member">mkAdaDiscreteType</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\todo<sp/>consider<sp/>returning<sp/>an<sp/>SgTypeOfType<sp/>instead<sp/>of<sp/>SgDeclType</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgDeclType&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a3de900873517a22f70419030906f6e7e" kindref="member">mkExprAsType</ref>(SgExpression&amp;<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgTypeDefault&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a98ab6fabdb74787054fd4c10fe7a24b3" kindref="member">mkOpaqueType</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgTypeVoid&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a939f6918ac205f51d1a598e368e0e7b8" kindref="member">mkTypeVoid</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgTypeUnknown&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a6052eba9e0bc862d20c65f439f4f0c31" kindref="member">mkTypeUnknown</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgTypeUnknown&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ada656dc8c81e669e7fe9a6120c5e824a" kindref="member">mkUnresolvedType</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgTypeTuple&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a82a63fc2e0ea66fd72a3e9316189dcb6" kindref="member">mkTypeUnion</ref>(<ref refid="sageContainer_8h_1a6acd4898cb893d5d418abe4dcbe0d8e5" kindref="member">SgTypePtrList</ref><sp/>elemtypes);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgEnumDeclaration&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a6e345a80cdfbbe8e4c7c3483f322fd17" kindref="member">mkEnumDecl</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgEnumDeclaration&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a621e5bc800916abd57c20a6bcdaf85f4" kindref="member">mkEnumDefn</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaAccessType&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1aae485e0a1bf7a08a936589f5fc522630" kindref="member">mkAdaAccessType</ref>(<ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>base_type,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>generalAccess<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>anonymous<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\todo<sp/>not<sp/>sure<sp/>if<sp/>this<sp/>is<sp/>the<sp/>proper<sp/>way<sp/>for<sp/>specifying<sp/>subroutine<sp/>types,</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/>because<sp/>often<sp/>ROSE<sp/>types<sp/>are<sp/>shared<sp/>across<sp/>scopes,<sp/>and<sp/>this<sp/>type<sp/>cannot<sp/>be...</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaSubroutineType&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a1b82f69fc7f384dddd7f58c781b8e806" kindref="member">mkAdaSubroutineType</ref>(<sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>retty,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::function&lt;</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">(SgFunctionParameterList&amp;,<sp/>SgScopeStatement&amp;)&gt;<sp/>complete,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgScopeStatement&amp;<sp/>scope,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isProtected<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\todo<sp/>the<sp/>representation<sp/>is<sp/>incomplete<sp/>and<sp/>should<sp/>be<sp/>replaced</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/>by<sp/>a<sp/>new<sp/>IR<sp/>node<sp/>SgAdaEntryType</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>SgFunctionType&amp;<sp/>mkAdaEntryType(SgFunctionParameterList&amp;<sp/>lst);</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgArrayType&amp;<sp/><ref refid="namespaceAda__ROSE__Translation_1acf00646b93087049e2f8f4afeda0dc0d" kindref="member">mkArrayType</ref>(<ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>comptype,<sp/>SgExprListExp&amp;<sp/>dimInfo,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>variableLength<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/><ref refid="namespaceAda__ROSE__Translation_1a589534d74aad7a79f848b1f17d91aa8c" kindref="member">mkIntegralType</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/><ref refid="namespaceAda__ROSE__Translation_1afdb6d8ac0654e3901f6812a9009f5608" kindref="member">mkRealType</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/><ref refid="namespaceAda__ROSE__Translation_1ab2c4e68d64b169f143a625da606820e4" kindref="member">mkFixedType</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/><ref refid="namespaceAda__ROSE__Translation_1a369e154e0943a14584176253df077a72" kindref="member">mkConstType</ref>(<ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>underType);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/><ref refid="namespaceAda__ROSE__Translation_1a8030d5e3269d8cf4f679d4d6c36b3eae" kindref="member">mkAliasedType</ref>(<ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>underType);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/><ref refid="namespaceAda__ROSE__Translation_1a4cc3849a50537051b91f7917815fcacc" kindref="member">mkNotNullType</ref>(<ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>underType);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgFunctionType&amp;<sp/><ref refid="namespaceAda__ROSE__Translation_1a4b3ef8654c666e48be412d3e4dd1bc9b" kindref="member">mkFunctionType</ref>(<ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>returnType);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>SgAdaFormalType&amp;<sp/>mkAdaFormalType(const<sp/>std::string&amp;<sp/>name);</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//~<sp/>SgAdaFormalTypeDecl&amp;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//~<sp/>mkAdaFormalTypeDecl(const<sp/>std::string&amp;<sp/>name,<sp/>SgAdaFormalType&amp;<sp/>ty,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaFormalTypeDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1acf353a71e930a3c33a5f700a0d6aeb4c" kindref="member">mkAdaFormalTypeDecl</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Statement<sp/>Makers</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgExprStatement&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a6c486010cee3e7518bf170da89482c31" kindref="member">mkExprStatement</ref>(SgExpression&amp;<sp/><ref refid="namespaceFortran_1_1parser_1a3af18db366f87e7588e79bc736d7cadd" kindref="member">expr</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgStatement&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a1ad7ec75062751b5c8502c39c38d9a6c" kindref="member">mkRaiseStmt</ref>(SgExpression&amp;<sp/>raised,<sp/>SgExpression*<sp/>what_opt<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgBasicBlock&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a6e0f9f68a220f043dfc0a1af5a04beb3" kindref="member">mkBasicBlock</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgWhileStmt&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a533f9518a32f3896411cb585bfc786f3" kindref="member">mkWhileStmt</ref>(SgExpression&amp;<sp/>cond,<sp/>SgBasicBlock&amp;<sp/>body);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaLoopStmt&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ac0c379acbd3c4177ee4ef99229af57a8" kindref="member">mkAdaLoopStmt</ref>(SgBasicBlock&amp;<sp/>body);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaSelectStmt&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ad047c1e311d40b07bf68ab73851b7cb8" kindref="member">mkAdaSelectStmt</ref>(<ref refid="namespacestringify_1_1SgAdaSelectStmt_1a88816e9c27860ecd59db402e98311534" kindref="member">SgAdaSelectStmt::select_type_enum</ref><sp/>select_type);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaSelectAlternativeStmt&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ab654b800fad7d538268fcd97ae7deb8a" kindref="member">mkAdaSelectAlternativeStmt</ref>(SgExpression&amp;<sp/>guard,<sp/>SgBasicBlock&amp;<sp/>body);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgForStatement&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1aa4505b42a9c6c71b5505738ffd3c5fdc" kindref="member">mkForStatement</ref>(SgBasicBlock&amp;<sp/>body);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\todo<sp/>revisit<sp/>the<sp/>ASIS<sp/>frontend<sp/>representation<sp/>and<sp/>revise<sp/>how</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/>imports<sp/>are<sp/>represented<sp/>in<sp/>the<sp/>AST.</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgImportStatement&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ab7419cf56621836a20ca114058931b23" kindref="member">mkWithClause</ref>(<ref refid="SageTreeBuilder_8h_1a3e7ca563887e794ecb5b17cc99a1c0d1" kindref="member">SgExpressionPtrList</ref><sp/>imported);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgUsingDeclarationStatement&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ac01f8466ae68326dff8f03329d9b64b8" kindref="member">mkUseClause</ref>(SgDeclarationStatement&amp;<sp/>used);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaExitStmt&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1af3cf2cdf09c7c003d7eb8a6a396b93a9" kindref="member">mkAdaExitStmt</ref>(SgStatement&amp;<sp/>loop,<sp/>SgExpression&amp;<sp/>condition,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>explicitLoopName);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\todo</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>maybe<sp/>it<sp/>would<sp/>be<sp/>good<sp/>to<sp/>have<sp/>a<sp/>separate<sp/>case<sp/>statement<sp/>for<sp/>ADA</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/>as<sp/>ADA<sp/>is<sp/>a<sp/>bit<sp/>more<sp/>restrictive<sp/>in<sp/>its<sp/>switch<sp/>case<sp/>syntax<sp/>compared<sp/>to<sp/>C++</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgSwitchStatement&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a1eda160208d842cf870d8d5bc3eb3c12" kindref="member">mkAdaCaseStmt</ref>(SgExpression&amp;<sp/><ref refid="namespaceFortran_1_1parser_1ab4204685838e9e5b407e465956e2f7bd" kindref="member">selector</ref>,<sp/>SgBasicBlock&amp;<sp/>body);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgCaseOptionStmt&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ae4fefc13a4f7a510fd4546e18c1528c3" kindref="member">mkWhenPath</ref>(SgExpression&amp;<sp/>cond,<sp/>SgBasicBlock&amp;<sp/>blk);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgDefaultOptionStmt&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a8ee9794048bc07a8d66fc71c00cde307" kindref="member">mkWhenOthersPath</ref>(SgBasicBlock&amp;<sp/>blk);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaDelayStmt&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1aaffbd8488b7afb70f5354176070ad994" kindref="member">mkAdaDelayStmt</ref>(SgExpression&amp;<sp/>timeExp,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>relativeTime);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgProcessControlStatement&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1af787f744fa58882ca7726cef25a7459c" kindref="member">mkAbortStmt</ref>(SgExprListExp&amp;<sp/>abortList);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgProcessControlStatement&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a67fa022afb7ec9b9c7eaa60e59864f9b" kindref="member">mkRequeueStmt</ref>(SgExpression&amp;<sp/>entryexpr,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>withAbort);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgLabelStatement&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a95adbcd85234a75a2543c50af4e9c940" kindref="member">mkLabelStmt</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/><ref refid="namespaceqrs_1a3769986ee0ac108f3fa7452a77326b9f" kindref="member">label</ref>,<sp/>SgStatement&amp;<sp/>stmt,<sp/>SgScopeStatement&amp;<sp/>encl);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgNullStatement&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a99065b411df312036625f6d15464e012" kindref="member">mkNullStatement</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgEmptyDeclaration&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1adc07d5562e061185e5556fed92105b02" kindref="member">mkNullDecl</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgTryStmt&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ac7f040b6b364ec508e14204f8ebdcc44" kindref="member">mkTryStmt</ref>(SgBasicBlock&amp;<sp/>blk);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaTerminateStmt&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a2e63123caf0ebf1d41cc0c677a9ae6aa" kindref="member">mkTerminateStmt</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Declaration<sp/>Makers</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgTypedefDeclaration&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ae2aaec3cd65b76617871066fce197a5f" kindref="member">mkTypeDecl</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>ty,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>creates<sp/>a<sp/>discriminated<sp/>type<sp/>decl<sp/>with<sp/>parent<sp/>scope<sp/>\p<sp/>scope</highlight></codeline>
+<codeline><highlight class="comment"></highlight><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>child<sp/>discriminatedDecl<sp/>remains<sp/>undefined<sp/>(i.e.,<sp/>null).</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\todo<sp/>distinguish<sp/>between<sp/>defining<sp/>and<sp/>nondefining<sp/>declarations</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaDiscriminatedTypeDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ad94f6f32f7a343826e7358d1e1ed7cc3" kindref="member">mkAdaDiscriminatedTypeDecl</ref>(SgScopeStatement&amp;<sp/>scope,<sp/>SgAdaDiscriminatedTypeDecl*<sp/>nondef_opt);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgClassDeclaration&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a73e0a3313e10723b9704197515c3ba7d" kindref="member">mkRecordDecl</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/>SgClassDefinition&amp;<sp/>def,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgClassDefinition&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1aab2da2f9513435fab14f41f1c9d68036" kindref="member">mkRecordBody</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgClassDeclaration&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a73e0a3313e10723b9704197515c3ba7d" kindref="member">mkRecordDecl</ref>(SgClassDeclaration&amp;<sp/>nondef,<sp/>SgClassDefinition&amp;<sp/>body,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgClassDeclaration&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a73e0a3313e10723b9704197515c3ba7d" kindref="member">mkRecordDecl</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaPackageSpecDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a8c9e4db29c837b3fd5674e46244cb814" kindref="member">mkAdaPackageSpecDecl</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaGenericInstanceDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a677f5db763d8b643a568146458238c93" kindref="member">mkAdaGenericInstanceDecl</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/>SgDeclarationStatement&amp;<sp/>gendecl,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaFormalPackageDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a5eab1708a6ab9a83685a56d4b8794589" kindref="member">mkAdaFormalPackageDecl</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/>SgDeclarationStatement&amp;<sp/>gendecl,<sp/>SgExprListExp&amp;<sp/><ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaGenericDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a4f94a1052fda34dde9f38a49b802f916" kindref="member">mkAdaGenericDecl</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaRenamingDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1af7d1566c7237fa1558928c563ebadb2e" kindref="member">mkAdaRenamingDecl</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/>SgExpression&amp;<sp/>renamed,<sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>ty_opt,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaPackageBodyDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a18bea73627f85bbfd70e749a76edb9b0" kindref="member">mkAdaPackageBodyDecl_nondef</ref>(SgAdaPackageSpecDecl&amp;<sp/>specdcl,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaPackageBodyDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a85b149647e4f361d03659d15f5cef2e4" kindref="member">mkAdaPackageBodyDecl</ref>(SgAdaPackageSpecDecl&amp;<sp/>specdcl,<sp/>SgAdaPackageBodyDecl*<sp/>nondef_opt,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\todo<sp/>revisit<sp/>Ada<sp/>task<sp/>symbol<sp/>creation</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\{</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaTaskTypeDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a86df8086cceaf1709e1e806a9c4e863c" kindref="member">mkAdaTaskTypeDecl</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/>SgAdaTaskSpec*<sp/>spec_opt,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaTaskTypeDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a86df8086cceaf1709e1e806a9c4e863c" kindref="member">mkAdaTaskTypeDecl</ref>(SgAdaTaskTypeDecl&amp;<sp/>nondef,<sp/>SgAdaTaskSpec&amp;<sp/><ref refid="Experimental__Ada__ROSE__Connection_2AdaMaker_8C_1a82f7b29e3ca62f5ba786f3864029646b" kindref="member">spec</ref>,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\}</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\todo<sp/>revisit<sp/>Ada<sp/>task<sp/>symbol<sp/>creation</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaTaskSpecDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ae8d81850d8cc1dd7811760d373b2e66f" kindref="member">mkAdaTaskSpecDecl</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/>SgAdaTaskSpec&amp;<sp/><ref refid="Experimental__Ada__ROSE__Connection_2AdaMaker_8C_1a82f7b29e3ca62f5ba786f3864029646b" kindref="member">spec</ref>,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaTaskBodyDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a98b97bde353159408d257942ad012e4c" kindref="member">mkAdaTaskBodyDecl_nondef</ref>(SgDeclarationStatement&amp;<sp/>tskdecl,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaTaskBodyDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a82ef2b649006baa690d8774a4d37f8aa" kindref="member">mkAdaTaskBodyDecl</ref>(<sp/>SgDeclarationStatement&amp;<sp/>tskdecl,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgAdaTaskBodyDecl*<sp/>nondef_opt,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgAdaTaskBody&amp;<sp/>tskbody,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgScopeStatement&amp;<sp/>scope</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaTaskSpec&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a89acc73b1496ead6fdd60637c7f670fa" kindref="member">mkAdaTaskSpec</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaTaskBody&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a91577613ca6da65c6dd6dbd3aba1366e" kindref="member">mkAdaTaskBody</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\todo<sp/>revisit<sp/>Ada<sp/>protected<sp/>object<sp/>symbol<sp/>creation</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\{</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaProtectedTypeDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a88f152232c38a87a9a0b76664564fe81" kindref="member">mkAdaProtectedTypeDecl</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/>SgAdaProtectedSpec*<sp/>spec_opt,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaProtectedTypeDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a88f152232c38a87a9a0b76664564fe81" kindref="member">mkAdaProtectedTypeDecl</ref>(SgAdaProtectedTypeDecl&amp;<sp/>nondef,<sp/>SgAdaProtectedSpec&amp;<sp/><ref refid="Experimental__Ada__ROSE__Connection_2AdaMaker_8C_1a82f7b29e3ca62f5ba786f3864029646b" kindref="member">spec</ref>,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\}</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>\todo<sp/>revisit<sp/>Ada<sp/>protected<sp/>object<sp/>symbol<sp/>creation</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaProtectedSpecDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1aef148a0f9b90275d5503db16da551c4a" kindref="member">mkAdaProtectedSpecDecl</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/>SgAdaProtectedSpec&amp;<sp/><ref refid="Experimental__Ada__ROSE__Connection_2AdaMaker_8C_1a82f7b29e3ca62f5ba786f3864029646b" kindref="member">spec</ref>,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaProtectedBodyDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1add5d448cc209ca6469fb06a1cf085e63" kindref="member">mkAdaProtectedBodyDecl_nondef</ref>(SgDeclarationStatement&amp;<sp/>podecl,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaProtectedBodyDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1adb407f7f74130b022a322c0d6f586696" kindref="member">mkAdaProtectedBodyDecl</ref>(<sp/>SgDeclarationStatement&amp;<sp/>podecl,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgAdaProtectedBodyDecl*<sp/>nondef_opt,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgAdaProtectedBody&amp;<sp/><sp/><sp/><sp/><sp/>pobody,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgScopeStatement&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/>scope</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaProtectedSpec&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a1215cd9d5cb2dd8d8783998c525dbb7c" kindref="member">mkAdaProtectedSpec</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaProtectedBody&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a827070e30085dada84f7f8574c03bbbb" kindref="member">mkAdaProtectedBody</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgFunctionParameterList&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a8578d1d5e6735af305e9a9a5d823c308" kindref="member">mkFunctionParameterList</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgFunctionDeclaration&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a7ec2cfe374cafbc1d3344bf6e5bd04e2" kindref="member">mkProcedureDecl_nondef</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgScopeStatement&amp;<sp/>scope,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>retty,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::function&lt;</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">(SgFunctionParameterList&amp;,<sp/>SgScopeStatement&amp;)&gt;<sp/>complete</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgFunctionDeclaration&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a7ec2cfe374cafbc1d3344bf6e5bd04e2" kindref="member">mkProcedureDecl_nondef</ref>(<sp/>SgFunctionDeclaration&amp;<sp/>ndef,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgScopeStatement&amp;<sp/>scope,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>retty,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::function&lt;</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">(SgFunctionParameterList&amp;,<sp/>SgScopeStatement&amp;)&gt;<sp/>complete</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgFunctionDeclaration&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a98382114c04bc110be167e74a5bc6507" kindref="member">mkProcedureDecl</ref>(<sp/>SgFunctionDeclaration&amp;<sp/>ndef,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgScopeStatement&amp;<sp/>scope,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>retty,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::function&lt;</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">(SgFunctionParameterList&amp;,<sp/>SgScopeStatement&amp;)&gt;<sp/>complete</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgFunctionDeclaration&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a98382114c04bc110be167e74a5bc6507" kindref="member">mkProcedureDecl</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgScopeStatement&amp;<sp/>scope,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>retty,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::function&lt;</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">(SgFunctionParameterList&amp;,<sp/>SgScopeStatement&amp;)&gt;<sp/>complete</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaFunctionRenamingDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ae83721a56b9765ea458cb39e4ce3e6ed" kindref="member">mkAdaFunctionRenamingDecl</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgScopeStatement&amp;<sp/>scope,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>retty,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::function&lt;</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">(SgFunctionParameterList&amp;,<sp/>SgScopeStatement&amp;)&gt;<sp/>complete,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgAdaFunctionRenamingDecl*<sp/>nondef_opt<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaEntryDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a04db9b24c1afd2c14b5d762493353620" kindref="member">mkAdaEntryDecl</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgScopeStatement&amp;<sp/>scope,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::function&lt;</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">(SgFunctionParameterList&amp;,<sp/>SgScopeStatement&amp;)&gt;<sp/>completeParams,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>indexType</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaEntryDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1aa21764ef9dc7b9b547b56cbd5b1bb39b" kindref="member">mkAdaEntryDefn</ref>(<sp/>SgAdaEntryDecl&amp;<sp/>nondef,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgScopeStatement&amp;<sp/>scope,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::function&lt;</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">(SgFunctionParameterList&amp;,<sp/>SgScopeStatement&amp;)&gt;<sp/>completeParams,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::function&lt;SgInitializedName&amp;(SgScopeStatement&amp;)&gt;<sp/>genIndex</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaAcceptStmt&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a31d2c01525870184ef653f19ddaa1ff6" kindref="member">mkAdaAcceptStmt</ref>(SgExpression&amp;<sp/>ref,<sp/>SgExpression&amp;<sp/>idx);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgCatchOptionStmt&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a86d76671a461b90a57ead0fe06f4dff9" kindref="member">mkExceptionHandler</ref>(SgInitializedName&amp;<sp/>parm,<sp/>SgBasicBlock&amp;<sp/>body,<sp/>SgTryStmt&amp;<sp/><ref refid="AdaStatement_8C_1a6c7b4cdc3c921163ec18717cc170c93e" kindref="member">tryStmt</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgInitializedName&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a401dc176bfe4a72d2f8cf17a31293936" kindref="member">mkInitializedName</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>ty,<sp/>SgExpression*<sp/>init_opt<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgVariableDeclaration&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a46be76e13b3ba20e138492650c0bd81b" kindref="member">mkParameter</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="sageContainer_8h_1af5484e8d253ed1622192c3c08221ff2e" kindref="member">SgInitializedNamePtrList</ref>&amp;<sp/>parms,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgTypeModifier<sp/>parmmode,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgScopeStatement&amp;<sp/>scope</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgVariableDeclaration&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a040087ec9073a658feffa471c38ca86e" kindref="member">mkVarDecl</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="sageContainer_8h_1af5484e8d253ed1622192c3c08221ff2e" kindref="member">SgInitializedNamePtrList</ref>&amp;<sp/>vars,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgVariableDeclaration&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a040087ec9073a658feffa471c38ca86e" kindref="member">mkVarDecl</ref>(SgInitializedName&amp;<sp/><ref refid="sageUtility_8h_1a5254bb18c9c4f7acad7baa8b9a2369a6" kindref="member">var</ref>,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgVariableDeclaration&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a58e36f169fc8aa52f888749646d25213" kindref="member">mkExceptionDecl</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="sageContainer_8h_1af5484e8d253ed1622192c3c08221ff2e" kindref="member">SgInitializedNamePtrList</ref>&amp;<sp/>vars,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgInitializedName&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a70486e69cfedd057de1b6d4958651feb" kindref="member">mkEnumeratorDecl</ref>(SgEnumDeclaration&amp;<sp/><ref refid="AdaType_8C_1afcfd72bdcd1d49eb41919d73cbc666cc" kindref="member">enumdef</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>ident,<sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>ty,<sp/>SgExpression&amp;<sp/>repval);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgBaseClass&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1aba29382ad590284f73832f292db81ffe" kindref="member">mkRecordParent</ref>(<ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaVariantDecl&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a99029dbd7b1976b02dd552d8390a54db" kindref="member">mkAdaVariantDecl</ref>(SgExpression&amp;<sp/>discr);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaVariantWhenStmt&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a06de853cf112a3762bae0a064bc4cb6c" kindref="member">mkAdaVariantWhenStmt</ref>(SgExprListExp&amp;<sp/>choices);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaComponentClause&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a7887dd5b1e35fd4205c7b0d254477088" kindref="member">mkAdaComponentClause</ref>(SgVarRefExp&amp;<sp/>field,<sp/>SgExpression&amp;<sp/><ref refid="SgAsmDOSFileHeader_8h_1ac681806181c80437cfab37335f62ff39" kindref="member">offset</ref>,<sp/>SgRangeExp&amp;<sp/><ref refid="namespaceSageInterface_1_1Ada_1af8cdc59e44204f5aabb49532d060ada8" kindref="member">range</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaRepresentationClause&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1aae5d4c16fcf88ae6f4cace1592b4ed5c" kindref="member">mkAdaRepresentationClause</ref>(<ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>record,<sp/>SgExpression&amp;<sp/>align,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isAtClause<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaEnumRepresentationClause&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a642c78468438f462330e43523ce84c68" kindref="member">mkAdaEnumRepresentationClause</ref>(<ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>enumtype,<sp/>SgExprListExp&amp;<sp/>initlst);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaAttributeClause&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1aaf22a0bd0ca5bb2f921dd70d8ce0b41d" kindref="member">mkAdaAttributeClause</ref>(SgAdaAttributeExp&amp;<sp/>attr,<sp/>SgExpression&amp;<sp/>size);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgPragmaDeclaration&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a64ba5418775104019a96e44686234cfa" kindref="member">mkPragmaDeclaration</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name,<sp/>SgExprListExp&amp;<sp/><ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>,<sp/>SgStatement*<sp/>assocStmt);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgDeclarationScope&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a458c36cf45980e978d5ff782ce8bc980" kindref="member">mkDeclarationScope</ref>(SgScopeStatement&amp;<sp/></highlight><highlight class="comment">/*<sp/>not<sp/>used<sp/>*/</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Expression<sp/>Makers</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgVarRefExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ab05f6b507f06d01b3bd45399086b5632" kindref="member">mkVarRefExp</ref>(SgVariableDeclaration&amp;<sp/><ref refid="sageUtility_8h_1a5254bb18c9c4f7acad7baa8b9a2369a6" kindref="member">var</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgVarRefExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ab05f6b507f06d01b3bd45399086b5632" kindref="member">mkVarRefExp</ref>(SgInitializedName&amp;<sp/><ref refid="sageUtility_8h_1a5254bb18c9c4f7acad7baa8b9a2369a6" kindref="member">var</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgDesignatedInitializer&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a48af87370619feed056d2a399de101cc" kindref="member">mkAdaNamedInitializer</ref>(SgExprListExp&amp;<sp/>components,<sp/>SgExpression&amp;<sp/>val);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaAncestorInitializer&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a3cefd930f041511855b97845b6b72bde" kindref="member">mkAdaAncestorInitializer</ref>(SgExpression&amp;<sp/>par);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAggregateInitializer&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ac4389a767ba109c120e4b90e6d1b4ba9" kindref="member">mkAggregateInitializer</ref>(SgExprListExp&amp;<sp/>components,<sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>resultType<sp/>=<sp/><ref refid="namespaceAda__ROSE__Translation_1a6052eba9e0bc862d20c65f439f4f0c31" kindref="member">mkTypeUnknown</ref>());</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAssignInitializer&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a25afee7ad06d4f2cd78cffe45cec7647" kindref="member">mkAssignInitializer</ref>(SgExpression&amp;<sp/>val,<sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>resultType);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgExpression&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1aa0654c469aa723a2858787268cc5e3c5" kindref="member">mkUnresolvedName</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgRangeExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a5ab3d4ec9db6201ce28f674fa673865c" kindref="member">mkRangeExp</ref>(SgExpression&amp;<sp/>start,<sp/>SgExpression&amp;<sp/>end);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgRangeExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a5ab3d4ec9db6201ce28f674fa673865c" kindref="member">mkRangeExp</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaOthersExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a77a6c6890e9432a967935aa292e01e31" kindref="member">mkAdaOthersExp</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgConditionalExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ae0cedcd28f6f65b5f754aa115931e769" kindref="member">mkIfExpr</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgNewExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1acae98706cf60d2b4e7a5e11d3540d513" kindref="member">mkNewExp</ref>(<ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>ty,<sp/>SgExprListExp*<sp/>args_opt<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgExpression&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a7e8edf2ce19a70fe1cb271eab118bc58" kindref="member">mkAdaBoxExp</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgLabelRefExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1af0f18a8186c31f3f668916e4238a0aad" kindref="member">mkLabelRefExp</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SgLabelStatement&amp;<sp/>tgt);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgExpression&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1aa5fb9371e4ad7d89671782e8ebbb4579" kindref="member">mkExceptionRef</ref>(SgInitializedName&amp;<sp/>exception,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaTaskRefExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a21325dffeb0f69f35148e2411f20595f" kindref="member">mkAdaTaskRefExp</ref>(SgAdaTaskSpecDecl&amp;<sp/>task);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaProtectedRefExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ad5f65b62b1a227f8195de320c6aaf1ec" kindref="member">mkAdaProtectedRefExp</ref>(SgAdaProtectedSpecDecl&amp;<sp/>task);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaUnitRefExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a17032478dd346a7420062c1c03f0df93" kindref="member">mkAdaUnitRefExp</ref>(SgDeclarationStatement&amp;<sp/><ref refid="Ada__to__ROSE_8C_1a047fb30143cf0ee6036ccde792f58b72" kindref="member">unit</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaRenamingRefExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ad770d1db79e336184db8cd174e058958" kindref="member">mkAdaRenamingRefExp</ref>(SgAdaRenamingDecl&amp;<sp/>decl);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgDotExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a090fab3defac2d51c05208a7fd87b287" kindref="member">mkDotExp</ref>(SgExpression&amp;<sp/>prefix,<sp/>SgExpression&amp;<sp/><ref refid="namespaceFortran_1_1parser_1ab4204685838e9e5b407e465956e2f7bd" kindref="member">selector</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgPointerDerefExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ac4c60dedf39c4a340b759eb0d8ea7e13" kindref="member">mkPointerDerefExp</ref>(SgExpression&amp;<sp/>e);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgPntrArrRefExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a90c044b504072bd5ecc159d83dd50601" kindref="member">mkPntrArrRefExp</ref>(SgExpression&amp;<sp/>prefix,<sp/>SgExprListExp&amp;<sp/>indices);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgExpression&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a6a1e8ba6df6f2fea86b38c30c72384d9" kindref="member">mkChoiceExpIfNeeded</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="SageTreeBuilder_8h_1a3e7ca563887e794ecb5b17cc99a1c0d1" kindref="member">SgExpressionPtrList</ref>&amp;<sp/>choices);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgCastExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a0cd43af1af3950dff32abeac84b5c1b0" kindref="member">mkCastExp</ref>(SgExpression&amp;<sp/><ref refid="namespaceFortran_1_1parser_1a3af18db366f87e7588e79bc736d7cadd" kindref="member">expr</ref>,<sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>ty);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgFunctionCallExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a91662e42ff55436c506550cea5f7e85d" kindref="member">mkFunctionCallExp</ref>(SgExpression&amp;<sp/><ref refid="rose__graph__support_8C_1a9c07f47890a4e3a23ab5ba09604f1421" kindref="member">target</ref>,<sp/>SgExprListExp&amp;<sp/>arglst,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>usesOperatorSyntax<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>usesObjectCallSyntax<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgExpression&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1af864def4ab97fff9567e97275e898a98" kindref="member">mkQualifiedExp</ref>(SgExpression&amp;<sp/><ref refid="namespaceFortran_1_1parser_1a3af18db366f87e7588e79bc736d7cadd" kindref="member">expr</ref>,<sp/><ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>ty);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaAttributeExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a16b23e0637dc1eacb3bc37256c984e26" kindref="member">mkAdaAttributeExp</ref>(SgExpression&amp;<sp/>exp,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>ident,<sp/>SgExprListExp&amp;<sp/><ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgUnaryOp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a5cdc9cf4178341705875f339c3adf980" kindref="member">mkForLoopIncrement</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceRose_1_1AST_1_1Traversal_1a125247a0240bdc1f1efd6ad04ada4036" kindref="member">forward</ref>,<sp/>SgVariableDeclaration&amp;<sp/><ref refid="sageUtility_8h_1a5254bb18c9c4f7acad7baa8b9a2369a6" kindref="member">var</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgExprStatement&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a8d7ff5ba78bb6a35cf694675c6e97df5" kindref="member">mkForLoopTest</ref>(SgVariableDeclaration&amp;<sp/><ref refid="sageUtility_8h_1a5254bb18c9c4f7acad7baa8b9a2369a6" kindref="member">var</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgExprListExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a9f07ff96e9ee29c12176915c887f4b96" kindref="member">mkExprListExp</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="SageTreeBuilder_8h_1a3e7ca563887e794ecb5b17cc99a1c0d1" kindref="member">SgExpressionPtrList</ref>&amp;<sp/><ref refid="yicesParserLib_8h_1a17a26f2fa17de70c7881e2bb7231eae6" kindref="member">exprs</ref><sp/>=<sp/>{});</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgTypeExpression&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a935afe77f18184e8152feeec1e1bd6b8" kindref="member">mkTypeExpression</ref>(<ref refid="classSgType" kindref="compound">SgType</ref>&amp;<sp/>ty);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgNullExpression&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1afbbc21b621d5212775e97662a11f9a4c" kindref="member">mkNullExpression</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgExpression&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1aeffe888cc0f3f1a17f3586701f7b5a09" kindref="member">mkEnumeratorRef</ref>(SgEnumDeclaration&amp;,<sp/>SgInitializedName&amp;);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgFunctionRefExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1adbc236eabc2073131c1ed6ce35c8378a" kindref="member">mkFunctionRefExp</ref>(SgFunctionDeclaration&amp;<sp/>dcl);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgIfStmt&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1af0460f6509ceaf17941d7a56ef4cce4f" kindref="member">mkIfStmt</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>elseIfPath<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgExprStatement&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a0a7d9be346a583c5408b655ba27528f5" kindref="member">mkAssignStmt</ref>(SgExpression&amp;<sp/>lhs,<sp/>SgExpression&amp;<sp/>rhs);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgReturnStmt&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1a03d3a0e7efd09695b28e063a02989f54" kindref="member">mkReturnStmt</ref>(SgExpression*<sp/>expr_opt<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>special<sp/>Ada<sp/>symbols</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgAdaInheritedFunctionSymbol&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1ab255bb14826b362af56bd13a93e9b811" kindref="member">mkAdaInheritedFunctionSymbol</ref>(SgFunctionSymbol&amp;<sp/>basesym,<sp/>SgNamedType&amp;<sp/>assocType,<sp/>SgScopeStatement&amp;<sp/>scope);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>conversions</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>U,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>V&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>U<sp/><ref refid="namespaceAda__ROSE__Translation_1a2a7a3be2a34ac3c05832f5099d638bad" kindref="member">conv</ref>(V&amp;<sp/>img)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>U<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref>;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::stringstream<sp/>buf;</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>buf<sp/>&lt;&lt;<sp/>img;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>buf<sp/>&gt;&gt;<sp/><ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref>;</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref>;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" kindref="member">T</ref><sp/><ref refid="namespaceAda__ROSE__Translation_1a0373803c1a460c1d6a5576d544c4d768" kindref="member">convAdaLiteral</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>img)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>conv&lt;T&gt;(img);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="namespaceAda__ROSE__Translation_1a73897adcf805a40fdce55bb8d36fcb15" kindref="member">convAdaLiteral&lt;long double&gt;</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>img);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/><ref refid="namespaceAda__ROSE__Translation_1a95bf7ea7b2c900b11c4a13bd18bd7130" kindref="member">convAdaLiteral&lt;char&gt;</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>img);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>SageValue&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SageValue&amp;<sp/><ref refid="namespaceAda__ROSE__Translation_1a567fe0f2fdb5bdc9a655734ef23c58fc" kindref="member">mkValue</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>textrep)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>static_assert(<sp/>std::is_base_of&lt;SgValueExp,<sp/>SageValue&gt;::value,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;template<sp/>argument<sp/>is<sp/>not<sp/>derived<sp/>from<sp/>SgValueExp&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>rose_rep_t<sp/>=<sp/>decltype(std::declval&lt;SageValue&gt;().get_value());</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(textrep);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>mkLocatedNode&lt;SageValue&gt;(convAdaLiteral&lt;rose_rep_t&gt;(textrep),<sp/>textrep);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgStringVal&amp;<sp/><ref refid="namespaceAda__ROSE__Translation_1a768f648531844b9bfe10541053760978" kindref="member">mkValue&lt;SgStringVal&gt;</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>textrep);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>SgValueExp&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="namespaceAda__ROSE__Translation_1aba1834750f75d9b433f83c37c225032b" kindref="member">mkAdaIntegerLiteral</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>textrep);</highlight></codeline>
+<codeline><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Ada_ROSE_Translation</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>_ADA_MAKER_H<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+</programlisting> </para>    </detaileddescription>
+  </compounddef>
+</doxygen>

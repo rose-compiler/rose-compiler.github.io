@@ -1,0 +1,282 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="ElfNote_8C" kind="file" language="C++">
+    <compoundname>ElfNote.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="45104">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="45100">
+        <label>/home/liao6/workspace/rose-github/src/frontend/BinaryFormats/ElfNote.C</label>
+        <link refid="ElfNote_8C"/>
+        <childnode refid="45101" relation="include">
+        </childnode>
+      </node>
+      <node id="45101">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="45102" relation="include">
+        </childnode>
+        <childnode refid="45103" relation="include">
+        </childnode>
+        <childnode refid="45104" relation="include">
+        </childnode>
+      </node>
+      <node id="45103">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="45102">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="45101" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>ELF<sp/>Note<sp/>Sections<sp/>(SgAsmElfNoteSection<sp/>and<sp/>related<sp/>classes)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="sage3basic_8h" kindref="compound">sage3basic.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Hexdump_8h" kindref="compound">Rose/BinaryAnalysis/Hexdump.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><ref refid="classSgAsmElfNoteEntry_1abbe6a0aca53b0bafdace0feab2aed1ef" kindref="member">SgAsmElfNoteEntry::SgAsmElfNoteEntry</ref>(<ref refid="classSgAsmElfNoteSection" kindref="compound">SgAsmElfNoteSection</ref><sp/>*section)<sp/>{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/>initializeProperties();</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(section-&gt;get_entries());</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/>section-&gt;get_entries()-&gt;get_entries().push_back(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(section-&gt;get_entries()-&gt;get_entries().<ref refid="classSgAsmGenericSection_1a0ab2193e19f1cc0626f0f8e2db135b6b" kindref="member">size</ref>()<sp/>&gt;<sp/>0);</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/>set_parent(section-&gt;get_entries());</highlight></codeline>
+<codeline lineno="15"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><ref refid="classSgAsmGenericString" kindref="compound">SgAsmGenericString</ref><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><ref refid="classSgAsmElfNoteEntry_1a0eab638470ee0d8133f38ef56c2edfc8" kindref="member">SgAsmElfNoteEntry::get_name</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="19"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p_name;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><ref refid="classSgAsmElfNoteEntry_1a6a97a788bf497dc4c98075a792fc04c7" kindref="member">SgAsmElfNoteEntry::set_name</ref>(<ref refid="classSgAsmGenericString" kindref="compound">SgAsmGenericString</ref><sp/>*<ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref>)</highlight></codeline>
+<codeline lineno="25"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="classSgAsmElfNoteEntry_1a2478682b8129fa4c8399391052aa3418" kindref="member">name</ref>!=p_name)<sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_name)<sp/>{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_name-&gt;set_parent(NULL);</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceSageInterface_1a57437bbbb806858dda0cea7444fbafef" kindref="member">SageInterface::deleteAST</ref>(p_name);</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_name<sp/>=<sp/><ref refid="classSgAsmElfNoteEntry_1a2478682b8129fa4c8399391052aa3418" kindref="member">name</ref>;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_name)</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_name-&gt;set_parent(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>set_isModified(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><ref refid="classSgAsmElfNoteEntry_1aeb6fad134493f9b264c3dfed1654cc38" kindref="member">SgAsmElfNoteEntry::set_payload</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*_buf,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nbytes)</highlight></codeline>
+<codeline lineno="40"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*buf<sp/>=<sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*)_buf;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>p_payload.clear();</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>p_payload.reserve(nbytes);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i=0;<sp/>i&lt;nbytes;<sp/>i++)</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_payload.push_back(buf[i]);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><ref refid="classSgAsmElfNoteEntry_1a90336b8ccd665873eea268da5f244358" kindref="member">SgAsmElfNoteEntry::parse</ref>(<ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref><sp/>at)</highlight></codeline>
+<codeline lineno="50"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Find<sp/>the<sp/>section<sp/>holding<sp/>this<sp/>note<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmElfNoteSection" kindref="compound">SgAsmElfNoteSection</ref><sp/>*notes<sp/>=<sp/>SageInterface::getEnclosingNode&lt;SgAsmElfNoteSection&gt;(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(notes!=NULL);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(at<sp/>&lt;<sp/>notes-&gt;get_size());</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmElfFileHeader" kindref="compound">SgAsmElfFileHeader</ref><sp/>*fhdr<sp/>=<sp/></highlight><highlight class="keyword">dynamic_cast&lt;</highlight><highlight class="normal"><ref refid="classSgAsmElfFileHeader" kindref="compound">SgAsmElfFileHeader</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(notes-&gt;get_header());</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(fhdr!=NULL);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Length<sp/>of<sp/>note<sp/>entry<sp/>name,<sp/>including<sp/>NUL<sp/>termination<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="msvc__stdint_8h_1a6eb1e68cc391dd753bc8ce896dbb8315" kindref="member">uint32_t</ref><sp/>u32;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>notes-&gt;<ref refid="classSgAsmGenericSection_1a242ec5f69fc722dc967c38e0b0f80c08" kindref="member">readContentLocal</ref>(at,<sp/>&amp;u32,<sp/>4);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>name_size<sp/>=<sp/>diskToHost(fhdr-&gt;<ref refid="classSgAsmGenericHeader_1a42f88512c4f65142fa5071931d68532c" kindref="member">get_sex</ref>(),<sp/>u32);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>at<sp/>+=<sp/>4;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Length<sp/>of<sp/>note<sp/>entry<sp/>description<sp/>(i.e.,<sp/>the<sp/>payload)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>notes-&gt;<ref refid="classSgAsmGenericSection_1a242ec5f69fc722dc967c38e0b0f80c08" kindref="member">readContentLocal</ref>(at,<sp/>&amp;u32,<sp/>4);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>payload_size<sp/>=<sp/>diskToHost(fhdr-&gt;<ref refid="classSgAsmGenericHeader_1a42f88512c4f65142fa5071931d68532c" kindref="member">get_sex</ref>(),<sp/>u32);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>at<sp/>+=<sp/>4;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Type<sp/>of<sp/>note<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>notes-&gt;<ref refid="classSgAsmGenericSection_1a242ec5f69fc722dc967c38e0b0f80c08" kindref="member">readContentLocal</ref>(at,<sp/>&amp;u32,<sp/>4);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/><ref refid="classSgAsmElfNoteEntry_1ac931f0ff13f18ce70c4eb6d8ab608dea" kindref="member">type</ref><sp/>=<sp/>diskToHost(fhdr-&gt;<ref refid="classSgAsmGenericHeader_1a42f88512c4f65142fa5071931d68532c" kindref="member">get_sex</ref>(),<sp/>u32);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>at<sp/>+=<sp/>4;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>NUL-terminated<sp/>name<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>note_name<sp/>=<sp/>notes-&gt;<ref refid="classSgAsmGenericSection_1a12d2d937e1a3ab5a5ee54014fb208cb0" kindref="member">readContentLocalString</ref>(at);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(note_name.size()<sp/>+<sp/>1<sp/>&gt;<sp/>name_size<sp/>&amp;&amp;<sp/>name_size<sp/>&gt;<sp/>0)</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>note_name<sp/>=<sp/>note_name.substr(0,<sp/>name_size-1);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>at<sp/>+=<sp/>name_size;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>at<sp/>=<sp/>(at+3)<sp/>&amp;<sp/>~0x3;<sp/></highlight><highlight class="comment">/*<sp/>payload<sp/>is<sp/>aligned<sp/>on<sp/>a<sp/>four-byte<sp/>offset<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Set<sp/>properties<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmElfNoteEntry_1a0eab638470ee0d8133f38ef56c2edfc8" kindref="member">get_name</ref>()-&gt;<ref refid="classSgAsmGenericString_1ab2739c6d335f746f98df8c5636aa1d13" kindref="member">set_string</ref>(note_name);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>set_type(<ref refid="classSgAsmElfNoteEntry_1ac931f0ff13f18ce70c4eb6d8ab608dea" kindref="member">type</ref>);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>p_payload<sp/>=<sp/>notes-&gt;<ref refid="classSgAsmGenericSection_1aca433863d815ea2916bed011760fdcd7" kindref="member">readContentLocalUcl</ref>(at,<sp/>payload_size);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>at<sp/>+<sp/>payload_size;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><ref refid="classSgAsmElfNoteEntry_1a11fcc8440a3d82484b3e80f669e1141f" kindref="member">SgAsmElfNoteEntry::unparse</ref>(std::ostream<sp/>&amp;<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref><sp/>at)</highlight></codeline>
+<codeline lineno="91"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Find<sp/>the<sp/>section<sp/>holding<sp/>this<sp/>note<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmElfNoteSection" kindref="compound">SgAsmElfNoteSection</ref><sp/>*notes<sp/>=<sp/>SageInterface::getEnclosingNode&lt;SgAsmElfNoteSection&gt;(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(notes!=NULL);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(at<sp/>&lt;<sp/>notes-&gt;get_size());</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmElfFileHeader" kindref="compound">SgAsmElfFileHeader</ref><sp/>*fhdr<sp/>=<sp/></highlight><highlight class="keyword">dynamic_cast&lt;</highlight><highlight class="normal"><ref refid="classSgAsmElfFileHeader" kindref="compound">SgAsmElfFileHeader</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(notes-&gt;get_header());</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(fhdr!=NULL);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Name<sp/>size,<sp/>including<sp/>NUL<sp/>termination<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="msvc__stdint_8h_1a6eb1e68cc391dd753bc8ce896dbb8315" kindref="member">uint32_t</ref><sp/>u32;</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>hostToDisk(fhdr-&gt;<ref refid="classSgAsmGenericHeader_1a42f88512c4f65142fa5071931d68532c" kindref="member">get_sex</ref>(),<sp/>p_name-&gt;get_string().size()+1,<sp/>&amp;u32);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>notes-&gt;<ref refid="classSgAsmGenericSection_1abb48917ca0e83f66faa0f0fe045c3c5a" kindref="member">write</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>at,<sp/>4,<sp/>&amp;u32);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>at<sp/>+=<sp/>4;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Payload<sp/>size<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>hostToDisk(fhdr-&gt;<ref refid="classSgAsmGenericHeader_1a42f88512c4f65142fa5071931d68532c" kindref="member">get_sex</ref>(),<sp/>p_payload.size(),<sp/>&amp;u32);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>notes-&gt;<ref refid="classSgAsmGenericSection_1abb48917ca0e83f66faa0f0fe045c3c5a" kindref="member">write</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>at,<sp/>4,<sp/>&amp;u32);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>at<sp/>+=<sp/>4;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Type<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>hostToDisk(fhdr-&gt;<ref refid="classSgAsmGenericHeader_1a42f88512c4f65142fa5071931d68532c" kindref="member">get_sex</ref>(),<sp/><ref refid="SgAsmElfSegmentTableEntry_8h_1a07d1897956d718722084ddacc3cf6643" kindref="member">p_type</ref>,<sp/>&amp;u32);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>notes-&gt;<ref refid="classSgAsmGenericSection_1abb48917ca0e83f66faa0f0fe045c3c5a" kindref="member">write</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>at,<sp/>4,<sp/>&amp;u32);</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>at<sp/>+=<sp/>4;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Name<sp/>with<sp/>NUL<sp/>termination<sp/>and<sp/>padded<sp/>to<sp/>a<sp/>multiple<sp/>of<sp/>four<sp/>bytes<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classSgAsmElfNoteEntry_1a2478682b8129fa4c8399391052aa3418" kindref="member">name</ref><sp/>=<sp/>p_name-&gt;<ref refid="classSgAsmGenericString_1a4f99513f026e0bfce0a6f681c5c67772" kindref="member">get_string</ref>();</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>((<ref refid="classSgAsmElfNoteEntry_1a2478682b8129fa4c8399391052aa3418" kindref="member">name</ref>.size()+1)<sp/>%<sp/>4)</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmElfNoteEntry_1a2478682b8129fa4c8399391052aa3418" kindref="member">name</ref><sp/>+=<sp/></highlight><highlight class="charliteral">&apos;\0&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>notes-&gt;<ref refid="classSgAsmGenericSection_1abb48917ca0e83f66faa0f0fe045c3c5a" kindref="member">write</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>at,<sp/><ref refid="classSgAsmElfNoteEntry_1a2478682b8129fa4c8399391052aa3418" kindref="member">name</ref>.size()+1,<sp/><ref refid="classSgAsmElfNoteEntry_1a2478682b8129fa4c8399391052aa3418" kindref="member">name</ref>.c_str());</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>at<sp/>+=<sp/><ref refid="classSgAsmElfNoteEntry_1a2478682b8129fa4c8399391052aa3418" kindref="member">name</ref>.size()+1;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Payload<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>notes-&gt;<ref refid="classSgAsmGenericSection_1abb48917ca0e83f66faa0f0fe045c3c5a" kindref="member">write</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>at,<sp/>p_payload);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>at<sp/>+=<sp/>p_payload.size();</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>at;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><ref refid="classSgAsmElfNoteEntry_1aa7fca9f9c77ed8ac982157842ee0fd0c" kindref="member">SgAsmElfNoteEntry::calculate_size</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classSgAsmElfNoteEntry_1ad5c0f5a86ba9bf24c725e2fcf6f8fd78" kindref="member">calculateSize</ref>();</highlight></codeline>
+<codeline lineno="132"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><ref refid="classSgAsmElfNoteEntry_1ad5c0f5a86ba9bf24c725e2fcf6f8fd78" kindref="member">SgAsmElfNoteEntry::calculateSize</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref><sp/>need<sp/>=<sp/>12;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*namesize,<sp/>payloadsize,<sp/>type*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>need<sp/>+=<sp/>p_name-&gt;get_string().size()<sp/>+<sp/>1;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*name<sp/>plus<sp/>NUL<sp/>terminator*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>need<sp/>=<sp/>(need+3)<sp/>&amp;<sp/>~0x3;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*pad<sp/>to<sp/>align<sp/>payload<sp/>on<sp/>a<sp/>four-byte<sp/>offset<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/>need<sp/>+=<sp/>p_payload.size();</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>need;</highlight></codeline>
+<codeline lineno="141"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><ref refid="classSgAsmElfNoteEntry_1a45c10fdfd1a1f27960125aeffe6ce5ee" kindref="member">SgAsmElfNoteEntry::dump</ref>(FILE<sp/>*<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*prefix,<sp/>ssize_t<sp/>idx)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="145"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>p[4096];</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(idx&gt;=0)<sp/>{</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>snprintf(p,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(p),<sp/></highlight><highlight class="stringliteral">&quot;%sElfNoteEntry[%zd]&quot;</highlight><highlight class="normal">,<sp/>prefix,<sp/>idx);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>snprintf(p,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(p),<sp/></highlight><highlight class="stringliteral">&quot;%sElfNoteEntry&quot;</highlight><highlight class="normal">,<sp/>prefix);</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>w<sp/>=<sp/><ref refid="qeditor_8cpp_1a0f22fef15e1a46d7611e58390b23a1f5" kindref="member">std::max</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">{1},<sp/><ref refid="namespaceRose_1ab840359592003b8a4a47cc12e2c79223" kindref="member">Rose::DUMP_FIELD_WIDTH</ref><sp/>-<sp/>strlen(p));</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>fprintf(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/></highlight><highlight class="stringliteral">&quot;%s%-*s<sp/>\&quot;%s\&quot;\n&quot;</highlight><highlight class="normal">,<sp/>p,<sp/>w,<sp/></highlight><highlight class="stringliteral">&quot;name&quot;</highlight><highlight class="normal">,<sp/>p_name-&gt;get_string(</highlight><highlight class="keyword">true</highlight><highlight class="normal">).c_str());</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>fprintf(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/></highlight><highlight class="stringliteral">&quot;%s%-*s<sp/>%u\n&quot;</highlight><highlight class="normal">,<sp/>p,<sp/>w,<sp/></highlight><highlight class="stringliteral">&quot;type&quot;</highlight><highlight class="normal">,<sp/><ref refid="SgAsmElfSegmentTableEntry_8h_1a07d1897956d718722084ddacc3cf6643" kindref="member">p_type</ref>);</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_payload.size()&gt;0)<sp/>{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>fprintf(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/></highlight><highlight class="stringliteral">&quot;%s%-*s<sp/>=<sp/>%&quot;</highlight><highlight class="normal"><sp/>PRIuPTR<sp/></highlight><highlight class="stringliteral">&quot;<sp/>bytes\n&quot;</highlight><highlight class="normal">,<sp/>p,<sp/>w,<sp/></highlight><highlight class="stringliteral">&quot;extra&quot;</highlight><highlight class="normal">,<sp/>p_payload.size());</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Rose::BinaryAnalysis::hexdump(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>0,<sp/>std::string(p)+</highlight><highlight class="stringliteral">&quot;extra<sp/>at<sp/>&quot;</highlight><highlight class="normal">,<sp/>p_payload);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="160"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><ref refid="classSgAsmElfNoteSection_1a92f396c08c32d3460b32184c255d5fc8" kindref="member">SgAsmElfNoteSection::SgAsmElfNoteSection</ref>(<ref refid="classSgAsmElfFileHeader" kindref="compound">SgAsmElfFileHeader</ref><sp/>*fhdr)</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/><ref refid="classSgAsmElfSection" kindref="compound">SgAsmElfSection</ref>(fhdr)<sp/>{</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>initializeProperties();</highlight></codeline>
+<codeline lineno="165"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Parse<sp/>existing<sp/>notes<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><ref refid="classSgAsmElfNoteSection" kindref="compound">SgAsmElfNoteSection</ref><sp/>*</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><ref refid="classSgAsmElfNoteSection_1a27a841c0123d95a6308ea446bf3932b9" kindref="member">SgAsmElfNoteSection::parse</ref>()</highlight></codeline>
+<codeline lineno="170"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericSection_1a06e6f2a4c28be5858d6a0b92573908d7" kindref="member">SgAsmElfSection::parse</ref>();</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref><sp/>at=0;</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(at<sp/>&lt;<sp/><ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmElfNoteEntry" kindref="compound">SgAsmElfNoteEntry</ref><sp/>*note<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmElfNoteEntry" kindref="compound">SgAsmElfNoteEntry</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>at<sp/>=<sp/>note-&gt;<ref refid="classSgAsmElfNoteEntry_1a90336b8ccd665873eea268da5f244358" kindref="member">parse</ref>(at);</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><ref refid="classSgAsmElfNoteSection_1accf77454f151c77d825960143b472e36" kindref="member">SgAsmElfNoteSection::reallocate</ref>()</highlight></codeline>
+<codeline lineno="183"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>reallocated<sp/>=<sp/><ref refid="classSgAsmElfSection_1a714167872d4032b343ae168d84aa2b42" kindref="member">SgAsmElfSection::reallocate</ref>();</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>How<sp/>much<sp/>space<sp/>is<sp/>needed<sp/>by<sp/>the<sp/>notes?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref><sp/>need<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i=0;<sp/>i&lt;p_entries-&gt;get_entries().size();<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmElfNoteEntry" kindref="compound">SgAsmElfNoteEntry</ref><sp/>*ent<sp/>=<sp/>p_entries-&gt;get_entries()[i];</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>need<sp/>+=<sp/>ent-&gt;<ref refid="classSgAsmElfNoteEntry_1ad5c0f5a86ba9bf24c725e2fcf6f8fd78" kindref="member">calculateSize</ref>();</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Adjust<sp/>the<sp/>section/segment<sp/>size<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(need<sp/>&lt;<sp/><ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="classSgAsmGenericSection_1a0128ff49841b82db716952b7e37e39d9" kindref="member">isMapped</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(get_mappedSize()==<ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>());</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericSection_1a12ca37a67c3bc1cfa7f460742c49706c" kindref="member">set_mappedSize</ref>(need);</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericSection_1ad84a6151fefa7ed0a3f402db21e25e20" kindref="member">set_size</ref>(need);</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>reallocated<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(need<sp/>&gt;<sp/><ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>get_file()-&gt;shiftExtend(</highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>0,<sp/>need-<ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>(),<sp/><ref refid="classSgAsmGenericFile_1ae86e310e8abb3d0a044ee16e1bc6c9ebaaf608aa529572cd9033f53dcac68097c" kindref="member">SgAsmGenericFile::ADDRSP_ALL</ref>,<sp/><ref refid="classSgAsmGenericFile_1af29ae621857658ed39d2524011eef404a4f653980791bcbb59a1d18d808cd41a9" kindref="member">SgAsmGenericFile::ELASTIC_HOLE</ref>);</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>reallocated<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>reallocated;</highlight></codeline>
+<codeline lineno="207"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><ref refid="classSgAsmElfNoteSection_1a10d6c751480b70d00fa4a1ecfc3410ea" kindref="member">SgAsmElfNoteSection::unparse</ref>(std::ostream<sp/>&amp;<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="211"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref><sp/>at<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i=0;<sp/>i&lt;p_entries-&gt;get_entries().size();<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmElfNoteEntry" kindref="compound">SgAsmElfNoteEntry</ref><sp/>*ent<sp/>=<sp/>p_entries-&gt;get_entries()[i];</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>at<sp/>=<sp/>ent-&gt;<ref refid="classSgAsmElfNoteEntry_1a11fcc8440a3d82484b3e80f669e1141f" kindref="member">unparse</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>at);</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="217"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><ref refid="classSgAsmElfNoteSection_1a2ad92175c8fb76250ceaa3c85fff56e5" kindref="member">SgAsmElfNoteSection::dump</ref>(FILE<sp/>*<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*prefix,<sp/>ssize_t<sp/>idx)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="222"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>p[4096];</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(idx&gt;=0)<sp/>{</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>snprintf(p,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(p),<sp/></highlight><highlight class="stringliteral">&quot;%sElfNoteSection[%zd].&quot;</highlight><highlight class="normal">,<sp/>prefix,<sp/>idx);</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>snprintf(p,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(p),<sp/></highlight><highlight class="stringliteral">&quot;%sElfNoteSection.&quot;</highlight><highlight class="normal">,<sp/>prefix);</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmElfSection_1a264c86c4f53abc395f3f88e03541d0fe" kindref="member">SgAsmElfSection::dump</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>p,<sp/>-1);</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i=0;<sp/>i&lt;p_entries-&gt;get_entries().size();<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmElfNoteEntry" kindref="compound">SgAsmElfNoteEntry</ref><sp/>*ent<sp/>=<sp/>p_entries-&gt;get_entries()[i];</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ent-&gt;<ref refid="classSgAsmElfNoteEntry_1a45c10fdfd1a1f27960125aeffe6ce5ee" kindref="member">dump</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>p,<sp/>i);</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="236"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"></highlight></codeline>
+<codeline lineno="238"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/frontend/BinaryFormats/ElfNote.C"/>
+  </compounddef>
+</doxygen>

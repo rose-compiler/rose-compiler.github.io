@@ -1,0 +1,28 @@
+var structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo =
+[
+    [ "VariableIdInfo", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#a117b2935ed3c02cdfc9f8bfce79c5452", null ],
+    [ "addVariableDeclaration", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#ad4c8c08627c77782d224700e6e8daff7", null ],
+    [ "aggregateTypeToString", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#ac5ac699f62b1524145ae0d6d33efb245", null ],
+    [ "getInitializer", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#a722c8991d7913a8b8b2fdbe37c43a652", null ],
+    [ "getType", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#a784d2f6d58132e3c233c45120603d57c", null ],
+    [ "getVarDecl", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#a92769d3ef44e438264f256e4806cadd0", null ],
+    [ "getVariableDeclarations", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#a54dddd4434b8eadb57379c46ccc7b531", null ],
+    [ "setTypeFromInitializedName", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#a34ed58eb4bed8ebba3093feb151d01f8", null ],
+    [ "variableScopeToString", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#a78352d426ddfcb7439c8a24e52ca00ca", null ],
+    [ "_initializer", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#a100d305824a2879ac22080c83d684876", null ],
+    [ "_varDecl", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#ab81287e1efe15a410df6090c346bc274", null ],
+    [ "_varDecls", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#ac663f147094239cacd16ef9e02757d24", null ],
+    [ "_varType", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#a6cff382820ff767a0fc4ce39a852db55", null ],
+    [ "aggregateType", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#ac1839c3f56d3231c51206c919c0b52ab", null ],
+    [ "elementSize", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#a11eaed90f70eccfdf114bdf3771450ba", null ],
+    [ "isUsed", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#aba5a70421260d93c1bb7dfaee0374e7a", null ],
+    [ "isVolatileFlag", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#a053a5c036b2d2211c73b984c879defcd", null ],
+    [ "numberOfElements", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#a38ba2fb068cbb85d2a33ebe095b08cb3", null ],
+    [ "numDimensionElements", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#a143b0529d2f369d8e69dc242bc91a7bf", null ],
+    [ "offset", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#ab2ea9a35c653a09db50b7969e89cba06", null ],
+    [ "relinked", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#a3643caa17a19b36057961c5096861514", null ],
+    [ "sym", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#a03e9ac3ccf81cccf3038d2b8fb1c0c76", null ],
+    [ "totalSize", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#a119e31a96e887f56aa05ecee9415c6e1", null ],
+    [ "unspecifiedSize", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#aee04469a3d3f03f9116034d27f531b46", null ],
+    [ "variableScope", "structCodeThorn_1_1VariableIdMapping_1_1VariableIdInfo.html#abb80559e3b2deedca39ef2e46c0d518c", null ]
+];

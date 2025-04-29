@@ -1,0 +1,27 @@
+var patternRewrite_8C =
+[
+    [ "DoRewriteRuleDeepVisitor", "classDoRewriteRuleDeepVisitor.html", "classDoRewriteRuleDeepVisitor" ],
+    [ "UnaryPattern", "classUnaryPattern.html", "classUnaryPattern" ],
+    [ "BinaryPattern", "classBinaryPattern.html", "classBinaryPattern" ],
+    [ "VariablePattern", "classVariablePattern.html", "classVariablePattern" ],
+    [ "NullPattern", "classNullPattern.html", "classNullPattern" ],
+    [ "ConstantPattern", "classConstantPattern.html", "classConstantPattern" ],
+    [ "AddIntsPattern", "classAddIntsPattern.html", "classAddIntsPattern" ],
+    [ "MoveConstantsToLeftInMultiply", "classMoveConstantsToLeftInMultiply.html", "classMoveConstantsToLeftInMultiply" ],
+    [ "FoldIntConstantsInMultiply", "classFoldIntConstantsInMultiply.html", "classFoldIntConstantsInMultiply" ],
+    [ "SgNULL_FILE", "patternRewrite_8C.html#aadbab08643e41419b9821541a0654e97", null ],
+    [ "doRewriteRuleDeep", "patternRewrite_8C.html#a923847c4d576462d50e1a113e52854db", null ],
+    [ "getAlgebraicRules", "patternRewrite_8C.html#a12dfee85fe5ac778b7757f8323119e1c", null ],
+    [ "getFiniteDifferencingRules", "patternRewrite_8C.html#a2933911dd0b720676632974ebdfc6090", null ],
+    [ "p_AddOp", "patternRewrite_8C.html#abde74f58e97c2b0adeef2e786e4f4052", null ],
+    [ "p_CommaOp", "patternRewrite_8C.html#a2eda47e43dc4a119a68fa74d29162139", null ],
+    [ "p_int", "patternRewrite_8C.html#ab9cfcf103a2433564e671520a087b907", null ],
+    [ "p_MultiplyOp", "patternRewrite_8C.html#af14207bcce4f463e83658fc6cde50fc2", null ],
+    [ "p_PlusAssignOp", "patternRewrite_8C.html#ae9c5fa9c4655317c636e33a37e79a88e", null ],
+    [ "p_value", "patternRewrite_8C.html#af4f8aef919a5a913e060bd17ad558f5d", null ],
+    [ "p_var", "patternRewrite_8C.html#a27045ae597f5e58cd7febe5b5dab5a17", null ],
+    [ "patact", "patternRewrite_8C.html#a42fff37ae7b6ffb2e795bab4afedafa5", null ],
+    [ "replaceChild", "patternRewrite_8C.html#a24831364517ecda95921f11c2adc7b72", null ],
+    [ "rewrite", "patternRewrite_8C.html#a659520e4384cbabd5300295ae14e877c", null ],
+    [ "p_wildcard", "patternRewrite_8C.html#a534a39b3323a680163c40a16ebfaa7e6", null ]
+];

@@ -1,0 +1,257 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="PeStringTable_8C" kind="file" language="C++">
+    <compoundname>PeStringTable.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="45350">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="45347">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="45348" relation="include">
+        </childnode>
+        <childnode refid="45349" relation="include">
+        </childnode>
+        <childnode refid="45350" relation="include">
+        </childnode>
+      </node>
+      <node id="45349">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="45346">
+        <label>/home/liao6/workspace/rose-github/src/frontend/BinaryFormats/PeStringTable.C</label>
+        <link refid="PeStringTable_8C"/>
+        <childnode refid="45347" relation="include">
+        </childnode>
+      </node>
+      <node id="45348">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="45347" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>String<sp/>Tables<sp/>(SgAsmPEStringSection<sp/>and<sp/>SgAsmCoffStrtab<sp/>and<sp/>related<sp/>classes)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="sage3basic_8h" kindref="compound">sage3basic.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="AddressInterval_8h" kindref="compound">Rose/BinaryAnalysis/AddressInterval.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Hexdump_8h" kindref="compound">Rose/BinaryAnalysis/Hexdump.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Diagnostics_8h" kindref="compound">Rose/Diagnostics.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose" kindref="compound">Rose</ref>;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose_1_1BinaryAnalysis" kindref="compound">Rose::BinaryAnalysis</ref>;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose_1_1Diagnostics" kindref="compound">Rose::Diagnostics</ref>;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="comment">//<sp/>String<sp/>Table<sp/>Sections</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>SgAsmPEStringTable<sp/>is<sp/>derived<sp/>from<sp/>SgAsmPESection,<sp/>which<sp/>is<sp/>derived<sp/>in<sp/>turn<sp/>from<sp/>SgAsmGenericSection.<sp/>A<sp/>PE<sp/>String<sp/>Table</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>Section<sp/>points<sp/>to<sp/>a<sp/>COFF<sp/>String<sp/>Table<sp/>(SgAsmCoffStrtab)<sp/>that<sp/>is<sp/>contained<sp/>in<sp/>the<sp/>section.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Constructor<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><ref refid="classSgAsmPEStringSection_1a00f2d001b68ba1d99b3f8d94d37dc7b3" kindref="member">SgAsmPEStringSection::SgAsmPEStringSection</ref>(<ref refid="classSgAsmPEFileHeader" kindref="compound">SgAsmPEFileHeader</ref><sp/>*fhdr)</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/><ref refid="classSgAsmPESection" kindref="compound">SgAsmPESection</ref>(fhdr),<sp/>p_strtab(NULL)<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>initializeProperties();</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSageInterface_1acbd105615b111c43782054ffad047560" kindref="member">get_name</ref>()-&gt;set_string(</highlight><highlight class="stringliteral">&quot;PE<sp/>String<sp/>Table&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>p_strtab<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmCoffStrtab" kindref="compound">SgAsmCoffStrtab</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="29"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><ref refid="classSgAsmPEStringSection" kindref="compound">SgAsmPEStringSection</ref>*</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><ref refid="classSgAsmPEStringSection_1a7692379add2e5aa01493fbbac9e82127" kindref="member">SgAsmPEStringSection::parse</ref>()</highlight></codeline>
+<codeline lineno="33"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericSection_1a06e6f2a4c28be5858d6a0b92573908d7" kindref="member">SgAsmPESection::parse</ref>();</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(p_strtab);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>p_strtab-&gt;parse();</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Reallocate<sp/>space<sp/>for<sp/>the<sp/>string<sp/>table<sp/>if<sp/>necessary.<sp/>Note<sp/>that<sp/>reallocation<sp/>is<sp/>lazy<sp/>here<sp/>--<sp/>we<sp/>don&apos;t<sp/>shrink<sp/>the<sp/>section,</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>we<sp/>only<sp/>enlarge<sp/>it<sp/>(if<sp/>you<sp/>want<sp/>the<sp/>section<sp/>to<sp/>shrink<sp/>then<sp/>call<sp/>SgAsmGenericStrtab::reallocate(bool)<sp/>with<sp/>a<sp/>true<sp/>value</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>rather<sp/>than<sp/>calling<sp/>this<sp/>function.<sp/>SgAsmPEStringSection::reallocate<sp/>is<sp/>called<sp/>in<sp/>response<sp/>to<sp/>unparsing<sp/>a<sp/>file<sp/>and<sp/>gives</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>the<sp/>string<sp/>table<sp/>a<sp/>chance<sp/>to<sp/>extend<sp/>its<sp/>container<sp/>section<sp/>if<sp/>it<sp/>needs<sp/>to<sp/>allocate<sp/>more<sp/>space<sp/>for<sp/>strings.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><ref refid="classSgAsmPEStringSection_1a0f8b6553fbadfb94a99782a3a7928d85" kindref="member">SgAsmPEStringSection::reallocate</ref>()</highlight></codeline>
+<codeline lineno="46"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>get_strtab()-&gt;reallocate(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Unparse<sp/>an<sp/>ElfStringSection<sp/>by<sp/>unparsing<sp/>the<sp/>ElfStrtab<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><ref refid="classSgAsmPEStringSection_1a304599480b59fa72e572477d05e5fd2c" kindref="member">SgAsmPEStringSection::unparse</ref>(std::ostream<sp/>&amp;<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="53"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>get_strtab()-&gt;unparse(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericSection_1ab5e89c690394cb2c6cec5bed8d28cca3" kindref="member">unparseHoles</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Augments<sp/>superclass<sp/>to<sp/>make<sp/>sure<sp/>free<sp/>list<sp/>and<sp/>such<sp/>are<sp/>adjusted<sp/>properly<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><ref refid="classSgAsmPEStringSection_1ada71f39a0c1475bcb37c60deeb03a91c" kindref="member">SgAsmPEStringSection::set_size</ref>(<ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>newsize)</highlight></codeline>
+<codeline lineno="61"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>orig_size<sp/>=<sp/><ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>();</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericSection_1ad84a6151fefa7ed0a3f402db21e25e20" kindref="member">SgAsmPESection::set_size</ref>(newsize);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericStrtab" kindref="compound">SgAsmGenericStrtab</ref><sp/>*<ref refid="classSgAsmPEStringSection_1a1af6d78bd479ab310f2674a8302ae715" kindref="member">strtab</ref><sp/>=<sp/>get_strtab();</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>()<sp/>&gt;<sp/>orig_size)<sp/>{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Add<sp/>new<sp/>address<sp/>space<sp/>to<sp/>string<sp/>table<sp/>free<sp/>list<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref><sp/>=<sp/><ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>()<sp/>-<sp/>orig_size;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmPEStringSection_1a1af6d78bd479ab310f2674a8302ae715" kindref="member">strtab</ref>-&gt;get_freeList().insert(AddressInterval::baseSize(orig_size,<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>));</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>()<sp/>&lt;<sp/>orig_size)<sp/>{</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Remove<sp/>deleted<sp/>address<sp/>space<sp/>from<sp/>string<sp/>table<sp/>free<sp/>list<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref><sp/>=<sp/>orig_size<sp/>-<sp/><ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>();</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmPEStringSection_1a1af6d78bd479ab310f2674a8302ae715" kindref="member">strtab</ref>-&gt;get_freeList().erase(AddressInterval::baseSize(<ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>(),<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>));</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Print<sp/>some<sp/>debugging<sp/>info<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><ref refid="classSgAsmPEStringSection_1a05614e52b317ec61fec3e11627c6bb53" kindref="member">SgAsmPEStringSection::dump</ref>(FILE<sp/>*<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*prefix,<sp/>ssize_t<sp/>idx)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="80"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>p[4096];</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(idx&gt;=0)<sp/>{</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>snprintf(p,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(p),<sp/></highlight><highlight class="stringliteral">&quot;%sPEStringSection[%zd].&quot;</highlight><highlight class="normal">,<sp/>prefix,<sp/>idx);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>snprintf(p,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(p),<sp/></highlight><highlight class="stringliteral">&quot;%sPEStringSection.&quot;</highlight><highlight class="normal">,<sp/>prefix);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmPESection_1aba5591e532829dbfa2ce2c0b073cc2b1" kindref="member">SgAsmPESection::dump</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>p,<sp/>-1);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(get_strtab()!=NULL);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>get_strtab()-&gt;dump(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>p,<sp/>-1);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(variantT()<sp/>==<sp/>V_SgAsmPEStringSection)<sp/></highlight><highlight class="comment">//unless<sp/>a<sp/>base<sp/>class</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hexdump(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>0,<sp/>std::string(p)+</highlight><highlight class="stringliteral">&quot;data<sp/>at<sp/>&quot;</highlight><highlight class="normal">,<sp/>p_data);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="comment">//<sp/>String<sp/>Tables</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>An<sp/>SgAsmCoffStrtab<sp/>is<sp/>a<sp/>COFF<sp/>String<sp/>Table,<sp/>inheriting<sp/>from<sp/>SgAsmGenericStrtab.<sp/>String<sp/>tables<sp/>point<sp/>to<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>SgAsmGenericSection<sp/>that<sp/>contains<sp/>them.</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><ref refid="classSgAsmCoffStrtab_1aa2e3eb72912545ba3a9535672a1c1855" kindref="member">SgAsmCoffStrtab::SgAsmCoffStrtab</ref>(</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/><ref refid="classSgAsmPESection" kindref="compound">SgAsmPESection</ref><sp/>*containing_section)</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/><ref refid="classSgAsmGenericStrtab" kindref="compound">SgAsmGenericStrtab</ref>(containing_section)<sp/>{</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>initializeProperties();</highlight></codeline>
+<codeline lineno="107"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Free<sp/>StringStorage<sp/>objects<sp/>associated<sp/>with<sp/>this<sp/>string<sp/>table.<sp/>It<sp/>may<sp/>not<sp/>be<sp/>safe<sp/>to<sp/>blow<sp/>them<sp/>away<sp/>yet<sp/>since<sp/>other<sp/>objects</highlight></codeline>
+<codeline lineno="110"><highlight class="comment"><sp/>*<sp/>may<sp/>still<sp/>have<sp/>SgAsmStoredStrings<sp/>pointing<sp/>to<sp/>these<sp/>storage<sp/>objects.<sp/>So<sp/>instead,<sp/>we<sp/>will<sp/>mark<sp/>all<sp/>this<sp/>strtab&apos;s<sp/>storage</highlight></codeline>
+<codeline lineno="111"><highlight class="comment"><sp/>*<sp/>objects<sp/>as<sp/>no<sp/>longer<sp/>being<sp/>associated<sp/>with<sp/>a<sp/>string<sp/>table.<sp/>This<sp/>allows<sp/>the<sp/>SgAsmStoredString<sp/>objects<sp/>to<sp/>still<sp/>function</highlight></codeline>
+<codeline lineno="112"><highlight class="comment"><sp/>*<sp/>properly<sp/>and<sp/>their<sp/>destructors<sp/>(~SgAsmStoredString)<sp/>will<sp/>free<sp/>their<sp/>storage.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><ref refid="classSgAsmCoffStrtab_1a71aec3c361786fac856069b325db284e" kindref="member">SgAsmCoffStrtab::destructorHelper</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(referenced_t::iterator<sp/>i<sp/>=<sp/>p_storageList.begin();<sp/>i<sp/>!=<sp/>p_storageList.end();<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmStringStorage" kindref="compound">SgAsmStringStorage</ref><sp/>*storage<sp/>=<sp/>*i;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>storage-&gt;set_strtab(NULL);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>storage-&gt;set_offset(<ref refid="classSgAsmGenericString_1a75253f7ec7c7714815d39cc3d8832d5b" kindref="member">SgAsmGenericString::unallocated</ref>);</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>p_storageList.clear();</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>p_dontFree<sp/>=<sp/>NULL;<sp/></highlight><highlight class="comment">/*FIXME:<sp/>can&apos;t<sp/>delete<sp/>for<sp/>same<sp/>reason<sp/>as<sp/>in<sp/>SgAsmStoredString<sp/>destructor.<sp/>(RPM<sp/>2008-09-05)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Creates<sp/>the<sp/>storage<sp/>item<sp/>for<sp/>the<sp/>string<sp/>at<sp/>the<sp/>specified<sp/>offset.<sp/>If<sp/>&quot;shared&quot;<sp/>is<sp/>true<sp/>then<sp/>attempt<sp/>to<sp/>re-use<sp/>a<sp/>previous<sp/>storage</highlight></codeline>
+<codeline lineno="125"><highlight class="comment"><sp/>*<sp/>object,<sp/>otherwise<sp/>create<sp/>a<sp/>new<sp/>one.<sp/>Each<sp/>storage<sp/>object<sp/>is<sp/>considered<sp/>to<sp/>be<sp/>a<sp/>separate<sp/>string,<sp/>therefore<sp/>when<sp/>two<sp/>strings</highlight></codeline>
+<codeline lineno="126"><highlight class="comment"><sp/>*<sp/>share<sp/>the<sp/>same<sp/>storage<sp/>object,<sp/>changing<sp/>one<sp/>string<sp/>changes<sp/>the<sp/>other.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><ref refid="classSgAsmStringStorage" kindref="compound">SgAsmStringStorage</ref><sp/>*</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><ref refid="classSgAsmCoffStrtab_1acbcebc01f028bb45d3af5f64860a6138" kindref="member">SgAsmCoffStrtab::createStorage</ref>(<ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/><ref refid="SgAsmDOSFileHeader_8h_1ac681806181c80437cfab37335f62ff39" kindref="member">offset</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>shared)</highlight></codeline>
+<codeline lineno="129"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(<ref refid="SgAsmDOSFileHeader_8h_1ac681806181c80437cfab37335f62ff39" kindref="member">offset</ref>!=<ref refid="classSgAsmGenericString_1a75253f7ec7c7714815d39cc3d8832d5b" kindref="member">SgAsmGenericString::unallocated</ref>);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref><sp/>*<ref refid="classSgAsmGenericStrtab_1a103419ab4ff611d69b109ac8e98a9197" kindref="member">container</ref><sp/>=<sp/>get_container();</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Has<sp/>the<sp/>string<sp/>already<sp/>been<sp/>created?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(shared)<sp/>{</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(referenced_t::iterator<sp/>i=p_storageList.begin();<sp/>i!=p_storageList.end();<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((*i)-&gt;get_offset()==<ref refid="SgAsmDOSFileHeader_8h_1ac681806181c80437cfab37335f62ff39" kindref="member">offset</ref><sp/>&amp;&amp;<sp/>(*i)!=get_dontFree())</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*i;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Read<sp/>string<sp/>length<sp/>byte<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/><ref refid="PTracer_8h_1a2b7e7856b48ec3327148ac994ad95cd5" kindref="member">byte</ref>;</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericStrtab_1a103419ab4ff611d69b109ac8e98a9197" kindref="member">container</ref>-&gt;<ref refid="classSgAsmGenericSection_1a242ec5f69fc722dc967c38e0b0f80c08" kindref="member">readContentLocal</ref>(<ref refid="SgAsmDOSFileHeader_8h_1ac681806181c80437cfab37335f62ff39" kindref="member">offset</ref>,<sp/>&amp;<ref refid="PTracer_8h_1a2b7e7856b48ec3327148ac994ad95cd5" kindref="member">byte</ref>,<sp/>1);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>len<sp/>=<sp/><ref refid="PTracer_8h_1a2b7e7856b48ec3327148ac994ad95cd5" kindref="member">byte</ref>;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Make<sp/>sure<sp/>new<sp/>storage<sp/>isn&apos;t<sp/>inside<sp/>some<sp/>other<sp/>string.<sp/>(We<sp/>don&apos;t<sp/>support<sp/>nested<sp/>strings<sp/>in<sp/>COFF<sp/>where<sp/>the<sp/>length<sp/>byte<sp/>of</highlight></codeline>
+<codeline lineno="147"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>the<sp/>nested<sp/>string<sp/>is<sp/>one<sp/>of<sp/>the<sp/>characters<sp/>of<sp/>the<sp/>outer<sp/>string.)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(referenced_t::iterator<sp/>i=p_storageList.begin();<sp/>i!=p_storageList.end();<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>((*i)-&gt;get_offset()==<ref refid="classSgAsmGenericString_1a75253f7ec7c7714815d39cc3d8832d5b" kindref="member">SgAsmGenericString::unallocated</ref><sp/>||</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="SgAsmDOSFileHeader_8h_1ac681806181c80437cfab37335f62ff39" kindref="member">offset</ref><sp/>+<sp/>1<sp/>+<sp/>len<sp/>&lt;=<sp/>(*i)-&gt;get_offset()<sp/>||</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="SgAsmDOSFileHeader_8h_1ac681806181c80437cfab37335f62ff39" kindref="member">offset</ref><sp/>&gt;=<sp/>1<sp/>+<sp/>(*i)-&gt;get_string().size());</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Create<sp/>storage<sp/>object<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*buf<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">[len];</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericStrtab_1a103419ab4ff611d69b109ac8e98a9197" kindref="member">container</ref>-&gt;<ref refid="classSgAsmGenericSection_1a242ec5f69fc722dc967c38e0b0f80c08" kindref="member">readContentLocal</ref>(<ref refid="SgAsmDOSFileHeader_8h_1ac681806181c80437cfab37335f62ff39" kindref="member">offset</ref>+1,<sp/>buf,<sp/>len);</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmStringStorage" kindref="compound">SgAsmStringStorage</ref><sp/>*storage<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmStringStorage" kindref="compound">SgAsmStringStorage</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>std::string(buf,<sp/>len),<sp/><ref refid="SgAsmDOSFileHeader_8h_1ac681806181c80437cfab37335f62ff39" kindref="member">offset</ref>);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">[]<sp/>buf;</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>It&apos;s<sp/>a<sp/>bad<sp/>idea<sp/>to<sp/>free<sp/>(e.g.,<sp/>modify)<sp/>strings<sp/>before<sp/>we&apos;ve<sp/>identified<sp/>all<sp/>the<sp/>strings<sp/>in<sp/>the<sp/>table.<sp/>Consider</highlight></codeline>
+<codeline lineno="161"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>the<sp/>case<sp/>where<sp/>two<sp/>strings<sp/>have<sp/>the<sp/>same<sp/>value<sp/>and<sp/>point<sp/>to<sp/>the<sp/>same<sp/>offset<sp/>(i.e.,<sp/>they<sp/>share<sp/>storage).<sp/>If<sp/>we<sp/>modify<sp/>one</highlight></codeline>
+<codeline lineno="162"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>before<sp/>we<sp/>know<sp/>about<sp/>the<sp/>other<sp/>then<sp/>(at<sp/>best)<sp/>we<sp/>modify<sp/>the<sp/>other<sp/>one<sp/>also.</highlight></codeline>
+<codeline lineno="163"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/></highlight></codeline>
+<codeline lineno="164"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>The<sp/>only<sp/>time<sp/>we<sp/>can<sp/>guarantee<sp/>this<sp/>is<sp/>OK<sp/>is<sp/>when<sp/>the<sp/>new<sp/>storage<sp/>points<sp/>to<sp/>the<sp/>same<sp/>file<sp/>location<sp/>as<sp/>&quot;dont_free&quot;</highlight></codeline>
+<codeline lineno="165"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>since<sp/>the<sp/>latter<sp/>is<sp/>guaranteed<sp/>to<sp/>never<sp/>be<sp/>freed<sp/>or<sp/>shared.<sp/>This<sp/>exception<sp/>is<sp/>used<sp/>when<sp/>creating<sp/>a<sp/>new,<sp/>unallocated</highlight></codeline>
+<codeline lineno="166"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>string<sp/>(see<sp/>SgAsmStoredString(SgAsmGenericStrtab,const<sp/>std::string&amp;)).<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(get_numberFreed()&gt;0<sp/>&amp;&amp;<sp/>(!get_dontFree()<sp/>||<sp/><ref refid="SgAsmDOSFileHeader_8h_1ac681806181c80437cfab37335f62ff39" kindref="member">offset</ref>!=get_dontFree()-&gt;get_offset()))<sp/>{</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmExecutableFileFormat_1a0baa46cabcd118e86d9d49e3585bef13" kindref="member">mlog</ref>[<ref refid="namespaceSawyer_1_1Message_1abfb4d3240797db3a74bbf691f708a1c9a52f8e5eea9bfc070f3e0a152e3d1537a" kindref="member">WARN</ref>]<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;SgAsmCoffStrtab::create_storage(&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="SgAsmDOSFileHeader_8h_1ac681806181c80437cfab37335f62ff39" kindref="member">offset</ref><sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;):<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<ref refid="namespaceRose_1_1StringUtility_1abf7821b02ca01054a3b4303aff3086e2" kindref="member">StringUtility::plural</ref>(p_numberFreed,<sp/></highlight><highlight class="stringliteral">&quot;other<sp/>strings&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/>(of<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;p_storageList.size()<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/>created)<sp/>in<sp/>[&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="classSgAsmGenericStrtab_1a103419ab4ff611d69b109ac8e98a9197" kindref="member">container</ref>-&gt;get_id()<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;]&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/>\&quot;&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="classSgAsmGenericStrtab_1a103419ab4ff611d69b109ac8e98a9197" kindref="member">container</ref>-&gt;get_name()-&gt;get_string(</highlight><highlight class="keyword">true</highlight><highlight class="normal">)<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\&quot;&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;(1==get_numberFreed()?</highlight><highlight class="stringliteral">&quot;has&quot;</highlight><highlight class="normal">:</highlight><highlight class="stringliteral">&quot;have&quot;</highlight><highlight class="normal">)<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/>been<sp/>modified<sp/>and/or<sp/>reallocated\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(0==get_numberFreed());</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/>set_isModified(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/>p_storageList.push_back(storage);</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>storage;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Returns<sp/>the<sp/>number<sp/>of<sp/>bytes<sp/>required<sp/>to<sp/>store<sp/>the<sp/>string<sp/>in<sp/>the<sp/>string<sp/>table.<sp/>This<sp/>is<sp/>one<sp/>(the<sp/>length<sp/>byte)<sp/>plus<sp/>the</highlight></codeline>
+<codeline lineno="182"><highlight class="comment"><sp/>*<sp/>length<sp/>of<sp/>the<sp/>string.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><ref refid="classSgAsmCoffStrtab_1a0b2d108ff3571f0857487ef071765996" kindref="member">SgAsmCoffStrtab::get_storageSize</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classSgAsmStringStorage" kindref="compound">SgAsmStringStorage</ref><sp/>*storage)<sp/>{</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1<sp/>+<sp/>storage-&gt;get_string().size();</highlight></codeline>
+<codeline lineno="186"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Write<sp/>string<sp/>table<sp/>back<sp/>to<sp/>disk.<sp/>Free<sp/>space<sp/>is<sp/>zeroed<sp/>out;<sp/>holes<sp/>are<sp/>left<sp/>as<sp/>they<sp/>are.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><ref refid="classSgAsmCoffStrtab_1a805ba492c7407ec74fb2eb7408ebf37f" kindref="member">SgAsmCoffStrtab::unparse</ref>(std::ostream<sp/>&amp;<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="191"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref><sp/>*<ref refid="classSgAsmGenericStrtab_1a103419ab4ff611d69b109ac8e98a9197" kindref="member">container</ref><sp/>=<sp/>get_container();</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Write<sp/>length<sp/>coded<sp/>strings.<sp/>Shared<sp/>strings<sp/>will<sp/>be<sp/>written<sp/>more<sp/>than<sp/>once,<sp/>but<sp/>that&apos;s<sp/>OK.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i=0;<sp/>i&lt;p_storageList.size();<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmStringStorage" kindref="compound">SgAsmStringStorage</ref><sp/>*storage<sp/>=<sp/>p_storageList[i];</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(storage-&gt;get_offset()!=<ref refid="classSgAsmGenericString_1a75253f7ec7c7714815d39cc3d8832d5b" kindref="member">SgAsmGenericString::unallocated</ref>);</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>at<sp/>=<sp/><ref refid="classSgAsmGenericStrtab_1a103419ab4ff611d69b109ac8e98a9197" kindref="member">container</ref>-&gt;<ref refid="classSgAsmGenericSection_1abb48917ca0e83f66faa0f0fe045c3c5a" kindref="member">write</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>storage-&gt;get_offset(),<sp/>storage-&gt;get_string());</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericStrtab_1a103419ab4ff611d69b109ac8e98a9197" kindref="member">container</ref>-&gt;<ref refid="classSgAsmGenericSection_1abb48917ca0e83f66faa0f0fe045c3c5a" kindref="member">write</ref>(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>at,<sp/></highlight><highlight class="charliteral">&apos;\0&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Fill<sp/>free<sp/>areas<sp/>with<sp/>zero<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/>BOOST_FOREACH<sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>AddressInterval<sp/>&amp;interval,<sp/>get_freeList().intervals())</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericStrtab_1a103419ab4ff611d69b109ac8e98a9197" kindref="member">container</ref>-&gt;write(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/>interval.least(),<sp/><ref refid="namespacestd" kindref="compound">std</ref>::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal">(interval.size(),<sp/>&apos;\0&apos;));</highlight></codeline>
+<codeline lineno="205"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><ref refid="classSgAsmStringStorage" kindref="compound">SgAsmStringStorage</ref>*</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><ref refid="classSgAsmCoffStrtab" kindref="compound">SgAsmCoffStrtab</ref>::<ref refid="classSgAsmCoffStrtab_1aa8cda161aeb0f7b8502fb1d82b027f87" kindref="member">create_storage</ref>(<ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/><ref refid="test04_8C_1a6150e0515f7202e2fb518f7206ed97dc" kindref="member">x</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>y)<sp/>{</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classSgAsmCoffStrtab_1acbcebc01f028bb45d3af5f64860a6138" kindref="member">createStorage</ref>(<ref refid="test04_8C_1a6150e0515f7202e2fb518f7206ed97dc" kindref="member">x</ref>,<sp/>y);</highlight></codeline>
+<codeline lineno="210"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"></highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><ref refid="classSgAsmCoffStrtab_1a12e4c4a2c512f1af89b90203b217ddd9" kindref="member">SgAsmCoffStrtab::get_storage_size</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classSgAsmStringStorage" kindref="compound">SgAsmStringStorage</ref><sp/>*<ref refid="test04_8C_1a6150e0515f7202e2fb518f7206ed97dc" kindref="member">x</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classSgAsmCoffStrtab_1a0b2d108ff3571f0857487ef071765996" kindref="member">get_storageSize</ref>(<ref refid="test04_8C_1a6150e0515f7202e2fb518f7206ed97dc" kindref="member">x</ref>);</highlight></codeline>
+<codeline lineno="215"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/frontend/BinaryFormats/PeStringTable.C"/>
+  </compounddef>
+</doxygen>

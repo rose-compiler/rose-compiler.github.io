@@ -1,0 +1,25 @@
+var classOARIFG =
+[
+    [ "OARIFG", "classOARIFG.html#a5ac69f325238aa5df023da411df2c32d", null ],
+    [ "~OARIFG", "classOARIFG.html#a3e3f9924c988f81c846766f0a2792e11", null ],
+    [ "GetEdgeIterator", "classOARIFG.html#ac22b6153aeeb5c72ffb274df695f9b9e", null ],
+    [ "GetEdgeSink", "classOARIFG.html#a8cb3eda398b9a5609a4a96a2371c8f8c", null ],
+    [ "GetEdgeSrc", "classOARIFG.html#abd4dbf00c75c18efe005b5793b47fd6b", null ],
+    [ "GetFanin", "classOARIFG.html#a197feec1eb22fe832e2389a13bd22584", null ],
+    [ "GetFirstNode", "classOARIFG.html#a9cd7c1c9b7abbc2c2edb4b33fc990edd", null ],
+    [ "GetLastNode", "classOARIFG.html#a69b59dd1c726c9326b4f32495ce32872", null ],
+    [ "GetNextNode", "classOARIFG.html#a693e0737af8933b509ff766565196911", null ],
+    [ "GetNodeIterator", "classOARIFG.html#ac42cf6fd8a9966141ee8062d0a730e9e", null ],
+    [ "GetPrevNode", "classOARIFG.html#aa4f5b099b55c2fec032225aee349a921", null ],
+    [ "GetRIFGEdge", "classOARIFG.html#a2360b0fca8d749a7b9619999d04d45a4", null ],
+    [ "GetRIFGNode", "classOARIFG.html#a408475b278aede95cd7348a3c5535456", null ],
+    [ "GetRootNode", "classOARIFG.html#a7cd95c80c47de1b0a0fac690202d33e8", null ],
+    [ "GetTopologicalMap", "classOARIFG.html#aa20d34683a94c31161b0bfaa882602b4", null ],
+    [ "HighWaterMarkNodeId", "classOARIFG.html#a29e9464d5e65c3b7fbdd0fe5c88dc778", null ],
+    [ "IsValid", "classOARIFG.html#a582dc3e6e423ef47a74b33bf1a7c7946", null ],
+    [ "OARIFGNodeIterator", "classOARIFG.html#a3f1b1f61a058a54d9dded09b46521d45", null ],
+    [ "cfg", "classOARIFG.html#aded20b3c8ddea3cf4f17ef4fd0b6f64d", null ],
+    [ "edge_to_id_map", "classOARIFG.html#aed2be961a0d2a4b7ebf5113b1a9983a5", null ],
+    [ "edgeid_to_edge_map", "classOARIFG.html#a31d5a65470ea9f4e23c27ff3670bcf8b", null ],
+    [ "nodeid_to_node_map", "classOARIFG.html#a3a63451ae146edbdce325ea6f08f0776", null ]
+];

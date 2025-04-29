@@ -1,0 +1,251 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="TaintedFlow_8h" kind="file" language="C++">
+    <compoundname>TaintedFlow.h</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <includedby refid="BinaryAnalysis_8h" local="no">/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis.h</includedby>
+    <incdepgraph>
+      <node id="201318">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="201315">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="201316" relation="include">
+        </childnode>
+        <childnode refid="201317" relation="include">
+        </childnode>
+        <childnode refid="201318" relation="include">
+        </childnode>
+      </node>
+      <node id="201317">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="201314">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/TaintedFlow.h</label>
+        <link refid="TaintedFlow_8h"/>
+        <childnode refid="201315" relation="include">
+        </childnode>
+      </node>
+      <node id="201316">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="201315" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="201320">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis.h</label>
+        <link refid="BinaryAnalysis_8h"/>
+      </node>
+      <node id="201319">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/TaintedFlow.h</label>
+        <link refid="TaintedFlow_8h"/>
+        <childnode refid="201320" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>ROSE_BinaryAnalysis_TaintedFlow_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ROSE_BinaryAnalysis_TaintedFlow_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="DataFlow_8h" kindref="compound">Rose/BinaryAnalysis/DataFlow.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Diagnostics_8h" kindref="compound">Rose/Diagnostics.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/shared_ptr.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdexcept&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose" kindref="compound">Rose</ref><sp/>{</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">BinaryAnalysis<sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="keyword">class<sp/></highlight><highlight class="normal">TaintedFlow<sp/>{</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1TaintedFlow_1a5872918b2d1b182807315c9d82d8ca53" kindref="member">Taintedness</ref><sp/>{<sp/>BOTTOM,<sp/>NOT_TAINTED,<sp/>TAINTED,<sp/>TOP<sp/>};</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1TaintedFlow_1a55e7c9798faffd1f47176531cc13e460" kindref="member">Approximation</ref><sp/>{<sp/>UNDER_APPROXIMATE,<sp/>OVER_APPROXIMATE<sp/>};</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1TaintedFlow_1a5872918b2d1b182807315c9d82d8ca53" kindref="member">Taintedness</ref><sp/><ref refid="namespaceRose_1_1AST_1_1IO_1adb18fab52b62c4149b38c88f8ce82775" kindref="member">merge</ref>(<ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1TaintedFlow_1a5872918b2d1b182807315c9d82d8ca53" kindref="member">Taintedness</ref>,<sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1TaintedFlow_1a5872918b2d1b182807315c9d82d8ca53" kindref="member">Taintedness</ref>);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>std::pair&lt;DataFlow::Variable,<sp/>Taintedness&gt;<sp/>VariableTaint;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>State</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="namespaceJovial_1aefd22f2435d20d41c4bba1c8306e48dc" kindref="member">State</ref><sp/>{</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>std::list&lt;VariableTaint&gt;<sp/>VarTaintList;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VarTaintList<sp/>taints_;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>boost::shared_ptr&lt;State&gt;<sp/>Ptr;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Initialize<sp/>taintedness<sp/>for<sp/>all<sp/>variables;<sp/>this<sp/>is<sp/>protected<sp/>because<sp/>this<sp/>is<sp/>a<sp/>reference-counted<sp/>object</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceJovial_1aefd22f2435d20d41c4bba1c8306e48dc" kindref="member">State</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>DataFlow::VariableList<sp/>&amp;variables,<sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1TaintedFlow_1a5872918b2d1b182807315c9d82d8ca53" kindref="member">Taintedness</ref><sp/>taint)<sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>DataFlow::Variable<sp/>&amp;<ref refid="namespaceFortran_1_1parser_1ac52786a7a1a8a8277fa7a1493b451bb1" kindref="member">variable</ref>:<sp/>variables)</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>taints_.push_back(std::make_pair(<ref refid="namespaceFortran_1_1parser_1ac52786a7a1a8a8277fa7a1493b451bb1" kindref="member">variable</ref>,<sp/>taint));</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>State::Ptr<sp/>instance(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>DataFlow::VariableList<sp/>&amp;variables,<sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1TaintedFlow_1a5872918b2d1b182807315c9d82d8ca53" kindref="member">Taintedness</ref><sp/>taint<sp/>=<sp/>BOTTOM)<sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>State::Ptr(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="namespaceJovial_1aefd22f2435d20d41c4bba1c8306e48dc" kindref="member">State</ref>(variables,<sp/>taint));</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>State::Ptr<sp/><ref refid="xml2qnfa_8cpp_1ab28d5e8f45239f389a8d50d3024d9b3d" kindref="member">copy</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>State::Ptr(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="namespaceJovial_1aefd22f2435d20d41c4bba1c8306e48dc" kindref="member">State</ref>(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>~<ref refid="namespaceJovial_1aefd22f2435d20d41c4bba1c8306e48dc" kindref="member">State</ref>()<sp/>{}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1TaintedFlow_1a5872918b2d1b182807315c9d82d8ca53" kindref="member">Taintedness</ref>&amp;<sp/>lookup(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>DataFlow::Variable&amp;);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>setIfExists(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>DataFlow::Variable&amp;,<sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1TaintedFlow_1a5872918b2d1b182807315c9d82d8ca53" kindref="member">Taintedness</ref>);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceRose_1_1AST_1_1IO_1adb18fab52b62c4149b38c88f8ce82775" kindref="member">merge</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>State::Ptr&amp;);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>VarTaintList&amp;<sp/>variables()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>taints_;<sp/>}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VarTaintList&amp;<sp/>variables()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>taints_;<sp/>}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>print(std::ostream&amp;)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>State::Ptr<sp/>StatePtr;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Transfer<sp/>function</highlight></codeline>
+<codeline lineno="118"><highlight class="comment"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">TransferFunction<sp/>{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>DataFlow::VertexFlowGraphs<sp/>&amp;index_;<sp/></highlight><highlight class="comment">//<sp/>maps<sp/>CFG<sp/>vertex<sp/>to<sp/>data<sp/>flow<sp/>graph</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1TaintedFlow_1a55e7c9798faffd1f47176531cc13e460" kindref="member">Approximation</ref><sp/>approximation_;</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SmtSolverPtr<sp/>smtSolver_;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSawyer_1_1Message_1_1Facility" kindref="compound">Sawyer::Message::Facility</ref><sp/>&amp;<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TransferFunction(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>DataFlow::VertexFlowGraphs<sp/>&amp;<ref refid="namespaceannotation_1a698a57542ae1ea863c3f23cc13f21950" kindref="member">index</ref>,<sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1TaintedFlow_1a55e7c9798faffd1f47176531cc13e460" kindref="member">Approximation</ref><sp/>approx,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SmtSolverPtr<sp/>&amp;solver,</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSawyer_1_1Message_1_1Facility" kindref="compound">Sawyer::Message::Facility</ref><sp/>&amp;<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>)</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>index_(<ref refid="namespaceannotation_1a698a57542ae1ea863c3f23cc13f21950" kindref="member">index</ref>),<sp/>approximation_(approx),<sp/>smtSolver_(solver),<sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>(<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>)<sp/>{}</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFG&gt;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>StatePtr<sp/>operator()(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classCFG" kindref="compound">CFG</ref>&amp;,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>cfgVertex,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>StatePtr<sp/>&amp;in)<sp/>{</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">)(cfgVertex,<sp/>in);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>StatePtr<sp/>operator()(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>cfgVertex,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>StatePtr<sp/>&amp;in);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="namespaceLibadalang__ROSE__Translation_1a9242f619ebd4a274d16e5f96611e19ef" kindref="member">toString</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>StatePtr<sp/>&amp;in);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Merge<sp/>function</highlight></codeline>
+<codeline lineno="142"><highlight class="comment"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">MergeFunction<sp/>{</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>operator()(StatePtr<sp/>&amp;dst<sp/></highlight><highlight class="comment">/*in,out*/</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>StatePtr<sp/>&amp;src)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(src);</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!dst)<sp/>{</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst<sp/>=<sp/>src-&gt;copy();</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>destination<sp/>changed</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dst-&gt;merge(src);</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Data<sp/>members</highlight></codeline>
+<codeline lineno="158"><highlight class="comment"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classSawyer_1_1Message_1_1Facility" kindref="compound">Sawyer::Message::Facility</ref><sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1TaintedFlow_1a55e7c9798faffd1f47176531cc13e460" kindref="member">Approximation</ref><sp/>approximation_;</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/>DataFlow<sp/>dataFlow_;</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/>DataFlow::VertexFlowGraphs<sp/>vertexFlowGraphs_;</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/>DataFlow::VariableList<sp/>variableList_;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>vlistInitialized_;</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;StatePtr&gt;<sp/>results_;</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>SmtSolverPtr<sp/>smtSolver_;</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/>TaintedFlow(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>InstructionSemantics::BaseSemantics::DispatcherPtr<sp/>&amp;userDispatcher)</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>approximation_(UNDER_APPROXIMATE),<sp/>dataFlow_(userDispatcher),<sp/>vlistInitialized_(false)<sp/>{}</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceRose_1ae175d19a734e208c2c67882ec0fc9733" kindref="member">initDiagnostics</ref>();</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1TaintedFlow_1a55e7c9798faffd1f47176531cc13e460" kindref="member">Approximation</ref><sp/>approximation()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>approximation_;<sp/>}</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>approximation(<ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1TaintedFlow_1a55e7c9798faffd1f47176531cc13e460" kindref="member">Approximation</ref><sp/><ref refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" kindref="member">a</ref>)<sp/>{<sp/>approximation_<sp/>=<sp/><ref refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" kindref="member">a</ref>;<sp/>}</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/>SmtSolverPtr<sp/>smtSolver()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>smtSolver_;<sp/>}</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>smtSolver(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SmtSolverPtr<sp/>&amp;solver)<sp/>{<sp/>smtSolver_<sp/>=<sp/>solver;<sp/>}</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFG&gt;</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>computeFlowGraphs(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classCFG" kindref="compound">CFG</ref><sp/>&amp;<ref refid="yicesParserLib_8h_1a186965467c7391216517a49d187f340c" kindref="member">cfg</ref>,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>cfgStartVertex)<sp/>{</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">Diagnostics;</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a7cdbc2b0d345083fb3409562c8d845b1" kindref="member">ASSERT_this</ref>();</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(cfgStartVertex<sp/>&lt;<sp/><ref refid="yicesParserLib_8h_1a186965467c7391216517a49d187f340c" kindref="member">cfg</ref>.nVertices());</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Stream<sp/>mesg(<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="matcherparser_8h_1a15c9f7bd2f0e9686df5d9df4f3314aa9a0116b78582fbf1fd6e069fde8dd308c4" kindref="member">WHERE</ref>]<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;computeFlowGraphs<sp/>starting<sp/>at<sp/>CFG<sp/>vertex<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;cfgStartVertex);</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vertexFlowGraphs_<sp/>=<sp/>dataFlow_.buildGraphPerVertex(<ref refid="yicesParserLib_8h_1a186965467c7391216517a49d187f340c" kindref="member">cfg</ref>,<sp/>cfgStartVertex);</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>variableList_<sp/>=<sp/>dataFlow_.getUniqueVariables(vertexFlowGraphs_);</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>results_.clear();</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vlistInitialized_<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mesg<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;;<sp/>found<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="namespaceRose_1_1StringUtility_1abf7821b02ca01054a3b4303aff3086e2" kindref="member">StringUtility::plural</ref>(variableList_.size(),<sp/></highlight><highlight class="stringliteral">&quot;variables&quot;</highlight><highlight class="normal">)<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>])<sp/>{</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>DataFlow::Variable<sp/>&amp;<ref refid="namespaceFortran_1_1parser_1ac52786a7a1a8a8277fa7a1493b451bb1" kindref="member">variable</ref>:<sp/>variableList_)</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>]<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/><sp/>found<sp/>variable:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="namespaceFortran_1_1parser_1ac52786a7a1a8a8277fa7a1493b451bb1" kindref="member">variable</ref><sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>DataFlow::VertexFlowGraphs&amp;<sp/>vertexFlowGraphs()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a7cdbc2b0d345083fb3409562c8d845b1" kindref="member">ASSERT_this</ref>();</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>vertexFlowGraphs_;</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>vertexFlowGraphs(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>DataFlow::VertexFlowGraphs<sp/>&amp;graphMap)<sp/>{</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">Diagnostics;</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a7cdbc2b0d345083fb3409562c8d845b1" kindref="member">ASSERT_this</ref>();</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vertexFlowGraphs_<sp/>=<sp/>graphMap;</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>variableList_<sp/>=<sp/>dataFlow_.getUniqueVariables(vertexFlowGraphs_);</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vlistInitialized_<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>results_.clear();</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="matcherparser_8h_1a15c9f7bd2f0e9686df5d9df4f3314aa9a0116b78582fbf1fd6e069fde8dd308c4" kindref="member">WHERE</ref>]<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;vertexFlowGraphs<sp/>set<sp/>by<sp/>user<sp/>with<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="namespaceRose_1_1StringUtility_1abf7821b02ca01054a3b4303aff3086e2" kindref="member">StringUtility::plural</ref>(variableList_.size(),<sp/></highlight><highlight class="stringliteral">&quot;variables&quot;</highlight><highlight class="normal">)<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>DataFlow::VariableList&amp;<sp/>variables()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a7cdbc2b0d345083fb3409562c8d845b1" kindref="member">ASSERT_this</ref>();</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a8bcb03629cd31aca32228c8d9f779bd0" kindref="member">ASSERT_require2</ref>(vlistInitialized_,<sp/></highlight><highlight class="stringliteral">&quot;TaintedFlow::computeFlowGraphs<sp/>must<sp/>be<sp/>called<sp/>before<sp/>TaintedFlow::variables&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>variableList_;</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/>StatePtr<sp/>stateInstance(<ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1TaintedFlow_1a5872918b2d1b182807315c9d82d8ca53" kindref="member">Taintedness</ref><sp/>taint)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a7cdbc2b0d345083fb3409562c8d845b1" kindref="member">ASSERT_this</ref>();</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a8bcb03629cd31aca32228c8d9f779bd0" kindref="member">ASSERT_require2</ref>(vlistInitialized_,<sp/></highlight><highlight class="stringliteral">&quot;TaintedFlow::computeFlowGraphs<sp/>must<sp/>be<sp/>called<sp/>before<sp/>TaintedFlow::stateInstance&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>State::instance(variableList_,<sp/>taint);</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"></highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CFG&gt;</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>runToFixedPoint(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classCFG" kindref="compound">CFG</ref><sp/>&amp;<ref refid="yicesParserLib_8h_1a186965467c7391216517a49d187f340c" kindref="member">cfg</ref>,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>cfgStartVertex,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>StatePtr<sp/>&amp;initialState)<sp/>{</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">Diagnostics;</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a7cdbc2b0d345083fb3409562c8d845b1" kindref="member">ASSERT_this</ref>();</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(cfgStartVertex<sp/>&lt;<sp/><ref refid="yicesParserLib_8h_1a186965467c7391216517a49d187f340c" kindref="member">cfg</ref>.nVertices());</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(initialState);</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Stream<sp/>mesg(<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="matcherparser_8h_1a15c9f7bd2f0e9686df5d9df4f3314aa9a0116b78582fbf1fd6e069fde8dd308c4" kindref="member">WHERE</ref>]<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;runToFixedPoint<sp/>starting<sp/>at<sp/>CFG<sp/>vertex<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;cfgStartVertex);</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>results_.clear();</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TransferFunction<sp/>xfer(vertexFlowGraphs_,<sp/>approximation_,<sp/>smtSolver_,<sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>);</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MergeFunction<sp/><ref refid="namespaceRose_1_1AST_1_1IO_1adb18fab52b62c4149b38c88f8ce82775" kindref="member">merge</ref>;</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>DataFlow::Engine&lt;CFG,<sp/>StatePtr,<sp/>TransferFunction,<sp/>MergeFunction&gt;<sp/>dfEngine(<ref refid="yicesParserLib_8h_1a186965467c7391216517a49d187f340c" kindref="member">cfg</ref>,<sp/>xfer,<sp/><ref refid="namespaceRose_1_1AST_1_1IO_1adb18fab52b62c4149b38c88f8ce82775" kindref="member">merge</ref>);</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dfEngine.name(</highlight><highlight class="stringliteral">&quot;tainted-flow&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dfEngine.runToFixedPoint(cfgStartVertex,<sp/>initialState);</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>results_<sp/>=<sp/>dfEngine.getFinalStates();</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mesg<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;;<sp/>results<sp/>for<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="namespaceRose_1_1StringUtility_1abf7821b02ca01054a3b4303aff3086e2" kindref="member">StringUtility::plural</ref>(results_.size(),<sp/></highlight><highlight class="stringliteral">&quot;vertices&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;vertex&quot;</highlight><highlight class="normal">)<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"></highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/>StatePtr<sp/>getFinalState(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>cfgVertexId)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a7cdbc2b0d345083fb3409562c8d845b1" kindref="member">ASSERT_this</ref>();</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(cfgVertexId<sp/>&lt;<sp/>results_.size());</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>results_[cfgVertexId];</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="298"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"></highlight></codeline>
+<codeline lineno="300"><highlight class="normal">std::ostream&amp;<sp/><ref refid="namespaceRose_1a60d44f837528208fed14b56cca03177c" kindref="member">operator&lt;&lt;</ref>(std::ostream<sp/>&amp;out,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceJovial_1aefd22f2435d20d41c4bba1c8306e48dc" kindref="member">TaintedFlow::State</ref><sp/>&amp;state);</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"></highlight></codeline>
+<codeline lineno="302"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="303"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="304"><highlight class="normal"></highlight></codeline>
+<codeline lineno="305"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="306"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/TaintedFlow.h"/>
+  </compounddef>
+</doxygen>

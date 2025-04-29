@@ -1,0 +1,5 @@
+var namespaceSgSourceFile__processCppLinemarkers =
+[
+    [ "FixupASTSourcePositionsBasedOnDetectedLineDirectives", "classSgSourceFile__processCppLinemarkers_1_1FixupASTSourcePositionsBasedOnDetectedLineDirectives.html", "classSgSourceFile__processCppLinemarkers_1_1FixupASTSourcePositionsBasedOnDetectedLineDirectives" ],
+    [ "LinemarkerTraversal", "classSgSourceFile__processCppLinemarkers_1_1LinemarkerTraversal.html", "classSgSourceFile__processCppLinemarkers_1_1LinemarkerTraversal" ]
+];

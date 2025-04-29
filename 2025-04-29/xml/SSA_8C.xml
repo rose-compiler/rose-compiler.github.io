@@ -1,0 +1,274 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="SSA_8C" kind="file" language="C++">
+    <compoundname>SSA.C</compoundname>
+    <includes refid="SSA_8h" local="yes">SSA.h</includes>
+    <includes local="no">iostream</includes>
+    <incdepgraph>
+      <node id="155015">
+        <label>list</label>
+      </node>
+      <node id="155017">
+        <label>Phi.h</label>
+        <link refid="Phi_8h"/>
+        <childnode refid="155016" relation="include">
+        </childnode>
+        <childnode refid="155018" relation="include">
+        </childnode>
+      </node>
+      <node id="155018">
+        <label>OpenAnalysis/CFG/CFG.h</label>
+        <link refid="OpenAnalysis_2CFG_2CFG_8h"/>
+        <childnode refid="155019" relation="include">
+        </childnode>
+        <childnode refid="155015" relation="include">
+        </childnode>
+        <childnode refid="155009" relation="include">
+        </childnode>
+        <childnode refid="155016" relation="include">
+        </childnode>
+        <childnode refid="155013" relation="include">
+        </childnode>
+        <childnode refid="155020" relation="include">
+        </childnode>
+      </node>
+      <node id="155016">
+        <label>map</label>
+      </node>
+      <node id="155006">
+        <label>DomTree.h</label>
+        <link refid="DomTree_8h"/>
+        <childnode refid="155007" relation="include">
+        </childnode>
+        <childnode refid="155013" relation="include">
+        </childnode>
+        <childnode refid="155009" relation="include">
+        </childnode>
+        <childnode refid="155016" relation="include">
+        </childnode>
+      </node>
+      <node id="155011">
+        <label>Exception.h</label>
+        <link refid="midend_2programAnalysis_2OpenAnalysis_2Utils_2Exception_8h"/>
+        <childnode refid="155012" relation="include">
+        </childnode>
+      </node>
+      <node id="155004">
+        <label>/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/SSA.C</label>
+        <link refid="SSA_8C"/>
+        <childnode refid="155005" relation="include">
+        </childnode>
+        <childnode refid="155012" relation="include">
+        </childnode>
+      </node>
+      <node id="155007">
+        <label>OpenAnalysis/Utils/Tree.h</label>
+        <link refid="midend_2programAnalysis_2OpenAnalysis_2Utils_2Tree_8h"/>
+        <childnode refid="155008" relation="include">
+        </childnode>
+        <childnode refid="155009" relation="include">
+        </childnode>
+        <childnode refid="155010" relation="include">
+        </childnode>
+        <childnode refid="155011" relation="include">
+        </childnode>
+      </node>
+      <node id="155005">
+        <label>SSA.h</label>
+        <link refid="SSA_8h"/>
+        <childnode refid="155006" relation="include">
+        </childnode>
+        <childnode refid="155017" relation="include">
+        </childnode>
+      </node>
+      <node id="155013">
+        <label>OpenAnalysis/Utils/DGraph.h</label>
+        <link refid="DGraph_8h"/>
+        <childnode refid="155014" relation="include">
+        </childnode>
+      </node>
+      <node id="155020">
+        <label>OpenAnalysis/Interface/IRInterface.h</label>
+        <link refid="IRInterface_8h"/>
+        <childnode refid="155021" relation="include">
+        </childnode>
+      </node>
+      <node id="155012">
+        <label>iostream</label>
+      </node>
+      <node id="155008">
+        <label>deque</label>
+      </node>
+      <node id="155014">
+        <label>BaseGraph.h</label>
+        <link refid="BaseGraph_8h"/>
+        <childnode refid="155012" relation="include">
+        </childnode>
+        <childnode refid="155015" relation="include">
+        </childnode>
+        <childnode refid="155009" relation="include">
+        </childnode>
+        <childnode refid="155010" relation="include">
+        </childnode>
+        <childnode refid="155011" relation="include">
+        </childnode>
+      </node>
+      <node id="155010">
+        <label>Iterator.h</label>
+        <link refid="Iterator_8h"/>
+      </node>
+      <node id="155009">
+        <label>set</label>
+      </node>
+      <node id="155019">
+        <label>cstring</label>
+      </node>
+      <node id="155021">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//<sp/>$Id:<sp/>SSA.C,v<sp/>1.1<sp/>2004/07/07<sp/>10:26:34<sp/>dquinlan<sp/>Exp<sp/>$</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>-*-C++-*-</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/>*<sp/>BeginRiceCopyright<sp/>*****************************************************</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Copyright<sp/>((c))<sp/>2002,<sp/>Rice<sp/>University<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>All<sp/>rights<sp/>reserved.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="comment">//<sp/>modification,<sp/>are<sp/>permitted<sp/>provided<sp/>that<sp/>the<sp/>following<sp/>conditions<sp/>are</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="comment">//<sp/>met:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="comment">//<sp/>*<sp/>Redistributions<sp/>of<sp/>source<sp/>code<sp/>must<sp/>retain<sp/>the<sp/>above<sp/>copyright</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="comment">//<sp/>*<sp/>Redistributions<sp/>in<sp/>binary<sp/>form<sp/>must<sp/>reproduce<sp/>the<sp/>above<sp/>copyright</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer<sp/>in<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>documentation<sp/>and/or<sp/>other<sp/>materials<sp/>provided<sp/>with<sp/>the<sp/>distribution.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">//<sp/>*<sp/>Neither<sp/>the<sp/>name<sp/>of<sp/>Rice<sp/>University<sp/>(RICE)<sp/>nor<sp/>the<sp/>names<sp/>of<sp/>its</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>contributors<sp/>may<sp/>be<sp/>used<sp/>to<sp/>endorse<sp/>or<sp/>promote<sp/>products<sp/>derived<sp/>from</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>this<sp/>software<sp/>without<sp/>specific<sp/>prior<sp/>written<sp/>permission.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="comment">//<sp/>This<sp/>software<sp/>is<sp/>provided<sp/>by<sp/>RICE<sp/>and<sp/>contributors<sp/>&quot;as<sp/>is&quot;<sp/>and<sp/>any</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="comment">//<sp/>express<sp/>or<sp/>implied<sp/>warranties,<sp/>including,<sp/>but<sp/>not<sp/>limited<sp/>to,<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">//<sp/>implied<sp/>warranties<sp/>of<sp/>merchantability<sp/>and<sp/>fitness<sp/>for<sp/>a<sp/>particular</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="comment">//<sp/>purpose<sp/>are<sp/>disclaimed.<sp/>In<sp/>no<sp/>event<sp/>shall<sp/>RICE<sp/>or<sp/>contributors<sp/>be</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="comment">//<sp/>liable<sp/>for<sp/>any<sp/>direct,<sp/>indirect,<sp/>incidental,<sp/>special,<sp/>exemplary,<sp/>or</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="comment">//<sp/>consequential<sp/>damages<sp/>(including,<sp/>but<sp/>not<sp/>limited<sp/>to,<sp/>procurement<sp/>of</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="comment">//<sp/>substitute<sp/>goods<sp/>or<sp/>services;<sp/>loss<sp/>of<sp/>use,<sp/>data,<sp/>or<sp/>profits;<sp/>or</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>business<sp/>interruption)<sp/>however<sp/>caused<sp/>and<sp/>on<sp/>any<sp/>theory<sp/>of<sp/>liability,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>whether<sp/>in<sp/>contract,<sp/>strict<sp/>liability,<sp/>or<sp/>tort<sp/>(including<sp/>negligence</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="comment">//<sp/>or<sp/>otherwise)<sp/>arising<sp/>in<sp/>any<sp/>way<sp/>out<sp/>of<sp/>the<sp/>use<sp/>of<sp/>this<sp/>software,<sp/>even</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">//<sp/>if<sp/>advised<sp/>of<sp/>the<sp/>possibility<sp/>of<sp/>such<sp/>damage.<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="comment">//<sp/>*******************************************************<sp/>EndRiceCopyright<sp/>*</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Best<sp/>seen<sp/>in<sp/>120-column<sp/>wide<sp/>window<sp/>(or<sp/>print<sp/>in<sp/>landscape<sp/>mode).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="comment">//<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>Mint.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Arun<sp/>Chauhan<sp/>(achauhan@cs.rice.edu),<sp/>Dept<sp/>of<sp/>Computer<sp/>Science,<sp/>Rice<sp/>University,<sp/>2001.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="comment">//<sp/>standard<sp/>headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="SSA_8h" kindref="compound">SSA.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::ostream;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::endl;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::cout;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="72" refid="classSSA_1a6ee9f0938b10dc79772d0e6bdd108808" refkind="member"><highlight class="comment"></highlight><highlight class="normal"><ref refid="classSSA_1a6ee9f0938b10dc79772d0e6bdd108808" kindref="member">SSA::SSA</ref><sp/>(<ref refid="classCFG" kindref="compound">CFG</ref>&amp;<sp/>_cfg)</highlight></codeline>
+<codeline lineno="73"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><ref refid="classSSA_1a3848fe3e881c51da67edf16a050729ba" kindref="member">cfg</ref><sp/>=<sp/>&amp;_cfg;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><ref refid="classDomTree" kindref="compound">DomTree</ref><sp/>dt(*<ref refid="classSSA_1a3848fe3e881c51da67edf16a050729ba" kindref="member">cfg</ref>);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><ref refid="classSSA_1a3848fe3e881c51da67edf16a050729ba" kindref="member">cfg</ref>-&gt;<ref refid="classCFG_1a92637c40b2c01546430336b5b6754482" kindref="member">compute_uses_sets</ref>();</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/>dt.<ref refid="classDomTree_1a5dba812e49775bceef3541ed28c1cfb5" kindref="member">compute_dominance_frontiers</ref>();</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;====================&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Dominator<sp/>tree<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;--------------------&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/>dt.<ref refid="classDomTree_1a57750edf48d2db7a1b5c5d14e47dd9eb" kindref="member">dump</ref>(cout);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;====================&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>insert<sp/>Phi<sp/>functions<sp/>where<sp/>needed</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><ref refid="classCFG_1_1NonLocalsIterator" kindref="compound">CFG::NonLocalsIterator</ref><sp/>i(*<ref refid="classSSA_1a3848fe3e881c51da67edf16a050729ba" kindref="member">cfg</ref>);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/>std::set&lt;CFG::Node*&gt;<sp/>work_list;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/>std::set&lt;CFG::Node*&gt;<sp/>blks_with_phi;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>((</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">)i)<sp/>{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>work_list.clear();</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>blks_with_phi.clear();</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="IRInterface_8h_1aa484e382a7b37a571d25b4fdb41faf10" kindref="member">SymHandle</ref><sp/>var_name<sp/>=<sp/><ref refid="classSSA_1a3848fe3e881c51da67edf16a050729ba" kindref="member">cfg</ref>-&gt;<ref refid="classCFG_1abdd33127e5be86785f671389593589c3" kindref="member">GetIRInterface</ref>().<ref refid="classIRInterface_1a397d8f2240cdac424050758328419278" kindref="member">GetSymHandle</ref>((<ref refid="IRInterface_8h_1ad2cde269fec4d605339267d33c05e67f" kindref="member">LeafHandle</ref>)i);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classCFG_1_1DefBlocksIterator" kindref="compound">CFG::DefBlocksIterator</ref><sp/>block(*<ref refid="classSSA_1a3848fe3e881c51da67edf16a050729ba" kindref="member">cfg</ref>,<sp/>var_name);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>((</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">)block)<sp/>{</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>work_list.insert((<ref refid="classCFG_1_1Node" kindref="compound">CFG::Node</ref>*)block);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>++block;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>std::set&lt;CFG::Node*&gt;::iterator<sp/><ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref><sp/>=<sp/>work_list.begin();</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(<ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref><sp/>!=<sp/>work_list.end())<sp/>{</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classDomTree_1_1DomFrontIterator" kindref="compound">DomTree::DomFrontIterator</ref><sp/>d(dt.<ref refid="classDomTree_1ac90061d1d78c47becf34002d9dd4eb1f" kindref="member">domtree_node</ref>(*<ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>));</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>((</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">)d)<sp/>{</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classCFG_1_1Node" kindref="compound">CFG::Node</ref>*<sp/>blk<sp/>=<sp/></highlight><highlight class="keyword">dynamic_cast&lt;</highlight><highlight class="normal"><ref refid="classCFG_1_1Node" kindref="compound">CFG::Node</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">((<ref refid="classDGraph_1_1Node" kindref="compound">DGraph::Node</ref>*)d);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(blks_with_phi.find(blk)<sp/>==<sp/>blks_with_phi.end())<sp/>{</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classPhi" kindref="compound">Phi</ref>*<sp/>p<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classPhi" kindref="compound">Phi</ref>(var_name,<sp/><ref refid="classSSA_1a3848fe3e881c51da67edf16a050729ba" kindref="member">cfg</ref>);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSSA_1aa6a2230505a83ff8abf7b9d7d6b627ce" kindref="member">phi_node_sets</ref>[blk].insert(p);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;inserted<sp/>Phi<sp/>node<sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p-&gt;<ref refid="classPhi_1a0a0d972afb5bce86f1518b4c47b8189b" kindref="member">dump</ref>(cout);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>in<sp/>node<sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>blk-&gt;<ref refid="classCFG_1_1Node_1a895372f34601a41b8456cfe998b4c66c" kindref="member">dump</ref>(cout);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(work_list.find(blk)<sp/>==<sp/>work_list.end())</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>work_list.insert(blk);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>++d;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>++<ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>++i;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="117"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123" refid="classSSA_1a2bb3a5acdf50d70df668bf167c39dfec" refkind="member"><highlight class="normal"><ref refid="classSSA_1a2bb3a5acdf50d70df668bf167c39dfec" kindref="member">SSA::dump</ref><sp/>(ostream&amp;<sp/>os)</highlight></codeline>
+<codeline lineno="124"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>0<sp/>//<sp/>FIXME</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;=====<sp/>SSA<sp/>dump<sp/>=====&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="classSSA_1a3848fe3e881c51da67edf16a050729ba" kindref="member">cfg</ref>-&gt;<ref refid="classCFG_1ac1bd29f98ef99fbf3ae35a9ebf3636e6" kindref="member">subprog_name</ref>().name()<sp/>&lt;&lt;<sp/>endl<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;--------------------&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;=====<sp/>SSA<sp/>dump<sp/>=====&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="classSSA_1a3848fe3e881c51da67edf16a050729ba" kindref="member">cfg</ref>-&gt;<ref refid="classCFG_1abdd33127e5be86785f671389593589c3" kindref="member">GetIRInterface</ref>().<ref refid="classIRInterface_1aa7b28207a01ab0114b446b9df8c639c0" kindref="member">GetSymNameFromSymHandle</ref>(<ref refid="classSSA_1a3848fe3e881c51da67edf16a050729ba" kindref="member">cfg</ref>-&gt;<ref refid="classCFG_1ac1bd29f98ef99fbf3ae35a9ebf3636e6" kindref="member">subprog_name</ref>())<sp/>&lt;&lt;<sp/>endl<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;--------------------&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal">#endif</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>dump<sp/>each<sp/>individual<sp/>CFG<sp/>node<sp/>and<sp/>the<sp/>phi<sp/>nodes<sp/>associated<sp/>with<sp/>each<sp/>node</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><ref refid="classBaseGraph_1_1NodesIterator" kindref="compound">CFG::NodesIterator</ref><sp/>cfg_nodes_iter(*<ref refid="classSSA_1a3848fe3e881c51da67edf16a050729ba" kindref="member">cfg</ref>);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>((</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">)cfg_nodes_iter)<sp/>{</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classCFG_1_1Node" kindref="compound">CFG::Node</ref>*<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref><sp/>=<sp/></highlight><highlight class="keyword">dynamic_cast&lt;</highlight><highlight class="normal"><ref refid="classCFG_1_1Node" kindref="compound">CFG::Node</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">((<ref refid="classDGraph_1_1Node" kindref="compound">DGraph::Node</ref>*)cfg_nodes_iter);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>-&gt;longdump(<ref refid="classSSA_1a3848fe3e881c51da67edf16a050729ba" kindref="member">cfg</ref>,<sp/>os);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSSA_1_1PhiNodesIterator" kindref="compound">PhiNodesIterator</ref><sp/>phi_iter(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">)phi_iter)<sp/>{</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Phi<sp/>Nodes:&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>((</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">)phi_iter)<sp/>{</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>((<ref refid="classPhi" kindref="compound">Phi</ref>*)phi_iter)-&gt;dump(os);</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>++phi_iter;</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/>++cfg_nodes_iter;</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/>os<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="150"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/SSA.C"/>
+  </compounddef>
+</doxygen>

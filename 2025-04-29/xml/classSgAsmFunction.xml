@@ -1,0 +1,1141 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="classSgAsmFunction" kind="class" language="C++" prot="public">
+    <compoundname>SgAsmFunction</compoundname>
+    <basecompoundref refid="classSgAsmSynthesizedDeclaration" prot="public" virt="non-virtual">SgAsmSynthesizedDeclaration</basecompoundref>
+    <includes refid="SgAsmFunction_8h" local="no">SgAsmFunction.h</includes>
+    <innerclass refid="classSgAsmFunction_1_1NodeSelector" prot="public">SgAsmFunction::NodeSelector</innerclass>
+      <sectiondef kind="public-type">
+      <memberdef kind="enum" id="classSgAsmFunction_1ad1e0c37f9e507fc6acaf01dd0794a752" prot="public" static="no" strong="no">
+        <type></type>
+        <name>MayReturn</name>
+        <enumvalue id="classSgAsmFunction_1ad1e0c37f9e507fc6acaf01dd0794a752a0d3fbe8fb9b711a6ca66ef2f09824496" prot="public">
+          <name>RET_UNKNOWN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>It is unknown whether this function ever returns or not. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1ad1e0c37f9e507fc6acaf01dd0794a752adf440ebe371c3f4fdc1612448157f6bc" prot="public">
+          <name>RET_NEVER</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>This function is known to never return. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1ad1e0c37f9e507fc6acaf01dd0794a752a921b64c76e93f8581fd16c205aac1516" prot="public">
+          <name>RET_SOMETIMES</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>This function may return or not, depending on how it is called. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1ad1e0c37f9e507fc6acaf01dd0794a752a8cf02b4f0b67544a9fafcf0fbc28ee19" prot="public">
+          <name>RET_ALWAYS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>This function returns each time it is called. </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Whether a function returns. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="30" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="30" bodyend="35"/>
+      </memberdef>
+      <memberdef kind="enum" id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852c" prot="public" static="no" strong="no">
+        <type></type>
+        <name>FunctionReason</name>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca504e7feb66ba790e6eb017de72ff4faa" prot="public">
+          <name>FUNC_NONE</name>
+          <initializer>= 0x00000000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Used for initialization; not a bit flag. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cace7f5aa7d1148866b31331fe936874c2" prot="public">
+          <name>FUNC_THUNK_TARGET</name>
+          <initializer>= 0x00004000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Function is the target of a thunk. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852caa9717e812c7c20a7df71d17ee66ce857" prot="public">
+          <name>FUNC_EXCEPTION_HANDLER</name>
+          <initializer>= 0x00008000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Function for handling an exception. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca2c1716e490136fddc09c145d8809ed64" prot="public">
+          <name>FUNC_ENTRY_POINT</name>
+          <initializer>= 0x00010000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>An entry point specified in the file header. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852caeea34044afa2b5415dad4b39cf2aa51d" prot="public">
+          <name>FUNC_CALL_TARGET</name>
+          <initializer>= 0x00020000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Target of a function call instruction sequence in the <ref refid="classCFG" kindref="compound">CFG</ref>. When used as a partitioning heuristic, the partitioner will create new functions when it discovers a call-like sequence while traversing the <ref refid="classCFG" kindref="compound">CFG</ref>. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cabb9273d4d879614c52016694798c3143" prot="public">
+          <name>FUNC_CALL_INSN</name>
+          <initializer>= 0x00040000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Target of call, possibly not in the <ref refid="classCFG" kindref="compound">CFG</ref> (see Partitioner::mark_call_insns). When used as a partitioning heuristic, the partitioner will search all available instructions for instances of call-like instructions and define a function for each target. The function entry points added in this way become initial nodes of the <ref refid="classCFG" kindref="compound">CFG</ref> which is used by some of the other function discovery methods, including FUNC_CALL_TARGET. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cad7e1055f3974be70f4e4d88e758ed666" prot="public">
+          <name>FUNC_EH_FRAME</name>
+          <initializer>= 0x00080000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Address mentioned in the ELF .eh_frame section. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca10eee68a3ad870f7e48faef2639a853a" prot="public">
+          <name>FUNC_SYMBOL</name>
+          <initializer>= 0x00100000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Address of a function symbol in a symbol table. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cad01f7a2ed6ff7e8a3e6c4550d0ccaa63" prot="public">
+          <name>FUNC_PATTERN</name>
+          <initializer>= 0x00200000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Appears to be a function based on pattern of instructions. When used as a partitioning heuristic, the partitioner will search through all available instructions and create function entry points. The function entry points are added to the <ref refid="classCFG" kindref="compound">CFG</ref> which is used by some of the other function discovery methods. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca9c6f61a9e05594d28378f6130c1d59cf" prot="public">
+          <name>FUNC_GRAPH</name>
+          <initializer>= 0x00400000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Implied by inter-basicblock branching. When used as a partitioning heuristic, the partitioner creates a new function when it discovers, by <ref refid="classCFG" kindref="compound">CFG</ref> traversal, that two different functions branch to a common basic block. The block in common becomes a new function under this rule. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca5f338fbf75bfacef4196e65ba5441767" prot="public">
+          <name>FUNC_USERDEF</name>
+          <initializer>= 0x00800000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>User-defined algorithm. See Partitioner::addFunctionDetector(). </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cadac33191eb0a658ed5382f9076595a28" prot="public">
+          <name>FUNC_PADDING</name>
+          <initializer>= 0x01000000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Created to represent NOP padding between other functions. When used as a partitioning heuristic, the partitioner searches for padding after all CFG-based analysis has completed. Padding can consist of either NOP instructions or zero bytes. The former requires that instructions at the interfunction addresses have been disassembled. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cab8251be92d0c4b04f5da036ebeef5bc5" prot="public">
+          <name>FUNC_DISCONT</name>
+          <initializer>= 0x02000000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Blocks of function are not contiguous in memory. This is not a partitioner heuristic, but rather only an indication of whether the function&apos;s basic blocks occupy contiguous memory locations. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca4d84f747c536d60f73011ff698914705" prot="public">
+          <name>FUNC_INSNHEAD</name>
+          <initializer>= 0x04000000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Initial instructions not in any other function. (UNUSED?) </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca40c0ce88c447524963f4e8d7ef193cc7" prot="public">
+          <name>FUNC_IMPORT</name>
+          <initializer>= 0x08000000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Functions dynamically linked. For ELF containers, these are the entries in the procedure lookup table (PLT). When used as a partitioning heuristic, the partitioner will scan the PLT and define a function for each entry. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca617301fe6a598b9c4afbde0aebcc8ad5" prot="public">
+          <name>FUNC_LEFTOVERS</name>
+          <initializer>= 0x10000000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Generated function to hold blocks that are otherwise not part of any function. If this bit is turned off then the instruction Partitioner will delete instructions that it couldn&apos;t assign to a function. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca78785310b2939c8834f597ef91fc17f4" prot="public">
+          <name>FUNC_INTRABLOCK</name>
+          <initializer>= 0x20000000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Function contains basic blocks that were inserted by searching the address space between the blocks discovered by analyzing the control flow. Blocks added by this algorithm do not take control flow into account, and therefore, the global control flow graph (<ref refid="classCFG" kindref="compound">CFG</ref>) may have edges into the middle of such blocks, or such blocks may have edges into the middle of other blocks, including inter-function edges. Also, blocks added by this method might not represent true instructions, but rather data that was disassembled as instructions. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca331ffe7c063699b34757276068c08d79" prot="public">
+          <name>FUNC_THUNK</name>
+          <initializer>= 0x40000000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Function is a thunk. Thunks are small pieces of code whose only purpose is to branch to another function. Depending on how the disassembler and partitioner are run, a thunk can exist either as its own function or the thunk&apos;s instructions will be subsumed by the called function. The partitioner only sets this flag for functions that are created due to the thunk recognition pass; other functions that don&apos;t have this bit set might also be thunks, and functions that have this bit set might not be a thunk. The Partitioner::is_thunk() method will return true for functions whose content looks like a thunk. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca1f53d28023b96215cd5f6dfbfb847d76" prot="public">
+          <name>FUNC_EXPORT</name>
+          <initializer>= 0x80000000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Exported function. These are the functions that appear in a PE export table. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca385e7a83cce8b1ff004ec203c157785a" prot="public">
+          <name>FUNC_DEFAULT</name>
+          <initializer>= 0xefff80ff</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Default value for Partitioner class. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cacb6d9cc5789fcc0c98bb6e6894831228" prot="public">
+          <name>FUNC_MISCMASK</name>
+          <initializer>= 0x000000ff</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Miscellaneous. These are all the other special purpose function detectors that are implemented in the Partitioner. Each one is identified by an eight-bit integer stored in the low order bits. Only one such reason can be stored at a time. These are not used to control which partitioning heuristics to use, but rather to indicate which one (of possibly many) that detected the function. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cad44eac551768752e50ac7d0b02beab24" prot="public">
+          <name>FUNC_INTERPADFUNC</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Detected by Partitioner::FindInterPadFunctions, which looks for unassigned space between two inter-function padding blocks and makes the first such address the beginning of one of these functions. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca3b5edcde2ec5c96a5d7a32817fa1e2cc" prot="public">
+          <name>FUNC_PESCRAMBLER_DISPATCH</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Dispatcher function for code generated by pescrambler. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca88da952c134862143ab361635c7cacaa" prot="public">
+          <name>FUNC_CONFIGURED</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Function is defined in a configuration file. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca163dde0ba22fe39e6454f0d0ddae2b5a" prot="public">
+          <name>FUNC_CMDLINE</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Function mentioned on the command-line. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852caa5d8ffc6d1dd0556b5c44c7c9e73b2bc" prot="public">
+          <name>FUNC_SCAN_RO_DATA</name>
+          <initializer>= 5</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Address was found in read-only data area by scanning the data. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cad3eef50a85628a15b71d569dc2b72818" prot="public">
+          <name>FUNC_INSN_RO_DATA</name>
+          <initializer>= 6</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Address was found in read-only data referenced by an existing instruction. </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reasons why an instruction might be considered the beginning of a function. These bit flags are also used by the instruction partitioner (Partitioner class) to determine what heuristics are used when partitioning instructions into functions. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="40" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="40" bodyend="124"/>
+      </memberdef>
+      <memberdef kind="enum" id="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958da" prot="public" static="no" strong="no">
+        <type></type>
+        <name>function_kind_enum</name>
+        <enumvalue id="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958daaba4e0996ce99a3f8ba4bde37850dbbed" prot="public">
+          <name>e_unknown</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958daa8ae2dd78ace3eea222bb6b88dc04757c" prot="public">
+          <name>e_standard</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958daa88ce5a843f2dac9b8e953a1b553a8139" prot="public">
+          <name>e_library</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958daad9a019ba60e482adc6c5ed9baf59e652" prot="public">
+          <name>e_imported</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958daa84bb5374af0089fc9b2d9b9e472c9d4e" prot="public">
+          <name>e_thunk</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958daad987e695da671281b77ea2139c8b1ca9" prot="public">
+          <name>e_last</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constants for the &quot;function_kind&quot; property. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="127" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="127" bodyend="134"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classSgAsmFunction_1aba05752286df1d4f213f3c913e1947d6" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string SgAsmFunction::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Name.</para><para>The optional string name of a function. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="144" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="144" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmFunction_1a35203ed4600bf2e10968ef98b3a60f94" prot="public" static="no" mutable="no">
+        <type>unsigned</type>
+        <definition>unsigned SgAsmFunction::reason</definition>
+        <argsstring></argsstring>
+        <name>reason</name>
+        <initializer>= <ref refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca504e7feb66ba790e6eb017de72ff4faa" kindref="member">SgAsmFunction::FUNC_NONE</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Reason that function exists.</para><para>This is a bit vector of enum constants that describe why this function was created. See <ref refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852c" kindref="member">SgAsmFunction::FunctionReason</ref> for details. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="151" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="151" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmFunction_1a790b6d1700c11886ecc9d6e75b188a66" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string SgAsmFunction::reasonComment</definition>
+        <argsstring></argsstring>
+        <name>reasonComment</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Additional function existance reason comment.</para><para>This reason comment gets filled in automatically by certain function analyses. It&apos;s a free-form string that contains additional information about why this function exists and is used in conjunction with the <ref refid="classSgAsmFunction_1a35203ed4600bf2e10968ef98b3a60f94" kindref="member">reason</ref> property. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="159" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="159" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmFunction_1a1582b0f1dfd5303fba68d5e3fdff80e6" prot="public" static="no" mutable="no">
+        <type><ref refid="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958da" kindref="member">SgAsmFunction::function_kind_enum</ref></type>
+        <definition>SgAsmFunction::function_kind_enum SgAsmFunction::functionKind</definition>
+        <argsstring></argsstring>
+        <name>functionKind</name>
+        <initializer>= <ref refid="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958daaba4e0996ce99a3f8ba4bde37850dbbed" kindref="member">SgAsmFunction::e_unknown</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Kind of function.</para><para>This enum constant describes the kind of function. See <ref refid="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958da" kindref="member">SgAsmFunction::function_kind_enum</ref> for details. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="165" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="165" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmFunction_1a1457bb561f56a6dd6c42f9f183b57be1" prot="public" static="no" mutable="no">
+        <type><ref refid="classSgAsmFunction_1ad1e0c37f9e507fc6acaf01dd0794a752" kindref="member">SgAsmFunction::MayReturn</ref></type>
+        <definition>SgAsmFunction::MayReturn SgAsmFunction::mayReturn</definition>
+        <argsstring></argsstring>
+        <name>mayReturn</name>
+        <initializer>= <ref refid="classSgAsmFunction_1ad1e0c37f9e507fc6acaf01dd0794a752a0d3fbe8fb9b711a6ca66ef2f09824496" kindref="member">SgAsmFunction::RET_UNKNOWN</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Whether a function could return to its caller. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="169" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="169" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmFunction_1a0b115677af265e771c6c138f74dc0542" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string SgAsmFunction::nameMd5</definition>
+        <argsstring></argsstring>
+        <name>nameMd5</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Hash of the function.</para><para>This is unused by ROSE, but can be set by users to identify a function by hash string. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="175" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="175" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmFunction_1a73f09be6fefe9ee43d4962440efa80c0" prot="public" static="no" mutable="no">
+        <type>SgAsmStatementPtrList</type>
+        <definition>SgAsmStatementPtrList SgAsmFunction::statementList</definition>
+        <argsstring></argsstring>
+        <name>statementList</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Statements that make up a function.</para><para>The &quot;statements&quot; of a function are things like instructions, static data blocks, etc. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="181" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="181" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmFunction_1acbd579678bf376600ae0d3b4ad7a0e39" prot="public" static="no" mutable="no">
+        <type>SgAsmStatementPtrList</type>
+        <definition>SgAsmStatementPtrList SgAsmFunction::dest</definition>
+        <argsstring></argsstring>
+        <name>dest</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="185" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="185" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmFunction_1ad8814cd35b3bab315f5c173c2a683e9f" prot="public" static="no" mutable="no">
+        <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        <definition>Rose::BinaryAnalysis::Address SgAsmFunction::entryVa</definition>
+        <argsstring></argsstring>
+        <name>entryVa</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Primary entry address.</para><para>Every function has one primary entry address that uniquely identifies the function in the AST. This is the starting address of the function&apos;s entry instruction. The abbreviation &quot;va&quot; means &quot;virtual address&quot;. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="192" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="192" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmFunction_1abe9cb49dbd213f0b609033ff7dc4ee10" prot="public" static="no" mutable="no">
+        <type>SgSymbolTable *</type>
+        <definition>SgSymbolTable* SgAsmFunction::symbolTable</definition>
+        <argsstring></argsstring>
+        <name>symbolTable</name>
+        <initializer>= <ref refid="ModuleBuilder_8h_1ab979d9d4b4923f7c54d6caa6e1a61936" kindref="member">nullptr</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Symbol table.</para><para><ref refid="classA" kindref="compound">A</ref> ROSE symbol table associated with this function. This is not the same as the symbol table that appears in the binary specimen, such as ELF or PE symbol tables. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="199" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="199" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmFunction_1a8e39f96f5c3f732bd44c05a08582337b" prot="public" static="no" mutable="no">
+        <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref></type>
+        <definition>size_t SgAsmFunction::cachedVertex</definition>
+        <argsstring></argsstring>
+        <name>cachedVertex</name>
+        <initializer>= (<ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref>)(-1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="203" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="203" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmFunction_1a2e2fbc3a752c65a65d571b16027af8b7" prot="public" static="no" mutable="no">
+        <type><ref refid="msvc__stdint_8h_1a67a9885ef4908cb72ce26d75b694386c" kindref="member">int64_t</ref></type>
+        <definition>int64_t SgAsmFunction::stackDelta</definition>
+        <argsstring></argsstring>
+        <name>stackDelta</name>
+        <initializer>= <ref refid="classSgAsmInstruction_1a6fb91f8c348c2912b78a55ee6b8d4a39" kindref="member">SgAsmInstruction::INVALID_STACK_DELTA</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Net effect of function on the stack pointer.</para><para>Net effect that this function has on the machine&apos;s stack pointer register. For most x86 Linux ELF specimens the net effect is to pop the return address from the stack, thus +4 for 32-bit specimens and +8 for 64-bit specimens.</para><para>If the stack delta analysis has not run or could not determine a constant stack delta, then the special value <computeroutput><ref refid="classSgAsmInstruction_1a6fb91f8c348c2912b78a55ee6b8d4a39" kindref="member">SgAsmInstruction::INVALID_STACK_DELTA</ref></computeroutput> is used. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="213" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="213" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmFunction_1a1113a4e34b9bf2cc5b3f5fd0e6b99ee5" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string SgAsmFunction::callingConvention</definition>
+        <argsstring></argsstring>
+        <name>callingConvention</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Primary calling convention.</para><para>This is the name of the primary calling convention for this function. When the semantics of the function match multiple calling convention definitions, this property holds the &quot;best&quot; one for some definition of &quot;best&quot;. It is also possible for the semantics to not match any calling convention definition in which case this property is empty. It is also empty if the calling convention analysis was not performed. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="222" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="222" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classSgAsmFunction_1aa4bacd4b98ad2472d4ea1fba193eddcf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmFunction::appendStatement</definition>
+        <argsstring>(SgAsmStatement *)</argsstring>
+        <name>appendStatement</name>
+        <param>
+          <type><ref refid="classSgAsmStatement" kindref="compound">SgAsmStatement</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds statement to end of statement list. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="229" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1a73fe4f7745fcbb86a2e338f67c0d8596" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmFunction::removeStatement</definition>
+        <argsstring>(SgAsmStatement *statement)</argsstring>
+        <name>removeStatement</name>
+        <param>
+          <type><ref refid="classSgAsmStatement" kindref="compound">SgAsmStatement</ref> *</type>
+          <declname>statement</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Erases statement from statement list.</para><para>If the specified statement is found in the list of statements then it is erased without being deleted. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="234" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1a3a664c740b0ed046fdd0e6fe874b4f9c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmBlock" kindref="compound">SgAsmBlock</ref> *</type>
+        <definition>SgAsmBlock* SgAsmFunction::get_entryBlock</definition>
+        <argsstring>() const</argsstring>
+        <name>get_entryBlock</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Function entry basic block.</para><para>Returns the basic block that represents the function primary entry point. Returns null for a function that contains no instructions. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="240" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1af8f40b98591c8d1bf542e6d296c9ba93" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string SgAsmFunction::reasonString</definition>
+        <argsstring>(bool pad) const</argsstring>
+        <name>reasonString</name>
+        <param>
+          <type>bool</type>
+          <declname>pad</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns a very short string describing the reason mask. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="248" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1a5627de81b95eb03a4478d966f63064f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref></type>
+        <definition>size_t SgAsmFunction::get_extent</definition>
+        <argsstring>(Rose::BinaryAnalysis::AddressIntervalSet *emap=NULL, Rose::BinaryAnalysis::Address *lo_addr=NULL, Rose::BinaryAnalysis::Address *hi_addr=NULL, NodeSelector *selector=NULL)</argsstring>
+        <name>get_extent</name>
+        <param>
+          <type>Rose::BinaryAnalysis::AddressIntervalSet *</type>
+          <declname>emap</declname>
+          <defval>NULL</defval>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref> *</type>
+          <declname>lo_addr</declname>
+          <defval>NULL</defval>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref> *</type>
+          <declname>hi_addr</declname>
+          <defval>NULL</defval>
+        </param>
+        <param>
+          <type><ref refid="classSgAsmFunction_1_1NodeSelector" kindref="compound">NodeSelector</ref> *</type>
+          <declname>selector</declname>
+          <defval>NULL</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns information about the function addresses.</para><para>Every non-empty function has a minimum (inclusive) and maximum (exclusive) address which are returned by reference, but not all functions own all the bytes within that range of addresses. Therefore, the exact bytes are returned by adding them to the optional ExtentMap argument. This function returns the number of nodes (instructions and static data items) in the function. If the function contains no nodes then <computeroutput>extents</computeroutput> is not modified and the low and high addresses are both set to zero.</para><para>If an <computeroutput>selector</computeroutput> functor is provided, then only nodes for which it returns true are considered part of the function. This can be used for such things as filtering out data blocks that are marked as padding. For example:</para><para><programlisting><codeline><highlight class="normal">class<sp/>NotPadding:<sp/>public<sp/>SgAsmFunction::NodeSelector<sp/>{</highlight></codeline>
+<codeline><highlight class="normal">public:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>virtual<sp/>bool<sp/>operator()(SgNode<sp/>*node)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgAsmStaticData<sp/>*data<sp/>=<sp/>isSgAsmStaticData(node);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgAsmBlock<sp/>*block<sp/>=<sp/>SageInterface::getEnclosingNode&lt;SgAsmBlock&gt;(data);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>!data<sp/>||<sp/>!block<sp/>||<sp/>block-&gt;get_reason()!=SgAsmBlock::BLK_PADDING;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">}<sp/>notPadding;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Rose::BinaryAnalysis::AddressIntervalSet<sp/>extents;</highlight></codeline>
+<codeline><highlight class="normal">function-&gt;get_extent(&amp;extents,<sp/>NULL,<sp/>NULL,<sp/>&amp;notPadding);</highlight></codeline>
+</programlisting></para><para>Here&apos;s another example that calculates the extent of only the padding data, based on the negation of the filter in the previous example:</para><para><programlisting><codeline><highlight class="normal">class<sp/>OnlyPadding:<sp/>public<sp/>NotPadding<sp/>{</highlight></codeline>
+<codeline><highlight class="normal">public:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>virtual<sp/>bool<sp/>operator()(SgNode<sp/>*node)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>!NotPadding::operator()(node);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">}<sp/>onlyPadding;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Rose::BinaryAnalysis::AddressIntervalSet<sp/>extents;</highlight></codeline>
+<codeline><highlight class="normal">function-&gt;get_extent(&amp;extents,<sp/>NULL,<sp/>NULL,<sp/>&amp;onlyPadding);</highlight></codeline>
+</programlisting> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="301" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1a16b63f34688c5ecab871dc2d47dc39ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SgAsmFunction::get_sha1</definition>
+        <argsstring>(uint8_t digest[20], NodeSelector *selector=NULL)</argsstring>
+        <name>get_sha1</name>
+        <param>
+          <type><ref refid="msvc__stdint_8h_1a9a941819355e6f658991890ff66b4b0e" kindref="member">uint8_t</ref></type>
+          <declname>digest</declname>
+          <array>[20]</array>
+        </param>
+        <param>
+          <type><ref refid="classSgAsmFunction_1_1NodeSelector" kindref="compound">NodeSelector</ref> *</type>
+          <declname>selector</declname>
+          <defval>NULL</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the SHA1 message digest for the bytes of a function.</para><para>Returns true if the SHA1 is available, false if the message digest cannot be computed because the prerequisite gcrypt functions are not available. The optional <computeroutput>selector</computeroutput> argument can be used to limit the digest to only certain nodes of the function; by default, all instructions and static data are accumulated. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="309" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1a9002868a1af358c657c37f4fa407925c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958da" kindref="member">function_kind_enum</ref></type>
+        <definition>function_kind_enum SgAsmFunction::get_function_kind</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_functionKind&quot;)</argsstring>
+        <name>get_function_kind</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="315" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1aad77a8691ea95b6fe53f5009a25bfc9a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmFunction::set_function_kind</definition>
+        <argsstring>(function_kind_enum) ROSE_DEPRECATED(&quot;use set_functionKind&quot;)</argsstring>
+        <name>set_function_kind</name>
+        <param>
+          <type><ref refid="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958da" kindref="member">function_kind_enum</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="316" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1a75548e73605baab87de48cb49048b2a0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmFunction_1ad1e0c37f9e507fc6acaf01dd0794a752" kindref="member">MayReturn</ref></type>
+        <definition>MayReturn SgAsmFunction::get_may_return</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_mayReturn&quot;)</argsstring>
+        <name>get_may_return</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="317" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1aad8f2205f502fba9f786fd5ccbee1da1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmFunction::set_may_return</definition>
+        <argsstring>(MayReturn) ROSE_DEPRECATED(&quot;use set_mayReturn&quot;)</argsstring>
+        <name>set_may_return</name>
+        <param>
+          <type><ref refid="classSgAsmFunction_1ad1e0c37f9e507fc6acaf01dd0794a752" kindref="member">MayReturn</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="318" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1ad80a80a6911008e348dd9f4cf648cdca" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::string &amp;</type>
+        <definition>const std::string&amp; SgAsmFunction::get_name_md5</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_nameMd5&quot;)</argsstring>
+        <name>get_name_md5</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="319" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1ae6a4ff5f176f7634c01d881a844b0e1a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmFunction::set_name_md5</definition>
+        <argsstring>(const std::string &amp;) ROSE_DEPRECATED(&quot;use set_nameMd5&quot;)</argsstring>
+        <name>set_name_md5</name>
+        <param>
+          <type>const std::string &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="320" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1a921e708fb11fda29820a8db3fd85c29a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        <definition>Rose::BinaryAnalysis::Address SgAsmFunction::get_entry_va</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_entryVa&quot;)</argsstring>
+        <name>get_entry_va</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="321" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1af8f2322e08d211a3c3ccc619332f9189" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmFunction::set_entry_va</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address) ROSE_DEPRECATED(&quot;use set_entryVa&quot;)</argsstring>
+        <name>set_entry_va</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="322" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1a10e19cd4f9a067df97a031830870da69" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>SgSymbolTable *</type>
+        <definition>SgSymbolTable* SgAsmFunction::get_symbol_table</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_symbolTable&quot;)</argsstring>
+        <name>get_symbol_table</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="323" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1a96840ea9e7b9f3b2f99bc02e1faa13ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmFunction::set_symbol_table</definition>
+        <argsstring>(SgSymbolTable *) ROSE_DEPRECATED(&quot;use set_symbolTable&quot;)</argsstring>
+        <name>set_symbol_table</name>
+        <param>
+          <type>SgSymbolTable *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="324" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1a32981ac9e1e0e59be2ff4179628ca1d6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref></type>
+        <definition>size_t SgAsmFunction::get_cached_vertex</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_cachedVertex&quot;)</argsstring>
+        <name>get_cached_vertex</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="325" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1ab89aceb02cebb9fe33dc1efdf78d4741" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmFunction::set_cached_vertex</definition>
+        <argsstring>(size_t) ROSE_DEPRECATED(&quot;use set_cachedVertex&quot;)</argsstring>
+        <name>set_cached_vertex</name>
+        <param>
+          <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="326" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1ada0590fe9b613639a87ae5e80b3fb932" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmFunction::append_statement</definition>
+        <argsstring>(SgAsmStatement *) ROSE_DEPRECATED(&quot;use appendStatement&quot;)</argsstring>
+        <name>append_statement</name>
+        <param>
+          <type><ref refid="classSgAsmStatement" kindref="compound">SgAsmStatement</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="327" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1a564dff8580cf3d2f3c4178c92a3265e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmFunction::remove_statement</definition>
+        <argsstring>(SgAsmStatement *statement) ROSE_DEPRECATED(&quot;use removeStatement&quot;)</argsstring>
+        <name>remove_statement</name>
+        <param>
+          <type><ref refid="classSgAsmStatement" kindref="compound">SgAsmStatement</ref> *</type>
+          <declname>statement</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="328" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1add9888897b7b0ee6d73afe55095f1d0d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmBlock" kindref="compound">SgAsmBlock</ref> *</type>
+        <definition>SgAsmBlock* SgAsmFunction::get_entry_block</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_entryBlock&quot;)</argsstring>
+        <name>get_entry_block</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="329" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1aa712636c5f81f84dfcf4890dce96b8eb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string SgAsmFunction::reason_str</definition>
+        <argsstring>(bool) const ROSE_DEPRECATED(&quot;use reasonString&quot;)</argsstring>
+        <name>reason_str</name>
+        <param>
+          <type>bool</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="331" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classSgAsmFunction_1a9f39ec38300166294a1e4076e17c6ec4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string SgAsmFunction::reasonKey</definition>
+        <argsstring>(const std::string &amp;prefix=&quot;&quot;)</argsstring>
+        <name>reasonKey</name>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>prefix</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Multi-line description of function reason keys from unparser.</para><para>Returns a string that describes what the one-letter function reasons mean in the unparser output. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="245" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1a418d83b5dc667bd297c5301094ad7842" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string SgAsmFunction::reasonString</definition>
+        <argsstring>(bool pad, unsigned reason)</argsstring>
+        <name>reasonString</name>
+        <param>
+          <type>bool</type>
+          <declname>pad</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>reason</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Class method that converts a reason bit vector to a human-friendly string.</para><para>The second argument is the bit vector of <ref refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852c" kindref="member">SgAsmFunction::FunctionReason</ref> bits. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="253" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1a3aaf6448f8dc67dcf6595b22f6b2f3ee" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string SgAsmFunction::reason_key</definition>
+        <argsstring>(const std::string &amp;prefix=&quot;&quot;) ROSE_DEPRECATED(&quot;use reasonKey&quot;)</argsstring>
+        <name>reason_key</name>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>prefix</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="330" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmFunction_1a4219f57b7d363b14c54bd9e993971450" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string SgAsmFunction::reason_str</definition>
+        <argsstring>(bool, unsigned) ROSE_DEPRECATED(&quot;use reasonString&quot;)</argsstring>
+        <name>reason_str</name>
+        <param>
+          <type>bool</type>
+        </param>
+        <param>
+          <type>unsigned</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="332" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Represents a synthesized function.</para><para><ref refid="classA" kindref="compound">A</ref> function is a collection of blocks holding instructions (basic blocks) or static data. Instructions might have references to addresses or data which are described by symbols (not to be confused with the binary&apos;s symbol table) in the function&apos;s symbol table (<ref refid="classSgAsmFunction_1abe9cb49dbd213f0b609033ff7dc4ee10" kindref="member">symbolTable</ref> property). Functions do not explicitly exist in a binary, but are synthesized by ROSE as part of the disassembly and partitioning steps. The individual instructions and/or individual static data areas need not cover a contiguous region of the address space. Some synthesized functions will likely not be a &quot;function&quot; or &quot;produceure&quot; in the strict sense of those words due to such factors as compiler optimizations, hand-coded routines, exception handling, non-local branching, shortcomings of ROSE&apos;s partitioning solvers, etc. In any case, each function will have one primary entry address. Although the AST requires that every function have its own basic block children, which have their own instructions (definition of &quot;tree&quot; data structures), logically two functions might share basic blocks, although this is uncommon.</para><para>Warning: Although currently basic blocks are direct children of function nodes in the AST, this may change in a future version of ROSE as new node types are introduced to describe scopes and control structures. </para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="22081">
+        <label>SgAsmStatement</label>
+        <link refid="classSgAsmStatement"/>
+        <childnode refid="22082" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22082">
+        <label>SgAsmNode</label>
+        <link refid="classSgAsmNode"/>
+        <childnode refid="22083" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22080">
+        <label>SgAsmSynthesizedDeclaration</label>
+        <link refid="classSgAsmSynthesizedDeclaration"/>
+        <childnode refid="22081" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22079">
+        <label>SgAsmFunction</label>
+        <link refid="classSgAsmFunction"/>
+        <childnode refid="22080" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22083">
+        <label>SgNode</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="22089">
+        <label>Sawyer::Attribute::Storage&lt; SyncTag &gt;</label>
+        <link refid="classSawyer_1_1Attribute_1_1Storage"/>
+        <childnode refid="22090" relation="usage">
+          <edgelabel>values_</edgelabel>
+        </childnode>
+      </node>
+      <node id="22091">
+        <label>string</label>
+      </node>
+      <node id="22090">
+        <label>Sawyer::Container::Map&lt; Id, boost::any &gt;</label>
+        <link refid="classSawyer_1_1Container_1_1Map"/>
+      </node>
+      <node id="22086">
+        <label>SgAsmStatement</label>
+        <link refid="classSgAsmStatement"/>
+        <childnode refid="22087" relation="public-inheritance">
+        </childnode>
+        <childnode refid="22091" relation="usage">
+          <edgelabel>comment</edgelabel>
+        </childnode>
+      </node>
+      <node id="22087">
+        <label>SgAsmNode</label>
+        <link refid="classSgAsmNode"/>
+        <childnode refid="22088" relation="public-inheritance">
+        </childnode>
+        <childnode refid="22089" relation="usage">
+          <edgelabel>attributes</edgelabel>
+        </childnode>
+      </node>
+      <node id="22085">
+        <label>SgAsmSynthesizedDeclaration</label>
+        <link refid="classSgAsmSynthesizedDeclaration"/>
+        <childnode refid="22086" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22084">
+        <label>SgAsmFunction</label>
+        <link refid="classSgAsmFunction"/>
+        <childnode refid="22085" relation="public-inheritance">
+        </childnode>
+        <childnode refid="22091" relation="usage">
+          <edgelabel>callingConvention</edgelabel>
+          <edgelabel>reasonComment</edgelabel>
+          <edgelabel>name</edgelabel>
+          <edgelabel>nameMd5</edgelabel>
+        </childnode>
+      </node>
+      <node id="22088">
+        <label>SgNode</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" line="24" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmFunction.h" bodystart="24" bodyend="333"/>
+    <listofallmembers>
+      <member refid="classSgAsmStatement_1a1ebaeb6e001069e660b69947cec925f7" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>address</name></member>
+      <member refid="classSgAsmFunction_1ada0590fe9b613639a87ae5e80b3fb932" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>append_statement</name></member>
+      <member refid="classSgAsmFunction_1aa4bacd4b98ad2472d4ea1fba193eddcf" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>appendStatement</name></member>
+      <member refid="classSgAsmNode_1a59e9db061aa74eeeda6dfc3d677a6bb7" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>attributes</name></member>
+      <member refid="classSgAsmFunction_1a8e39f96f5c3f732bd44c05a08582337b" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>cachedVertex</name></member>
+      <member refid="classSgAsmFunction_1a1113a4e34b9bf2cc5b3f5fd0e6b99ee5" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>callingConvention</name></member>
+      <member refid="classSgAsmStatement_1a57e98c9c62f4bd1722e17428fb5a1797" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>comment</name></member>
+      <member refid="classSgAsmFunction_1acbd579678bf376600ae0d3b4ad7a0e39" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>dest</name></member>
+      <member refid="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958daad9a019ba60e482adc6c5ed9baf59e652" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>e_imported</name></member>
+      <member refid="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958daad987e695da671281b77ea2139c8b1ca9" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>e_last</name></member>
+      <member refid="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958daa88ce5a843f2dac9b8e953a1b553a8139" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>e_library</name></member>
+      <member refid="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958daa8ae2dd78ace3eea222bb6b88dc04757c" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>e_standard</name></member>
+      <member refid="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958daa84bb5374af0089fc9b2d9b9e472c9d4e" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>e_thunk</name></member>
+      <member refid="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958daaba4e0996ce99a3f8ba4bde37850dbbed" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>e_unknown</name></member>
+      <member refid="classSgAsmFunction_1ad8814cd35b3bab315f5c173c2a683e9f" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>entryVa</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cabb9273d4d879614c52016694798c3143" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_CALL_INSN</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852caeea34044afa2b5415dad4b39cf2aa51d" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_CALL_TARGET</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca163dde0ba22fe39e6454f0d0ddae2b5a" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_CMDLINE</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca88da952c134862143ab361635c7cacaa" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_CONFIGURED</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca385e7a83cce8b1ff004ec203c157785a" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_DEFAULT</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cab8251be92d0c4b04f5da036ebeef5bc5" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_DISCONT</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cad7e1055f3974be70f4e4d88e758ed666" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_EH_FRAME</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca2c1716e490136fddc09c145d8809ed64" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_ENTRY_POINT</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852caa9717e812c7c20a7df71d17ee66ce857" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_EXCEPTION_HANDLER</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca1f53d28023b96215cd5f6dfbfb847d76" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_EXPORT</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca9c6f61a9e05594d28378f6130c1d59cf" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_GRAPH</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca40c0ce88c447524963f4e8d7ef193cc7" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_IMPORT</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cad3eef50a85628a15b71d569dc2b72818" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_INSN_RO_DATA</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca4d84f747c536d60f73011ff698914705" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_INSNHEAD</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cad44eac551768752e50ac7d0b02beab24" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_INTERPADFUNC</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca78785310b2939c8834f597ef91fc17f4" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_INTRABLOCK</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca617301fe6a598b9c4afbde0aebcc8ad5" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_LEFTOVERS</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cacb6d9cc5789fcc0c98bb6e6894831228" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_MISCMASK</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca504e7feb66ba790e6eb017de72ff4faa" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_NONE</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cadac33191eb0a658ed5382f9076595a28" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_PADDING</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cad01f7a2ed6ff7e8a3e6c4550d0ccaa63" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_PATTERN</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca3b5edcde2ec5c96a5d7a32817fa1e2cc" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_PESCRAMBLER_DISPATCH</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852caa5d8ffc6d1dd0556b5c44c7c9e73b2bc" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_SCAN_RO_DATA</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca10eee68a3ad870f7e48faef2639a853a" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_SYMBOL</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca331ffe7c063699b34757276068c08d79" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_THUNK</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852cace7f5aa7d1148866b31331fe936874c2" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_THUNK_TARGET</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852ca5f338fbf75bfacef4196e65ba5441767" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FUNC_USERDEF</name></member>
+      <member refid="classSgAsmFunction_1acc351d356f26d53bb8532eb8289958da" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>function_kind_enum</name></member>
+      <member refid="classSgAsmFunction_1a1582b0f1dfd5303fba68d5e3fdff80e6" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>functionKind</name></member>
+      <member refid="classSgAsmFunction_1adbeeade0378b1c09170ad8d5d808852c" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>FunctionReason</name></member>
+      <member refid="classSgAsmFunction_1a32981ac9e1e0e59be2ff4179628ca1d6" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>get_cached_vertex</name></member>
+      <member refid="classSgAsmFunction_1add9888897b7b0ee6d73afe55095f1d0d" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>get_entry_block</name></member>
+      <member refid="classSgAsmFunction_1a921e708fb11fda29820a8db3fd85c29a" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>get_entry_va</name></member>
+      <member refid="classSgAsmFunction_1a3a664c740b0ed046fdd0e6fe874b4f9c" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>get_entryBlock</name></member>
+      <member refid="classSgAsmFunction_1a5627de81b95eb03a4478d966f63064f9" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>get_extent</name></member>
+      <member refid="classSgAsmFunction_1a9002868a1af358c657c37f4fa407925c" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>get_function_kind</name></member>
+      <member refid="classSgAsmFunction_1a75548e73605baab87de48cb49048b2a0" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>get_may_return</name></member>
+      <member refid="classSgAsmFunction_1ad80a80a6911008e348dd9f4cf648cdca" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>get_name_md5</name></member>
+      <member refid="classSgAsmFunction_1a16b63f34688c5ecab871dc2d47dc39ca" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>get_sha1</name></member>
+      <member refid="classSgAsmFunction_1a10e19cd4f9a067df97a031830870da69" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>get_symbol_table</name></member>
+      <member refid="classSgAsmFunction_1ad1e0c37f9e507fc6acaf01dd0794a752" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>MayReturn</name></member>
+      <member refid="classSgAsmFunction_1a1457bb561f56a6dd6c42f9f183b57be1" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>mayReturn</name></member>
+      <member refid="classSgAsmFunction_1aba05752286df1d4f213f3c913e1947d6" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>name</name></member>
+      <member refid="classSgAsmFunction_1a0b115677af265e771c6c138f74dc0542" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>nameMd5</name></member>
+      <member refid="classSgAsmFunction_1a35203ed4600bf2e10968ef98b3a60f94" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>reason</name></member>
+      <member refid="classSgAsmFunction_1a3aaf6448f8dc67dcf6595b22f6b2f3ee" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>reason_key</name></member>
+      <member refid="classSgAsmFunction_1aa712636c5f81f84dfcf4890dce96b8eb" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>reason_str</name></member>
+      <member refid="classSgAsmFunction_1a4219f57b7d363b14c54bd9e993971450" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>reason_str</name></member>
+      <member refid="classSgAsmFunction_1a790b6d1700c11886ecc9d6e75b188a66" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>reasonComment</name></member>
+      <member refid="classSgAsmFunction_1a9f39ec38300166294a1e4076e17c6ec4" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>reasonKey</name></member>
+      <member refid="classSgAsmFunction_1af8f40b98591c8d1bf542e6d296c9ba93" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>reasonString</name></member>
+      <member refid="classSgAsmFunction_1a418d83b5dc667bd297c5301094ad7842" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>reasonString</name></member>
+      <member refid="classSgAsmFunction_1a564dff8580cf3d2f3c4178c92a3265e1" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>remove_statement</name></member>
+      <member refid="classSgAsmFunction_1a73fe4f7745fcbb86a2e338f67c0d8596" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>removeStatement</name></member>
+      <member refid="classSgAsmFunction_1ad1e0c37f9e507fc6acaf01dd0794a752a8cf02b4f0b67544a9fafcf0fbc28ee19" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>RET_ALWAYS</name></member>
+      <member refid="classSgAsmFunction_1ad1e0c37f9e507fc6acaf01dd0794a752adf440ebe371c3f4fdc1612448157f6bc" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>RET_NEVER</name></member>
+      <member refid="classSgAsmFunction_1ad1e0c37f9e507fc6acaf01dd0794a752a921b64c76e93f8581fd16c205aac1516" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>RET_SOMETIMES</name></member>
+      <member refid="classSgAsmFunction_1ad1e0c37f9e507fc6acaf01dd0794a752a0d3fbe8fb9b711a6ca66ef2f09824496" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>RET_UNKNOWN</name></member>
+      <member refid="classSgAsmFunction_1ab89aceb02cebb9fe33dc1efdf78d4741" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>set_cached_vertex</name></member>
+      <member refid="classSgAsmFunction_1af8f2322e08d211a3c3ccc619332f9189" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>set_entry_va</name></member>
+      <member refid="classSgAsmFunction_1aad77a8691ea95b6fe53f5009a25bfc9a" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>set_function_kind</name></member>
+      <member refid="classSgAsmFunction_1aad8f2205f502fba9f786fd5ccbee1da1" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>set_may_return</name></member>
+      <member refid="classSgAsmFunction_1ae6a4ff5f176f7634c01d881a844b0e1a" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>set_name_md5</name></member>
+      <member refid="classSgAsmFunction_1a96840ea9e7b9f3b2f99bc02e1faa13ef" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>set_symbol_table</name></member>
+      <member refid="classSgAsmFunction_1a2e2fbc3a752c65a65d571b16027af8b7" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>stackDelta</name></member>
+      <member refid="classSgAsmFunction_1a73f09be6fefe9ee43d4962440efa80c0" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>statementList</name></member>
+      <member refid="classSgAsmFunction_1abe9cb49dbd213f0b609033ff7dc4ee10" prot="public" virt="non-virtual"><scope>SgAsmFunction</scope><name>symbolTable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,242 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="JvmComposite_8C" kind="file" language="C++">
+    <compoundname>JvmComposite.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="45266">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="45262">
+        <label>/home/liao6/workspace/rose-github/src/frontend/BinaryFormats/JvmComposite.C</label>
+        <link refid="JvmComposite_8C"/>
+        <childnode refid="45263" relation="include">
+        </childnode>
+      </node>
+      <node id="45263">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="45264" relation="include">
+        </childnode>
+        <childnode refid="45265" relation="include">
+        </childnode>
+        <childnode refid="45266" relation="include">
+        </childnode>
+      </node>
+      <node id="45265">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="45264">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="45263" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>SgJvmComposite<sp/>is<sp/>container<sp/>for<sp/>a<sp/>Java<sp/>class<sp/>or<sp/>jar<sp/>file.<sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="sage3basic_8h" kindref="compound">sage3basic.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Sawyer_2FileSystem_8h" kindref="compound">Sawyer/FileSystem.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::string;</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::vector;</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose_1_1Diagnostics" kindref="compound">Rose::Diagnostics</ref>;<sp/></highlight><highlight class="comment">//<sp/>for<sp/>mlog,<sp/>INFO,<sp/>WARN,<sp/>ERROR,<sp/>FATAL,<sp/>etc.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Data<sp/>structures<sp/>to<sp/>facilitate<sp/>jar<sp/>file<sp/>processing<sp/>and<sp/>class<sp/>lookup</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="comment">//<sp/>WARNING:<sp/>HACK_ATTACH:<sp/>Data<sp/>structures<sp/>need<sp/>to<sp/>go<sp/>SOMEWHERE!</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Orthogonal<sp/>to<sp/>implementation,<sp/>so<sp/>they<sp/>go<sp/>here,<sp/>blame<sp/>me!</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Also:<sp/>see<sp/>ROSE/BinaryAnalysis/Partitioner2/ModulesJvm.h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal">std::map&lt;string,<sp/>SgAsmGenericFile*&gt;<sp/>jarMap;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>probably<sp/>a<sp/>class<sp/>member<sp/>because<sp/>...</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal">std::map&lt;string,<sp/>Rose::BinaryAnalysis::Address&gt;<sp/>classMap;<sp/></highlight><highlight class="comment">//<sp/>maps<sp/>to<sp/>local<sp/>class<sp/>offset</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>compressed{</highlight><highlight class="keyword">false</highlight><highlight class="normal">};</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isJarFile{</highlight><highlight class="keyword">false</highlight><highlight class="normal">};</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal">vector&lt;string&gt;<sp/>getFilesInDir(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;path,<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;extension)<sp/>{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/>vector&lt;string&gt;<sp/>files;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/>boost::filesystem::path<sp/>dir(path);</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(boost::filesystem::exists(path)<sp/>&amp;&amp;<sp/>boost::filesystem::is_directory(path))<sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::filesystem::recursive_directory_iterator<sp/>it(path);</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::filesystem::recursive_directory_iterator<sp/>endit;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(it<sp/>!=<sp/>endit)<sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(boost::filesystem::is_regular_file(*it)<sp/>&amp;&amp;<sp/>(extension==</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">)?</highlight><highlight class="keyword">true</highlight><highlight class="normal">:it-&gt;path().extension()<sp/>==<sp/>extension)<sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>files.push_back(it-&gt;path().string());</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>++it;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>files;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Extract<sp/>class<sp/>files<sp/>from<sp/>a<sp/>jar<sp/>file</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>vector&lt;string&gt;<sp/>extractClassFiles(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;jar)</highlight></codeline>
+<codeline lineno="44"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/>vector&lt;string&gt;<sp/>classes{};</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="namespaceCommandlineProcessing_1a9bf45f4fceb849b586071eaed8fa3f5f" kindref="member">CommandlineProcessing::isJavaJarFile</ref>(jar))<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1Diagnostics_1a4017fad3a33cdd3349ffdfda2ebaaf01" kindref="member">mlog</ref>[<ref refid="namespaceSawyer_1_1Message_1abfb4d3240797db3a74bbf691f708a1c9a52f8e5eea9bfc070f3e0a152e3d1537a" kindref="member">WARN</ref>]<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;In<sp/>SgJvmComposite::extractClassFiles():<sp/>expected<sp/>file<sp/>to<sp/>be<sp/>path<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;to<sp/>a<sp/>jar<sp/>file:<sp/>is<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>jar<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>classes;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1Diagnostics_1a4017fad3a33cdd3349ffdfda2ebaaf01" kindref="member">mlog</ref>[<ref refid="namespaceSawyer_1_1Message_1abfb4d3240797db3a74bbf691f708a1c9a52f8e5eea9bfc070f3e0a152e3d1537a" kindref="member">WARN</ref>]<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;In<sp/>SgJvmComposite::buildAST():<sp/>jar<sp/>files<sp/>not<sp/>fully<sp/>support<sp/>yet,<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;name<sp/>is<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>jar<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Make<sp/>system<sp/>call<sp/>to<sp/>extract<sp/>the<sp/>class<sp/>files</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><ref refid="classSawyer_1_1FileSystem_1_1TemporaryDirectory" kindref="compound">Sawyer::FileSystem::TemporaryDirectory</ref><sp/>tmpDir{};</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>TODO:<sp/>work<sp/>around<sp/>this<sp/>(by<sp/>passing<sp/>temp<sp/>directory<sp/>in?</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/>tmpDir.<ref refid="classSawyer_1_1FileSystem_1_1TemporaryDirectory_1ad5a090292f5cca91290a35877c84a59e" kindref="member">keep</ref>(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;---&gt;<sp/>extractClassFiles:<sp/>tmp<sp/>directory<sp/>is<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>tmpDir.name()<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>commandString{};</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/>commandString<sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;cd<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>tmpDir.name().string()<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;;<sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/>commandString<sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;jar<sp/>xvf<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>jar<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;;<sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/>commandString<sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;cd<sp/>-&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;---&gt;<sp/>extractClassFiles:<sp/>running<sp/>system<sp/>command:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>commandString<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(system(commandString.c_str())<sp/>!=<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1Diagnostics_1a4017fad3a33cdd3349ffdfda2ebaaf01" kindref="member">mlog</ref>[<ref refid="namespaceSawyer_1_1Message_1abfb4d3240797db3a74bbf691f708a1c9a52f8e5eea9bfc070f3e0a152e3d1537a" kindref="member">WARN</ref>]<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;In<sp/>SgJvmComposite::buildAST():<sp/>failed<sp/>system<sp/>command:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>commandString<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>TODO:<sp/>add<sp/>paths<sp/>to<sp/>extracted<sp/>class<sp/>files</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>classes;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal">SgJvmComposite::SgJvmComposite(vector&lt;string&gt;<sp/>&amp;argv,<sp/>SgProject*<sp/><ref refid="java__support_8C_1a453b843c3024736580c8e7a96a553cbe" kindref="member">project</ref>)</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/>:<sp/>SgJvmComposite()</highlight></codeline>
+<codeline lineno="81"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/>SgFile::doSetupForConstructor(argv,<sp/><ref refid="java__support_8C_1a453b843c3024736580c8e7a96a553cbe" kindref="member">project</ref>);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal">SgJvmComposite::post_construction_initialization()<sp/>{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Don&apos;t<sp/>call<sp/>parent<sp/>initialization<sp/>or<sp/>allow<sp/>it<sp/>to<sp/>be<sp/>called<sp/>twice<sp/>(this<sp/>function<sp/>is<sp/>virtual!)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Do<sp/>JVM<sp/>stuff<sp/>only.<sp/>This<sp/>perhaps<sp/>should<sp/>be<sp/>left<sp/>as<sp/>a<sp/>command<sp/>line<sp/>option.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/>set_Jvm_only(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Binary<sp/>is<sp/>different<sp/>than<sp/>JVM</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/>set_binary_only(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/>set_unparse_binary_file_format(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/>set_sourceFileUsesJvmFileExtension(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/>set_inputLanguage(SgFile::e_Jvm_language);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/>set_outputLanguage(SgFile::e_Jvm_language);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Java<sp/>JVM<sp/>files<sp/>are<sp/>not<sp/>compilable</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/>set_skip_syntax_check(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/>set_skipfinalCompileStep(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/>set_skip_translation_from_edg_ast_to_rose_ast(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Don&apos;t<sp/>do<sp/>C++<sp/>stuff</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/>set_requires_C_preprocessor(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/>set_disable_edg_backend(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/>set_disable_sage_backend(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/>set_skip_transformation(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/>set_skip_commentsAndDirectives(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Don&apos;t<sp/>want<sp/>linking<sp/>either</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/>set_isObjectFile(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal">SgJvmComposite::callFrontEnd()</highlight></codeline>
+<codeline lineno="118"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Process<sp/>command<sp/>line<sp/>options<sp/>specific<sp/>to<sp/>ROSE.<sp/>This<sp/>leaves<sp/>THE<sp/>filename</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>(files<sp/>processed<sp/>one<sp/>at<sp/>a<sp/>time)<sp/>and<sp/>non-rose<sp/>specific<sp/>options<sp/>in<sp/>the<sp/>argv<sp/>list.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/>vector&lt;string&gt;<sp/>argv{get_originalCommandLineArgumentList()};</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/>processRoseCommandLineOptions(argv);</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>buildAST(argv,<sp/>vector&lt;string&gt;{});</highlight></codeline>
+<codeline lineno="125"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Builds<sp/>entire<sp/>AST<sp/>for<sp/>a<sp/>SgJvmComposite<sp/>node.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal">SgJvmComposite::buildAST(vector&lt;string&gt;<sp/>argv,<sp/>vector&lt;string&gt;<sp/></highlight><highlight class="comment">/*inputCommandLine*/</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="130"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Note,<sp/>files<sp/>are<sp/>processed<sp/>one<sp/>at<sp/>a<sp/>time<sp/>from<sp/>the<sp/>command<sp/>line<sp/>(argv[0]<sp/>is<sp/>the<sp/>executable)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>and<sp/>argv[1]<sp/>is<sp/>the<sp/>file.<sp/>Note,<sp/>there<sp/>may<sp/>be<sp/>(non<sp/>rose)<sp/>options<sp/>passed<sp/>in<sp/>argv?</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>For<sp/>now<sp/>assert<sp/>argc<sp/>==<sp/>2<sp/>and<sp/>process<sp/>argv[1].<sp/>For<sp/>now,<sp/>just<sp/>save<sp/>jar<sp/>files<sp/>in<sp/>the<sp/>SgAsmGenericFile<sp/>list.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Since<sp/>jar<sp/>files<sp/>are<sp/>processed<sp/>further<sp/>here,<sp/>jars<sp/>must<sp/>be<sp/>a<sp/>member<sp/>(or<sp/>other<sp/>data<sp/>structure,<sp/>map,<sp/>created<sp/>later).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(argv.size()<sp/>==<sp/>2);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>path{argv[1]};</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/>boost::filesystem::path<sp/>fsPath{path};</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>filename{fsPath.filename().string()};</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="namespaceCommandlineProcessing_1a9bf45f4fceb849b586071eaed8fa3f5f" kindref="member">CommandlineProcessing::isJavaJarFile</ref>(filename)<sp/>&amp;&amp;<sp/>!<ref refid="namespaceCommandlineProcessing_1a4af76e955e1afa612474b8a0715001b3" kindref="member">CommandlineProcessing::isJavaClassFile</ref>(filename))<sp/>{</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>argv<sp/>contains<sp/>paths<sp/>and<sp/>non-rose<sp/>command-line<sp/>options</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="namespaceSawyer_1_1Message_1abfb4d3240797db3a74bbf691f708a1c9a52f8e5eea9bfc070f3e0a152e3d1537a" kindref="member">WARN</ref>]<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;In<sp/>SgJvmComposite::buildAST():<sp/>expected<sp/>path<sp/>to<sp/>be<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;to<sp/>a<sp/>class<sp/>or<sp/>jar<sp/>file:<sp/>is<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>path<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;<sp/></highlight><highlight class="comment">//<sp/>error<sp/>status</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>If<sp/>path<sp/>to<sp/>file<sp/>does<sp/>not<sp/>exists,<sp/>search<sp/>for<sp/>class<sp/>file<sp/>in<sp/>classpaths</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!boost::filesystem::exists(fsPath))<sp/>{</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>SgProject*<sp/><ref refid="java__support_8C_1a453b843c3024736580c8e7a96a553cbe" kindref="member">project</ref>{isSgProject(get_parent()-&gt;get_parent())};</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="java__support_8C_1a453b843c3024736580c8e7a96a553cbe" kindref="member">project</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>std::list&lt;std::string&gt;<sp/>classpath{<ref refid="java__support_8C_1a453b843c3024736580c8e7a96a553cbe" kindref="member">project</ref>-&gt;get_Java_classpath()};</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>&amp;cp<sp/>:<sp/>classpath)<sp/>{</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;classpath<sp/>path:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>cp<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>gf<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmGenericFile" kindref="compound">SgAsmGenericFile</ref>{};</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/>gf-&gt;<ref refid="classSgAsmGenericFile_1a09410b5da440e13a16adfe7c66938144" kindref="member">parse</ref>(path);<sp/></highlight><highlight class="comment">/*<sp/>this<sp/>loads<sp/>file<sp/>into<sp/>memory,<sp/>does<sp/>no<sp/>reading<sp/>of<sp/>file<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/>p_genericFileList-&gt;get_files().push_back(gf);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Look<sp/>for<sp/>a<sp/>class<sp/>file</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespaceCommandlineProcessing_1a4af76e955e1afa612474b8a0715001b3" kindref="member">CommandlineProcessing::isJavaClassFile</ref>(filename))<sp/>{</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="TarjanIntervals_8C_1ae2a1cf80596e62d43dc14835ace90b6b" kindref="member">header</ref><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmJvmFileHeader" kindref="compound">SgAsmJvmFileHeader</ref>(gf);</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="TarjanIntervals_8C_1ae2a1cf80596e62d43dc14835ace90b6b" kindref="member">header</ref>-&gt;parse();</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/>compressed<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">//<sp/>This<sp/>is<sp/>true</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/>isJarFile<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">//<sp/>This<sp/>is<sp/>also<sp/>true</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/>classMap[filename]<sp/>=<sp/>0;<sp/></highlight><highlight class="comment">//<sp/>MAKE<sp/>SURE<sp/>OF<sp/>THIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Look<sp/>elsewhere<sp/>for<sp/>a<sp/>jar<sp/>file<sp/>(EngineJvm)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespaceCommandlineProcessing_1a9bf45f4fceb849b586071eaed8fa3f5f" kindref="member">CommandlineProcessing::isJavaJarFile</ref>(filename))<sp/>{</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Go<sp/>for<sp/>broke</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/>Rose::BinaryAnalysis::Partitioner2::ModulesJvm::Zipper<sp/><ref refid="namespaceRose_1_1Combinatorics_1a6cdeeabca86efb62b90dac0b472c0048" kindref="member">zip</ref>{gf-&gt;content(),<sp/></highlight><highlight class="comment">/*classpath*/</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">};</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Really<sp/>broke!</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>&amp;entry:<sp/><ref refid="namespaceRose_1_1Combinatorics_1a6cdeeabca86efb62b90dac0b472c0048" kindref="member">zip</ref>.offsetMap_)<sp/>{</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(boost::filesystem::path{entry.first}.extension()<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;.class&quot;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>classMap[filename]<sp/>=<sp/>entry.second;</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/><sp/>found<sp/>class<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>entry.first<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>at<sp/>offset<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>entry.second<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/><sp/>found<sp/>file<sp/><sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>entry.first<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>at<sp/>offset<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>entry.second<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>TODO:<sp/>replace<sp/>with<sp/>parse()?</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/>isJarFile<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Sanity<sp/>checks<sp/>to<sp/>see<sp/>if<sp/>logic<sp/>of<sp/>callFrontEnd<sp/>and<sp/>buildAST<sp/>is<sp/>correct</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(p_genericFileList-&gt;get_files().size()<sp/>==<sp/>1);</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="196"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/frontend/BinaryFormats/JvmComposite.C"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,1743 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="namespaceVirtualCFG" kind="namespace" language="C++">
+    <compoundname>VirtualCFG</compoundname>
+    <innerclass refid="classVirtualCFG_1_1CFGEdge" prot="public">VirtualCFG::CFGEdge</innerclass>
+    <innerclass refid="classVirtualCFG_1_1CFGNode" prot="public">VirtualCFG::CFGNode</innerclass>
+    <innerclass refid="classVirtualCFG_1_1CFGPath" prot="public">VirtualCFG::CFGPath</innerclass>
+    <innerclass refid="classVirtualCFG_1_1CfgToDotImpl" prot="public">VirtualCFG::CfgToDotImpl</innerclass>
+    <innerclass refid="classVirtualCFG_1_1DfaToDotImpl" prot="public">VirtualCFG::DfaToDotImpl</innerclass>
+    <innerclass refid="classVirtualCFG_1_1FilteredCFGEdge" prot="public">VirtualCFG::FilteredCFGEdge</innerclass>
+    <innerclass refid="classVirtualCFG_1_1FilteredCFGNode" prot="public">VirtualCFG::FilteredCFGNode</innerclass>
+    <innerclass refid="classVirtualCFG_1_1InterestingEdge" prot="public">VirtualCFG::InterestingEdge</innerclass>
+    <innerclass refid="classVirtualCFG_1_1InterestingNode" prot="public">VirtualCFG::InterestingNode</innerclass>
+    <innerclass refid="structVirtualCFG_1_1MakeClosure" prot="public">VirtualCFG::MakeClosure</innerclass>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdc" prot="public" static="no" strong="no">
+        <type></type>
+        <name>EdgeConditionKind</name>
+        <enumvalue id="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdcae312b66073bca4715901bd8b4a9d43ea" prot="public">
+          <name>eckUnconditional</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdca1ee117ad6598a5f37495ecec9e9bace0" prot="public">
+          <name>eckTrue</name>
+          <briefdescription>
+<para>Normal, unconditional edge. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdca9c21c24fa2896cec79f198c6f6519ad4" prot="public">
+          <name>eckFalse</name>
+          <briefdescription>
+<para>True case of a two-way branch. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdcad36fd7fae427dddbd9f5ae61bf8d1988" prot="public">
+          <name>eckCaseLabel</name>
+          <briefdescription>
+<para>False case of a two-way branch. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdcabfa9f55bd9649d860a79dd372f83e12d" prot="public">
+          <name>eckDefault</name>
+          <briefdescription>
+<para>Case label (constant is given by caseLabel()) </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdca8fa41c629f43719bd273a7288d9392df" prot="public">
+          <name>eckDoConditionPassed</name>
+          <briefdescription>
+<para>Default label. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdca00b2051a4e6313b701089faa3b7e2de6" prot="public">
+          <name>eckDoConditionFailed</name>
+          <briefdescription>
+<para>Enter <ref refid="namespaceFortran" kindref="compound">Fortran</ref> do loop body. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdca3a2504d68654ae61e86742a03d913e1f" prot="public">
+          <name>eckForallIndicesInRange</name>
+          <briefdescription>
+<para><ref refid="namespaceFortran" kindref="compound">Fortran</ref> do loop finished. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdcad42501f49d0fbefa19e8bde159b0892b" prot="public">
+          <name>eckForallIndicesNotInRange</name>
+          <briefdescription>
+<para>Start testing forall mask. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdca4397d690eeb90941f5191890fdf95d84" prot="public">
+          <name>eckComputedGotoCaseLabel</name>
+          <briefdescription>
+<para>End of forall loop. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdca79a59eef69b1a258987161ec18510882" prot="public">
+          <name>eckArithmeticIfLess</name>
+          <briefdescription>
+<para>Case in computed goto <ndash/> number needs to be computed separately. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdcaa9752a2460133ed3f1dc2101dd2735dc" prot="public">
+          <name>eckArithmeticIfEqual</name>
+          <briefdescription>
+<para><ref refid="structEdge" kindref="compound">Edge</ref> for the arithmetic if expression being less than zero. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdca87df19e4ad65acf523bc9ad7d49fe0d6" prot="public">
+          <name>eckArithmeticIfGreater</name>
+          <briefdescription>
+<para><ref refid="structEdge" kindref="compound">Edge</ref> for the arithmetic if expression being equal to zero. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdca68f10309fb317e1bef5cb6e0115112ea" prot="public">
+          <name>eckInterprocedural</name>
+          <briefdescription>
+<para><ref refid="structEdge" kindref="compound">Edge</ref> for the arithmetic if expression being greater than zero. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdca1abda60486bded79d6a7dc2039baac1b" prot="public">
+          <name>eckError</name>
+          <briefdescription>
+<para><ref refid="structEdge" kindref="compound">Edge</ref> spanning two procedures. </para>          </briefdescription>
+          <detaileddescription>
+<para>Allow an error value </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The conditions attached to edges are marked to determine which conditions trigger control to flow along that edge (as opposed to other edges out of the same source node). For conditional branches (except eckCaseLabel and eckDefault), the conditions are implicit and depend on knowledge of the particular control structure. <ref refid="namespaceFortran" kindref="compound">Fortran</ref> support for this is underdeveloped; single AST nodes representing variable-length loops was not part of the original design of the <ref refid="classCFG" kindref="compound">CFG</ref> code. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.h" line="48" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.h" bodystart="47" bodyend="66"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceVirtualCFG_1acff3e5b92528a90f36aa11376d85c2cf" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int VirtualCFG::efgh</definition>
+        <argsstring></argsstring>
+        <name>efgh</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.h" line="36" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceVirtualCFG_1aa5dc264f731bcd70b9d1235e673d52c4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename NodeT</type>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>Debug</declname>
+            <defname>Debug</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void VirtualCFG::printNode</definition>
+        <argsstring>(ostream &amp;o, const NodeT &amp;n)</argsstring>
+        <name>printNode</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>const NodeT &amp;</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" line="28" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" bodystart="28" bodyend="35"/>
+        <references refid="escape_8C_1afe2eed2102b5e1df8cf454304111f5ca" compoundref="escape_8C" startline="7" endline="87">escapeString</references>
+        <references refid="virtualCFG_8h_1ae249a974a874a71b5d8875444f8f2148">isSgExpression</references>
+        <references refid="virtualCFG_8h_1a2e0cd44426c0477280c833ae2f1827a7">isSgInitializedName</references>
+        <references refid="virtualCFG_8h_1a516632fd1c8cee185260e1eaad9dcd16">isSgStatement</references>
+        <references refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" compoundref="TarjanIntervals_8C" startline="175">n</references>
+        <referencedby refid="namespaceVirtualCFG_1a3a171051120703340b16175e1a323ce1" compoundref="filteredCFGImpl_8h" startline="234" endline="270">printNodePlusEdges</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1ad8cb273ff77fea096178133db419c914" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename EdgeT</type>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>Debug</declname>
+            <defname>Debug</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void VirtualCFG::printEdge</definition>
+        <argsstring>(ostream &amp;o, const EdgeT &amp;e, bool isInEdge)</argsstring>
+        <name>printEdge</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>const EdgeT &amp;</type>
+          <declname>e</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>isInEdge</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" line="38" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" bodystart="38" bodyend="40"/>
+        <references refid="escape_8C_1afe2eed2102b5e1df8cf454304111f5ca" compoundref="escape_8C" startline="7" endline="87">escapeString</references>
+        <referencedby refid="namespaceVirtualCFG_1a3a171051120703340b16175e1a323ce1" compoundref="filteredCFGImpl_8h" startline="234" endline="270">printNodePlusEdges</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a74876825e91599c83df7e2c48b9051c8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename NodeT</type>
+          </param>
+          <param>
+            <type>typename EdgeT</type>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>Debug</declname>
+            <defname>Debug</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void VirtualCFG::printNodePlusEdges</definition>
+        <argsstring>(ostream &amp;o, NodeT n)</argsstring>
+        <name>printNodePlusEdges</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>NodeT</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" line="43" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" bodystart="72" bodyend="99"/>
+        <references refid="namespaceStaticCFG_1ace327d96da3705d2573034eb551007ed" compoundref="frontend_2SageIII_2virtualCFG_2staticCFG_8C" startline="450" endline="456">StaticCFG::inEdges</references>
+        <references refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" compoundref="TarjanIntervals_8C" startline="175">n</references>
+        <references refid="namespaceStaticCFG_1a69e305234c8972a9caeb96fa21f8c49b" compoundref="frontend_2SageIII_2virtualCFG_2staticCFG_8C" startline="433" endline="448">StaticCFG::outEdges</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1aca7cdb3eb7081b6fcbcc07205bab849d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>ostream &amp;</type>
+        <definition>ostream&amp; VirtualCFG::cfgToDot</definition>
+        <argsstring>(ostream &amp;o, string graphName, CFGNode start)</argsstring>
+        <name>cfgToDot</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>graphName</declname>
+        </param>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1CFGNode" kindref="compound">CFGNode</ref></type>
+          <declname>start</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" line="131" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" bodystart="131" bodyend="137"/>
+        <referencedby refid="classControlDependenceGraph_1a9083d634b7bf9862ea871dfb4b37a537" compoundref="ControlDependenceGraph_8C" startline="18" endline="65">ControlDependenceGraph::ControlDependenceGraph</referencedby>
+        <referencedby refid="generateCFG_8C_1a3c04138a5bfe5d72780bb7e82a18e627" compoundref="generateCFG_8C" startline="14" endline="47">main</referencedby>
+        <referencedby refid="classDefUseAnalysisPF_1ae2357c220bc5089db33d23580546ccf3" compoundref="DefUseAnalysis__perFunction_8cpp" startline="856" endline="979">DefUseAnalysisPF::run</referencedby>
+        <referencedby refid="classLivenessAnalysis_1a9502855f6f8a6350d23b172f681a9778" compoundref="LivenessAnalysis_8cpp" startline="581" endline="757">LivenessAnalysis::run</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a36ecfd9d8b2feb091ad1c7a0ea1acc00" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>ROSE_DLL_API void VirtualCFG::cfgToDot</definition>
+        <argsstring>(SgNode *start, const std::string &amp;file_name)</argsstring>
+        <name>cfgToDot</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>start</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>file_name</declname>
+        </param>
+        <briefdescription>
+<para>dump the filtered dot graph of a virtual control flow graph starting from SgNode (start) </para>        </briefdescription>
+        <detaileddescription>
+<para>Dump the filtered dot graph of a virtual control flow graph starting from SgNode (start) </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" line="140" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" bodystart="140" bodyend="145"/>
+        <references refid="namespaceVirtualCFG_1a9e1dbfe2c10d98fffb2b4a579696272e" compoundref="cfgToDot_8C" startline="155" endline="161">cfgToDot</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1ac8c979ba74ee3cb88d33aa7dac9a2fff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>ROSE_DLL_API void VirtualCFG::interestingCfgToDot</definition>
+        <argsstring>(SgNode *start, const std::string &amp;file_name)</argsstring>
+        <name>interestingCfgToDot</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>start</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>file_name</declname>
+        </param>
+        <briefdescription>
+<para>Dump a <ref refid="classCFG" kindref="compound">CFG</ref> with only interesting nodes for a SgNode. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" line="148" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" bodystart="148" bodyend="153"/>
+        <references refid="namespaceVirtualCFG_1a9e1dbfe2c10d98fffb2b4a579696272e" compoundref="cfgToDot_8C" startline="155" endline="161">cfgToDot</references>
+        <references refid="namespaceVirtualCFG_1a53b50766022bf0aad1367f77a2412c96" compoundref="virtualCFG_8h" startline="320" endline="323">makeInterestingCfg</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a9e1dbfe2c10d98fffb2b4a579696272e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>ostream &amp;</type>
+        <definition>ostream&amp; VirtualCFG::cfgToDot</definition>
+        <argsstring>(ostream &amp;o, string graphName, InterestingNode start)</argsstring>
+        <name>cfgToDot</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>graphName</declname>
+        </param>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1InterestingNode" kindref="compound">InterestingNode</ref></type>
+          <declname>start</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" line="155" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" bodystart="155" bodyend="161"/>
+        <referencedby refid="namespaceVirtualCFG_1a36ecfd9d8b2feb091ad1c7a0ea1acc00" compoundref="cfgToDot_8C" startline="140" endline="145">cfgToDot</referencedby>
+        <referencedby refid="namespaceVirtualCFG_1ac8c979ba74ee3cb88d33aa7dac9a2fff" compoundref="cfgToDot_8C" startline="148" endline="153">interestingCfgToDot</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1aa8c9c6cdd5584a4e994949cd8a5687a6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>ostream &amp;</type>
+        <definition>ostream&amp; VirtualCFG::cfgToDotForDebugging</definition>
+        <argsstring>(ostream &amp;o, string graphName, CFGNode start)</argsstring>
+        <name>cfgToDotForDebugging</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>graphName</declname>
+        </param>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1CFGNode" kindref="compound">CFGNode</ref></type>
+          <declname>start</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" line="163" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" bodystart="163" bodyend="181"/>
+        <references refid="classVirtualCFG_1_1CFGNode_1a36d3520cbd1046769d3a80bfc9b4f6fb" compoundref="virtualCFG_8h" startline="89" endline="89">VirtualCFG::CFGNode::getNode</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1ad6628c6c1521b8c420fcc64edcb19160" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>ROSE_DLL_API void VirtualCFG::cfgToDotForDebugging</definition>
+        <argsstring>(SgNode *start, const std::string &amp;file_name)</argsstring>
+        <name>cfgToDotForDebugging</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>start</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>file_name</declname>
+        </param>
+        <briefdescription>
+<para>Dump the full dot graph of a virtual control flow graph starting from SgNode (start) </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" line="184" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" bodystart="184" bodyend="189"/>
+        <references refid="namespaceVirtualCFG_1a643c74750618f7d35d57c369e9a2f6ec" compoundref="cfgToDot_8C" startline="191" endline="198">cfgToDotForDebugging</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a643c74750618f7d35d57c369e9a2f6ec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>ostream &amp;</type>
+        <definition>ostream&amp; VirtualCFG::cfgToDotForDebugging</definition>
+        <argsstring>(ostream &amp;o, string graphName, InterestingNode start)</argsstring>
+        <name>cfgToDotForDebugging</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>graphName</declname>
+        </param>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1InterestingNode" kindref="compound">InterestingNode</ref></type>
+          <declname>start</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" line="191" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" bodystart="191" bodyend="198"/>
+        <referencedby refid="namespaceVirtualCFG_1ad6628c6c1521b8c420fcc64edcb19160" compoundref="cfgToDot_8C" startline="184" endline="189">cfgToDotForDebugging</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a5b03dc4fd95b455f2f644adb25b57a46" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="rosedll_8h_1a526910c303031fe78eee386204e4760f" kindref="member">ROSE_DLL_API</ref> std::ostream &amp;</type>
+        <definition>ROSE_DLL_API std::ostream&amp; VirtualCFG::cfgToDot</definition>
+        <argsstring>(std::ostream &amp;o, std::string graphName, CFGNode start)</argsstring>
+        <name>cfgToDot</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>graphName</declname>
+        </param>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1CFGNode" kindref="compound">CFGNode</ref></type>
+          <declname>start</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.h" line="9" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" bodystart="131" bodyend="137"/>
+        <referencedby refid="classControlDependenceGraph_1a9083d634b7bf9862ea871dfb4b37a537" compoundref="ControlDependenceGraph_8C" startline="18" endline="65">ControlDependenceGraph::ControlDependenceGraph</referencedby>
+        <referencedby refid="generateCFG_8C_1a3c04138a5bfe5d72780bb7e82a18e627" compoundref="generateCFG_8C" startline="14" endline="47">main</referencedby>
+        <referencedby refid="classDefUseAnalysisPF_1ae2357c220bc5089db33d23580546ccf3" compoundref="DefUseAnalysis__perFunction_8cpp" startline="856" endline="979">DefUseAnalysisPF::run</referencedby>
+        <referencedby refid="classLivenessAnalysis_1a9502855f6f8a6350d23b172f681a9778" compoundref="LivenessAnalysis_8cpp" startline="581" endline="757">LivenessAnalysis::run</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a7935d33e9862a8b38be4f06dbb2df0f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="rosedll_8h_1a526910c303031fe78eee386204e4760f" kindref="member">ROSE_DLL_API</ref> std::ostream &amp;</type>
+        <definition>ROSE_DLL_API std::ostream&amp; VirtualCFG::cfgToDot</definition>
+        <argsstring>(std::ostream &amp;o, std::string graphName, InterestingNode start)</argsstring>
+        <name>cfgToDot</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>graphName</declname>
+        </param>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1InterestingNode" kindref="compound">InterestingNode</ref></type>
+          <declname>start</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.h" line="10" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" bodystart="155" bodyend="161"/>
+        <referencedby refid="namespaceVirtualCFG_1a36ecfd9d8b2feb091ad1c7a0ea1acc00" compoundref="cfgToDot_8C" startline="140" endline="145">cfgToDot</referencedby>
+        <referencedby refid="namespaceVirtualCFG_1ac8c979ba74ee3cb88d33aa7dac9a2fff" compoundref="cfgToDot_8C" startline="148" endline="153">interestingCfgToDot</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a2c4545611f4b110d80b6727ead4ac9c8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="rosedll_8h_1a526910c303031fe78eee386204e4760f" kindref="member">ROSE_DLL_API</ref> std::ostream &amp;</type>
+        <definition>ROSE_DLL_API std::ostream&amp; VirtualCFG::cfgToDotForDebugging</definition>
+        <argsstring>(std::ostream &amp;o, std::string graphName, CFGNode start)</argsstring>
+        <name>cfgToDotForDebugging</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>graphName</declname>
+        </param>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1CFGNode" kindref="compound">CFGNode</ref></type>
+          <declname>start</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.h" line="12" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" bodystart="163" bodyend="181"/>
+        <references refid="classVirtualCFG_1_1CFGNode_1a36d3520cbd1046769d3a80bfc9b4f6fb" compoundref="virtualCFG_8h" startline="89" endline="89">VirtualCFG::CFGNode::getNode</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a43423083346a443866b3f08027d9ff15" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="rosedll_8h_1a526910c303031fe78eee386204e4760f" kindref="member">ROSE_DLL_API</ref> std::ostream &amp;</type>
+        <definition>ROSE_DLL_API std::ostream&amp; VirtualCFG::cfgToDotForDebugging</definition>
+        <argsstring>(std::ostream &amp;o, std::string graphName, InterestingNode start)</argsstring>
+        <name>cfgToDotForDebugging</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>graphName</declname>
+        </param>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1InterestingNode" kindref="compound">InterestingNode</ref></type>
+          <declname>start</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.h" line="13" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" bodystart="191" bodyend="198"/>
+        <referencedby refid="namespaceVirtualCFG_1ad6628c6c1521b8c420fcc64edcb19160" compoundref="cfgToDot_8C" startline="184" endline="189">cfgToDotForDebugging</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a22dedcaf460749f74915859a07f0baf5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FilterFunction</type>
+          </param>
+        </templateparamlist>
+        <type>std::ostream &amp;</type>
+        <definition>std::ostream &amp; VirtualCFG::cfgToDot</definition>
+        <argsstring>(std::ostream &amp;o, std::string graphName, FilteredCFGNode&lt; FilterFunction &gt; start)</argsstring>
+        <name>cfgToDot</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>graphName</declname>
+        </param>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1FilteredCFGNode" kindref="compound">FilteredCFGNode</ref>&lt; FilterFunction &gt;</type>
+          <declname>start</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/filteredCFG.h" line="158" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/filteredCFGImpl.h" bodystart="286" bodyend="297"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1ad36a9a1c719e9041c5d6a24bab9dcc20" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FilteredEdge</type>
+          </param>
+          <param>
+            <type>typename FindSuccessors</type>
+          </param>
+          <param>
+            <type>typename FindEnd</type>
+          </param>
+          <param>
+            <type>typename AddChildren</type>
+          </param>
+          <param>
+            <type>typename Join</type>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; FilteredEdge &gt;</type>
+        <definition>std::vector&lt; FilteredEdge &gt; VirtualCFG::makeClosure</definition>
+        <argsstring>(const std::vector&lt; CFGPath &gt; &amp;p, const FindSuccessors &amp;findSuccessors, const FindEnd &amp;findEnd, const AddChildren &amp;addChildren, const Join &amp;join)</argsstring>
+        <name>makeClosure</name>
+        <param>
+          <type>const std::vector&lt; <ref refid="classVirtualCFG_1_1CFGPath" kindref="compound">CFGPath</ref> &gt; &amp;</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>const FindSuccessors &amp;</type>
+          <declname>findSuccessors</declname>
+        </param>
+        <param>
+          <type>const FindEnd &amp;</type>
+          <declname>findEnd</declname>
+        </param>
+        <param>
+          <type>const AddChildren &amp;</type>
+          <declname>addChildren</declname>
+        </param>
+        <param>
+          <type>const Join &amp;</type>
+          <declname>join</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/filteredCFGImpl.h" line="91" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/filteredCFGImpl.h" bodystart="91" bodyend="102"/>
+        <references refid="structVirtualCFG_1_1MakeClosure_1a5a1181db6e928c29da55a2dfa53cb02a" compoundref="filteredCFGImpl_8h" startline="72" endline="83">VirtualCFG::MakeClosure&lt; FindSuccessors, FindEnd, DontAddChildren, Join, FilteredEdge &gt;::filter</references>
+        <references refid="structVirtualCFG_1_1MakeClosure_1ae1b860249ac485248e1fd792551ce3b2" compoundref="filteredCFGImpl_8h" startline="50" endline="70">VirtualCFG::MakeClosure&lt; FindSuccessors, FindEnd, DontAddChildren, Join, FilteredEdge &gt;::go</references>
+        <references refid="namespaceRose_1_1StringUtility_1af5db0a39edbecf0d631e1218496b3087" compoundref="SplitJoin_8C" startline="61" endline="63">Rose::StringUtility::join</references>
+        <referencedby refid="classVirtualCFG_1_1InterestingNode_1ad5ac3f8830541dda19753021887b296b" compoundref="virtualCFG_8C" startline="908" endline="910">VirtualCFG::InterestingNode::inEdges</referencedby>
+        <referencedby refid="classVirtualCFG_1_1InterestingNode_1ab4582c6266a0b0d77170e3b4fe44fc0f" compoundref="virtualCFG_8C" startline="904" endline="906">VirtualCFG::InterestingNode::outEdges</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a1cad92b9a6f323289f287a889c33881f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FilteredEdge</type>
+          </param>
+          <param>
+            <type>typename Filter</type>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; FilteredEdge &gt;</type>
+        <definition>std::vector&lt; FilteredEdge &gt; VirtualCFG::makeClosure</definition>
+        <argsstring>(const std::vector&lt; CFGEdge &gt; &amp;orig, std::vector&lt; CFGEdge &gt;(CFGNode::*closure)() const, CFGNode(CFGPath::*otherSide)() const, CFGPath(*merge)(const CFGPath &amp;, const CFGPath &amp;), const Filter &amp;filter)</argsstring>
+        <name>makeClosure</name>
+        <param>
+          <type>const std::vector&lt; <ref refid="classVirtualCFG_1_1CFGEdge" kindref="compound">CFGEdge</ref> &gt; &amp;</type>
+          <declname>orig</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="classVirtualCFG_1_1CFGEdge" kindref="compound">CFGEdge</ref> &gt;(CFGNode::*)() const</type>
+          <declname>closure</declname>
+        </param>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1CFGNode" kindref="compound">CFGNode</ref>(CFGPath::*)() const</type>
+          <declname>otherSide</declname>
+        </param>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1CFGPath" kindref="compound">CFGPath</ref>(*)(const <ref refid="classVirtualCFG_1_1CFGPath" kindref="compound">CFGPath</ref> &amp;, const <ref refid="classVirtualCFG_1_1CFGPath" kindref="compound">CFGPath</ref> &amp;)</type>
+          <declname>merge</declname>
+        </param>
+        <param>
+          <type>const Filter &amp;</type>
+          <declname>filter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/filteredCFGImpl.h" line="106" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/filteredCFGImpl.h" bodystart="106" bodyend="118"/>
+        <references refid="namespaceRose_1_1AST_1_1IO_1adb18fab52b62c4149b38c88f8ce82775" compoundref="merge_8C" startline="225" endline="294">Rose::AST::IO::merge</references>
+        <references refid="yicesParserLib_8h_1a0ab651cea734fb0eb3ed32cef06b99ec" compoundref="yicesParserLib_8h" startline="81">paths</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a03fcda968e5f5f447930ccd505b9225d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename NodeT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void VirtualCFG::printNode</definition>
+        <argsstring>(std::ostream &amp;o, const NodeT &amp;n)</argsstring>
+        <name>printNode</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>const NodeT &amp;</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+<para>Helper function to print Node information. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/filteredCFGImpl.h" line="162" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/filteredCFGImpl.h" bodystart="162" bodyend="176"/>
+        <references refid="escape_8C_1afe2eed2102b5e1df8cf454304111f5ca" compoundref="escape_8C" startline="7" endline="87">escapeString</references>
+        <references refid="virtualCFG_8h_1ae249a974a874a71b5d8875444f8f2148">isSgExpression</references>
+        <references refid="virtualCFG_8h_1a2e0cd44426c0477280c833ae2f1827a7">isSgInitializedName</references>
+        <references refid="virtualCFG_8h_1a516632fd1c8cee185260e1eaad9dcd16">isSgStatement</references>
+        <references refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" compoundref="TarjanIntervals_8C" startline="175">n</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a6de22bf180a4990e7626347440be75ad" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename EdgeT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void VirtualCFG::printEdge</definition>
+        <argsstring>(std::ostream &amp;o, const EdgeT &amp;e, bool isInEdge)</argsstring>
+        <name>printEdge</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>const EdgeT &amp;</type>
+          <declname>e</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>isInEdge</declname>
+        </param>
+        <briefdescription>
+<para><ref refid="structEdge" kindref="compound">Edge</ref> printer. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/filteredCFGImpl.h" line="180" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/filteredCFGImpl.h" bodystart="180" bodyend="187"/>
+        <references refid="escape_8C_1afe2eed2102b5e1df8cf454304111f5ca" compoundref="escape_8C" startline="7" endline="87">escapeString</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a3a171051120703340b16175e1a323ce1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename NodeT</type>
+          </param>
+          <param>
+            <type>typename EdgeT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void VirtualCFG::printNodePlusEdges</definition>
+        <argsstring>(std::ostream &amp;o, NodeT n)</argsstring>
+        <name>printNodePlusEdges</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>NodeT</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+<para>Print out a node plus all its outgoing edges. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/filteredCFGImpl.h" line="191" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/filteredCFGImpl.h" bodystart="234" bodyend="270"/>
+        <references refid="namespaceStaticCFG_1ace327d96da3705d2573034eb551007ed" compoundref="frontend_2SageIII_2virtualCFG_2staticCFG_8C" startline="450" endline="456">StaticCFG::inEdges</references>
+        <references refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" compoundref="TarjanIntervals_8C" startline="175">n</references>
+        <references refid="namespaceStaticCFG_1a69e305234c8972a9caeb96fa21f8c49b" compoundref="frontend_2SageIII_2virtualCFG_2staticCFG_8C" startline="433" endline="448">StaticCFG::outEdges</references>
+        <references refid="namespaceVirtualCFG_1ad8cb273ff77fea096178133db419c914" compoundref="cfgToDot_8C" startline="38" endline="40">printEdge</references>
+        <references refid="namespaceVirtualCFG_1aa5dc264f731bcd70b9d1235e673d52c4" compoundref="cfgToDot_8C" startline="28" endline="35">printNode</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1aa60095a8046662b2f2c1bfac45f106ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int VirtualCFG::cfgIndexForEndWrapper</definition>
+        <argsstring>(SgNode *n)</argsstring>
+        <name>cfgIndexForEndWrapper</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" line="19" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" bodystart="19" bodyend="21"/>
+        <references refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" compoundref="TarjanIntervals_8C" startline="175">n</references>
+        <referencedby refid="namespaceVirtualCFG_1aeba85dbf5039bd3a8920b59fec97ee59" compoundref="virtualCFG_8h" startline="269" endline="271">cfgEndOfConstruct</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a628512d2e52cd793afd1f4c53c3eb6d2" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>string</type>
+        <definition>static string VirtualCFG::variableName</definition>
+        <argsstring>(SgInitializedName *in)</argsstring>
+        <name>variableName</name>
+        <param>
+          <type>SgInitializedName *</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" line="23" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" bodystart="23" bodyend="27"/>
+        <referencedby refid="classGenRepresentation_1a7f04b06106e78a116931e01b91b4203d" compoundref="GenRepresentation_8C" startline="235" endline="267">GenRepresentation::addVariable</referencedby>
+        <referencedby refid="classGrammarString_1a30a5b252657066806950127380c98c4e" compoundref="grammarString_8C" startline="270" endline="433">GrammarString::buildCopyMemberFunctionSetParentSource</referencedby>
+        <referencedby refid="classGrammarString_1a43795c0e7eefb68d1f48a9420158a80b" compoundref="grammarString_8C" startline="443" endline="763">GrammarString::buildCopyMemberFunctionSource</referencedby>
+        <referencedby refid="classAstNodeClass_1a451ede8ae2f3c1fedf12d641ae5703af" compoundref="AstNodeClass_8C" startline="922" endline="1015">AstNodeClass::buildDataAccessFunctions</referencedby>
+        <referencedby refid="classGrammarString_1adab5712fdffc17fd1572c386e7a7c668" compoundref="grammarString_8C" startline="1234" endline="1354">GrammarString::buildDestructorSource</referencedby>
+        <referencedby refid="fortran__support_8h_1a5b1e259932cf994a86a1415a1ff1527c" compoundref="fortran__support_8C" startline="2588" endline="2669">buildImplicitVariableDeclaration</referencedby>
+        <referencedby refid="classAstNodeClass_1abb45ca576949d7b6e2d406085bcbb6c0" compoundref="AstNodeClass_8C" startline="1677" endline="1805">AstNodeClass::buildListIteratorString</referencedby>
+        <referencedby refid="classAstNodeClass_1a026673d85681ec17d719ca75c4e782d4" compoundref="AstNodeClass_8C" startline="2143" endline="2267">AstNodeClass::buildListIteratorStringForChildIndex</referencedby>
+        <referencedby refid="classAstNodeClass_1a023cb514e5d9248fc14ff2876ce65a4b" compoundref="AstNodeClass_8C" startline="1912" endline="2031">AstNodeClass::buildListIteratorStringForReferenceToPointers</referencedby>
+        <referencedby refid="fortran__support_8h_1a3ab0d77173a2e992a0fcca4d0a24f354" compoundref="fortran__support_8C" startline="3011" endline="3240">buildVariableDeclaration</referencedby>
+        <referencedby refid="FortranParserActionROSE_8C_1a57e8f241b4fa562270579356abe3a3b3" compoundref="FortranParserActionROSE_8C" startline="11585" endline="11637">c_action_associate_stmt</referencedby>
+        <referencedby refid="FortranParserActionROSE_8C_1a67139c6969bcafaa2f06d6ced186b7d0" compoundref="FortranParserActionROSE_8C" startline="11705" endline="11789">c_action_association</referencedby>
+        <referencedby refid="FortranParserActionROSE_8C_1a8bada8bb768974ded84b2f795702c47e" compoundref="FortranParserActionROSE_8C" startline="6537" endline="6630">c_action_common_block_object</referencedby>
+        <referencedby refid="FortranParserActionROSE_8C_1aa40dceb0fff8f468d81185a558d2132f" compoundref="FortranParserActionROSE_8C" startline="6910" endline="7893">c_action_data_ref</referencedby>
+        <referencedby refid="FortranParserActionROSE_8C_1a02af87ee8dfafdd765a478e41d316513" compoundref="FortranParserActionROSE_8C" startline="11911" endline="12176">c_action_do_stmt</referencedby>
+        <referencedby refid="FortranParserActionROSE_8C_1a8ea184c0f811fb50d10835e89b1e7ea9" compoundref="FortranParserActionROSE_8C" startline="3521" endline="3788">c_action_entity_decl</referencedby>
+        <referencedby refid="FortranParserActionROSE_8C_1a75712a64a91f9ee95594eebc616732ec" compoundref="FortranParserActionROSE_8C" startline="6181" endline="6216">c_action_namelist_group_object_list</referencedby>
+        <referencedby refid="FortranParserActionROSE_8C_1a637afcc92e9261f94c5d3e0e0f3e3d45" compoundref="FortranParserActionROSE_8C" startline="17919" endline="18067">c_action_proc_decl</referencedby>
+        <referencedby refid="grammarString_8C_1a6a86a0351a71dedcdd292b272d8acadf" compoundref="grammarString_8C" startline="144" endline="160">conditionalToSetParent</referencedby>
+        <referencedby refid="classMyTraversal_1a2c4faee8e9eecc81a2b51bc640da72c1" compoundref="roseExtensions_2dataStructureTraversal_2main_8C" startline="331" endline="605">MyTraversal::evaluateRewriteSynthesizedAttribute</referencedby>
+        <referencedby refid="classMidLevelRewrite_1_1AST__FragmentIdentificationTraversal_1adfd97935e2469fc9dfc3e9e1f496fcf1" compoundref="ASTFragmentCollectorTraversalImpl_8h" startline="550" endline="975">MidLevelRewrite&lt; ASTNodeCollection &gt;::AST_FragmentIdentificationTraversal::evaluateSynthesizedAttribute</referencedby>
+        <referencedby refid="fortran__support_8h_1a732060347f2f46deb023a2d858da7f5d" compoundref="fortran__support_8C" startline="5884" endline="5948">fixupModuleScope</referencedby>
+        <referencedby refid="grammarString_8C_1a6bb4d0426a48e93c54ff3dca58bfaf1b" compoundref="grammarString_8C" startline="128" endline="132">forLoopBody</referencedby>
+        <referencedby refid="fortran__support_8h_1a68141e2f956a9ee47ec1fd08bda66004" compoundref="fortran__support_8C" startline="4779" endline="4953">generateFunctionCall</referencedby>
+        <referencedby refid="classGrammar_1a44eb81472e3593d802d403c314c93e24" compoundref="buildConstructorsWithoutSourcePositionInformation_8C" startline="76" endline="95">Grammar::getNamedDataMember</referencedby>
+        <referencedby refid="classLowLevelRewrite_1ab112d54bd6d8f38dd9f88853e60fda50" compoundref="rewriteLowLevelInterface_8C" startline="215" endline="422">LowLevelRewrite::insertStatementUsingDependenceInformation</referencedby>
+        <referencedby refid="classGrammar_1a7fd6827ede74354a9646d33f58cd5fc3" compoundref="buildConstructorsWithoutSourcePositionInformation_8C" startline="15" endline="51">Grammar::markNodeForConstructorWithoutSourcePositionInformation</referencedby>
+        <referencedby refid="classGenGeneration_1a15f790159f3305a12ae9652bb0a9ef43" compoundref="GenGeneration_8C" startline="1257" endline="1305">GenGeneration::printClassNotPrinted</referencedby>
+        <referencedby refid="classGenGeneration_1a00bec71db642b7f991d01e04db1f373d" compoundref="GenGeneration_8C" startline="1318" endline="1869">GenGeneration::printCSVariables</referencedby>
+        <referencedby refid="classGenGeneration_1a01e0d7882c05d04e2dc46641832549fb" compoundref="GenGeneration_8C" startline="752" endline="1242">GenGeneration::printUnionVariables</referencedby>
+        <referencedby refid="classGenGeneration_1ac49b0cd8d972799caa59c78aee4b610c" compoundref="GenGeneration_8C" startline="114" endline="294">GenGeneration::queryClassNotPrinted</referencedby>
+        <referencedby refid="GenGeneration_8C_1ae8f6e6b3635c18a8bb44d7a05ab71776" compoundref="GenGeneration_8C" startline="57" endline="97">querySolverVariableDeclarationFromName</referencedby>
+        <referencedby refid="grammarString_8C_1acd3a898a38f65ff55ba6c401e4ff3ddc" compoundref="grammarString_8C" startline="203" endline="210">stringCopyConditional</referencedby>
+        <referencedby refid="classCodeThorn_1_1VariableIdMapping_1ab5c1759f10b555aab535b2299a43350e" compoundref="VariableIdMapping_8C" startline="156" endline="181">CodeThorn::VariableIdMapping::toCSVString</referencedby>
+        <referencedby refid="classVirtualCFG_1_1CFGNode_1aef4188864258b11bb68c2aa9cc19077c" compoundref="virtualCFG_8C" startline="68" endline="87">VirtualCFG::CFGNode::toStringForDebugging</referencedby>
+        <referencedby refid="classVirtualCFG_1_1CFGEdge_1ade46c91f69ce736a0dfb4c2676f4285c" compoundref="virtualCFG_8C" startline="99" endline="205">VirtualCFG::CFGEdge::toStringForDebugging</referencedby>
+        <referencedby refid="fortran__support_8h_1aa4d80b3272c591ce616af622b04cb3a0" compoundref="fortran__support_8C" startline="2095" endline="2275">trace_back_through_parent_scopes_lookup_variable_symbol</referencedby>
+        <referencedby refid="fortran__support_8h_1a09960f54f56100593bc1c0f2e2c2f63b" compoundref="fortran__support_8C" startline="2011" endline="2090">trace_back_through_parent_scopes_lookup_variable_symbol_but_do_not_build_variable</referencedby>
+        <referencedby refid="classCodeThorn_1_1VariableIdMapping_1a17728aa0ecb05e7ddb197babf73e0e35" compoundref="VariableIdMapping_8C" startline="469" endline="478">CodeThorn::VariableIdMapping::uniqueVariableName</referencedby>
+        <referencedby refid="prefixGenerationImpl_8h_1acb41e7efdbcc97d23ca9f9c4a4b2d9f0" compoundref="unparser_8C" startline="1493" endline="1654">unparseDeclarationToString</referencedby>
+        <referencedby refid="unparseFortran__statements_8C_1a4d72567883ae19093c495ce4ae2f44dd" compoundref="unparseFortran__statements_8C" startline="560" endline="643">unparseDimensionStatementForArrayVariable</referencedby>
+        <referencedby refid="classUnparse__ExprStmt_1a212259a4b7f24d78393058be57fc838d" compoundref="unparseCxx__statements_8C" startline="2339" endline="2593">Unparse_ExprStmt::unparseUsingDeclarationStatement</referencedby>
+        <referencedby refid="grammarString_8C_1a621bded32ab2f031aedf20006ce1250d" compoundref="grammarString_8C" startline="194" endline="198">variableDeclaration</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1af0e22f602355580e8cf7758c65888528" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>vector&lt; SgInitializedName * &gt;</type>
+        <definition>static vector&lt;SgInitializedName*&gt; VirtualCFG::findVariablesDirectlyInScope</definition>
+        <argsstring>(SgStatement *sc)</argsstring>
+        <name>findVariablesDirectlyInScope</name>
+        <param>
+          <type>SgStatement *</type>
+          <declname>sc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" line="248" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" bodystart="248" bodyend="274"/>
+        <references refid="virtualCFG_8h_1a2e0cd44426c0477280c833ae2f1827a7">isSgInitializedName</references>
+        <references refid="AdaStatement_8C_1a02281ca4e33b94303a691b8f9324073b" compoundref="AdaStatement_8C" startline="918">params</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+        <referencedby refid="namespaceVirtualCFG_1aced3869aa0aa7bacbe68b58f1fc1055d" compoundref="virtualCFG_8C" startline="736" endline="745">getEntriesForScope</referencedby>
+        <referencedby refid="namespaceVirtualCFG_1a179f607589808f125b3a800c5d46f4af" compoundref="virtualCFG_8C" startline="763" endline="792">unwindToLocation</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a047ab28d7a1da5dffc523cd297d6529c" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>SgNode *</type>
+        <definition>static SgNode* VirtualCFG::leastCommonAncestor</definition>
+        <argsstring>(SgNode *a, SgNode *b)</argsstring>
+        <name>leastCommonAncestor</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>SgNode *</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" line="283" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" bodystart="283" bodyend="293"/>
+        <references refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" compoundref="xomp__accelerator__sched__test_8c" startline="120">a</references>
+        <references refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" compoundref="xomp__accelerator__sched__test_8c" startline="120">b</references>
+        <referencedby refid="namespaceVirtualCFG_1a8bf9a713be3db9739657b5ef8060f894" compoundref="virtualCFG_8C" startline="643" endline="731">genericWindUnwind</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1ac3d4e1b42fabbd0b3349bc372935b123" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>SgExpression *</type>
+        <definition>static SgExpression* VirtualCFG::getExpressionForTest</definition>
+        <argsstring>(SgStatement *t)</argsstring>
+        <name>getExpressionForTest</name>
+        <param>
+          <type>SgStatement *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" line="584" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" bodystart="584" bodyend="600"/>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+        <referencedby refid="classVirtualCFG_1_1CFGEdge_1a1fa79e09a97f16f806443b17acc46c04" compoundref="virtualCFG_8C" startline="602" endline="636">VirtualCFG::CFGEdge::conditionBasedOn</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a8bf9a713be3db9739657b5ef8060f894" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DoEffectsForwards</type>
+          </param>
+          <param>
+            <type>typename DoEffectsBackwards</type>
+          </param>
+          <param>
+            <type>typename DoEffectsForEnteringScope</type>
+          </param>
+          <param>
+            <type>typename DoEffectsForLeavingScope</type>
+          </param>
+        </templateparamlist>
+        <type>vector&lt; SgInitializedName * &gt;</type>
+        <definition>vector&lt;SgInitializedName*&gt; VirtualCFG::genericWindUnwind</definition>
+        <argsstring>(SgNode *src, bool srcEnd, SgNode *tgt, bool tgtEnd, DoEffectsForwards doEffectsForwards, DoEffectsBackwards doEffectsBackwards, DoEffectsForEnteringScope doEffectsForEnteringScope, DoEffectsForLeavingScope doEffectsForLeavingScope)</argsstring>
+        <name>genericWindUnwind</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>srcEnd</declname>
+        </param>
+        <param>
+          <type>SgNode *</type>
+          <declname>tgt</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>tgtEnd</declname>
+        </param>
+        <param>
+          <type>DoEffectsForwards</type>
+          <declname>doEffectsForwards</declname>
+        </param>
+        <param>
+          <type>DoEffectsBackwards</type>
+          <declname>doEffectsBackwards</declname>
+        </param>
+        <param>
+          <type>DoEffectsForEnteringScope</type>
+          <declname>doEffectsForEnteringScope</declname>
+        </param>
+        <param>
+          <type>DoEffectsForLeavingScope</type>
+          <declname>doEffectsForLeavingScope</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" line="643" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" bodystart="643" bodyend="731"/>
+        <references refid="namespaceVirtualCFG_1a047ab28d7a1da5dffc523cd297d6529c" compoundref="virtualCFG_8C" startline="283" endline="293">leastCommonAncestor</references>
+        <references refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" compoundref="TarjanIntervals_8C" startline="175">n</references>
+        <references refid="namespaceRose_1_1AST_1_1Traversal_1aec194980721de1e31b42107a66b4fe90" compoundref="AST_2Traversal_8h" startline="214" endline="216">Rose::AST::Traversal::reverse</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+        <referencedby refid="namespaceVirtualCFG_1a179f607589808f125b3a800c5d46f4af" compoundref="virtualCFG_8C" startline="763" endline="792">unwindToLocation</referencedby>
+        <referencedby refid="namespaceVirtualCFG_1a6e7e98e60e8fc02c405e6dbc15c5017f" compoundref="virtualCFG_8C" startline="747" endline="761">windToLocation</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a51e5342025e308f12294558fc7671aa2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void VirtualCFG::getEntriesNull</definition>
+        <argsstring>(SgNode *, vector&lt; SgInitializedName *&gt; &amp;)</argsstring>
+        <name>getEntriesNull</name>
+        <param>
+          <type>SgNode *</type>
+        </param>
+        <param>
+          <type>vector&lt; SgInitializedName *&gt; &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" line="733" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" bodystart="733" bodyend="733"/>
+        <referencedby refid="namespaceVirtualCFG_1a179f607589808f125b3a800c5d46f4af" compoundref="virtualCFG_8C" startline="763" endline="792">unwindToLocation</referencedby>
+        <referencedby refid="namespaceVirtualCFG_1a6e7e98e60e8fc02c405e6dbc15c5017f" compoundref="virtualCFG_8C" startline="747" endline="761">windToLocation</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1aced3869aa0aa7bacbe68b58f1fc1055d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>bool</type>
+            <declname>Reverse</declname>
+            <defname>Reverse</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void VirtualCFG::getEntriesForScope</definition>
+        <argsstring>(SgNode *n, vector&lt; SgInitializedName *&gt; &amp;entries)</argsstring>
+        <name>getEntriesForScope</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>vector&lt; SgInitializedName *&gt; &amp;</type>
+          <declname>entries</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" line="736" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" bodystart="736" bodyend="745"/>
+        <references refid="namespaceVirtualCFG_1af0e22f602355580e8cf7758c65888528" compoundref="virtualCFG_8C" startline="248" endline="274">findVariablesDirectlyInScope</references>
+        <references refid="virtualCFG_8h_1a516632fd1c8cee185260e1eaad9dcd16">isSgStatement</references>
+        <references refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" compoundref="TarjanIntervals_8C" startline="175">n</references>
+        <references refid="AdaStatement_8C_1a7836d50b00a0f273426eb08a77f0584d" compoundref="AdaStatement_8C" startline="54">names</references>
+        <references refid="SymbolicOperator_8C_1a5ebe4d6ae572eed31d2cb6e626f359fb" compoundref="SymbolicOperator_8C" startline="563" endline="582">Reverse</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a6e7e98e60e8fc02c405e6dbc15c5017f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>vector&lt; SgInitializedName * &gt;</type>
+        <definition>vector&lt;SgInitializedName*&gt; VirtualCFG::windToLocation</definition>
+        <argsstring>(CFGNode src, CFGNode tgt)</argsstring>
+        <name>windToLocation</name>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1CFGNode" kindref="compound">CFGNode</ref></type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1CFGNode" kindref="compound">CFGNode</ref></type>
+          <declname>tgt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" line="747" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" bodystart="747" bodyend="761"/>
+        <references refid="namespaceVirtualCFG_1a8bf9a713be3db9739657b5ef8060f894" compoundref="virtualCFG_8C" startline="643" endline="731">genericWindUnwind</references>
+        <references refid="namespaceVirtualCFG_1a51e5342025e308f12294558fc7671aa2" compoundref="virtualCFG_8C" startline="733" endline="733">getEntriesNull</references>
+        <references refid="classVirtualCFG_1_1CFGNode_1a36d3520cbd1046769d3a80bfc9b4f6fb" compoundref="virtualCFG_8h" startline="89" endline="89">VirtualCFG::CFGNode::getNode</references>
+        <references refid="virtualCFG_8h_1ae249a974a874a71b5d8875444f8f2148">isSgExpression</references>
+        <referencedby refid="classVirtualCFG_1_1CFGEdge_1aa3e3a737e77bdf56b9abe52ae3c77b1c" compoundref="virtualCFG_8C" startline="798" endline="805">VirtualCFG::CFGEdge::scopesBeingEntered</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a179f607589808f125b3a800c5d46f4af" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>vector&lt; SgInitializedName * &gt;</type>
+        <definition>vector&lt;SgInitializedName*&gt; VirtualCFG::unwindToLocation</definition>
+        <argsstring>(CFGNode src, CFGNode tgt)</argsstring>
+        <name>unwindToLocation</name>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1CFGNode" kindref="compound">CFGNode</ref></type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1CFGNode" kindref="compound">CFGNode</ref></type>
+          <declname>tgt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" line="763" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" bodystart="763" bodyend="792"/>
+        <references refid="namespaceVirtualCFG_1af0e22f602355580e8cf7758c65888528" compoundref="virtualCFG_8C" startline="248" endline="274">findVariablesDirectlyInScope</references>
+        <references refid="namespaceVirtualCFG_1a8bf9a713be3db9739657b5ef8060f894" compoundref="virtualCFG_8C" startline="643" endline="731">genericWindUnwind</references>
+        <references refid="namespaceVirtualCFG_1a51e5342025e308f12294558fc7671aa2" compoundref="virtualCFG_8C" startline="733" endline="733">getEntriesNull</references>
+        <references refid="classVirtualCFG_1_1CFGNode_1aab6a5cbbdaeb93aaffb1f5d310696bc4" compoundref="virtualCFG_8h" startline="91" endline="91">VirtualCFG::CFGNode::getIndex</references>
+        <references refid="classVirtualCFG_1_1CFGNode_1a36d3520cbd1046769d3a80bfc9b4f6fb" compoundref="virtualCFG_8h" startline="89" endline="89">VirtualCFG::CFGNode::getNode</references>
+        <references refid="virtualCFG_8h_1ae249a974a874a71b5d8875444f8f2148">isSgExpression</references>
+        <references refid="AdaStatement_8C_1a02281ca4e33b94303a691b8f9324073b" compoundref="AdaStatement_8C" startline="918">params</references>
+        <referencedby refid="classVirtualCFG_1_1CFGEdge_1a349492c2dabf73128b0c4c0c227bfcd1" compoundref="virtualCFG_8C" startline="794" endline="796">VirtualCFG::CFGEdge::scopesBeingExited</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a08e70aa5eb75dc5355a873576a24b800" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>vector&lt; <ref refid="classVirtualCFG_1_1InterestingEdge" kindref="compound">InterestingEdge</ref> &gt;</type>
+        <definition>vector&lt;InterestingEdge&gt; VirtualCFG::makeClosure</definition>
+        <argsstring>(const vector&lt; CFGEdge &gt; &amp;orig, vector&lt; CFGEdge &gt;(CFGNode::*closure)() const, CFGNode(CFGPath::*otherSide)() const, CFGPath(*merge)(const CFGPath &amp;, const CFGPath &amp;))</argsstring>
+        <name>makeClosure</name>
+        <param>
+          <type>const vector&lt; <ref refid="classVirtualCFG_1_1CFGEdge" kindref="compound">CFGEdge</ref> &gt; &amp;</type>
+          <declname>orig</declname>
+        </param>
+        <param>
+          <type>vector&lt; <ref refid="classVirtualCFG_1_1CFGEdge" kindref="compound">CFGEdge</ref> &gt;(CFGNode::*)() const</type>
+          <declname>closure</declname>
+        </param>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1CFGNode" kindref="compound">CFGNode</ref>(CFGPath::*)() const</type>
+          <declname>otherSide</declname>
+        </param>
+        <param>
+          <type><ref refid="classVirtualCFG_1_1CFGPath" kindref="compound">CFGPath</ref>(*)(const <ref refid="classVirtualCFG_1_1CFGPath" kindref="compound">CFGPath</ref> &amp;, const <ref refid="classVirtualCFG_1_1CFGPath" kindref="compound">CFGPath</ref> &amp;)</type>
+          <declname>merge</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" line="851" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" bodystart="851" bodyend="902"/>
+        <references refid="namespaceboost_1a38610b1e25e89acc52c0f6d6f37fb2a8" compoundref="GraphBoost_8h" startline="620" endline="623">boost::edges</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1aa31d4851a366963fecb98de9a0c4aa7c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classVirtualCFG_1_1CFGNode" kindref="compound">CFGNode</ref></type>
+        <definition>CFGNode VirtualCFG::getCFGTargetOfFortranLabelSymbol</definition>
+        <argsstring>(SgLabelSymbol *sym)</argsstring>
+        <name>getCFGTargetOfFortranLabelSymbol</name>
+        <param>
+          <type>SgLabelSymbol *</type>
+          <declname>sym</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" line="912" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" bodystart="912" bodyend="961"/>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+        <referencedby refid="memberFunctions_8C_1a9cdd85b50b3df8acd9be9a1e48b9a9e6" compoundref="memberFunctions_8C" startline="88" endline="152">addIncomingFortranGotos</referencedby>
+        <referencedby refid="namespaceVirtualCFG_1aaa4d81ec454299c0537ce3af921e27a2" compoundref="virtualCFG_8C" startline="963" endline="968">getCFGTargetOfFortranLabelRef</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1aaa4d81ec454299c0537ce3af921e27a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classVirtualCFG_1_1CFGNode" kindref="compound">CFGNode</ref></type>
+        <definition>CFGNode VirtualCFG::getCFGTargetOfFortranLabelRef</definition>
+        <argsstring>(SgLabelRefExp *lRef)</argsstring>
+        <name>getCFGTargetOfFortranLabelRef</name>
+        <param>
+          <type>SgLabelRefExp *</type>
+          <declname>lRef</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" line="963" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.C" bodystart="963" bodyend="968"/>
+        <references refid="namespaceVirtualCFG_1aa31d4851a366963fecb98de9a0c4aa7c" compoundref="virtualCFG_8C" startline="912" endline="961">getCFGTargetOfFortranLabelSymbol</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+        <referencedby refid="memberFunctions_8C_1a9cdd85b50b3df8acd9be9a1e48b9a9e6" compoundref="memberFunctions_8C" startline="88" endline="152">addIncomingFortranGotos</referencedby>
+        <referencedby refid="classVirtualCFG_1_1CFGEdge_1ad26e97d81810ee50519a06b6a1f6d4ca" compoundref="virtualCFG_8C" startline="567" endline="582">VirtualCFG::CFGEdge::computedGotoCaseIndex</referencedby>
+        <referencedby refid="classVirtualCFG_1_1CFGEdge_1ac29f9d8ff6d239aa34bf28dd849f6dc0" compoundref="virtualCFG_8C" startline="295" endline="554">VirtualCFG::CFGEdge::condition</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1af0c17c7c5f4f8ec4e80f098f226d81a8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classVirtualCFG_1_1CFGPath" kindref="compound">CFGPath</ref></type>
+        <definition>CFGPath VirtualCFG::mergePaths</definition>
+        <argsstring>(const CFGPath &amp;hd, const CFGPath &amp;tl)</argsstring>
+        <name>mergePaths</name>
+        <param>
+          <type>const <ref refid="classVirtualCFG_1_1CFGPath" kindref="compound">CFGPath</ref> &amp;</type>
+          <declname>hd</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classVirtualCFG_1_1CFGPath" kindref="compound">CFGPath</ref> &amp;</type>
+          <declname>tl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.h" line="246" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.h" bodystart="246" bodyend="249"/>
+        <referencedby refid="namespaceVirtualCFG_1a684bdbfd795da2598c38f718b68cf7eb" compoundref="virtualCFG_8h" startline="252" endline="254">mergePathsReversed</referencedby>
+        <referencedby refid="classVirtualCFG_1_1FilteredCFGNode_1a2a6ae858b17d04e3ee9d11e1e4a05188" compoundref="filteredCFGImpl_8h" startline="124" endline="131">VirtualCFG::FilteredCFGNode&lt; IsImportantForSliceCFGFilter &gt;::outEdges</referencedby>
+        <referencedby refid="classVirtualCFG_1_1InterestingNode_1ab4582c6266a0b0d77170e3b4fe44fc0f" compoundref="virtualCFG_8C" startline="904" endline="906">VirtualCFG::InterestingNode::outEdges</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a684bdbfd795da2598c38f718b68cf7eb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classVirtualCFG_1_1CFGPath" kindref="compound">CFGPath</ref></type>
+        <definition>CFGPath VirtualCFG::mergePathsReversed</definition>
+        <argsstring>(const CFGPath &amp;tl, const CFGPath &amp;hd)</argsstring>
+        <name>mergePathsReversed</name>
+        <param>
+          <type>const <ref refid="classVirtualCFG_1_1CFGPath" kindref="compound">CFGPath</ref> &amp;</type>
+          <declname>tl</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classVirtualCFG_1_1CFGPath" kindref="compound">CFGPath</ref> &amp;</type>
+          <declname>hd</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.h" line="252" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.h" bodystart="252" bodyend="254"/>
+        <references refid="namespaceVirtualCFG_1af0c17c7c5f4f8ec4e80f098f226d81a8" compoundref="virtualCFG_8h" startline="246" endline="249">mergePaths</references>
+        <referencedby refid="classVirtualCFG_1_1FilteredCFGNode_1aa3694c006079408af2d7afcc72c526cb" compoundref="filteredCFGImpl_8h" startline="134" endline="141">VirtualCFG::FilteredCFGNode&lt; IsImportantForSliceCFGFilter &gt;::inEdges</referencedby>
+        <referencedby refid="classVirtualCFG_1_1InterestingNode_1ad5ac3f8830541dda19753021887b296b" compoundref="virtualCFG_8C" startline="908" endline="910">VirtualCFG::InterestingNode::inEdges</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1aeddb971cbfd413be90ca71e576b2ef73" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classVirtualCFG_1_1CFGNode" kindref="compound">CFGNode</ref></type>
+        <definition>CFGNode VirtualCFG::cfgBeginningOfConstruct</definition>
+        <argsstring>(SgNode *c)</argsstring>
+        <name>cfgBeginningOfConstruct</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The first <ref refid="classCFG" kindref="compound">CFG</ref> node for a construct (before the construct starts to execute) </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.h" line="258" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.h" bodystart="258" bodyend="260"/>
+        <references refid="xomp__accelerator__sched__test__v2_8c_1a48faa9373e4ff5ed39dce18d5deea0cb" compoundref="xomp__accelerator__sched__test__v2_8c" startline="145">c</references>
+        <referencedby refid="namespaceVirtualCFG_1ae486d57b9e745c286ff612e541f06c01" compoundref="virtualCFG_8h" startline="274" endline="276">makeCfg</referencedby>
+        <referencedby refid="namespaceVirtualCFG_1a53b50766022bf0aad1367f77a2412c96" compoundref="virtualCFG_8h" startline="320" endline="323">makeInterestingCfg</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1aeba85dbf5039bd3a8920b59fec97ee59" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classVirtualCFG_1_1CFGNode" kindref="compound">CFGNode</ref></type>
+        <definition>CFGNode VirtualCFG::cfgEndOfConstruct</definition>
+        <argsstring>(SgNode *c)</argsstring>
+        <name>cfgEndOfConstruct</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The last <ref refid="classCFG" kindref="compound">CFG</ref> node for a construct (after the entire construct has finished executing). This node may not actually be reached if, for example, a goto causes a loop to be exited in the middle </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.h" line="269" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.h" bodystart="269" bodyend="271"/>
+        <references refid="xomp__accelerator__sched__test__v2_8c_1a48faa9373e4ff5ed39dce18d5deea0cb" compoundref="xomp__accelerator__sched__test__v2_8c" startline="145">c</references>
+        <references refid="namespaceVirtualCFG_1aa60095a8046662b2f2c1bfac45f106ed" compoundref="virtualCFG_8C" startline="19" endline="21">cfgIndexForEndWrapper</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1ae486d57b9e745c286ff612e541f06c01" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classVirtualCFG_1_1CFGNode" kindref="compound">CFGNode</ref></type>
+        <definition>CFGNode VirtualCFG::makeCfg</definition>
+        <argsstring>(SgNode *start)</argsstring>
+        <name>makeCfg</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>start</declname>
+        </param>
+        <briefdescription>
+<para>Returns <ref refid="classCFG" kindref="compound">CFG</ref> node for just before start. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.h" line="274" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.h" bodystart="274" bodyend="276"/>
+        <references refid="namespaceVirtualCFG_1aeddb971cbfd413be90ca71e576b2ef73" compoundref="virtualCFG_8h" startline="258" endline="260">cfgBeginningOfConstruct</references>
+        <referencedby refid="namespacelegacy_1_1PRE_1ae91de446d269c85e304e46a6a108bc45" compoundref="pre_8C" startline="766" endline="802">legacy::PRE::partialRedundancyEliminationFunction</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a53b50766022bf0aad1367f77a2412c96" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classVirtualCFG_1_1InterestingNode" kindref="compound">InterestingNode</ref></type>
+        <definition>InterestingNode VirtualCFG::makeInterestingCfg</definition>
+        <argsstring>(SgNode *start)</argsstring>
+        <name>makeInterestingCfg</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>start</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.h" line="320" column="1" bodyfile="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.h" bodystart="320" bodyend="323"/>
+        <references refid="namespaceVirtualCFG_1aeddb971cbfd413be90ca71e576b2ef73" compoundref="virtualCFG_8h" startline="258" endline="260">cfgBeginningOfConstruct</references>
+        <referencedby refid="classStaticCFG_1_1CFG_1a28c1564b317f28996097b818bf9e02b1" compoundref="frontend_2SageIII_2virtualCFG_2staticCFG_8C" startline="96" endline="126">StaticCFG::CFG::buildFilteredCFG</referencedby>
+        <referencedby refid="namespaceVirtualCFG_1ac8c979ba74ee3cb88d33aa7dac9a2fff" compoundref="cfgToDot_8C" startline="148" endline="153">interestingCfgToDot</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a2f499f5eb0ac25b4f2de4cec77ff8d47" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Node1T</type>
+          </param>
+          <param>
+            <type>class Node2T</type>
+          </param>
+          <param>
+            <type>class EdgeT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void VirtualCFG::makeEdge</definition>
+        <argsstring>(Node1T from, Node2T to, std::vector&lt; EdgeT &gt; &amp;result)</argsstring>
+        <name>makeEdge</name>
+        <param>
+          <type>Node1T</type>
+          <declname>from</declname>
+        </param>
+        <param>
+          <type>Node2T</type>
+          <declname>to</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; EdgeT &gt; &amp;</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+<para>Utility function to make <ref refid="classCFG" kindref="compound">CFG</ref> Edges. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/virtualCFG.h" line="332" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a349f8b7db721b42b7f5e4dfa2d53616d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename <ref refid="NEW__ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" kindref="member">T</ref></type>
+          </param>
+        </templateparamlist>
+        <type>std::string</type>
+        <definition>std::string VirtualCFG::ToString</definition>
+        <argsstring>(T t)</argsstring>
+        <name>ToString</name>
+        <param>
+          <type><ref refid="NEW__ControlDependenceGraph_8C_1af40713911bb5d86f82a7057cc45a65ff" kindref="member">T</ref></type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" line="45" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" bodystart="45" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a50032db87d59947fde1a4ec838502c8d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename NodeT</type>
+          </param>
+        </templateparamlist>
+        <type>std::string</type>
+        <definition>std::string VirtualCFG::getNodeString</definition>
+        <argsstring>(const NodeT &amp;cfg, DefUseAnalysis *dfa)</argsstring>
+        <name>getNodeString</name>
+        <param>
+          <type>const NodeT &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <param>
+          <type><ref refid="classDefUseAnalysis" kindref="compound">DefUseAnalysis</ref> *</type>
+          <declname>dfa</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" line="52" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" bodystart="52" bodyend="79"/>
+        <references refid="yicesParserLib_8h_1a186965467c7391216517a49d187f340c" compoundref="yicesParserLib_8h" startline="1440">cfg</references>
+        <references refid="classDefUseAnalysis_1aab1369c9f82202639477482fe6fc1f1f" compoundref="DefUseAnalysis_8cpp" startline="23" endline="30">DefUseAnalysis::getIntForSgNode</references>
+        <references refid="virtualCFG_8h_1a2e0cd44426c0477280c833ae2f1827a7">isSgInitializedName</references>
+        <references refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" compoundref="TarjanIntervals_8C" startline="175">n</references>
+        <references refid="DepInfoAnal_8h_1a88330471e31b3e2a784e02ce3b485c47">ToString</references>
+        <references refid="sageUtility_8h_1a5254bb18c9c4f7acad7baa8b9a2369a6" compoundref="sageUtility_8h" startline="181">var</references>
+        <referencedby refid="namespaceVirtualCFG_1a5308e78647e2406859cc054cc84da6cf" compoundref="dfaToDot_8cpp" startline="163" endline="179">printDFANode</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a6faf447bf5811078bfe3ad2c0033bc39" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename EdgeT</type>
+          </param>
+        </templateparamlist>
+        <type>std::string</type>
+        <definition>std::string VirtualCFG::getEdgeString</definition>
+        <argsstring>(const EdgeT &amp;e, DefUseAnalysis *dfa, LivenessAnalysis *live)</argsstring>
+        <name>getEdgeString</name>
+        <param>
+          <type>const EdgeT &amp;</type>
+          <declname>e</declname>
+        </param>
+        <param>
+          <type><ref refid="classDefUseAnalysis" kindref="compound">DefUseAnalysis</ref> *</type>
+          <declname>dfa</declname>
+        </param>
+        <param>
+          <type><ref refid="classLivenessAnalysis" kindref="compound">LivenessAnalysis</ref> *</type>
+          <declname>live</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" line="82" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" bodystart="82" bodyend="160"/>
+        <references refid="classDefUseAnalysis_1accd70d4121d78ac57e1bf8c026156637" compoundref="DefUseAnalysis_8cpp" startline="362" endline="369">DefUseAnalysis::getDefMultiMapFor</references>
+        <references refid="classLivenessAnalysis_1ab22cf944d585c7315b9128199e41140b" compoundref="LivenessAnalysis_8h" startline="64" endline="64">LivenessAnalysis::getIn</references>
+        <references refid="classDefUseAnalysis_1aab1369c9f82202639477482fe6fc1f1f" compoundref="DefUseAnalysis_8cpp" startline="23" endline="30">DefUseAnalysis::getIntForSgNode</references>
+        <references refid="classLivenessAnalysis_1aa1dc0ed85e95693bb34309e41d49e629" compoundref="LivenessAnalysis_8h" startline="65" endline="65">LivenessAnalysis::getOut</references>
+        <references refid="classDefUseAnalysis_1a970395b9fab7d3a57709472654082ed4" compoundref="DefUseAnalysis_8cpp" startline="375" endline="382">DefUseAnalysis::getUseMultiMapFor</references>
+        <references refid="virtualCFG_8h_1a2e0cd44426c0477280c833ae2f1827a7">isSgInitializedName</references>
+        <references refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" compoundref="TarjanIntervals_8C" startline="175">n</references>
+        <references refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" compoundref="SgAsmPESectionTableEntry_8h" startline="21">name</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+        <references refid="DepInfoAnal_8h_1a88330471e31b3e2a784e02ce3b485c47">ToString</references>
+        <referencedby refid="namespaceVirtualCFG_1a3ab6b74f4dfab7c4919dd28969bca779" compoundref="dfaToDot_8cpp" startline="182" endline="198">printDFAEdge</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a5308e78647e2406859cc054cc84da6cf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename NodeT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void VirtualCFG::printDFANode</definition>
+        <argsstring>(ostream &amp;o, const NodeT &amp;n, DefUseAnalysis *dfa)</argsstring>
+        <name>printDFANode</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>const NodeT &amp;</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type><ref refid="classDefUseAnalysis" kindref="compound">DefUseAnalysis</ref> *</type>
+          <declname>dfa</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" line="163" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" bodystart="163" bodyend="179"/>
+        <references refid="dfaToDot_8cpp_1a016f66937c0d476c87ca237e5f3513f9" compoundref="dfaToDot_8cpp" startline="13" endline="39">escapeStringDFA</references>
+        <references refid="namespaceVirtualCFG_1a50032db87d59947fde1a4ec838502c8d" compoundref="dfaToDot_8cpp" startline="52" endline="79">getNodeString</references>
+        <references refid="virtualCFG_8h_1a2e0cd44426c0477280c833ae2f1827a7">isSgInitializedName</references>
+        <references refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" compoundref="TarjanIntervals_8C" startline="175">n</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a3ab6b74f4dfab7c4919dd28969bca779" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename EdgeT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void VirtualCFG::printDFAEdge</definition>
+        <argsstring>(ostream &amp;o, const EdgeT &amp;e, bool isInEdge, DefUseAnalysis *dfa, LivenessAnalysis *live)</argsstring>
+        <name>printDFAEdge</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>const EdgeT &amp;</type>
+          <declname>e</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>isInEdge</declname>
+        </param>
+        <param>
+          <type><ref refid="classDefUseAnalysis" kindref="compound">DefUseAnalysis</ref> *</type>
+          <declname>dfa</declname>
+        </param>
+        <param>
+          <type><ref refid="classLivenessAnalysis" kindref="compound">LivenessAnalysis</ref> *</type>
+          <declname>live</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" line="182" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" bodystart="182" bodyend="198"/>
+        <references refid="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdca9c21c24fa2896cec79f198c6f6519ad4" compoundref="virtualCFG_8h" startline="51">eckFalse</references>
+        <references refid="namespaceVirtualCFG_1a46745b3eb58533efc6b2a0c54610ffdca1ee117ad6598a5f37495ecec9e9bace0" compoundref="virtualCFG_8h" startline="50">eckTrue</references>
+        <references refid="escape_8C_1afe2eed2102b5e1df8cf454304111f5ca" compoundref="escape_8C" startline="7" endline="87">escapeString</references>
+        <references refid="namespaceVirtualCFG_1a6faf447bf5811078bfe3ad2c0033bc39" compoundref="dfaToDot_8cpp" startline="82" endline="160">getEdgeString</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a2ad23a0339a5dc3e5ec1a02691441c48" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename NodeT</type>
+          </param>
+          <param>
+            <type>typename EdgeT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void VirtualCFG::printDFANodePlusEdges</definition>
+        <argsstring>(ostream &amp;o, NodeT n, DefUseAnalysis *dfa, LivenessAnalysis *live)</argsstring>
+        <name>printDFANodePlusEdges</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>NodeT</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type><ref refid="classDefUseAnalysis" kindref="compound">DefUseAnalysis</ref> *</type>
+          <declname>dfa</declname>
+        </param>
+        <param>
+          <type><ref refid="classLivenessAnalysis" kindref="compound">LivenessAnalysis</ref> *</type>
+          <declname>live</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" line="202" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" bodystart="202" bodyend="216"/>
+        <references refid="namespaceStaticCFG_1ace327d96da3705d2573034eb551007ed" compoundref="frontend_2SageIII_2virtualCFG_2staticCFG_8C" startline="450" endline="456">StaticCFG::inEdges</references>
+        <references refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" compoundref="TarjanIntervals_8C" startline="175">n</references>
+        <references refid="namespaceStaticCFG_1a69e305234c8972a9caeb96fa21f8c49b" compoundref="frontend_2SageIII_2virtualCFG_2staticCFG_8C" startline="433" endline="448">StaticCFG::outEdges</references>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a3a0ffa977a624c752220ead0dd2749e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FilterFunction</type>
+          </param>
+        </templateparamlist>
+        <type>std::ostream &amp;</type>
+        <definition>std::ostream&amp; VirtualCFG::dfaToDot</definition>
+        <argsstring>(std::ostream &amp;o, std::string graphName, std::vector&lt; FilteredCFGNode&lt; FilterFunction &gt; &gt; start, DefUseAnalysis *dfa)</argsstring>
+        <name>dfaToDot</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>graphName</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="classVirtualCFG_1_1FilteredCFGNode" kindref="compound">FilteredCFGNode</ref>&lt; FilterFunction &gt; &gt;</type>
+          <declname>start</declname>
+        </param>
+        <param>
+          <type><ref refid="classDefUseAnalysis" kindref="compound">DefUseAnalysis</ref> *</type>
+          <declname>dfa</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" line="272" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" bodystart="272" bodyend="288"/>
+        <referencedby refid="classDefUseAnalysis_1a9b293a62c361f63fe2b415eab61bdef7" compoundref="DefUseAnalysis_8cpp" startline="412" endline="416">DefUseAnalysis::dfaToDOT</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1aa809d4366427fd7cd28b25eed69e4a1a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FilterFunction</type>
+          </param>
+        </templateparamlist>
+        <type>std::ostream &amp;</type>
+        <definition>std::ostream&amp; VirtualCFG::dfaToDot</definition>
+        <argsstring>(std::ostream &amp;o, std::string graphName, std::vector&lt; FilteredCFGNode&lt; FilterFunction &gt; &gt; start, DefUseAnalysis *dfa, LivenessAnalysis *live)</argsstring>
+        <name>dfaToDot</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>graphName</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="classVirtualCFG_1_1FilteredCFGNode" kindref="compound">FilteredCFGNode</ref>&lt; FilterFunction &gt; &gt;</type>
+          <declname>start</declname>
+        </param>
+        <param>
+          <type><ref refid="classDefUseAnalysis" kindref="compound">DefUseAnalysis</ref> *</type>
+          <declname>dfa</declname>
+        </param>
+        <param>
+          <type><ref refid="classLivenessAnalysis" kindref="compound">LivenessAnalysis</ref> *</type>
+          <declname>live</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" line="291" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" bodystart="291" bodyend="308"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a7bef91fdd6be27bd9432f3a34dcb142f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>template <ref refid="rosedll_8h_1a526910c303031fe78eee386204e4760f" kindref="member">ROSE_DLL_API</ref> std::ostream &amp;</type>
+        <definition>template ROSE_DLL_API std::ostream&amp; VirtualCFG::dfaToDot</definition>
+        <argsstring>(std::ostream &amp;, std::string, std::vector&lt; FilteredCFGNode&lt; IsDFAFilter &gt; &gt;, DefUseAnalysis *dfa)</argsstring>
+        <name>dfaToDot</name>
+        <param>
+          <type>std::ostream &amp;</type>
+        </param>
+        <param>
+          <type>std::string</type>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="classVirtualCFG_1_1FilteredCFGNode" kindref="compound">FilteredCFGNode</ref>&lt; <ref refid="structIsDFAFilter" kindref="compound">IsDFAFilter</ref> &gt; &gt;</type>
+        </param>
+        <param>
+          <type><ref refid="classDefUseAnalysis" kindref="compound">DefUseAnalysis</ref> *</type>
+          <declname>dfa</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" line="311" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1ae95af7a6c78ecd6ecf3eadb49ea366a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>template <ref refid="rosedll_8h_1a526910c303031fe78eee386204e4760f" kindref="member">ROSE_DLL_API</ref> std::ostream &amp;</type>
+        <definition>template ROSE_DLL_API std::ostream&amp; VirtualCFG::dfaToDot</definition>
+        <argsstring>(std::ostream &amp;, std::string, std::vector&lt; FilteredCFGNode&lt; IsDFAFilter &gt; &gt;, DefUseAnalysis *dfa, LivenessAnalysis *live)</argsstring>
+        <name>dfaToDot</name>
+        <param>
+          <type>std::ostream &amp;</type>
+        </param>
+        <param>
+          <type>std::string</type>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="classVirtualCFG_1_1FilteredCFGNode" kindref="compound">FilteredCFGNode</ref>&lt; <ref refid="structIsDFAFilter" kindref="compound">IsDFAFilter</ref> &gt; &gt;</type>
+        </param>
+        <param>
+          <type><ref refid="classDefUseAnalysis" kindref="compound">DefUseAnalysis</ref> *</type>
+          <declname>dfa</declname>
+        </param>
+        <param>
+          <type><ref refid="classLivenessAnalysis" kindref="compound">LivenessAnalysis</ref> *</type>
+          <declname>live</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" line="314" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a5ad8e3d0e7031293d3508e10e12f0aff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FilterFunction</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="rosedll_8h_1a526910c303031fe78eee386204e4760f" kindref="member">ROSE_DLL_API</ref> std::ostream &amp;</type>
+        <definition>ROSE_DLL_API std::ostream&amp; VirtualCFG::dfaToDot</definition>
+        <argsstring>(std::ostream &amp;o, std::string graphName, std::vector&lt; FilteredCFGNode&lt; FilterFunction &gt; &gt; start, DefUseAnalysis *dfa)</argsstring>
+        <name>dfaToDot</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>graphName</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="classVirtualCFG_1_1FilteredCFGNode" kindref="compound">FilteredCFGNode</ref>&lt; FilterFunction &gt; &gt;</type>
+          <declname>start</declname>
+        </param>
+        <param>
+          <type><ref refid="classDefUseAnalysis" kindref="compound">DefUseAnalysis</ref> *</type>
+          <declname>dfa</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.h" line="22" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" bodystart="272" bodyend="288"/>
+        <referencedby refid="classDefUseAnalysis_1a9b293a62c361f63fe2b415eab61bdef7" compoundref="DefUseAnalysis_8cpp" startline="412" endline="416">DefUseAnalysis::dfaToDOT</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespaceVirtualCFG_1a342252ceb131a07161be5d564be9b991" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FilterFunction</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="rosedll_8h_1a526910c303031fe78eee386204e4760f" kindref="member">ROSE_DLL_API</ref> std::ostream &amp;</type>
+        <definition>ROSE_DLL_API std::ostream&amp; VirtualCFG::dfaToDot</definition>
+        <argsstring>(std::ostream &amp;o, std::string graphName, std::vector&lt; FilteredCFGNode&lt; FilterFunction &gt; &gt; start, DefUseAnalysis *dfa, LivenessAnalysis *live)</argsstring>
+        <name>dfaToDot</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>graphName</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="classVirtualCFG_1_1FilteredCFGNode" kindref="compound">FilteredCFGNode</ref>&lt; FilterFunction &gt; &gt;</type>
+          <declname>start</declname>
+        </param>
+        <param>
+          <type><ref refid="classDefUseAnalysis" kindref="compound">DefUseAnalysis</ref> *</type>
+          <declname>dfa</declname>
+        </param>
+        <param>
+          <type><ref refid="classLivenessAnalysis" kindref="compound">LivenessAnalysis</ref> *</type>
+          <declname>live</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.h" line="27" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/defUseAnalysis/dfaToDot.cpp" bodystart="291" bodyend="308"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/virtualCFG/cfgToDot.C" line="14" column="1"/>
+  </compounddef>
+</doxygen>

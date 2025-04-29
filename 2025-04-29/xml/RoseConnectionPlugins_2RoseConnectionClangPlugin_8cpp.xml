@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="RoseConnectionPlugins_2RoseConnectionClangPlugin_8cpp" kind="file" language="C++">
+    <compoundname>RoseConnectionClangPlugin.cpp</compoundname>
+    <includes local="yes">RoseConnectionClangPlugin.hpp</includes>
+    <includes local="yes">clang/Frontend/FrontendPluginRegistry.h</includes>
+    <includes local="yes">clang/AST/AST.h</includes>
+    <includes local="yes">clang/AST/ASTConsumer.h</includes>
+    <includes local="yes">clang/AST/RecursiveASTVisitor.h</includes>
+    <includes local="yes">clang/Frontend/CompilerInstance.h</includes>
+    <includes local="yes">clang/Sema/Sema.h</includes>
+    <includes local="yes">llvm/Support/raw_ostream.h</includes>
+    <includes local="no">rose.h</includes>
+    <includes local="no">boost/property_tree/ptree.hpp</includes>
+    <includes local="no">boost/property_tree/json_parser.hpp</includes>
+    <includes local="no">boost/optional.hpp</includes>
+    <incdepgraph>
+      <node id="98318">
+        <label>llvm/Support/raw_ostream.h</label>
+      </node>
+      <node id="98315">
+        <label>clang/AST/RecursiveASTVisitor.h</label>
+      </node>
+      <node id="98316">
+        <label>clang/Frontend/CompilerInstance.h</label>
+      </node>
+      <node id="98314">
+        <label>clang/AST/ASTConsumer.h</label>
+      </node>
+      <node id="98312">
+        <label>clang/Frontend/FrontendPluginRegistry.h</label>
+      </node>
+      <node id="98313">
+        <label>clang/AST/AST.h</label>
+      </node>
+      <node id="98311">
+        <label>RoseConnectionClangPlugin.hpp</label>
+      </node>
+      <node id="98319">
+        <label>rose.h</label>
+      </node>
+      <node id="98321">
+        <label>boost/property_tree/json_parser.hpp</label>
+      </node>
+      <node id="98320">
+        <label>boost/property_tree/ptree.hpp</label>
+      </node>
+      <node id="98310">
+        <label>/home/liao6/workspace/rose-github/src/integration/ROSE-LLVM-connection/RoseConnectionPlugins/RoseConnectionClangPlugin.cpp</label>
+        <link refid="RoseConnectionPlugins_2RoseConnectionClangPlugin_8cpp"/>
+        <childnode refid="98311" relation="include">
+        </childnode>
+        <childnode refid="98312" relation="include">
+        </childnode>
+        <childnode refid="98313" relation="include">
+        </childnode>
+        <childnode refid="98314" relation="include">
+        </childnode>
+        <childnode refid="98315" relation="include">
+        </childnode>
+        <childnode refid="98316" relation="include">
+        </childnode>
+        <childnode refid="98317" relation="include">
+        </childnode>
+        <childnode refid="98318" relation="include">
+        </childnode>
+        <childnode refid="98319" relation="include">
+        </childnode>
+        <childnode refid="98320" relation="include">
+        </childnode>
+        <childnode refid="98321" relation="include">
+        </childnode>
+        <childnode refid="98322" relation="include">
+        </childnode>
+      </node>
+      <node id="98322">
+        <label>boost/optional.hpp</label>
+      </node>
+      <node id="98317">
+        <label>clang/Sema/Sema.h</label>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="RoseConnectionPlugins_2RoseConnectionClangPlugin_8cpp_1a8a76a53b72feddad698605082eb9cf90" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>FrontendPluginRegistry::Add&lt; RoseConnectionClangPluginAction &gt;</type>
+        <definition>static FrontendPluginRegistry::Add&lt;RoseConnectionClangPluginAction&gt; X</definition>
+        <argsstring>(&quot;ROSE&quot;, &quot;call ROSE&quot;)</argsstring>
+        <name>X</name>
+        <param>
+          <type>&quot;ROSE&quot;</type>
+        </param>
+        <param>
+          <type>&quot;call ROSE&quot;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/integration/ROSE-LLVM-connection/RoseConnectionPlugins/RoseConnectionClangPlugin.cpp" line="102" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//===-<sp/>RoseConnectionClangPlugin.cpp<sp/>---------------------------------------------===//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Example<sp/>clang<sp/>plugin<sp/>which<sp/>incooperate<sp/>ROSE.<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//===----------------------------------------------------------------------===//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;RoseConnectionClangPlugin.hpp&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceclang" kindref="compound">clang</ref>;</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">collectInfoVisitor<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>RecursiveASTVisitor&lt;collectInfoVisitor&gt;<sp/>{</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/>collectInfoVisitor(ASTContext<sp/>*Context)</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>Context(Context)<sp/>{}</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/>ASTContext<sp/>*Context;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">RoseConnectionClangPluginConsumer<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>ASTConsumer<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/>CompilerInstance<sp/>&amp;Instance;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/>llvm::StringRef<sp/>inFile;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/>RoseConnectionClangPluginConsumer(CompilerInstance<sp/>&amp;Instance,<sp/>llvm::StringRef<sp/>inFile)</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Instance(Instance),<sp/>visitor(&amp;Instance.getASTContext()),<sp/>inFile(inFile)<sp/>{}</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Initialize(ASTContext<sp/>&amp;Context)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>SourceManager&amp;<sp/>SrcMgr<sp/>=<sp/>Context.getSourceManager();</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>llvm::errs()<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;my<sp/>customized<sp/>initizlier<sp/>for<sp/>input<sp/>file:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>inFile<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Initialize_8h_1a179e60fce9b51ce471fe5436d414bf4c" kindref="member">ROSE_INITIALIZE</ref>;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/>roseFEArgs{</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,</highlight><highlight class="stringliteral">&quot;-rose:skipfinalCompileStep&quot;</highlight><highlight class="normal">,inFile.str()};</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="RoseConnectionPlugins_2RoseConnectionLLVMPassPlugin_8cpp_1a6d57a3bd84cfcbf0c26a9c6658214699" kindref="member">roseProject</ref><sp/>=<sp/><ref refid="utility__functions_8C_1a5eb681f92d111ceba438d6d3b2131bf2" kindref="member">::frontend</ref>(roseFEArgs);<sp/></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;In<sp/>Plugin:<sp/>generated<sp/>sgproject:&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="RoseConnectionPlugins_2RoseConnectionLLVMPassPlugin_8cpp_1a6d57a3bd84cfcbf0c26a9c6658214699" kindref="member">roseProject</ref><sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/>}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>HandleTranslationUnit(clang::ASTContext<sp/>&amp;Context)</highlight><highlight class="keyword"><sp/>override</highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/>visitor.TraverseDecl(Context.getTranslationUnitDecl());</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/>}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/>collectInfoVisitor<sp/>visitor;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">RoseConnectionClangPluginAction<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>PluginASTAction<sp/>{</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/>std::unique_ptr&lt;ASTConsumer&gt;<sp/>CreateASTConsumer(CompilerInstance<sp/>&amp;CI,</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>llvm::StringRef<sp/>inFile)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::make_unique&lt;RoseConnectionClangPluginConsumer&gt;(CI,<sp/>inFile);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ParseArgs(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>CompilerInstance<sp/>&amp;CI,</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;std::string&gt;<sp/>&amp;<ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>arguments<sp/>are<sp/>passed<sp/>from<sp/>command<sp/>line<sp/>by<sp/>&quot;-Xclang<sp/>-plugin-arg-ROSE<sp/>-Xclang<sp/>$ARG&quot;<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0,<sp/>e<sp/>=<sp/><ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>.size();<sp/>i<sp/>!=<sp/>e;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>llvm::errs()<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;RoseConnectionClangPlugin<sp/>arg<sp/>=<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>[i]<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Example<sp/>error<sp/>handling<sp/>and<sp/>argument<sp/>processing.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>DiagnosticsEngine<sp/>&amp;D<sp/>=<sp/>CI.getDiagnostics();</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>[i]<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;-an-error&quot;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>DiagID<sp/>=<sp/>D.getCustomDiagID(DiagnosticsEngine::Error,</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;invalid<sp/>argument<sp/>&apos;%0&apos;&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>D.Report(DiagID)<sp/>&lt;&lt;<sp/><ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>[i];</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>[i]<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;-parse-template&quot;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(i<sp/>+<sp/>1<sp/>&gt;=<sp/>e)<sp/>{</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>D.Report(D.getCustomDiagID(DiagnosticsEngine::Error,</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;missing<sp/>-parse-template<sp/>argument&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>++i;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>.empty()<sp/>&amp;&amp;<sp/><ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>[0]<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;help&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>PrintHelp(llvm::errs());</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>PrintHelp(llvm::raw_ostream&amp;<sp/>ros)<sp/>{</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>ros<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Help<sp/>for<sp/>RoseConnectionClangPlugin<sp/>plugin<sp/>goes<sp/>here\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/>PluginASTAction::ActionType<sp/>getActionType()</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>AddBeforeMainAction;</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>FrontendPluginRegistry::Add&lt;RoseConnectionClangPluginAction&gt;</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><ref refid="RoseConnectionPlugins_2RoseConnectionClangPlugin_8cpp_1a8a76a53b72feddad698605082eb9cf90" kindref="member">X</ref>(</highlight><highlight class="stringliteral">&quot;ROSE&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;call<sp/>ROSE&quot;</highlight><highlight class="normal">);</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/integration/ROSE-LLVM-connection/RoseConnectionPlugins/RoseConnectionClangPlugin.cpp"/>
+  </compounddef>
+</doxygen>

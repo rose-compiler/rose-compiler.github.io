@@ -1,0 +1,28 @@
+var namespaceSawyer_1_1Container_1_1Algorithm =
+[
+    [ "BreadthFirstForwardEdgeTraversal", "classSawyer_1_1Container_1_1Algorithm_1_1BreadthFirstForwardEdgeTraversal.html", "classSawyer_1_1Container_1_1Algorithm_1_1BreadthFirstForwardEdgeTraversal" ],
+    [ "BreadthFirstForwardGraphTraversal", "classSawyer_1_1Container_1_1Algorithm_1_1BreadthFirstForwardGraphTraversal.html", "classSawyer_1_1Container_1_1Algorithm_1_1BreadthFirstForwardGraphTraversal" ],
+    [ "BreadthFirstForwardVertexTraversal", "classSawyer_1_1Container_1_1Algorithm_1_1BreadthFirstForwardVertexTraversal.html", "classSawyer_1_1Container_1_1Algorithm_1_1BreadthFirstForwardVertexTraversal" ],
+    [ "BreadthFirstReverseEdgeTraversal", "classSawyer_1_1Container_1_1Algorithm_1_1BreadthFirstReverseEdgeTraversal.html", "classSawyer_1_1Container_1_1Algorithm_1_1BreadthFirstReverseEdgeTraversal" ],
+    [ "BreadthFirstReverseGraphTraversal", "classSawyer_1_1Container_1_1Algorithm_1_1BreadthFirstReverseGraphTraversal.html", "classSawyer_1_1Container_1_1Algorithm_1_1BreadthFirstReverseGraphTraversal" ],
+    [ "BreadthFirstReverseVertexTraversal", "classSawyer_1_1Container_1_1Algorithm_1_1BreadthFirstReverseVertexTraversal.html", "classSawyer_1_1Container_1_1Algorithm_1_1BreadthFirstReverseVertexTraversal" ],
+    [ "BreadthFirstTraversalTag", "classSawyer_1_1Container_1_1Algorithm_1_1BreadthFirstTraversalTag.html", null ],
+    [ "CommonSubgraphIsomorphism", "classSawyer_1_1Container_1_1Algorithm_1_1CommonSubgraphIsomorphism.html", "classSawyer_1_1Container_1_1Algorithm_1_1CommonSubgraphIsomorphism" ],
+    [ "CsiEquivalence", "classSawyer_1_1Container_1_1Algorithm_1_1CsiEquivalence.html", "classSawyer_1_1Container_1_1Algorithm_1_1CsiEquivalence" ],
+    [ "CsiShowSolution", "classSawyer_1_1Container_1_1Algorithm_1_1CsiShowSolution.html", "classSawyer_1_1Container_1_1Algorithm_1_1CsiShowSolution" ],
+    [ "DepthFirstForwardEdgeTraversal", "classSawyer_1_1Container_1_1Algorithm_1_1DepthFirstForwardEdgeTraversal.html", "classSawyer_1_1Container_1_1Algorithm_1_1DepthFirstForwardEdgeTraversal" ],
+    [ "DepthFirstForwardGraphTraversal", "classSawyer_1_1Container_1_1Algorithm_1_1DepthFirstForwardGraphTraversal.html", "classSawyer_1_1Container_1_1Algorithm_1_1DepthFirstForwardGraphTraversal" ],
+    [ "DepthFirstForwardVertexTraversal", "classSawyer_1_1Container_1_1Algorithm_1_1DepthFirstForwardVertexTraversal.html", "classSawyer_1_1Container_1_1Algorithm_1_1DepthFirstForwardVertexTraversal" ],
+    [ "DepthFirstReverseEdgeTraversal", "classSawyer_1_1Container_1_1Algorithm_1_1DepthFirstReverseEdgeTraversal.html", "classSawyer_1_1Container_1_1Algorithm_1_1DepthFirstReverseEdgeTraversal" ],
+    [ "DepthFirstReverseGraphTraversal", "classSawyer_1_1Container_1_1Algorithm_1_1DepthFirstReverseGraphTraversal.html", "classSawyer_1_1Container_1_1Algorithm_1_1DepthFirstReverseGraphTraversal" ],
+    [ "DepthFirstReverseVertexTraversal", "classSawyer_1_1Container_1_1Algorithm_1_1DepthFirstReverseVertexTraversal.html", "classSawyer_1_1Container_1_1Algorithm_1_1DepthFirstReverseVertexTraversal" ],
+    [ "DepthFirstTraversalTag", "classSawyer_1_1Container_1_1Algorithm_1_1DepthFirstTraversalTag.html", null ],
+    [ "FirstIsomorphicSubgraph", "classSawyer_1_1Container_1_1Algorithm_1_1FirstIsomorphicSubgraph.html", "classSawyer_1_1Container_1_1Algorithm_1_1FirstIsomorphicSubgraph" ],
+    [ "ForwardTraversalTag", "classSawyer_1_1Container_1_1Algorithm_1_1ForwardTraversalTag.html", null ],
+    [ "GraphEdgeTraversal", "classSawyer_1_1Container_1_1Algorithm_1_1GraphEdgeTraversal.html", "classSawyer_1_1Container_1_1Algorithm_1_1GraphEdgeTraversal" ],
+    [ "GraphTraversal", "classSawyer_1_1Container_1_1Algorithm_1_1GraphTraversal.html", "classSawyer_1_1Container_1_1Algorithm_1_1GraphTraversal" ],
+    [ "GraphVertexTraversal", "classSawyer_1_1Container_1_1Algorithm_1_1GraphVertexTraversal.html", "classSawyer_1_1Container_1_1Algorithm_1_1GraphVertexTraversal" ],
+    [ "IdAccumulator", "classSawyer_1_1Container_1_1Algorithm_1_1IdAccumulator.html", "classSawyer_1_1Container_1_1Algorithm_1_1IdAccumulator" ],
+    [ "MaximumIsomorphicSubgraphs", "classSawyer_1_1Container_1_1Algorithm_1_1MaximumIsomorphicSubgraphs.html", "classSawyer_1_1Container_1_1Algorithm_1_1MaximumIsomorphicSubgraphs" ],
+    [ "ReverseTraversalTag", "classSawyer_1_1Container_1_1Algorithm_1_1ReverseTraversalTag.html", null ]
+];

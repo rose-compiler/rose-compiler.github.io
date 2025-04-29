@@ -1,0 +1,477 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="Emulation_8C" kind="file" language="C++">
+    <compoundname>Emulation.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="197718">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="197715">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="197716" relation="include">
+        </childnode>
+        <childnode refid="197717" relation="include">
+        </childnode>
+        <childnode refid="197718" relation="include">
+        </childnode>
+      </node>
+      <node id="197717">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="197714">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/Concolic/Emulation.C</label>
+        <link refid="Emulation_8C"/>
+        <childnode refid="197715" relation="include">
+        </childnode>
+      </node>
+      <node id="197716">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="197715" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_CONCOLIC_TESTING</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Emulation_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/Emulation.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="As_8h" kindref="compound">Rose/As.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Concolic_2Architecture_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/Architecture.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Rose_2BinaryAnalysis_2Concolic_2Database_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/Database.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="ExecutionEvent_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/ExecutionEvent.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="InputVariables_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/InputVariables.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SharedMemory_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/SharedMemory.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="TestCase_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/TestCase.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="InstructionEnumsX86_8h" kindref="compound">Rose/BinaryAnalysis/InstructionEnumsX86.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="TraceSemantics_8h" kindref="compound">Rose/BinaryAnalysis/InstructionSemantics/TraceSemantics.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Partitioner_8h" kindref="compound">Rose/BinaryAnalysis/Partitioner2/Partitioner.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SgAsmInstruction_8h" kindref="compound">SgAsmInstruction.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/scope_exit.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">BS<sp/>=<sp/>Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">IS<sp/>=<sp/>Rose::BinaryAnalysis::InstructionSemantics;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">P2<sp/>=<sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2" kindref="compound">Rose::BinaryAnalysis::Partitioner2</ref>;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceSawyer_1_1Message_1_1Common" kindref="compound">Sawyer::Message::Common</ref>;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose" kindref="compound">Rose</ref><sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">BinaryAnalysis<sp/>{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Concolic<sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Emulation<sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="comment">//<sp/>RiscOperators<sp/>for<sp/>concolic<sp/>emulation</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal">RiscOperators::RiscOperators(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structSettings" kindref="compound">Settings</ref><sp/>&amp;<ref refid="namespaceRosebud_1af576c5d42b1390aaa97e3101d45fb68c" kindref="member">settings</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Database::Ptr<sp/>&amp;db,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>TestCase::Ptr<sp/>&amp;testCase,</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Partitioner2::Partitioner::ConstPtr<sp/>&amp;partitioner,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::Ptr<sp/>&amp;<ref refid="csharp__support_8C_1a9970ce0043013af7b97dfbf31d95659c" kindref="member">process</ref>,</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>InstructionSemantics::BaseSemantics::State::Ptr<sp/>&amp;state,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SmtSolver::Ptr<sp/>&amp;solver)</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>Super(state,<sp/>solver),<sp/>REG_PATH(state-&gt;registerState()-&gt;registerDictionary()-&gt;findOrThrow(</highlight><highlight class="stringliteral">&quot;path&quot;</highlight><highlight class="normal">)),</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>settings_(<ref refid="namespaceRosebud_1af576c5d42b1390aaa97e3101d45fb68c" kindref="member">settings</ref>),<sp/>db_(db),<sp/>testCase_(testCase),<sp/>partitioner_(partitioner),<sp/>process_(<ref refid="csharp__support_8C_1a9970ce0043013af7b97dfbf31d95659c" kindref="member">process</ref>),</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>hadSystemCall_(false)<sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(db);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(testCase);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(<ref refid="csharp__support_8C_1a9970ce0043013af7b97dfbf31d95659c" kindref="member">process</ref>);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(state);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(solver);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref>(</highlight><highlight class="stringliteral">&quot;Concolic-symbolic&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>(void)<sp/>SValue::promote(state-&gt;protoval());</highlight></codeline>
+<codeline lineno="48"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal">RiscOperators::~RiscOperators()<sp/>{}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal">RiscOperators::Ptr</highlight></codeline>
+<codeline lineno="53"><highlight class="normal">RiscOperators::instance(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structSettings" kindref="compound">Settings</ref><sp/>&amp;<ref refid="namespaceRosebud_1af576c5d42b1390aaa97e3101d45fb68c" kindref="member">settings</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Database::Ptr<sp/>&amp;db,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>TestCase::Ptr<sp/>&amp;testCase,</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>P2::Partitioner::ConstPtr<sp/>&amp;partitioner,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::Ptr<sp/>&amp;<ref refid="csharp__support_8C_1a9970ce0043013af7b97dfbf31d95659c" kindref="member">process</ref>,</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::SValue::Ptr<sp/>&amp;protoval,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SmtSolver::Ptr<sp/>&amp;solver)<sp/>{</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Extend<sp/>the<sp/>register<sp/>set<sp/>with<sp/>an<sp/>additional<sp/>Boolean<sp/>register<sp/>named<sp/>&quot;path&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>RegisterDictionary::Ptr<sp/>regdict<sp/>=<sp/>RegisterDictionary::instance(</highlight><highlight class="stringliteral">&quot;Rose::BinaryAnalysis::Concolic&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>regdict-&gt;insert(partitioner-&gt;instructionProvider().registerDictionary());</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>RegisterDescriptor<sp/>path(partitioner-&gt;instructionProvider().registerDictionary()-&gt;firstUnusedMajor(),<sp/>0,<sp/>0,<sp/>1);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>regdict-&gt;insert(</highlight><highlight class="stringliteral">&quot;path&quot;</highlight><highlight class="normal">,<sp/>path);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Initialize<sp/>machine<sp/>state</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>RegisterState::Ptr<sp/>registers<sp/>=<sp/>RegisterState::instance(protoval,<sp/>regdict);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>MemoryState::Ptr<sp/>memory<sp/>=<sp/>MemoryState::instance(protoval,<sp/>protoval);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>memory-&gt;set_byteOrder(partitioner-&gt;instructionProvider().defaultByteOrder());</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>memory-&gt;cellCompressor(IS::SymbolicSemantics::MemoryListState::CellCompressorSimple::instance());</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>State::Ptr<sp/>state<sp/>=<sp/>State::instance(registers,<sp/>memory);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>RiscOperators::Ptr<sp/><ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>RiscOperators(<ref refid="namespaceRosebud_1af576c5d42b1390aaa97e3101d45fb68c" kindref="member">settings</ref>,<sp/>db,<sp/>testCase,<sp/>partitioner,<sp/><ref refid="csharp__support_8C_1a9970ce0043013af7b97dfbf31d95659c" kindref="member">process</ref>,<sp/>state,<sp/>solver));</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>-&gt;REG_PATH<sp/>==<sp/>path);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>-&gt;writeRegister(path,<sp/><ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>-&gt;boolean_(</highlight><highlight class="keyword">true</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal">RiscOperators::Ptr</highlight></codeline>
+<codeline lineno="75"><highlight class="normal">RiscOperators::promote(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::RiscOperators::Ptr<sp/>&amp;<ref refid="test04_8C_1a6150e0515f7202e2fb518f7206ed97dc" kindref="member">x</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>RiscOperators::Ptr<sp/>retval<sp/>=<sp/>as&lt;RiscOperators&gt;(<ref refid="test04_8C_1a6150e0515f7202e2fb518f7206ed97dc" kindref="member">x</ref>);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(retval);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>retval;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal">BS::RiscOperators::Ptr</highlight></codeline>
+<codeline lineno="82"><highlight class="normal">RiscOperators::create(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::SValue::Ptr&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SmtSolver::Ptr&amp;)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a8e121c0191b716c493352e7bb05a6422" kindref="member">ASSERT_not_implemented</ref>(</highlight><highlight class="stringliteral">&quot;[Robb<sp/>Matzke<sp/>2019-09-24]&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal">BS::RiscOperatorsPtr</highlight></codeline>
+<codeline lineno="87"><highlight class="normal">RiscOperators::create(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::State::Ptr&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SmtSolver::Ptr&amp;)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a8e121c0191b716c493352e7bb05a6422" kindref="member">ASSERT_not_implemented</ref>(</highlight><highlight class="stringliteral">&quot;[Robb<sp/>Matzke<sp/>2019-09-24]&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>RiscOperators::Settings&amp;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><ref refid="namespaceRosebud_1af576c5d42b1390aaa97e3101d45fb68c" kindref="member">RiscOperators::settings</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>settings_;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal">P2::Partitioner::ConstPtr</highlight></codeline>
+<codeline lineno="97"><highlight class="normal">RiscOperators::partitioner()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>partitioner_;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal">RiscOperators::wordSizeBits()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>partitioner_-&gt;instructionProvider().instructionPointerRegister().nBits();</highlight></codeline>
+<codeline lineno="104"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal">TestCase::Ptr</highlight></codeline>
+<codeline lineno="107"><highlight class="normal">RiscOperators::testCase()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>testCase_;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal">Database::Ptr</highlight></codeline>
+<codeline lineno="112"><highlight class="normal">RiscOperators::database()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>db_;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal">Architecture::Ptr</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><ref refid="csharp__support_8C_1a9970ce0043013af7b97dfbf31d95659c" kindref="member">RiscOperators::process</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>process_;</highlight></codeline>
+<codeline lineno="119"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal">InputVariables::Ptr</highlight></codeline>
+<codeline lineno="122"><highlight class="normal">RiscOperators::inputVariables()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(process_);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>process_-&gt;inputVariables();</highlight></codeline>
+<codeline lineno="125"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal">RiscOperators::hadSystemCall()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>hadSystemCall_;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal">RiscOperators::hadSystemCall(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/>hadSystemCall_<sp/>=<sp/><ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal">ExecutionEvent::Ptr</highlight></codeline>
+<codeline lineno="138"><highlight class="normal">RiscOperators::hadSharedMemoryAccess()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>hadSharedMemoryAccess_;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal">RiscOperators::hadSharedMemoryAccess(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ExecutionEventPtr<sp/>&amp;e)<sp/>{</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>hadSharedMemoryAccess_<sp/>=<sp/>e;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal">RiscOperators::isRecursive()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>isRecursive_;</highlight></codeline>
+<codeline lineno="150"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal">RiscOperators::isRecursive(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>isRecursive_<sp/>=<sp/><ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal">RegisterDictionary::Ptr</highlight></codeline>
+<codeline lineno="158"><highlight class="normal">RiscOperators::registerDictionary()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>partitioner_-&gt;instructionProvider().registerDictionary();</highlight></codeline>
+<codeline lineno="160"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal">RiscOperators::startInstruction(<ref refid="classSgAsmInstruction" kindref="compound">SgAsmInstruction</ref><sp/>*insn)<sp/>{</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>hadSystemCall_<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>hadSharedMemoryAccess_<sp/>=<sp/>ExecutionEvent::Ptr();</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>Super::startInstruction(insn);</highlight></codeline>
+<codeline lineno="167"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal">RiscOperators::interrupt(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>majr,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>minr)<sp/>{</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(x86_exception_int<sp/>==<sp/>majr<sp/>&amp;&amp;<sp/>0x80<sp/>==<sp/>minr)<sp/>{</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hadSystemCall_<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Super::interrupt(majr,<sp/>minr);</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="176"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal">RiscOperators::doExit(<ref refid="msvc__stdint_8h_1aec6fcb673ff035718c238c8c9d544c47" kindref="member">uint64_t</ref><sp/>status)<sp/>{</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>This<sp/>is<sp/>called<sp/>during<sp/>the<sp/>symbolic<sp/>phase.<sp/>The<sp/>concrete<sp/>system<sp/>call<sp/>hasn&apos;t<sp/>happened<sp/>yet.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="namespaceSawyer_1_1Message_1abfb4d3240797db3a74bbf691f708a1c9abaad1fa32e5fd30aad22a4dff4750e2b" kindref="member">INFO</ref>]<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;specimen<sp/>exiting<sp/>with<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;status<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>Exit(status);</highlight></codeline>
+<codeline lineno="183"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal">BS::SValue::Ptr</highlight></codeline>
+<codeline lineno="186"><highlight class="normal">RiscOperators::readRegister(RegisterDescriptor<sp/>reg,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::SValue::Ptr<sp/>&amp;dfltUnused)<sp/>{</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Read<sp/>the<sp/>register&apos;s<sp/>value<sp/>symbolically,<sp/>and<sp/>if<sp/>we<sp/>don&apos;t<sp/>have<sp/>a<sp/>value<sp/>then<sp/>read<sp/>it<sp/>concretely<sp/>and<sp/>use<sp/>the<sp/>concrete<sp/>value</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>to<sp/>update<sp/>the<sp/>symbolic<sp/>state.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/>SValue::Ptr<sp/>dflt<sp/>=<sp/>SValue::promote(undefined_(dfltUnused-&gt;nBits()));</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/>SymbolicExpression::Ptr<sp/>concrete<sp/>=<sp/>SymbolicExpression::makeIntegerConstant(process_-&gt;readRegister(reg));</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/>dflt-&gt;set_expression(concrete);</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Super::readRegister(reg,<sp/>dflt);</highlight></codeline>
+<codeline lineno="193"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal">BS::SValue::Ptr</highlight></codeline>
+<codeline lineno="196"><highlight class="normal">RiscOperators::readRegister(RegisterDescriptor<sp/>reg)<sp/>{</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>readRegister(reg,<sp/>undefined_(reg.nBits()));</highlight></codeline>
+<codeline lineno="198"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal">BS::SValue::Ptr</highlight></codeline>
+<codeline lineno="201"><highlight class="normal">RiscOperators::peekRegister(RegisterDescriptor<sp/>reg,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::SValue::Ptr<sp/>&amp;dfltUnused)<sp/>{</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Return<sp/>the<sp/>register&apos;s<sp/>symbolic<sp/>value<sp/>if<sp/>it<sp/>exists,<sp/>else<sp/>the<sp/>concrete<sp/>value.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/>SValue::Ptr<sp/>dflt<sp/>=<sp/>SValue::promote(undefined_(dfltUnused-&gt;nBits()));</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/>SymbolicExpression::Ptr<sp/>concrete<sp/>=<sp/>SymbolicExpression::makeIntegerConstant(process_-&gt;readRegister(reg));</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/>dflt-&gt;set_expression(concrete);</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Super::peekRegister(reg,<sp/>dflt);</highlight></codeline>
+<codeline lineno="207"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="210"><highlight class="normal">RiscOperators::writeRegister(RegisterDescriptor<sp/>reg,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::SValue::Ptr<sp/>&amp;value)<sp/>{</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(currentInstruction()<sp/>&amp;&amp;<sp/>hadSharedMemoryAccess())<sp/>{</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSawyer_1_1Message_1_1Stream" kindref="compound">Sawyer::Message::Stream</ref><sp/><ref refid="driver_8cpp_1ac3e1795766a80ec63b157951b4b9a7d4" kindref="member">debug</ref>(<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>]);</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>RegisterDictionary::Ptr<sp/>regdict<sp/>=<sp/>currentState()-&gt;registerState()-&gt;registerDictionary();</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>This<sp/>probably<sp/>writing<sp/>a<sp/>previously-read<sp/>value<sp/>from<sp/>shared<sp/>memory<sp/>into<sp/>a<sp/>register.<sp/>It&apos;s<sp/>common<sp/>on<sp/>RISC</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>architectures<sp/>to<sp/>have<sp/>an<sp/>instruction<sp/>that<sp/>copies<sp/>a<sp/>value<sp/>from<sp/>memory<sp/>into<sp/>a<sp/>register,<sp/>in<sp/>which<sp/>case<sp/>the<sp/>value</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>being<sp/>written<sp/>here<sp/>is<sp/>just<sp/>the<sp/>variable<sp/>we&apos;re<sp/>using<sp/>to<sp/>represent<sp/>what<sp/>was<sp/>read<sp/>from<sp/>shared<sp/>memory.<sp/>On<sp/>CISC</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>architectures<sp/>the<sp/>value<sp/>being<sp/>written<sp/>might<sp/>be<sp/>a<sp/>more<sp/>complex<sp/>function<sp/>of<sp/>the<sp/>value<sp/>that<sp/>was<sp/>read.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>In<sp/>cany<sp/>case,<sp/>since<sp/>we<sp/>can&apos;t<sp/>directly<sp/>adjust<sp/>the<sp/>byte<sp/>read<sp/>from<sp/>concrete<sp/>memory<sp/>(not<sp/>even<sp/>by<sp/>pre-writing<sp/>to<sp/>that</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>address<sp/>since<sp/>it<sp/>might<sp/>be<sp/>read-only<sp/>or<sp/>it<sp/>might<sp/>not<sp/>follow<sp/>normal<sp/>memory<sp/>semantics),<sp/>we<sp/>do<sp/>the<sp/>next<sp/>best<sp/>thing:<sp/>we</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>adjust<sp/>all<sp/>the<sp/>side<sp/>effects<sp/>of<sp/>the<sp/>instruction<sp/>that<sp/>read<sp/>the<sp/>byte<sp/>from<sp/>memory.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SymbolicExpression::Ptr<sp/>valueExpr<sp/>=<sp/>Emulation::SValue::promote(value)-&gt;get_expression();</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Message_8h_1a9f840b500a608085e85f863f9914b399" kindref="member">SAWYER_MESG</ref>(<ref refid="driver_8cpp_1ac3e1795766a80ec63b157951b4b9a7d4" kindref="member">debug</ref>)<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/><sp/>register<sp/>update<sp/>for<sp/>shared<sp/>memory<sp/>read\n&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/>register<sp/>=<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;regdict-&gt;quadAndName(reg)<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/>value<sp/><sp/><sp/><sp/>=<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;*valueExpr<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>=<sp/>ExecutionEvent::registerWrite(<ref refid="csharp__support_8C_1a9970ce0043013af7b97dfbf31d95659c" kindref="member">process</ref>()-&gt;testCase(),<sp/><ref refid="csharp__support_8C_1a9970ce0043013af7b97dfbf31d95659c" kindref="member">process</ref>()-&gt;nextEventLocation(When::POST),</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>currentInstruction()-&gt;get_address(),<sp/>reg,<sp/>SymbolicExpression::Ptr(),</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SymbolicExpression::Ptr(),<sp/>valueExpr);</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal">-&gt;name(hadSharedMemoryAccess()-&gt;<ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref>()<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;_toreg&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>database()-&gt;save(event);</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Message_8h_1a9f840b500a608085e85f863f9914b399" kindref="member">SAWYER_MESG</ref>(<ref refid="driver_8cpp_1ac3e1795766a80ec63b157951b4b9a7d4" kindref="member">debug</ref>)<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/>created<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;</highlight><highlight class="keyword">event</highlight><highlight class="normal">-&gt;printableName(database())<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/>Super::writeRegister(reg,<sp/>value);</highlight></codeline>
+<codeline lineno="236"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"></highlight></codeline>
+<codeline lineno="238"><highlight class="normal">BS::SValue::Ptr</highlight></codeline>
+<codeline lineno="239"><highlight class="normal">RiscOperators::readMemory(RegisterDescriptor<sp/>segreg,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::SValue::Ptr<sp/>&amp;addr,</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::SValue::Ptr<sp/>&amp;dfltUnused,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::SValue::Ptr<sp/>&amp;cond)<sp/>{</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(isRecursive())<sp/>{</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Don&apos;t<sp/>do<sp/>anything<sp/>special<sp/>because<sp/>we&apos;re<sp/>being<sp/>called<sp/>from<sp/>inside<sp/>a<sp/>user<sp/>callback.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Super::readMemory(segreg,<sp/>addr,<sp/>dfltUnused,<sp/>cond);</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>va<sp/>=<sp/>addr-&gt;toUnsigned())<sp/>{</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Read<sp/>the<sp/>memory&apos;s<sp/>value<sp/>symbolically,<sp/>and<sp/>if<sp/>we<sp/>don&apos;t<sp/>have<sp/>a<sp/>value<sp/>then<sp/>read<sp/>it<sp/>concretely<sp/>and<sp/>use<sp/>the<sp/>concrete<sp/>value<sp/>to</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>update<sp/>the<sp/>symbolic<sp/>state.<sp/>However,<sp/>we<sp/>can<sp/>only<sp/>read<sp/>it<sp/>concretely<sp/>if<sp/>the<sp/>address<sp/>is<sp/>a<sp/>constant.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nBytes<sp/>=<sp/>dfltUnused-&gt;nBits()<sp/>/<sp/>8;</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SymbolicExpression::Ptr<sp/>concrete<sp/>=<sp/>SymbolicExpression::makeIntegerConstant(dfltUnused-&gt;nBits(),</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>process_-&gt;readMemoryUnsigned(*va,<sp/>nBytes));</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"></highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Handle<sp/>shared<sp/>memory<sp/>by<sp/>invoking<sp/>user-defined<sp/>callbacks</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SharedMemoryCallbacks<sp/>callbacks<sp/>=<sp/><ref refid="csharp__support_8C_1a9970ce0043013af7b97dfbf31d95659c" kindref="member">process</ref>()-&gt;sharedMemory().getOrDefault(*va);</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!callbacks.isEmpty())<sp/>{</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>isRecursive(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>BOOST_SCOPE_EXIT(this_)<sp/>{</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this_-&gt;isRecursive(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/>BOOST_SCOPE_EXIT_END;</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"></highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>FIXME[Robb<sp/>Matzke<sp/>2021-09-09]:<sp/>use<sp/>structured<sp/>bindings<sp/>when<sp/>ROSE<sp/>requires<sp/>C++17<sp/>or<sp/>later</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="test04_8C_1a6150e0515f7202e2fb518f7206ed97dc" kindref="member">x</ref><sp/>=<sp/><ref refid="csharp__support_8C_1a9970ce0043013af7b97dfbf31d95659c" kindref="member">process</ref>()-&gt;sharedMemoryRead(callbacks,<sp/>partitioner(),<sp/>RiscOperators::promote(shared_from_this()),</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*va,<sp/>nBytes);</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ExecutionEvent::Ptr<sp/>sharedMemoryEvent<sp/>=<sp/><ref refid="test04_8C_1a6150e0515f7202e2fb518f7206ed97dc" kindref="member">x</ref>.first;</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SymbolicExpression::Ptr<sp/>result<sp/>=<sp/><ref refid="test04_8C_1a6150e0515f7202e2fb518f7206ed97dc" kindref="member">x</ref>.second;</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"></highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(result)<sp/>{</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hadSharedMemoryAccess(sharedMemoryEvent);</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>svalueExpr(result);</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"></highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SValue::Ptr<sp/>dflt<sp/>=<sp/>SValue::promote(undefined_(dfltUnused-&gt;nBits()));</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dflt-&gt;set_expression(concrete);</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Super::readMemory(segreg,<sp/>addr,<sp/>dflt,<sp/>cond);</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"></highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Not<sp/>a<sp/>concrete<sp/>address,<sp/>so<sp/>do<sp/>things<sp/>symbolically</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Super::readMemory(segreg,<sp/>addr,<sp/>dfltUnused,<sp/>cond);</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="280"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight></codeline>
+<codeline lineno="282"><highlight class="normal">BS::SValue::Ptr</highlight></codeline>
+<codeline lineno="283"><highlight class="normal">RiscOperators::peekMemory(RegisterDescriptor<sp/>segreg,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::SValue::Ptr<sp/>&amp;addr,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::SValue::Ptr<sp/>&amp;dfltUnused)<sp/>{</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Read<sp/>the<sp/>memory&apos;s<sp/>symbolic<sp/>value<sp/>if<sp/>it<sp/>exists,<sp/>else<sp/>read<sp/>the<sp/>concrete<sp/>value.<sp/>We<sp/>can&apos;t<sp/>read<sp/>concretely<sp/>if<sp/>the<sp/>address<sp/>is</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>symbolic.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>va<sp/>=<sp/>addr-&gt;toUnsigned())<sp/>{</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nBytes<sp/>=<sp/>dfltUnused-&gt;nBits()<sp/>/<sp/>8;</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SymbolicExpression::Ptr<sp/>concrete<sp/>=<sp/>SymbolicExpression::makeIntegerConstant(dfltUnused-&gt;nBits(),</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>process_-&gt;readMemoryUnsigned(*va,<sp/>nBytes));</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SValue::Ptr<sp/>dflt<sp/>=<sp/>SValue::promote(undefined_(dfltUnused-&gt;nBits()));</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dflt-&gt;set_expression(concrete);</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Super::peekMemory(segreg,<sp/>addr,<sp/>dflt);</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Super::peekMemory(segreg,<sp/>addr,<sp/>dfltUnused);</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="296"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"></highlight></codeline>
+<codeline lineno="298"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="299"><highlight class="normal">RiscOperators::writeMemory(RegisterDescriptor<sp/>segreg,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::SValue::Ptr<sp/>&amp;addr,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::SValue::Ptr<sp/>&amp;value,</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::SValue::Ptr<sp/>&amp;cond)<sp/>{</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(isRecursive())<sp/>{</highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Don&apos;t<sp/>do<sp/>anything<sp/>special<sp/>because<sp/>we&apos;re<sp/>being<sp/>called<sp/>from<sp/>inside<sp/>a<sp/>user<sp/>callback.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Super::writeMemory(segreg,<sp/>addr,<sp/>value,<sp/>cond);</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"></highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>va<sp/>=<sp/>addr-&gt;toUnsigned())<sp/>{</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SharedMemoryCallbacks<sp/>callbacks<sp/>=<sp/><ref refid="csharp__support_8C_1a9970ce0043013af7b97dfbf31d95659c" kindref="member">process</ref>()-&gt;sharedMemory().getOrDefault(*va);</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!callbacks.isEmpty())<sp/>{</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>isRecursive(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>BOOST_SCOPE_EXIT(this_)<sp/>{</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this_-&gt;isRecursive(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/>BOOST_SCOPE_EXIT_END;</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"></highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>FIXME[Robb<sp/>Matzke<sp/>2022-12-16]:<sp/>use<sp/>structured<sp/>bindings<sp/>when<sp/>ROSE<sp/>requires<sp/>C++17<sp/>or<sp/>later</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>processed<sp/>=</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="csharp__support_8C_1a9970ce0043013af7b97dfbf31d95659c" kindref="member">process</ref>()-&gt;sharedMemoryWrite(callbacks,<sp/>partitioner(),<sp/>RiscOperators::promote(shared_from_this()),</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*va,<sp/>value);</highlight></codeline>
+<codeline lineno="317"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(processed)<sp/>{</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>0<sp/>//<sp/>[Robb<sp/>Matzke<sp/>2022-12-16]</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hadSharedMemoryAccess(sharedMemoryEvent);</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>svalueExpr(result);</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="324"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="326"><highlight class="normal"></highlight></codeline>
+<codeline lineno="327"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Super::writeMemory(segreg,<sp/>addr,<sp/>value,<sp/>cond);</highlight></codeline>
+<codeline lineno="328"><highlight class="normal"></highlight></codeline>
+<codeline lineno="329"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="330"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Not<sp/>a<sp/>concrete<sp/>address,<sp/>so<sp/>do<sp/>things<sp/>symbolically</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Super::writeMemory(segreg,<sp/>addr,<sp/>value,<sp/>cond);</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="333"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="334"><highlight class="normal"></highlight></codeline>
+<codeline lineno="335"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="336"><highlight class="normal">RiscOperators::createInputVariables(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SmtSolver::Ptr<sp/>&amp;solver)<sp/>{</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/>process_-&gt;createInputVariables(partitioner(),<sp/>RiscOperators::promote(shared_from_this()),<sp/>solver);</highlight></codeline>
+<codeline lineno="338"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"></highlight></codeline>
+<codeline lineno="340"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="341"><highlight class="normal">RiscOperators::restoreInputVariables(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SmtSolver::Ptr<sp/>&amp;solver)<sp/>{</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/>process_-&gt;restoreInputVariables(partitioner(),<sp/>RiscOperators::promote(shared_from_this()),<sp/>solver);</highlight></codeline>
+<codeline lineno="343"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="344"><highlight class="normal"></highlight></codeline>
+<codeline lineno="345"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="346"><highlight class="normal">RiscOperators::printInputVariables(std::ostream<sp/>&amp;out)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/><sp/>out<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;input<sp/>variables:\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/>process_-&gt;inputVariables()-&gt;print(out,<sp/></highlight><highlight class="stringliteral">&quot;<sp/><sp/>&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="349"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"></highlight></codeline>
+<codeline lineno="351"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="352"><highlight class="normal">RiscOperators::printAssertions(std::ostream<sp/>&amp;out)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="353"><highlight class="normal"><sp/><sp/><sp/><sp/>out<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;SMT<sp/>solver<sp/>assertions:\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="354"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(SymbolicExpression::Ptr<sp/>assertion:<sp/>solver()-&gt;assertions())</highlight></codeline>
+<codeline lineno="355"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/><sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;*assertion<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="356"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="357"><highlight class="normal"></highlight></codeline>
+<codeline lineno="359"><highlight class="comment">//<sp/>Dispatcher</highlight></codeline>
+<codeline lineno="361"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="362"><highlight class="normal">Dispatcher::Dispatcher(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>InstructionSemantics::BaseSemantics::RiscOperators::Ptr<sp/>&amp;<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::Ptr<sp/>&amp;architecture)<sp/>{</highlight></codeline>
+<codeline lineno="363"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>);</highlight></codeline>
+<codeline lineno="364"><highlight class="normal"><sp/><sp/><sp/><sp/>inner_<sp/>=<sp/>architecture-&gt;makeDispatcher(<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>);</highlight></codeline>
+<codeline lineno="365"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="366"><highlight class="normal"></highlight></codeline>
+<codeline lineno="367"><highlight class="normal">Dispatcher::~Dispatcher()<sp/>{}</highlight></codeline>
+<codeline lineno="368"><highlight class="normal"></highlight></codeline>
+<codeline lineno="369"><highlight class="normal">Dispatcher::Ptr</highlight></codeline>
+<codeline lineno="370"><highlight class="normal">Dispatcher::instance(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>InstructionSemantics::BaseSemantics::RiscOperators::Ptr<sp/>&amp;<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::Ptr<sp/>&amp;architecture)<sp/>{</highlight></codeline>
+<codeline lineno="371"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Ptr(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>Dispatcher(<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>,<sp/>architecture));</highlight></codeline>
+<codeline lineno="372"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="373"><highlight class="normal"></highlight></codeline>
+<codeline lineno="374"><highlight class="normal">BS::RiscOperators::Ptr</highlight></codeline>
+<codeline lineno="375"><highlight class="normal">Dispatcher::operators()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="376"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(inner_);</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>inner_-&gt;operators();</highlight></codeline>
+<codeline lineno="378"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="379"><highlight class="normal"></highlight></codeline>
+<codeline lineno="380"><highlight class="normal"></highlight><highlight class="comment">//<sp/>class<sp/>method</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="381"><highlight class="normal">RiscOperators::Ptr</highlight></codeline>
+<codeline lineno="382"><highlight class="normal">Dispatcher::unwrapEmulationOperators(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BS::RiscOperators::Ptr<sp/>&amp;<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="383"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(IS::TraceSemantics::RiscOperators::Ptr<sp/>trace<sp/>=<sp/>as&lt;IS::TraceSemantics::RiscOperators&gt;(<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>))</highlight></codeline>
+<codeline lineno="384"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>RiscOperators::promote(trace-&gt;subdomain());</highlight></codeline>
+<codeline lineno="385"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>RiscOperators::promote(<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>);</highlight></codeline>
+<codeline lineno="386"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="387"><highlight class="normal"></highlight></codeline>
+<codeline lineno="388"><highlight class="normal">RiscOperators::Ptr</highlight></codeline>
+<codeline lineno="389"><highlight class="normal">Dispatcher::emulationOperators()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="390"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>unwrapEmulationOperators(operators());</highlight></codeline>
+<codeline lineno="391"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="392"><highlight class="normal"></highlight></codeline>
+<codeline lineno="393"><highlight class="normal"><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref></highlight></codeline>
+<codeline lineno="394"><highlight class="normal">Dispatcher::concreteInstructionPointer()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="395"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>emulationOperators()-&gt;process()-&gt;ip();</highlight></codeline>
+<codeline lineno="396"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="397"><highlight class="normal"></highlight></codeline>
+<codeline lineno="398"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="399"><highlight class="normal">Dispatcher::processConcreteInstruction(<ref refid="classSgAsmInstruction" kindref="compound">SgAsmInstruction</ref><sp/>*insn)<sp/>{</highlight></codeline>
+<codeline lineno="400"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(insn);</highlight></codeline>
+<codeline lineno="401"><highlight class="normal"><sp/><sp/><sp/><sp/>emulationOperators()-&gt;process()-&gt;executeInstruction(operators(),<sp/>insn);</highlight></codeline>
+<codeline lineno="402"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="403"><highlight class="normal"></highlight></codeline>
+<codeline lineno="404"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="405"><highlight class="normal">Dispatcher::processInstruction(<ref refid="classSgAsmInstruction" kindref="compound">SgAsmInstruction</ref><sp/>*insn)<sp/>{</highlight></codeline>
+<codeline lineno="406"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(insn);</highlight></codeline>
+<codeline lineno="407"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(inner_);</highlight></codeline>
+<codeline lineno="408"><highlight class="normal"></highlight></codeline>
+<codeline lineno="409"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>We<sp/>do<sp/>things<sp/>this<sp/>way<sp/>so<sp/>as<sp/>to<sp/>not<sp/>interfere<sp/>with<sp/>debugging<sp/>exceptions.<sp/>We<sp/>don&apos;t<sp/>want<sp/>to<sp/>catch<sp/>and<sp/>re-throw.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="410"><highlight class="normal"><sp/><sp/><sp/><sp/>BOOST_SCOPE_EXIT(this_,<sp/>insn)<sp/>{</highlight></codeline>
+<codeline lineno="411"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this_-&gt;processConcreteInstruction(insn);</highlight></codeline>
+<codeline lineno="412"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/>BOOST_SCOPE_EXIT_END;</highlight></codeline>
+<codeline lineno="413"><highlight class="normal"></highlight></codeline>
+<codeline lineno="414"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Symbolic<sp/>execution<sp/>happens<sp/>before<sp/>the<sp/>concrete<sp/>execution<sp/>(code<sp/>above),<sp/>but<sp/>may<sp/>throw<sp/>an<sp/>exception.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="415"><highlight class="normal"><sp/><sp/><sp/><sp/>Emulation::RiscOperators::Ptr<sp/><ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref><sp/>=<sp/>emulationOperators();</highlight></codeline>
+<codeline lineno="416"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Message_8h_1ad415ed01465b824bd29af70f2c1029b0" kindref="member">SAWYER_MESG_OR</ref>(<ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="poet__yacc_8c_1aad9cc64d45a76ba0d37c00f8cd9caa37" kindref="member">TRACE</ref>],<sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="AutoTuningInterface_8cpp_1ad72dbcf6d0153db1b8d8a58001feed83" kindref="member">DEBUG</ref>])<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;executing<sp/>insn<sp/>#&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>-&gt;process()-&gt;currentLocation().primary()</highlight></codeline>
+<codeline lineno="417"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>-&gt;partitioner()-&gt;unparse(insn)<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="418"><highlight class="normal"><sp/><sp/><sp/><sp/>inner_-&gt;processInstruction(insn);</highlight></codeline>
+<codeline lineno="419"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="420"><highlight class="normal"></highlight></codeline>
+<codeline lineno="421"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="422"><highlight class="normal">Dispatcher::isTerminated()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="423"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>emulationOperators()-&gt;process()-&gt;isTerminated();</highlight></codeline>
+<codeline lineno="424"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="425"><highlight class="normal"></highlight></codeline>
+<codeline lineno="426"><highlight class="normal">RegisterDictionary::Ptr</highlight></codeline>
+<codeline lineno="427"><highlight class="normal">Dispatcher::registerDictionary()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="428"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(inner_);</highlight></codeline>
+<codeline lineno="429"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>inner_-&gt;registerDictionary();</highlight></codeline>
+<codeline lineno="430"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="431"><highlight class="normal"></highlight></codeline>
+<codeline lineno="432"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="433"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="434"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="435"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="436"><highlight class="normal"></highlight></codeline>
+<codeline lineno="437"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/Concolic/Emulation.C"/>
+  </compounddef>
+</doxygen>

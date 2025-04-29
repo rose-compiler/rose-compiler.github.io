@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="group__sawyer__smart__pointers" kind="group">
+    <compoundname>sawyer_smart_pointers</compoundname>
+    <title>Reference counting smart pointers</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Pointers that automatically delete the underlying object.</para><para>The library makes extensive use of referencing counting smart pointers. It uses the following paradigm consistently for any class that intends to be reference counted.</para><para><itemizedlist>
+<listitem><para>The class shall mark all of its normal C++ constructors as having protected access. This is to prevent users from allocating such objects statically or on the stack, yet allowing subclasses to use them.</para></listitem>
+</itemizedlist>
+<itemizedlist>
+<listitem><para>For each class their shall be defined a &quot;Ptr&quot; type which is the smart pointer type for the class. Class templates define this type as a public member; non-template classes may define it as a public member and/or in the same namespace as the class. In the latter case, the type name will be &quot;Ptr&quot; appended to the class name.</para></listitem>
+</itemizedlist>
+<itemizedlist>
+<listitem><para>The class shall have a static <computeroutput>instance</computeroutput> method corresponding to each C++ constructor. Each such class method takes the same arguments as one of the constructors, allocates and constructs and object with <computeroutput>new</computeroutput>, and returns a <computeroutput>Ptr</computeroutput>. These methods are usually public.</para></listitem>
+</itemizedlist>
+<itemizedlist>
+<listitem><para>The class shall have a public destructor only for the sake of the smart pointer.</para></listitem>
+</itemizedlist>
+<itemizedlist>
+<listitem><para>If a class hierarchy needs virtual constructors they shall be named <computeroutput>create</computeroutput>.</para></listitem>
+</itemizedlist>
+<itemizedlist>
+<listitem><para>If a class needs virtual copy constructors they shall be named <computeroutput>copy</computeroutput>.</para></listitem>
+</itemizedlist>
+<itemizedlist>
+<listitem><para>The class shall have a factory function corresponding to each public <computeroutput>instance</computeroutput> method.</para></listitem>
+</itemizedlist>
+<itemizedlist>
+<listitem><para>Factory functions shall have the same name as the class, but an initial lower-case letter.</para></listitem>
+</itemizedlist>
+<ref refid="classA" kindref="compound">A</ref> simple example:</para><para><programlisting><codeline><highlight class="normal">class<sp/>SomeClass<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>someData_;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>underscores<sp/>are<sp/>used<sp/>for<sp/>private<sp/>data<sp/>members</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">protected:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>SomeClass():<sp/>someData_(0)<sp/>{}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>explicit<sp/>SomeClass(int<sp/>n):<sp/>someData_(n)<sp/>{}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">public:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>typedef<sp/>Sawyer::SharedPointer&lt;SomeClass&gt;<sp/>Ptr;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>static<sp/>Ptr<sp/>instance()<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>Ptr(new<sp/>SomeClass);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>static<sp/>Ptr<sp/>instance(int<sp/>n)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>Ptr(new<sp/>SomeClass(n));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">SomeClass::Ptr<sp/>someClass()<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>SomeClass::instance();</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">SomeClass::Ptr<sp/>someClass(int<sp/>n)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>SomeClass::instance(n);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting> </para>    </detaileddescription>
+  </compounddef>
+</doxygen>

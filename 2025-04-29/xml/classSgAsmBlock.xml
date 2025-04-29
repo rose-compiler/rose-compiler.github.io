@@ -1,0 +1,863 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="classSgAsmBlock" kind="class" language="C++" prot="public">
+    <compoundname>SgAsmBlock</compoundname>
+    <basecompoundref refid="classSgAsmStatement" prot="public" virt="non-virtual">SgAsmStatement</basecompoundref>
+    <includes refid="SgAsmBlock_8h" local="no">SgAsmBlock.h</includes>
+      <sectiondef kind="public-type">
+      <memberdef kind="enum" id="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48c" prot="public" static="no" strong="no">
+        <type></type>
+        <name>Reason</name>
+        <enumvalue id="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48caa9dc3a6c96ac3132c50dbed6ce2c3e6b" prot="public">
+          <name>BLK_NONE</name>
+          <initializer>= 0x00000000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>No particular reason. Mostly just for initialization. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48cacb1cb50df0cb421e21b3ca064d1122e0" prot="public">
+          <name>BLK_ENTRY_POINT</name>
+          <initializer>= 0x00010000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Block is an entry point for the function. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca155cde4b70560fc1bf7c615263adf0b0" prot="public">
+          <name>BLK_PADDING</name>
+          <initializer>= 0x00020000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Block is used for padding. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca61fa96cc0a9691d08835052ede5b4963" prot="public">
+          <name>BLK_FRAGMENT</name>
+          <initializer>= 0x00080000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>This block created because it seems to belong to the function although <ref refid="classCFG" kindref="compound">CFG</ref> traversal did not find it. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48caf717779cc969a0f357ac6dae8fa2ddfa" prot="public">
+          <name>BLK_CFGHEAD</name>
+          <initializer>= 0x00100000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Block serves as an explicit starting point for <ref refid="classCFG" kindref="compound">CFG</ref> analysis. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca82a31fde71438f935df4985bfd1bf3b0" prot="public">
+          <name>BLK_USERDEF</name>
+          <initializer>= 0x00200000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>User says block belongs to the function. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca7545b24fc1b6a1b274ed67a17e074707" prot="public">
+          <name>BLK_LEFTOVERS</name>
+          <initializer>= 0x00400000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Block is being assigned to a FUNC_LEFTOVERS function because it could not be assigned to any other function. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca1b1c894179759ed0bb4d6a76d54d90e3" prot="public">
+          <name>BLK_JUMPTABLE</name>
+          <initializer>= 0x00800000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Table of code addresses used by indirect branches. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48cae4246f5b8a05009b72d727573c3f9a28" prot="public">
+          <name>BLK_GRAPH1</name>
+          <initializer>= 0x01000000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Block was added by the main <ref refid="classCFG" kindref="compound">CFG</ref> analysis. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca98cf079ce3d66b38c6d7f9f25eea9f73" prot="public">
+          <name>BLK_GRAPH2</name>
+          <initializer>= 0x02000000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Block was added by a second pass of <ref refid="classCFG" kindref="compound">CFG</ref> analysis. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca6dc92f7eb3987dc543ca9e14b415b141" prot="public">
+          <name>BLK_GRAPH3</name>
+          <initializer>= 0x04000000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Block was added by a third pass of <ref refid="classCFG" kindref="compound">CFG</ref> analysis. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca8449f9e3135f9b7bce848bc8869510bb" prot="public">
+          <name>BLK_DEFAULT</name>
+          <initializer>= BLK_NONE</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48cac000af7fa9f808d048f4c7344dccc85c" prot="public">
+          <name>BLK_MISCMASK</name>
+          <initializer>= 0x000000ff</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Miscellaneous reasons go here. We can store only one such reason at a time. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca144a1ee419a758d16c0ab329a45c0cda" prot="public">
+          <name>BLK_FINDDATA</name>
+          <initializer>= 0x00000001</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Added by Partitioner::FindData, which attaches unassigned parts of the disassembly address space to the preceding function. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca75de8219893819926c67e11e1c4db317" prot="public">
+          <name>BLK_POSTFUNC</name>
+          <initializer>= 0x00000002</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Added by Partitioner::FindPostFunctionInsns, which adds unassigned instructions to the immediately preceding function. </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reasons why a basic block might have been assigned to a function. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="35" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" bodystart="35" bodyend="62"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classSgAsmBlock_1a0421308979505afd908fd8d0910aac52" prot="public" static="no" mutable="no">
+        <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        <definition>Rose::BinaryAnalysis::Address SgAsmBlock::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Identification.</para><para>Block unique identification number. Not used by ROSE. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="74" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmBlock_1aa2c5a220727083a5da648ffa5719b717" prot="public" static="no" mutable="no">
+        <type>unsigned</type>
+        <definition>unsigned SgAsmBlock::reason</definition>
+        <argsstring></argsstring>
+        <name>reason</name>
+        <initializer>= <ref refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48caa9dc3a6c96ac3132c50dbed6ce2c3e6b" kindref="member">SgAsmBlock::BLK_NONE</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Reasons this block was created.</para><para>This property holds a bit mask of <ref refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48c" kindref="member">SgAsmBlock::Reason</ref> bits that indicate why this block was created. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="80" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmBlock_1aa2d742e4e5e51a0e9234eae4f0e87e99" prot="public" static="no" mutable="no">
+        <type>SgAsmStatementPtrList</type>
+        <definition>SgAsmStatementPtrList SgAsmBlock::statementList</definition>
+        <argsstring></argsstring>
+        <name>statementList</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Statements of which this block is composed.</para><para>This is the list of &quot;statements&quot; that belong to this block. Statements are usually instructions, but historical code may have used basic blocks with other children. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="91" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmBlock_1ad3537104829125cf827e227f984eb956" prot="public" static="no" mutable="no">
+        <type>SgAsmIntegerValuePtrList</type>
+        <definition>SgAsmIntegerValuePtrList SgAsmBlock::successors</definition>
+        <argsstring></argsstring>
+        <name>successors</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Control flow successors.</para><para>This property holds the list of addresses which are control flow successors of this block. The <ref refid="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2" kindref="compound">Partitioner2</ref> name space has a more useful definition of control flow graph that can reference indeterminate addresses and store data in the edges, and which is copiable. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="103" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" bodystart="103" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmBlock_1a32b1259956ff69186e1c49e07a60ca93" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool SgAsmBlock::successorsComplete</definition>
+        <argsstring></argsstring>
+        <name>successorsComplete</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Whether the successors list is complete.</para><para>This property is true if the &quot;successors&quot; property holds an incomplete list of successors. Since this representation of a control flow graph is unable to represent edges that point to indeterminate addresses (e.g., computed branches), the &quot;successors_complete&quot; property can be used.</para><para>The <ref refid="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2" kindref="compound">Partitioner2</ref> name space has a more useful definition of control flow graph that can reference indeterminate addresses and store data in the edges, and which is copiable. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="114" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmBlock_1af96e461681edf78e744b6b15c2a38e99" prot="public" static="no" mutable="no">
+        <type><ref refid="classSgAsmBlock" kindref="compound">SgAsmBlock</ref> *</type>
+        <definition>SgAsmBlock* SgAsmBlock::immediateDominator</definition>
+        <argsstring></argsstring>
+        <name>immediateDominator</name>
+        <initializer>= <ref refid="ModuleBuilder_8h_1ab979d9d4b4923f7c54d6caa6e1a61936" kindref="member">nullptr</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Holds the immediate dominator block in the control flow graph.</para><para>The immediate dominator is the closest block to this one (by following reverse control flow edges) through which all control paths pass in order to get from the function entry block to this block.</para><para>The <ref refid="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2" kindref="compound">Partitioner2</ref> name space has a more useful definition of control flow graph that can reference indeterminate addresses and store data in the edges, and which is copiable. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="124" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" bodystart="124" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmBlock_1ad8811d210bc50b83404ca84bd6d4956f" prot="public" static="no" mutable="no">
+        <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref></type>
+        <definition>size_t SgAsmBlock::cachedVertex</definition>
+        <argsstring></argsstring>
+        <name>cachedVertex</name>
+        <initializer>= (<ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref>)(-1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Cached vertex for control flow graphs.</para><para>This property is used by the virtual control flow graph mechanism.</para><para>The <ref refid="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2" kindref="compound">Partitioner2</ref> name space has a more useful definition of control flow graph that can reference indeterminate addresses and store data in the edges, and which is copiable. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="133" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" bodystart="133" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmBlock_1acb75a1264f101ec55372987799b9af6b" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double SgAsmBlock::codeLikelihood</definition>
+        <argsstring></argsstring>
+        <name>codeLikelihood</name>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Likelihood that this block represents real instructions.</para><para>This property holds the results of an analysis that determines how likely it is that the memory from which this basic block was disassembled represents actual instructions that would be executed when the specimen runs. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="140" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" bodystart="140" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmBlock_1aca0a8f764e709c35f931ec7d2a3b16cb" prot="public" static="no" mutable="no">
+        <type><ref refid="msvc__stdint_8h_1a67a9885ef4908cb72ce26d75b694386c" kindref="member">int64_t</ref></type>
+        <definition>int64_t SgAsmBlock::stackDeltaOut</definition>
+        <argsstring></argsstring>
+        <name>stackDeltaOut</name>
+        <initializer>= <ref refid="classSgAsmInstruction_1a6fb91f8c348c2912b78a55ee6b8d4a39" kindref="member">SgAsmInstruction::INVALID_STACK_DELTA</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Stack pointer at block exit w.r.t. stack pointer at function entry.</para><para>This is the difference between the stack pointer after the last instruction of this block executes and the stack pointer when this block&apos;s function was entered. It stores the result of a stack delta analysis. If stack delta analysis hasn&apos;t run, or was unable to determine a constant delta, then the special value <ref refid="classSgAsmInstruction_1a6fb91f8c348c2912b78a55ee6b8d4a39" kindref="member">SgAsmInstruction::INVALID_STACK_DELTA</ref> is stored. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="149" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" bodystart="149" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classSgAsmBlock_1a8b436799c6f95015fab7fa16420dafb5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmBlock::appendStatement</definition>
+        <argsstring>(SgAsmStatement *)</argsstring>
+        <name>appendStatement</name>
+        <param>
+          <type><ref refid="classSgAsmStatement" kindref="compound">SgAsmStatement</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Add the specified statement to the end of the statement list.</para><para>This is is usually used to add the next instruction to the end of a basic block. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="158" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a363983c9ea313f9affa1e10fbd8afdae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmBlock::removeStatement</definition>
+        <argsstring>(SgAsmStatement *)</argsstring>
+        <name>removeStatement</name>
+        <param>
+          <type><ref refid="classSgAsmStatement" kindref="compound">SgAsmStatement</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Erase the specified statement.</para><para>If the specified statement exists in the &quot;statementList&quot; property then it is erased but not deleted. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="163" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1ab2395020e071f1793fc833f3712cb648" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmBlock::removeChildren</definition>
+        <argsstring>()</argsstring>
+        <name>removeChildren</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Removes all statements from the block.</para><para>This makes the block empty, and not having a unique starting virtual address. It does not erase all children, just the statement children. None of the statements that are erased are deleted. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="170" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a4fe07708daa520e9073cdb6a24d68c26" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        <definition>Rose::BinaryAnalysis::Address SgAsmBlock::get_fallthroughVa</definition>
+        <argsstring>()</argsstring>
+        <name>get_fallthroughVa</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Fall-through virtual address.</para><para><ref refid="classA" kindref="compound">A</ref> block&apos;s fall-through address is the virtual address that follows the last byte of the block&apos;s last instruction. The block must have instructions (e.g., it cannot be a strict data block). </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="176" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1abb9dc7a12e9ff55db51f1e7b606f67c2" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmFunction" kindref="compound">SgAsmFunction</ref> *</type>
+        <definition>SgAsmFunction* SgAsmBlock::get_enclosingFunction</definition>
+        <argsstring>() const</argsstring>
+        <name>get_enclosingFunction</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the function that owns this block.</para><para>This is just a convenience wrapper around <ref refid="namespaceSageInterface_1a0b7def913d21eb6782926fb61ae65520" kindref="member">SageInterface::getEnclosingNode</ref>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="181" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1ac0d635db6260513125c5a6d9dbf77b2c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SgAsmBlock::hasInstructions</definition>
+        <argsstring>() const</argsstring>
+        <name>hasInstructions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determins if a block contains instructions.</para><para>Returns true if the block has instructions, false otherwise. We look only at the immediate descendants of this block. See also, <ref refid="namespaceSageInterface_1adad5346e263210a4ba54abc8ff282baa" kindref="member">SageInterface::querySubTree</ref> in order to get the list of all instructions or to consider all descendants. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="188" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1af7e985415d71624c86d4d3a73705c58f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SgAsmBlock::isBasicBlock</definition>
+        <argsstring>() const</argsstring>
+        <name>isBasicBlock</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determine if a block contains instructions.</para><para>Returns true if the block has instructions, false otherwise. We look only at the immediate descendants of this block. See also, <ref refid="namespaceSageInterface_1adad5346e263210a4ba54abc8ff282baa" kindref="member">SageInterface::querySubTree</ref> in order to get the list of all instructions or to consider all descendants. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="195" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1ae5e093949532dd9e486ee88917f63ccb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SgAsmBlock::isFunctionCall</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address &amp;target_va, Rose::BinaryAnalysis::Address &amp;return_va)</argsstring>
+        <name>isFunctionCall</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref> &amp;</type>
+          <declname>target_va</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref> &amp;</type>
+          <declname>return_va</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns true if basic block appears to be a function call.</para><para>If the target address is known and is a single value then it is stored in the <computeroutput>target_va</computeroutput> argument, otherwise we store the maximum 64-bit address. If the return address for the function call is known then it is stored in the <computeroutput>return_va</computeroutput> argument, otherwise <computeroutput>return_va</computeroutput> will contain the maximum 64-bit address. The return address is usually the fall-through address of the basic block.</para><para>Note: Use this function in preference to SgAsmInstruction::isFunctionCallSlow() because the latter is intended to be used by the Partitioner before an AST is created and might not be as accurate. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="206" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a775c734783f63eee6ddfc68e6e319831" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string SgAsmBlock::reasonString</definition>
+        <argsstring>(bool pad) const</argsstring>
+        <name>reasonString</name>
+        <param>
+          <type>bool</type>
+          <declname>pad</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns reason string for this block.</para><para>The reason string is a very short string describing the reason that the block was created. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="216" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1ad7281a3ac3eeeb7da24e9b8509d87461" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SgAsmBlock::get_successors_complete</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_successorsComplete&quot;)</argsstring>
+        <name>get_successors_complete</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="230" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1aac6c9fa73468014e52ad5f9e0abeacc7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmBlock::set_successors_complete</definition>
+        <argsstring>(bool) ROSE_DEPRECATED(&quot;use get_successorsComplete&quot;)</argsstring>
+        <name>set_successors_complete</name>
+        <param>
+          <type>bool</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="231" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a1104fa91314676bdb2fab248953e2b3d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmBlock" kindref="compound">SgAsmBlock</ref> *</type>
+        <definition>SgAsmBlock* SgAsmBlock::get_immediate_dominator</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_immediateDominator&quot;)</argsstring>
+        <name>get_immediate_dominator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="232" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a584296c53706d13b627698105974f5d7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmBlock::set_immediate_dominator</definition>
+        <argsstring>(SgAsmBlock *) ROSE_DEPRECATED(&quot;use set_immediateDominator&quot;)</argsstring>
+        <name>set_immediate_dominator</name>
+        <param>
+          <type><ref refid="classSgAsmBlock" kindref="compound">SgAsmBlock</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="233" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a98c150b9ad056e9654fa2704795d17d1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref></type>
+        <definition>size_t SgAsmBlock::get_cached_vertex</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_cachedVertex&quot;)</argsstring>
+        <name>get_cached_vertex</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="234" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a012e6edce7cb1b92f97ab3c3fae281a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmBlock::set_cached_vertex</definition>
+        <argsstring>(size_t) ROSE_DEPRECATED(&quot;use set_cachedVertex&quot;)</argsstring>
+        <name>set_cached_vertex</name>
+        <param>
+          <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="235" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1adc36b3322b2d686ce93cfc93df73e6a5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double SgAsmBlock::get_code_likelihood</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_codeLikelihood&quot;)</argsstring>
+        <name>get_code_likelihood</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="236" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a22e4370dd6688ff3ec6776fe551edf2d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmBlock::set_code_likelihood</definition>
+        <argsstring>(double) ROSE_DEPRECATED(&quot;use set_codeLikelihood&quot;)</argsstring>
+        <name>set_code_likelihood</name>
+        <param>
+          <type>double</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="237" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a8028eb266abc77a188495056b78ac1d5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmBlock::append_statement</definition>
+        <argsstring>(SgAsmStatement *) ROSE_DEPRECATED(&quot;use appendStatement&quot;)</argsstring>
+        <name>append_statement</name>
+        <param>
+          <type><ref refid="classSgAsmStatement" kindref="compound">SgAsmStatement</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="238" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1ad173bdd9dcb391549dab8c60b53c849d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmBlock::remove_statement</definition>
+        <argsstring>(SgAsmStatement *) ROSE_DEPRECATED(&quot;use removeStatement&quot;)</argsstring>
+        <name>remove_statement</name>
+        <param>
+          <type><ref refid="classSgAsmStatement" kindref="compound">SgAsmStatement</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="239" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a4522563d53e15fac8a8c7a5487e4c9cf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmBlock::remove_children</definition>
+        <argsstring>() ROSE_DEPRECATED(&quot;use removeChildren&quot;)</argsstring>
+        <name>remove_children</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="240" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a6e369e92f78952b9f2e632ad306b1206" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        <definition>Rose::BinaryAnalysis::Address SgAsmBlock::get_fallthrough_va</definition>
+        <argsstring>() ROSE_DEPRECATED(&quot;use getFallthroughVa&quot;)</argsstring>
+        <name>get_fallthrough_va</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="241" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1ad146707e03e430f254f4a34e4fad5dc8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmFunction" kindref="compound">SgAsmFunction</ref> *</type>
+        <definition>SgAsmFunction* SgAsmBlock::get_enclosing_function</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_enclosingFunction&quot;)</argsstring>
+        <name>get_enclosing_function</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="242" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a132ee80039eca32093c7fae306107466" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SgAsmBlock::has_instructions</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use hasInstructions&quot;)</argsstring>
+        <name>has_instructions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="243" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a3ff7882247b9764e5427e0d0910e2155" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SgAsmBlock::is_basic_block</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use isBasicBlock&quot;)</argsstring>
+        <name>is_basic_block</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="244" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a6a139411d6d13a883e5eb139db9a2ac3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SgAsmBlock::is_function_call</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address &amp;, Rose::BinaryAnalysis::Address &amp;) ROSE_DEPRECATED(&quot;use isFunctionCall&quot;)</argsstring>
+        <name>is_function_call</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref> &amp;</type>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="245" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a05d36af3b6057f3ed81678ae3dc5eb74" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string SgAsmBlock::reason_str</definition>
+        <argsstring>(bool) const ROSE_DEPRECATED(&quot;use reasonString&quot;)</argsstring>
+        <name>reason_str</name>
+        <param>
+          <type>bool</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="247" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classSgAsmBlock_1a9d70ad5a0a46740eb93434ec4055f6f3" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string SgAsmBlock::reasonKey</definition>
+        <argsstring>(const std::string &amp;prefix=&quot;&quot;)</argsstring>
+        <name>reasonKey</name>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>prefix</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Multi-line string describing the letters used for basic block reasons.</para><para>The letters are returned by the padding version of <ref refid="classSgAsmBlock_1a775c734783f63eee6ddfc68e6e319831" kindref="member">reasonString</ref> and appear in unparser output. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="211" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a9dee110ec12aaee24fab86a7761937b2" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string SgAsmBlock::reasonString</definition>
+        <argsstring>(bool pad, unsigned reason)</argsstring>
+        <name>reasonString</name>
+        <param>
+          <type>bool</type>
+          <declname>pad</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>reason</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts a reason bit vector to a human-friendly string.</para><para>The second argument is the bit vector of <ref refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48c" kindref="member">SgAsmBlock::Reason</ref> bits. Some of the positions in the padded return value are used for more than one bit. For instance, the first character can be &quot;L&quot; for leftovers, &quot;N&quot; for padding, &quot;E&quot; for entry point, or &quot;-&quot; for none of the above. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="223" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a83d55b511e5107c9dcb84c5e680ca6a5" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string SgAsmBlock::reason_key</definition>
+        <argsstring>(const std::string &amp;=&quot;&quot;) ROSE_DEPRECATED(&quot;use reasonKey&quot;)</argsstring>
+        <name>reason_key</name>
+        <param>
+          <type>const std::string &amp;</type>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="246" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmBlock_1a015aa322fbc226497314514721fb4b8e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string SgAsmBlock::reason_str</definition>
+        <argsstring>(bool, unsigned) ROSE_DEPRECATED(&quot;use reasonString&quot;)</argsstring>
+        <name>reason_str</name>
+        <param>
+          <type>bool</type>
+        </param>
+        <param>
+          <type>unsigned</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="248" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Instruction basic block.</para><para><ref refid="classA" kindref="compound">A</ref> <ref refid="classSgAsmBlock" kindref="compound">SgAsmBlock</ref> usually represents a sequence of instructions. It&apos;s also used for grouping other things such as functions. <ref refid="classA" kindref="compound">A</ref> <ref refid="classSgAsmBlock" kindref="compound">SgAsmBlock</ref> represents a basic block if and only if it has at least one descendant of type <ref refid="classSgAsmInstruction" kindref="compound">SgAsmInstruction</ref> and it has no descendants of type <ref refid="classSgAsmBlock" kindref="compound">SgAsmBlock</ref>.</para><para>In the absence of interrupt handling, the instructions of a basic block are executed entirely. In the absense of multi-threading, no other instructions intervene.</para><para>The instructions of a basic block need not be contiguous in virtual memory. They also do not need to be at increasing virtual addresses.</para><para>If the basic block has a parent pointer, then the closest <ref refid="classSgAsmFunction" kindref="compound">SgAsmFunction</ref> ancestor is the one to which this basic block belongs. In the Partitioner API, a basic block can be owned by more than one function.</para><para>An AST may have multiple <ref refid="classSgAsmBlock" kindref="compound">SgAsmBlock</ref> objects that represent the same basic block. This happens when a single block belongs to more than one function.</para><para>See also, Rose::BinaryAnalysis::Partitioner2::BasicBlock, which represents a basic block outside the AST. </para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="18253">
+        <label>SgAsmStatement</label>
+        <link refid="classSgAsmStatement"/>
+        <childnode refid="18254" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="18252">
+        <label>SgAsmBlock</label>
+        <link refid="classSgAsmBlock"/>
+        <childnode refid="18253" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="18254">
+        <label>SgAsmNode</label>
+        <link refid="classSgAsmNode"/>
+        <childnode refid="18255" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="18255">
+        <label>SgNode</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="18260">
+        <label>Sawyer::Attribute::Storage&lt; SyncTag &gt;</label>
+        <link refid="classSawyer_1_1Attribute_1_1Storage"/>
+        <childnode refid="18261" relation="usage">
+          <edgelabel>values_</edgelabel>
+        </childnode>
+      </node>
+      <node id="18262">
+        <label>string</label>
+      </node>
+      <node id="18261">
+        <label>Sawyer::Container::Map&lt; Id, boost::any &gt;</label>
+        <link refid="classSawyer_1_1Container_1_1Map"/>
+      </node>
+      <node id="18257">
+        <label>SgAsmStatement</label>
+        <link refid="classSgAsmStatement"/>
+        <childnode refid="18258" relation="public-inheritance">
+        </childnode>
+        <childnode refid="18262" relation="usage">
+          <edgelabel>comment</edgelabel>
+        </childnode>
+      </node>
+      <node id="18256">
+        <label>SgAsmBlock</label>
+        <link refid="classSgAsmBlock"/>
+        <childnode refid="18257" relation="public-inheritance">
+        </childnode>
+        <childnode refid="18256" relation="usage">
+          <edgelabel>immediateDominator</edgelabel>
+        </childnode>
+      </node>
+      <node id="18258">
+        <label>SgAsmNode</label>
+        <link refid="classSgAsmNode"/>
+        <childnode refid="18259" relation="public-inheritance">
+        </childnode>
+        <childnode refid="18260" relation="usage">
+          <edgelabel>attributes</edgelabel>
+        </childnode>
+      </node>
+      <node id="18259">
+        <label>SgNode</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" line="29" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmBlock.h" bodystart="29" bodyend="249"/>
+    <listofallmembers>
+      <member refid="classSgAsmStatement_1a1ebaeb6e001069e660b69947cec925f7" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>address</name></member>
+      <member refid="classSgAsmBlock_1a8028eb266abc77a188495056b78ac1d5" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>append_statement</name></member>
+      <member refid="classSgAsmBlock_1a8b436799c6f95015fab7fa16420dafb5" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>appendStatement</name></member>
+      <member refid="classSgAsmNode_1a59e9db061aa74eeeda6dfc3d677a6bb7" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>attributes</name></member>
+      <member refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48caf717779cc969a0f357ac6dae8fa2ddfa" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>BLK_CFGHEAD</name></member>
+      <member refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca8449f9e3135f9b7bce848bc8869510bb" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>BLK_DEFAULT</name></member>
+      <member refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48cacb1cb50df0cb421e21b3ca064d1122e0" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>BLK_ENTRY_POINT</name></member>
+      <member refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca144a1ee419a758d16c0ab329a45c0cda" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>BLK_FINDDATA</name></member>
+      <member refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca61fa96cc0a9691d08835052ede5b4963" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>BLK_FRAGMENT</name></member>
+      <member refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48cae4246f5b8a05009b72d727573c3f9a28" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>BLK_GRAPH1</name></member>
+      <member refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca98cf079ce3d66b38c6d7f9f25eea9f73" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>BLK_GRAPH2</name></member>
+      <member refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca6dc92f7eb3987dc543ca9e14b415b141" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>BLK_GRAPH3</name></member>
+      <member refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca1b1c894179759ed0bb4d6a76d54d90e3" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>BLK_JUMPTABLE</name></member>
+      <member refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca7545b24fc1b6a1b274ed67a17e074707" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>BLK_LEFTOVERS</name></member>
+      <member refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48cac000af7fa9f808d048f4c7344dccc85c" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>BLK_MISCMASK</name></member>
+      <member refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48caa9dc3a6c96ac3132c50dbed6ce2c3e6b" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>BLK_NONE</name></member>
+      <member refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca155cde4b70560fc1bf7c615263adf0b0" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>BLK_PADDING</name></member>
+      <member refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca75de8219893819926c67e11e1c4db317" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>BLK_POSTFUNC</name></member>
+      <member refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48ca82a31fde71438f935df4985bfd1bf3b0" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>BLK_USERDEF</name></member>
+      <member refid="classSgAsmBlock_1ad8811d210bc50b83404ca84bd6d4956f" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>cachedVertex</name></member>
+      <member refid="classSgAsmBlock_1acb75a1264f101ec55372987799b9af6b" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>codeLikelihood</name></member>
+      <member refid="classSgAsmStatement_1a57e98c9c62f4bd1722e17428fb5a1797" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>comment</name></member>
+      <member refid="classSgAsmBlock_1a98c150b9ad056e9654fa2704795d17d1" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>get_cached_vertex</name></member>
+      <member refid="classSgAsmBlock_1adc36b3322b2d686ce93cfc93df73e6a5" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>get_code_likelihood</name></member>
+      <member refid="classSgAsmBlock_1ad146707e03e430f254f4a34e4fad5dc8" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>get_enclosing_function</name></member>
+      <member refid="classSgAsmBlock_1abb9dc7a12e9ff55db51f1e7b606f67c2" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>get_enclosingFunction</name></member>
+      <member refid="classSgAsmBlock_1a6e369e92f78952b9f2e632ad306b1206" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>get_fallthrough_va</name></member>
+      <member refid="classSgAsmBlock_1a4fe07708daa520e9073cdb6a24d68c26" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>get_fallthroughVa</name></member>
+      <member refid="classSgAsmBlock_1a1104fa91314676bdb2fab248953e2b3d" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>get_immediate_dominator</name></member>
+      <member refid="classSgAsmBlock_1ad7281a3ac3eeeb7da24e9b8509d87461" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>get_successors_complete</name></member>
+      <member refid="classSgAsmBlock_1a132ee80039eca32093c7fae306107466" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>has_instructions</name></member>
+      <member refid="classSgAsmBlock_1ac0d635db6260513125c5a6d9dbf77b2c" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>hasInstructions</name></member>
+      <member refid="classSgAsmBlock_1a0421308979505afd908fd8d0910aac52" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>id</name></member>
+      <member refid="classSgAsmBlock_1af96e461681edf78e744b6b15c2a38e99" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>immediateDominator</name></member>
+      <member refid="classSgAsmBlock_1a3ff7882247b9764e5427e0d0910e2155" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>is_basic_block</name></member>
+      <member refid="classSgAsmBlock_1a6a139411d6d13a883e5eb139db9a2ac3" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>is_function_call</name></member>
+      <member refid="classSgAsmBlock_1af7e985415d71624c86d4d3a73705c58f" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>isBasicBlock</name></member>
+      <member refid="classSgAsmBlock_1ae5e093949532dd9e486ee88917f63ccb" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>isFunctionCall</name></member>
+      <member refid="classSgAsmBlock_1aa2c5a220727083a5da648ffa5719b717" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>reason</name></member>
+      <member refid="classSgAsmBlock_1a94a08ed03be6bcd089f1106a0aa7e48c" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>Reason</name></member>
+      <member refid="classSgAsmBlock_1a83d55b511e5107c9dcb84c5e680ca6a5" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>reason_key</name></member>
+      <member refid="classSgAsmBlock_1a05d36af3b6057f3ed81678ae3dc5eb74" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>reason_str</name></member>
+      <member refid="classSgAsmBlock_1a015aa322fbc226497314514721fb4b8e" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>reason_str</name></member>
+      <member refid="classSgAsmBlock_1a9d70ad5a0a46740eb93434ec4055f6f3" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>reasonKey</name></member>
+      <member refid="classSgAsmBlock_1a775c734783f63eee6ddfc68e6e319831" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>reasonString</name></member>
+      <member refid="classSgAsmBlock_1a9dee110ec12aaee24fab86a7761937b2" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>reasonString</name></member>
+      <member refid="classSgAsmBlock_1a4522563d53e15fac8a8c7a5487e4c9cf" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>remove_children</name></member>
+      <member refid="classSgAsmBlock_1ad173bdd9dcb391549dab8c60b53c849d" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>remove_statement</name></member>
+      <member refid="classSgAsmBlock_1ab2395020e071f1793fc833f3712cb648" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>removeChildren</name></member>
+      <member refid="classSgAsmBlock_1a363983c9ea313f9affa1e10fbd8afdae" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>removeStatement</name></member>
+      <member refid="classSgAsmBlock_1a012e6edce7cb1b92f97ab3c3fae281a3" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>set_cached_vertex</name></member>
+      <member refid="classSgAsmBlock_1a22e4370dd6688ff3ec6776fe551edf2d" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>set_code_likelihood</name></member>
+      <member refid="classSgAsmBlock_1a584296c53706d13b627698105974f5d7" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>set_immediate_dominator</name></member>
+      <member refid="classSgAsmBlock_1aac6c9fa73468014e52ad5f9e0abeacc7" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>set_successors_complete</name></member>
+      <member refid="classSgAsmBlock_1aca0a8f764e709c35f931ec7d2a3b16cb" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>stackDeltaOut</name></member>
+      <member refid="classSgAsmBlock_1aa2d742e4e5e51a0e9234eae4f0e87e99" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>statementList</name></member>
+      <member refid="classSgAsmBlock_1ad3537104829125cf827e227f984eb956" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>successors</name></member>
+      <member refid="classSgAsmBlock_1a32b1259956ff69186e1c49e07a60ca93" prot="public" virt="non-virtual"><scope>SgAsmBlock</scope><name>successorsComplete</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

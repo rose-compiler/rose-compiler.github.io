@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="PathQueue_8C" kind="file" language="C++">
+    <compoundname>PathQueue.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="200431">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="200428">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="200429" relation="include">
+        </childnode>
+        <childnode refid="200430" relation="include">
+        </childnode>
+        <childnode refid="200431" relation="include">
+        </childnode>
+      </node>
+      <node id="200430">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="200429">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="200428" relation="include">
+        </childnode>
+      </node>
+      <node id="200427">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/ModelChecker/PathQueue.C</label>
+        <link refid="PathQueue_8C"/>
+        <childnode refid="200428" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_MODEL_CHECKER</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="PathQueue_8h" kindref="compound">Rose/BinaryAnalysis/ModelChecker/PathQueue.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Path_8h" kindref="compound">Rose/BinaryAnalysis/ModelChecker/Path.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="PathPrioritizer_8h" kindref="compound">Rose/BinaryAnalysis/ModelChecker/PathPrioritizer.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose" kindref="compound">Rose</ref><sp/>{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">BinaryAnalysis<sp/>{</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">ModelChecker<sp/>{</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal">PathQueue::PathQueue(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>PathPrioritizer::Ptr<sp/>&amp;prioritizer)</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>prioritizer_(prioritizer)<sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal">PathQueue::~PathQueue()<sp/>{}</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal">PathPrioritizer::Ptr</highlight></codeline>
+<codeline lineno="19"><highlight class="normal">PathQueue::prioritizer()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>SAWYER_THREAD_TRAITS::LockGuard<sp/>lock(<ref refid="namespaceRose_1a92e058a1f685e0d0e0bed210a7ac5634" kindref="member">mutex_</ref>);</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(prioritizer_);</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>prioritizer_;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal">PathQueue::prioritizer(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>PathPrioritizer::Ptr<sp/>&amp;p)<sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(prioritizer_);</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>SAWYER_THREAD_TRAITS::LockGuard<sp/>lock(<ref refid="namespaceRose_1a92e058a1f685e0d0e0bed210a7ac5634" kindref="member">mutex_</ref>);</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>prioritizer_<sp/>=<sp/>p;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>std::make_heap(paths_.begin(),<sp/>paths_.end(),<sp/>[</highlight><highlight class="keyword">this</highlight><highlight class="normal">](</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Path::Ptr<sp/>&amp;<ref refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" kindref="member">a</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Path::Ptr<sp/>&amp;<ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(*prioritizer_)(<ref refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" kindref="member">a</ref>,<sp/><ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>});</highlight></codeline>
+<codeline lineno="33"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal">PathQueue::size()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>SAWYER_THREAD_TRAITS::LockGuard<sp/>lock(<ref refid="namespaceRose_1a92e058a1f685e0d0e0bed210a7ac5634" kindref="member">mutex_</ref>);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>paths_.size();</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal">PathQueue::isEmpty()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>SAWYER_THREAD_TRAITS::LockGuard<sp/>lock(<ref refid="namespaceRose_1a92e058a1f685e0d0e0bed210a7ac5634" kindref="member">mutex_</ref>);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>paths_.empty();</highlight></codeline>
+<codeline lineno="45"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal">PathQueue::reset()<sp/>{</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>SAWYER_THREAD_TRAITS::LockGuard<sp/>lock(<ref refid="namespaceRose_1a92e058a1f685e0d0e0bed210a7ac5634" kindref="member">mutex_</ref>);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>paths_.clear();</highlight></codeline>
+<codeline lineno="51"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><ref refid="namespaceOutliner_1ad3aa1c92d04c95cc351a96181a26d7ea" kindref="member">PathQueue::insert</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Path::Ptr<sp/>&amp;path)<sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(path);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>SAWYER_THREAD_TRAITS::LockGuard<sp/>lock(<ref refid="namespaceRose_1a92e058a1f685e0d0e0bed210a7ac5634" kindref="member">mutex_</ref>);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a8bcb03629cd31aca32228c8d9f779bd0" kindref="member">ASSERT_require2</ref>(std::find(paths_.begin(),<sp/>paths_.end(),<sp/>path)<sp/>==<sp/>paths_.end(),<sp/></highlight><highlight class="stringliteral">&quot;attempted<sp/>to<sp/>insert<sp/>duplicate&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>paths_.push_back(path);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>std::push_heap(paths_.begin(),<sp/>paths_.end(),<sp/>[</highlight><highlight class="keyword">this</highlight><highlight class="normal">](</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Path::Ptr<sp/>&amp;<ref refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" kindref="member">a</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Path::Ptr<sp/>&amp;<ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(*prioritizer_)(<ref refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" kindref="member">a</ref>,<sp/><ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>});</highlight></codeline>
+<codeline lineno="62"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal">Path::Ptr</highlight></codeline>
+<codeline lineno="65"><highlight class="normal">PathQueue::takeNext()<sp/>{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>SAWYER_THREAD_TRAITS::LockGuard<sp/>lock(<ref refid="namespaceRose_1a92e058a1f685e0d0e0bed210a7ac5634" kindref="member">mutex_</ref>);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>Path::Ptr<sp/>retval;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!paths_.empty())<sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::pop_heap(paths_.begin(),<sp/>paths_.end(),<sp/>[</highlight><highlight class="keyword">this</highlight><highlight class="normal">](</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Path::Ptr<sp/>&amp;<ref refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" kindref="member">a</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Path::Ptr<sp/>&amp;<ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(*prioritizer_)(<ref refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" kindref="member">a</ref>,<sp/><ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>});</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>retval<sp/>=<sp/>paths_.back();</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>paths_.pop_back();</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>retval;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><ref refid="namespaceRose_1_1Traits_1a276c5c124cfce790ae78e27405896fdd" kindref="member">PathQueue::traverse</ref>(Visitor<sp/>&amp;visitor)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>SAWYER_THREAD_TRAITS::LockGuard<sp/>lock(<ref refid="namespaceRose_1a92e058a1f685e0d0e0bed210a7ac5634" kindref="member">mutex_</ref>);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Path::Ptr<sp/>&amp;path:<sp/>paths_)<sp/>{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!visitor(path))</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="85"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/ModelChecker/PathQueue.C"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,384 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="DispatcherCil_8C" kind="file" language="C++">
+    <compoundname>DispatcherCil.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="199714">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="199711">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="199712" relation="include">
+        </childnode>
+        <childnode refid="199713" relation="include">
+        </childnode>
+        <childnode refid="199714" relation="include">
+        </childnode>
+      </node>
+      <node id="199710">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/InstructionSemantics/DispatcherCil.C</label>
+        <link refid="DispatcherCil_8C"/>
+        <childnode refid="199711" relation="include">
+        </childnode>
+      </node>
+      <node id="199713">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="199712">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="199711" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="DispatcherCil_8h" kindref="compound">Rose/BinaryAnalysis/InstructionSemantics/DispatcherCil.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="As_8h" kindref="compound">Rose/As.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Architecture_2Base_8h" kindref="compound">Rose/BinaryAnalysis/Architecture/Base.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="BaseSemantics_8h" kindref="compound">Rose/BinaryAnalysis/InstructionSemantics/BaseSemantics.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="BinaryAnalysis_2InstructionSemantics_2Utility_8h" kindref="compound">Rose/BinaryAnalysis/InstructionSemantics/Utility.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="RegisterDictionary_8h" kindref="compound">Rose/BinaryAnalysis/RegisterDictionary.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Diagnostics_8h" kindref="compound">Rose/Diagnostics.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SgAsmCilInstruction_8h" kindref="compound">SgAsmCilInstruction.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SgAsmFloatType_8h" kindref="compound">SgAsmFloatType.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Cxx_GrammarDowncast.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="integerOps_8h" kindref="compound">integerOps.h</ref>&gt;</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>rose</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="stringify_8h" kindref="compound">stringify.h</ref>&gt;</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>rose</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose_1_1Diagnostics" kindref="compound">Rose::Diagnostics</ref>;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose" kindref="compound">Rose</ref><sp/>{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">BinaryAnalysis<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">InstructionSemantics<sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Functors<sp/>that<sp/>handle<sp/>individual<sp/>CIL<sp/>instruction<sp/>kinds</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Cil<sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>DispatcherCil</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal">DispatcherCil::DispatcherCil()<sp/>{}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal">DispatcherCil::DispatcherCil(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::Base::ConstPtr<sp/>&amp;arch)</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>BaseSemantics::Dispatcher(arch)<sp/>{}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal">DispatcherCil::DispatcherCil(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::Base::ConstPtr<sp/>&amp;arch,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BaseSemantics::RiscOperators::Ptr<sp/>&amp;<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>)</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>BaseSemantics::Dispatcher(arch,<sp/><ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>regcache_init();</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>iproc_init();</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>memory_init();</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>initializeState(<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>-&gt;currentState());</highlight></codeline>
+<codeline lineno="50"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal">DispatcherCil::~DispatcherCil()<sp/>{}</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal">DispatcherCil::Ptr</highlight></codeline>
+<codeline lineno="55"><highlight class="normal">DispatcherCil::instance(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::Base::ConstPtr<sp/>&amp;arch)<sp/>{</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Ptr(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>DispatcherCil(arch));</highlight></codeline>
+<codeline lineno="57"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal">DispatcherCil::Ptr</highlight></codeline>
+<codeline lineno="60"><highlight class="normal">DispatcherCil::instance(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::Base::ConstPtr<sp/>&amp;arch,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BaseSemantics::RiscOperators::Ptr<sp/>&amp;<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Ptr(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>DispatcherCil(arch,<sp/><ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>));</highlight></codeline>
+<codeline lineno="62"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal">BaseSemantics::Dispatcher::Ptr</highlight></codeline>
+<codeline lineno="65"><highlight class="normal">DispatcherCil::create(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BaseSemantics::RiscOperators::Ptr<sp/>&amp;<ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>instance(architecture(),<sp/><ref refid="namespacestringify_1a6b600877f9da02effd928684a0f4704b" kindref="member">ops</ref>);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal">DispatcherCil::Ptr</highlight></codeline>
+<codeline lineno="70"><highlight class="normal">DispatcherCil::promote(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BaseSemantics::Dispatcher::Ptr<sp/>&amp;d)<sp/>{</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>Ptr<sp/>retval<sp/>=<sp/>as&lt;DispatcherCil&gt;(d);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(retval);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>retval;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal">DispatcherCil::iproc_init()<sp/>{}</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal">DispatcherCil::regcache_init()<sp/>{</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i=0;<sp/>i&lt;8;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>REG_D[i]<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;d&quot;</highlight><highlight class="normal">+<ref refid="abstract__handle_8cpp_1a2a34022754d9c0f052b2e9bc5a3308e5" kindref="member">StringUtility::numberToString</ref>(i),<sp/>32);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>REG_A[i]<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;a&quot;</highlight><highlight class="normal">+<ref refid="abstract__handle_8cpp_1a2a34022754d9c0f052b2e9bc5a3308e5" kindref="member">StringUtility::numberToString</ref>(i),<sp/>32);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>REG_FP[i]<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;fp&quot;</highlight><highlight class="normal">+<ref refid="abstract__handle_8cpp_1a2a34022754d9c0f052b2e9bc5a3308e5" kindref="member">StringUtility::numberToString</ref>(i));</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a8bcb03629cd31aca32228c8d9f779bd0" kindref="member">ASSERT_require2</ref>(REG_FP[i].<ref refid="namespaceRose_1_1BitOps_1ae9375b93faf484bcd87fbbc78a6d94e5" kindref="member">nBits</ref>()==64<sp/>||<sp/>REG_FP[i].<ref refid="namespaceRose_1_1BitOps_1ae9375b93faf484bcd87fbbc78a6d94e5" kindref="member">nBits</ref>()==80,<sp/></highlight><highlight class="stringliteral">&quot;invalid<sp/>floating<sp/>point<sp/>register<sp/>size&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_PC<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;pc&quot;</highlight><highlight class="normal">,<sp/>32);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_CCR<sp/><sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;ccr&quot;</highlight><highlight class="normal">,<sp/>8);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_CCR_C<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;ccr_c&quot;</highlight><highlight class="normal">,<sp/>1);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_CCR_V<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;ccr_v&quot;</highlight><highlight class="normal">,<sp/>1);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_CCR_Z<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;ccr_z&quot;</highlight><highlight class="normal">,<sp/>1);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_CCR_N<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;ccr_n&quot;</highlight><highlight class="normal">,<sp/>1);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_CCR_X<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;ccr_x&quot;</highlight><highlight class="normal">,<sp/>1);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_SR_S<sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;sr_s&quot;</highlight><highlight class="normal">,<sp/><sp/>1);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_SR<sp/><sp/><sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;sr&quot;</highlight><highlight class="normal">,<sp/>16);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_VBR<sp/><sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;vbr&quot;</highlight><highlight class="normal">,<sp/>32);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_SSP<sp/><sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;ssp&quot;</highlight><highlight class="normal">,<sp/>32);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>TOO1<sp/>(8/11/2014):<sp/>Renamed<sp/>variable<sp/>from<sp/>&quot;OPTIONAL&quot;<sp/>to<sp/>&quot;IS_OPTIONAL&quot;.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;OPTIONAL&quot;<sp/>is<sp/>a<sp/>predefined<sp/>macro<sp/>in<sp/>Windows.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Multiply-accumulated<sp/>registers.<sp/><sp/>These<sp/>are<sp/>optional.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>IS_OPTIONAL<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_MACSR_SU<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;macsr_su&quot;</highlight><highlight class="normal">,<sp/>1,<sp/>IS_OPTIONAL);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_MACSR_FI<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;macsr_fi&quot;</highlight><highlight class="normal">,<sp/>1,<sp/>IS_OPTIONAL);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_MACSR_N<sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;macsr_n&quot;</highlight><highlight class="normal">,<sp/><sp/>1,<sp/>IS_OPTIONAL);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_MACSR_Z<sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;macsr_z&quot;</highlight><highlight class="normal">,<sp/><sp/>1,<sp/>IS_OPTIONAL);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_MACSR_V<sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;macsr_v&quot;</highlight><highlight class="normal">,<sp/><sp/>1,<sp/>IS_OPTIONAL);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_MACSR_C<sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;macsr_c&quot;</highlight><highlight class="normal">,<sp/><sp/>1,<sp/>IS_OPTIONAL);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_MAC_MASK<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;mask&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/><sp/>32,<sp/>IS_OPTIONAL);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_MACEXT0<sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;accext0&quot;</highlight><highlight class="normal">,<sp/>16,<sp/>IS_OPTIONAL);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_MACEXT1<sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;accext1&quot;</highlight><highlight class="normal">,<sp/>16,<sp/>IS_OPTIONAL);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_MACEXT2<sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;accext2&quot;</highlight><highlight class="normal">,<sp/>16,<sp/>IS_OPTIONAL);</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_MACEXT3<sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;accext3&quot;</highlight><highlight class="normal">,<sp/>16,<sp/>IS_OPTIONAL);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Floating-point<sp/>condition<sp/>code<sp/>bits</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_FPCC_NAN<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;fpcc_nan&quot;</highlight><highlight class="normal">,<sp/>1);<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>result<sp/>is<sp/>not<sp/>a<sp/>number</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_FPCC_I<sp/><sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;fpcc_i&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/>1);<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>result<sp/>is<sp/>+/-<sp/>infinity</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_FPCC_Z<sp/><sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;fpcc_z&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/>1);<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>result<sp/>is<sp/>+/-<sp/>zero</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_FPCC_N<sp/><sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;fpcc_n&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/>1);<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>result<sp/>is<sp/>negative</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Floating-point<sp/>status<sp/>register<sp/>exception<sp/>bits</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_EXC_BSUN<sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;exc_bsun&quot;</highlight><highlight class="normal">,<sp/><sp/>1);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>branch/set<sp/>on<sp/>unordered</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_EXC_OPERR<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;exc_operr&quot;</highlight><highlight class="normal">,<sp/>1);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>operand<sp/>error</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_EXC_OVFL<sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;exc_ovfl&quot;</highlight><highlight class="normal">,<sp/><sp/>1);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>overflow</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_EXC_UNFL<sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;exc_unfl&quot;</highlight><highlight class="normal">,<sp/><sp/>1);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>underflow</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_EXC_DZ<sp/><sp/><sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;exc_dz&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/><sp/>1);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>divide<sp/>by<sp/>zero</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_EXC_INAN<sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;exc_snan&quot;</highlight><highlight class="normal">,<sp/><sp/>1);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>is<sp/>not-a-number</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_EXC_IDE<sp/><sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;exc_inex1&quot;</highlight><highlight class="normal">,<sp/>1);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>input<sp/>is<sp/>denormalized</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_EXC_INEX<sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;exc_inex2&quot;</highlight><highlight class="normal">,<sp/>1);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>inexact<sp/>result</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Floating-point<sp/>status<sp/>register<sp/>accrued<sp/>exception<sp/>bits</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_AEXC_IOP<sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;aexc_iop&quot;</highlight><highlight class="normal">,<sp/><sp/>1);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_AEXC_OVFL<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;aexc_ovfl&quot;</highlight><highlight class="normal">,<sp/>1);</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_AEXC_UNFL<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;aexc_unfl&quot;</highlight><highlight class="normal">,<sp/>1);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_AEXC_DZ<sp/><sp/><sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;aexc_dz&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/>1);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>REG_AEXC_INEX<sp/>=<sp/>findRegister(</highlight><highlight class="stringliteral">&quot;aexc_inex&quot;</highlight><highlight class="normal">,<sp/>1);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal">DispatcherCil::memory_init()<sp/>{</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(BaseSemantics::State::Ptr<sp/>state<sp/>=<sp/>currentState())<sp/>{</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(BaseSemantics::MemoryState::Ptr<sp/>memory<sp/>=<sp/>state-&gt;memoryState())<sp/>{</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(memory-&gt;get_byteOrder())<sp/>{</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>ByteOrder::ORDER_LSB:</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">mlog</ref>[<ref refid="namespaceSawyer_1_1Message_1abfb4d3240797db3a74bbf691f708a1c9a52f8e5eea9bfc070f3e0a152e3d1537a" kindref="member">WARN</ref>]<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;m68k<sp/>memory<sp/>state<sp/>is<sp/>using<sp/>little-endian<sp/>byte<sp/>order\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>ByteOrder::ORDER_MSB:</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>ByteOrder::ORDER_UNSPECIFIED:</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>memory-&gt;set_byteOrder(ByteOrder::ORDER_MSB);</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="155"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal">RegisterDescriptor</highlight></codeline>
+<codeline lineno="158"><highlight class="normal">DispatcherCil::instructionPointerRegister()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>REG_PC;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal">RegisterDescriptor</highlight></codeline>
+<codeline lineno="163"><highlight class="normal">DispatcherCil::stackPointerRegister()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>REG_A[7];</highlight></codeline>
+<codeline lineno="165"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal">SValuePtr</highlight></codeline>
+<codeline lineno="168"><highlight class="normal">DispatcherCil::condition(<ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1a88a99c6a3d9e6c9c687e5f0519cbe4bb" kindref="member">CilInstructionKind</ref>,<sp/>RiscOperators*)<sp/>{</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a8e121c0191b716c493352e7bb05a6422" kindref="member">ASSERT_not_implemented</ref>(</highlight><highlight class="stringliteral">&quot;DQ<sp/>(10/8/2021):<sp/>Not<sp/>clear<sp/>what<sp/>if<sp/>any<sp/>CIL<sp/>support<sp/>may<sp/>be<sp/>required<sp/>here.&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="170"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal">DispatcherCil::iprocKey(<ref refid="classSgAsmInstruction" kindref="compound">SgAsmInstruction</ref><sp/>*insn_)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmCilInstruction" kindref="compound">SgAsmCilInstruction</ref><sp/>*insn<sp/>=<sp/>isSgAsmCilInstruction(insn_);</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(insn);</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>insn-&gt;get_kind();</highlight></codeline>
+<codeline lineno="177"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Override<sp/>Dispatcher::read<sp/>so<sp/>that<sp/>if<sp/>we<sp/>read<sp/>the<sp/>PC<sp/>register<sp/>we<sp/>get<sp/>the<sp/>address<sp/>of<sp/>the<sp/>current<sp/>instruction<sp/>plus<sp/>2.<sp/><sp/>See</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight><highlight class="comment">//<sp/>the<sp/>note<sp/>in<sp/>Cil::P::process()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal">BaseSemantics::SValuePtr</highlight></codeline>
+<codeline lineno="182"><highlight class="normal">DispatcherCil::read(<ref refid="classSgAsmExpression" kindref="compound">SgAsmExpression</ref><sp/>*e,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>value_nbits,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>addr_nbits</highlight><highlight class="comment">/*=0*/</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(e);</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Dispatcher::read(e,<sp/>value_nbits,<sp/>addr_nbits);</highlight></codeline>
+<codeline lineno="185"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal">DispatcherCil::updateFpsrExcInan(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SValuePtr<sp/>&amp;<ref refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" kindref="member">a</ref>,<sp/><ref refid="classSgAsmType" kindref="compound">SgAsmType</ref><sp/>*aType,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SValuePtr<sp/>&amp;<ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>,<sp/><ref refid="classSgAsmType" kindref="compound">SgAsmType</ref><sp/>*bType)<sp/>{</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Set<sp/>FPSR<sp/>EXC<sp/>INAN<sp/>bit<sp/>if<sp/>either<sp/>argument<sp/>is<sp/>nan;<sp/>cleared<sp/>otherwise.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(<ref refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" kindref="member">a</ref>);</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(aType);</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(<ref refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" kindref="member">a</ref>-&gt;nBits()<sp/>==<sp/>aType-&gt;<ref refid="classSgAsmType_1a553b40aad452ec844880393da7fbb579" kindref="member">get_nBits</ref>());</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(<ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>);</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(bType);</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(<ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>-&gt;nBits()<sp/>==<sp/>bType-&gt;<ref refid="classSgAsmType_1a553b40aad452ec844880393da7fbb579" kindref="member">get_nBits</ref>());</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>aIsNan;</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="classSgAsmFloatType" kindref="compound">SgAsmFloatType</ref><sp/>*aFpType<sp/>=<sp/>isSgAsmFloatType(aType))<sp/>{</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>aIsNan<sp/>=<sp/>operators()-&gt;fpIsNan(<ref refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" kindref="member">a</ref>,<sp/>aFpType);</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>aIsNan<sp/>=<sp/>operators()-&gt;boolean_(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>bIsNan;</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="classSgAsmFloatType" kindref="compound">SgAsmFloatType</ref><sp/>*bFpType<sp/>=<sp/>isSgAsmFloatType(bType))<sp/>{</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bIsNan<sp/>=<sp/>operators()-&gt;fpIsNan(<ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>,<sp/>bFpType);</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bIsNan<sp/>=<sp/>operators()-&gt;boolean_(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>isNaN<sp/>=<sp/>operators()-&gt;or_(aIsNan,<sp/>bIsNan);</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/>operators()-&gt;writeRegister(REG_EXC_INAN,<sp/>isNaN);</highlight></codeline>
+<codeline lineno="215"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="218"><highlight class="normal">DispatcherCil::updateFpsrExcIde(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SValuePtr<sp/>&amp;<ref refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" kindref="member">a</ref>,<sp/><ref refid="classSgAsmType" kindref="compound">SgAsmType</ref><sp/>*aType,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SValuePtr<sp/>&amp;<ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>,<sp/><ref refid="classSgAsmType" kindref="compound">SgAsmType</ref><sp/>*bType)<sp/>{</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Set<sp/>FPSR<sp/>EXC<sp/>IDE<sp/>bit<sp/>if<sp/>either<sp/>argument<sp/>is<sp/>denormalized;<sp/>cleared<sp/>otherwise.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(<ref refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" kindref="member">a</ref>);</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(aType);</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(<ref refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" kindref="member">a</ref>-&gt;nBits()<sp/>==<sp/>aType-&gt;<ref refid="classSgAsmType_1a553b40aad452ec844880393da7fbb579" kindref="member">get_nBits</ref>());</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(<ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>);</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(bType);</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(<ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>-&gt;nBits()<sp/>==<sp/>bType-&gt;<ref refid="classSgAsmType_1a553b40aad452ec844880393da7fbb579" kindref="member">get_nBits</ref>());</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>aIsDenorm;</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="classSgAsmFloatType" kindref="compound">SgAsmFloatType</ref><sp/>*aFpType<sp/>=<sp/>isSgAsmFloatType(aType))<sp/>{</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>aIsDenorm<sp/>=<sp/>operators()-&gt;fpIsDenormalized(<ref refid="xomp__accelerator__sched__test_8c_1a3ae7250ea1c766616dca7aaf4f657c14" kindref="member">a</ref>,<sp/>aFpType);</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>aIsDenorm<sp/>=<sp/>operators()-&gt;boolean_(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"></highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>bIsDenorm;</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="classSgAsmFloatType" kindref="compound">SgAsmFloatType</ref><sp/>*bFpType<sp/>=<sp/>isSgAsmFloatType(bType))<sp/>{</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bIsDenorm<sp/>=<sp/>operators()-&gt;fpIsDenormalized(<ref refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" kindref="member">b</ref>,<sp/>bFpType);</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bIsDenorm<sp/>=<sp/>operators()-&gt;boolean_(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"></highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>isDenorm<sp/>=<sp/>operators()-&gt;or_(aIsDenorm,<sp/>bIsDenorm);</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/>operators()-&gt;writeRegister(REG_EXC_IDE,<sp/>isDenorm);</highlight></codeline>
+<codeline lineno="243"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight></codeline>
+<codeline lineno="245"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="246"><highlight class="normal">DispatcherCil::updateFpsrExcOvfl(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SValuePtr<sp/>&amp;value,<sp/><ref refid="classSgAsmType" kindref="compound">SgAsmType</ref><sp/>*valueType,<sp/><ref refid="classSgAsmType" kindref="compound">SgAsmType</ref><sp/>*rounding,<sp/><ref refid="classSgAsmType" kindref="compound">SgAsmType</ref><sp/>*dstType)<sp/>{</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(value);</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(value-&gt;nBits()<sp/>==<sp/>valueType-&gt;<ref refid="classSgAsmType_1a553b40aad452ec844880393da7fbb579" kindref="member">get_nBits</ref>());</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(rounding);</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(dstType);</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"></highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmFloatType" kindref="compound">SgAsmFloatType</ref><sp/>*valueFpType<sp/>=<sp/>isSgAsmFloatType(valueType);</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmFloatType" kindref="compound">SgAsmFloatType</ref><sp/>*roundingFpType<sp/>=<sp/>isSgAsmFloatType(rounding);</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmFloatType" kindref="compound">SgAsmFloatType</ref><sp/>*dstFpType<sp/>=<sp/>isSgAsmFloatType(dstType);</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!valueFpType<sp/>||<sp/>!roundingFpType<sp/>||<sp/>!dstFpType)<sp/>{</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>operators()-&gt;writeRegister(REG_EXC_OVFL,<sp/>operators()-&gt;boolean_(</highlight><highlight class="keyword">false</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespaceRose_1_1BitOps_1ae9375b93faf484bcd87fbbc78a6d94e5" kindref="member">nBits</ref><sp/>=<sp/><ref refid="qeditor_8cpp_1a0f22fef15e1a46d7611e58390b23a1f5" kindref="member">std::max</ref>(valueFpType-&gt;<ref refid="classSgAsmFloatType_1ada57c7070d6239aa5f7b7e4c38334326" kindref="member">exponentBits</ref>().<ref refid="classSawyer_1_1Container_1_1Interval_1a75d8ca4e63b1180f6d2194a0ec79440d" kindref="member">size</ref>(),<sp/>roundingFpType-&gt;<ref refid="classSgAsmFloatType_1ada57c7070d6239aa5f7b7e4c38334326" kindref="member">exponentBits</ref>().<ref refid="classSawyer_1_1Container_1_1Interval_1a75d8ca4e63b1180f6d2194a0ec79440d" kindref="member">size</ref>());</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>valueBias<sp/>=<sp/>operators()-&gt;number_(<ref refid="namespaceRose_1_1BitOps_1ae9375b93faf484bcd87fbbc78a6d94e5" kindref="member">nBits</ref>,<sp/>valueFpType-&gt;<ref refid="classSgAsmFloatType_1a7fbc802d1edb7d8c7766232581ddaacf" kindref="member">exponentBias</ref>());</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>valueExp<sp/>=<sp/>operators()-&gt;extract(value,<sp/>valueFpType-&gt;<ref refid="classSgAsmFloatType_1ada57c7070d6239aa5f7b7e4c38334326" kindref="member">exponentBits</ref>().<ref refid="classSawyer_1_1Container_1_1Interval_1abb62f08552ec4762be55510d97e7a233" kindref="member">least</ref>(),<sp/>valueFpType-&gt;<ref refid="classSgAsmFloatType_1ada57c7070d6239aa5f7b7e4c38334326" kindref="member">exponentBits</ref>().<ref refid="classSawyer_1_1Container_1_1Interval_1a0c203b5387ef72aa3bcf8815ec8b7c16" kindref="member">greatest</ref>()+1);</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/>valueExp<sp/>=<sp/>operators()-&gt;subtract(operators()-&gt;unsignedExtend(valueExp,<sp/><ref refid="namespaceRose_1_1BitOps_1ae9375b93faf484bcd87fbbc78a6d94e5" kindref="member">nBits</ref>),<sp/>valueBias);</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"></highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>roundingExp<sp/>=</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>operators()-&gt;number_(<ref refid="namespaceRose_1_1BitOps_1ae9375b93faf484bcd87fbbc78a6d94e5" kindref="member">nBits</ref>,</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>IntegerOps::genMask&lt;uint64_t&gt;(roundingFpType-&gt;<ref refid="classSgAsmFloatType_1ada57c7070d6239aa5f7b7e4c38334326" kindref="member">exponentBits</ref>().<ref refid="classSawyer_1_1Container_1_1Interval_1a75d8ca4e63b1180f6d2194a0ec79440d" kindref="member">size</ref>())<sp/>-<sp/>roundingFpType-&gt;<ref refid="classSgAsmFloatType_1a7fbc802d1edb7d8c7766232581ddaacf" kindref="member">exponentBias</ref>());</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"></highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>isOverflow<sp/>=<sp/>operators()-&gt;isUnsignedGreaterThanOrEqual(valueExp,<sp/>roundingExp);</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/>operators()-&gt;writeRegister(REG_EXC_OVFL,<sp/>isOverflow);</highlight></codeline>
+<codeline lineno="273"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"></highlight></codeline>
+<codeline lineno="275"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="276"><highlight class="normal">DispatcherCil::updateFpsrExcUnfl(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SValuePtr<sp/>&amp;value,<sp/><ref refid="classSgAsmType" kindref="compound">SgAsmType</ref><sp/>*valueType,<sp/><ref refid="classSgAsmType" kindref="compound">SgAsmType</ref><sp/>*rounding,<sp/><ref refid="classSgAsmType" kindref="compound">SgAsmType</ref><sp/>*dstType)<sp/>{</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(value);</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(value-&gt;nBits()<sp/>==<sp/>valueType-&gt;<ref refid="classSgAsmType_1a553b40aad452ec844880393da7fbb579" kindref="member">get_nBits</ref>());</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(rounding);</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(dstType);</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmFloatType" kindref="compound">SgAsmFloatType</ref><sp/>*valueFpType<sp/>=<sp/>isSgAsmFloatType(valueType);</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmFloatType" kindref="compound">SgAsmFloatType</ref><sp/>*roundingFpType<sp/>=<sp/>isSgAsmFloatType(rounding);</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmFloatType" kindref="compound">SgAsmFloatType</ref><sp/>*dstFpType<sp/>=<sp/>isSgAsmFloatType(dstType);</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"></highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!valueFpType<sp/>||<sp/>!roundingFpType<sp/>||<sp/>!dstFpType)<sp/>{</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>operators()-&gt;writeRegister(REG_EXC_UNFL,<sp/>operators()-&gt;boolean_(</highlight><highlight class="keyword">false</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"></highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespaceRose_1_1BitOps_1ae9375b93faf484bcd87fbbc78a6d94e5" kindref="member">nBits</ref><sp/>=<sp/><ref refid="qeditor_8cpp_1a0f22fef15e1a46d7611e58390b23a1f5" kindref="member">std::max</ref>(valueFpType-&gt;<ref refid="classSgAsmFloatType_1ada57c7070d6239aa5f7b7e4c38334326" kindref="member">exponentBits</ref>().<ref refid="classSawyer_1_1Container_1_1Interval_1a75d8ca4e63b1180f6d2194a0ec79440d" kindref="member">size</ref>(),<sp/>roundingFpType-&gt;<ref refid="classSgAsmFloatType_1ada57c7070d6239aa5f7b7e4c38334326" kindref="member">exponentBits</ref>().<ref refid="classSawyer_1_1Container_1_1Interval_1a75d8ca4e63b1180f6d2194a0ec79440d" kindref="member">size</ref>());</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"></highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>valueBias<sp/>=<sp/>operators()-&gt;number_(<ref refid="namespaceRose_1_1BitOps_1ae9375b93faf484bcd87fbbc78a6d94e5" kindref="member">nBits</ref>,<sp/>valueFpType-&gt;<ref refid="classSgAsmFloatType_1a7fbc802d1edb7d8c7766232581ddaacf" kindref="member">exponentBias</ref>());</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>valueExp<sp/>=<sp/>operators()-&gt;extract(value,<sp/>valueFpType-&gt;<ref refid="classSgAsmFloatType_1ada57c7070d6239aa5f7b7e4c38334326" kindref="member">exponentBits</ref>().<ref refid="classSawyer_1_1Container_1_1Interval_1abb62f08552ec4762be55510d97e7a233" kindref="member">least</ref>(),<sp/>valueFpType-&gt;<ref refid="classSgAsmFloatType_1ada57c7070d6239aa5f7b7e4c38334326" kindref="member">exponentBits</ref>().<ref refid="classSawyer_1_1Container_1_1Interval_1a0c203b5387ef72aa3bcf8815ec8b7c16" kindref="member">greatest</ref>()+1);</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/>valueExp<sp/>=<sp/>operators()-&gt;subtract(operators()-&gt;unsignedExtend(valueExp,<sp/><ref refid="namespaceRose_1_1BitOps_1ae9375b93faf484bcd87fbbc78a6d94e5" kindref="member">nBits</ref>),<sp/>valueBias);</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"></highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Minimum<sp/>exponent<sp/>field<sp/>is<sp/>&quot;1&quot;,<sp/>therefore<sp/>minimum<sp/>exponent<sp/>value<sp/>is<sp/>&quot;1<sp/>-<sp/>bias&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>one<sp/>=<sp/>operators()-&gt;number_(<ref refid="namespaceRose_1_1BitOps_1ae9375b93faf484bcd87fbbc78a6d94e5" kindref="member">nBits</ref>,<sp/>1);</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>roundingBias<sp/>=<sp/>operators()-&gt;number_(<ref refid="namespaceRose_1_1BitOps_1ae9375b93faf484bcd87fbbc78a6d94e5" kindref="member">nBits</ref>,<sp/>roundingFpType-&gt;<ref refid="classSgAsmFloatType_1a7fbc802d1edb7d8c7766232581ddaacf" kindref="member">exponentBias</ref>());</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>roundingExp<sp/>=<sp/>operators()-&gt;subtract(one,<sp/>roundingBias);</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>isUnderflow<sp/>=<sp/>operators()-&gt;isSignedLessThanOrEqual(valueExp,<sp/>roundingExp);</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/>operators()-&gt;writeRegister(REG_EXC_UNFL,<sp/>isUnderflow);</highlight></codeline>
+<codeline lineno="304"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="305"><highlight class="normal"></highlight></codeline>
+<codeline lineno="306"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="307"><highlight class="normal">DispatcherCil::updateFpsrExcInex()<sp/>{</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>FIXME[Robb<sp/>Matzke<sp/>2020-01-03]</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/>operators()-&gt;writeRegister(REG_EXC_INEX,<sp/>operators()-&gt;undefined_(1));</highlight></codeline>
+<codeline lineno="310"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"></highlight></codeline>
+<codeline lineno="312"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="313"><highlight class="normal">DispatcherCil::accumulateFpExceptions()<sp/>{</highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>exc_ovfl<sp/>=<sp/>operators()-&gt;readRegister(REG_EXC_OVFL);</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/>operators()-&gt;writeRegister(REG_AEXC_OVFL,<sp/>operators()-&gt;or_(operators()-&gt;readRegister(REG_AEXC_OVFL),<sp/>exc_ovfl));</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>exc_dz<sp/>=<sp/>operators()-&gt;readRegister(REG_EXC_DZ);</highlight></codeline>
+<codeline lineno="317"><highlight class="normal"><sp/><sp/><sp/><sp/>operators()-&gt;writeRegister(REG_AEXC_DZ,<sp/>operators()-&gt;or_(operators()-&gt;readRegister(REG_AEXC_DZ),<sp/>exc_dz));</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>exc_inex<sp/>=<sp/>operators()-&gt;readRegister(REG_EXC_INEX);</highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/>operators()-&gt;writeRegister(REG_AEXC_INEX,<sp/>operators()-&gt;or_(operators()-&gt;readRegister(REG_AEXC_INEX),<sp/>exc_inex));</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>exc_operr<sp/>=<sp/>operators()-&gt;readRegister(REG_EXC_OPERR);</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>v1<sp/>=<sp/>operators()-&gt;or_(operators()-&gt;readRegister(REG_EXC_INAN),<sp/>exc_operr);</highlight></codeline>
+<codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>v2<sp/>=<sp/>operators()-&gt;or_(operators()-&gt;readRegister(REG_EXC_BSUN),<sp/>v1);</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/>operators()-&gt;writeRegister(REG_AEXC_IOP,<sp/>operators()-&gt;or_(operators()-&gt;readRegister(REG_AEXC_IOP),<sp/>v2));</highlight></codeline>
+<codeline lineno="324"><highlight class="normal"><sp/><sp/><sp/><sp/>SValuePtr<sp/>v3<sp/>=<sp/>operators()-&gt;or_(operators()-&gt;readRegister(REG_EXC_UNFL),<sp/>exc_inex);</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"><sp/><sp/><sp/><sp/>operators()-&gt;writeRegister(REG_AEXC_UNFL,<sp/>operators()-&gt;or_(operators()-&gt;readRegister(REG_AEXC_UNFL),<sp/>v3));</highlight></codeline>
+<codeline lineno="326"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"></highlight></codeline>
+<codeline lineno="328"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="329"><highlight class="normal">DispatcherCil::adjustFpConditionCodes(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SValuePtr<sp/>&amp;result,<sp/><ref refid="classSgAsmFloatType" kindref="compound">SgAsmFloatType</ref><sp/>*fpType)<sp/>{</highlight></codeline>
+<codeline lineno="330"><highlight class="normal"><sp/><sp/><sp/><sp/>operators()-&gt;writeRegister(REG_FPCC_NAN,<sp/>operators()-&gt;fpIsNan(result,<sp/>fpType));</highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/>operators()-&gt;writeRegister(REG_FPCC_I,<sp/>operators()-&gt;fpIsInfinity(result,<sp/>fpType));</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/><sp/>operators()-&gt;writeRegister(REG_FPCC_Z,<sp/>operators()-&gt;fpIsZero(result,<sp/>fpType));</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/>operators()-&gt;writeRegister(REG_FPCC_N,<sp/>operators()-&gt;fpSign(result,<sp/>fpType));</highlight></codeline>
+<codeline lineno="334"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"></highlight></codeline>
+<codeline lineno="336"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="337"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="338"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="339"><highlight class="normal"></highlight></codeline>
+<codeline lineno="340"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BOOST_SERIALIZATION</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="341"><highlight class="normal">BOOST_CLASS_EXPORT_IMPLEMENT(Rose::BinaryAnalysis::InstructionSemantics::DispatcherCil);</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="343"><highlight class="normal"></highlight></codeline>
+<codeline lineno="344"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/InstructionSemantics/DispatcherCil.C"/>
+  </compounddef>
+</doxygen>

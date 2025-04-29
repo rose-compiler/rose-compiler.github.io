@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="JvmMethod_8C" kind="file" language="C++">
+    <compoundname>JvmMethod.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="45286">
+        <label>/home/liao6/workspace/rose-github/src/frontend/BinaryFormats/JvmMethod.C</label>
+        <link refid="JvmMethod_8C"/>
+        <childnode refid="45287" relation="include">
+        </childnode>
+      </node>
+      <node id="45290">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="45287">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="45288" relation="include">
+        </childnode>
+        <childnode refid="45289" relation="include">
+        </childnode>
+        <childnode refid="45290" relation="include">
+        </childnode>
+      </node>
+      <node id="45289">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="45288">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="45287" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>JVM<sp/>Methods<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="sage3basic_8h" kindref="compound">sage3basic.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Jvm.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Rose::BinaryAnalysis::ByteOrder::hostToBe;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose_1_1Diagnostics" kindref="compound">Rose::Diagnostics</ref>;<sp/></highlight><highlight class="comment">//<sp/>for<sp/>mlog,<sp/>INFO,<sp/>WARN,<sp/>ERROR,<sp/>FATAL,<sp/>etc.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><ref refid="classSgAsmJvmMethod_1a044c0be3a8605ce369e546022dc0295e" kindref="member">SgAsmJvmMethod::SgAsmJvmMethod</ref>(<ref refid="classSgAsmJvmMethodTable" kindref="compound">SgAsmJvmMethodTable</ref>*<sp/>table)</highlight></codeline>
+<codeline lineno="15"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/>initializeProperties();</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(table);</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/>set_parent(table);</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="TarjanIntervals_8C_1ae2a1cf80596e62d43dc14835ace90b6b" kindref="member">header</ref><sp/>=<sp/></highlight><highlight class="keyword">dynamic_cast&lt;</highlight><highlight class="normal"><ref refid="classSgAsmJvmFileHeader" kindref="compound">SgAsmJvmFileHeader</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(table-&gt;get_header());</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/>p_attribute_table<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmJvmAttributeTable" kindref="compound">SgAsmJvmAttributeTable</ref>(<ref refid="TarjanIntervals_8C_1ae2a1cf80596e62d43dc14835ace90b6b" kindref="member">header</ref>,<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="22"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><ref refid="classSgAsmJvmMethod" kindref="compound">SgAsmJvmMethod</ref>*<sp/><ref refid="classSgAsmJvmMethod_1ad2fbad3179bc14c211eb5be3a0d2ce7a" kindref="member">SgAsmJvmMethod::parse</ref>(<ref refid="classSgAsmJvmConstantPool" kindref="compound">SgAsmJvmConstantPool</ref>*<sp/>pool)</highlight></codeline>
+<codeline lineno="25"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/>Jvm::read_value(pool,<sp/>p_access_flags);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/>Jvm::read_value(pool,<sp/>p_name_index);</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/>Jvm::read_value(pool,<sp/>p_descriptor_index);</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>Method<sp/>attributes<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/>p_attribute_table-&gt;parse(pool);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classSgAsmJvmMethod_1a17fba429d9e4b2e1e90a471b03ac409a" kindref="member">SgAsmJvmMethod::unparse</ref>(std::ostream&amp;<sp/>os)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="37"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>access_flags<sp/>=<sp/>p_access_flags;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>name_index<sp/>=<sp/>p_name_index;</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>descriptor_index<sp/>=<sp/>p_descriptor_index;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/>hostToBe(access_flags,<sp/>&amp;access_flags);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/>hostToBe(name_index,<sp/>&amp;name_index);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/>hostToBe(descriptor_index,<sp/>&amp;descriptor_index);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/>os.write(reinterpret_cast&lt;const<sp/>char*&gt;(&amp;access_flags),<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal"><sp/>access_flags);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/>os.write(reinterpret_cast&lt;const<sp/>char*&gt;(&amp;name_index),<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal"><sp/>name_index);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/>os.write(reinterpret_cast&lt;const<sp/>char*&gt;(&amp;descriptor_index),<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal"><sp/>descriptor_index);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/>p_attribute_table-&gt;unparse(os);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classSgAsmJvmMethod_1ad15bb2096bbae6310c0d4d20e01c7dae" kindref="member">SgAsmJvmMethod::dump</ref>(FILE*<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>prefix,<sp/>ssize_t<sp/>idx)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="54"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/>fprintf(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/></highlight><highlight class="stringliteral">&quot;%s:%d:%d:%d\n&quot;</highlight><highlight class="normal">,<sp/>prefix,<sp/>p_access_flags,<sp/>p_name_index,<sp/>p_descriptor_index);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><ref refid="classSgAsmJvmMethodTable_1a971c0d76e65d63f63a538a47fe9be685" kindref="member">SgAsmJvmMethodTable::SgAsmJvmMethodTable</ref>(<ref refid="classSgAsmJvmFileHeader" kindref="compound">SgAsmJvmFileHeader</ref>*<sp/>jfh)</highlight></codeline>
+<codeline lineno="60"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/>initializeProperties();</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/>set_parent(jfh);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/>set_header(jfh);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><ref refid="classSgAsmJvmMethodTable" kindref="compound">SgAsmJvmMethodTable</ref>*<sp/><ref refid="classSgAsmJvmMethodTable_1a474151ef021062959230c56d68f54b34" kindref="member">SgAsmJvmMethodTable::parse</ref>()</highlight></codeline>
+<codeline lineno="67"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><ref refid="msvc__stdint_8h_1a30af71eaf40c925c9832eb289a48da35" kindref="member">uint16_t</ref><sp/>methods_count;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>jcf<sp/>=<sp/></highlight><highlight class="keyword">dynamic_cast&lt;</highlight><highlight class="normal"><ref refid="classSgAsmJvmFileHeader" kindref="compound">SgAsmJvmFileHeader</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(get_parent());</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(jcf);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>pool<sp/>=<sp/>jcf-&gt;get_constant_pool();</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(pool);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/>Jvm::read_value(pool,<sp/>methods_count);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ii<sp/>=<sp/>0;<sp/>ii<sp/>&lt;<sp/>methods_count;<sp/>ii++)<sp/>{</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>method<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmJvmMethod" kindref="compound">SgAsmJvmMethod</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>method-&gt;parse(pool);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>get_methods().push_back(method);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classSgAsmJvmMethodTable_1a57686445af8439e4c7d1923fdcce3804" kindref="member">SgAsmJvmMethodTable::unparse</ref>(std::ostream&amp;<sp/>os)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="86"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><ref refid="msvc__stdint_8h_1a30af71eaf40c925c9832eb289a48da35" kindref="member">uint16_t</ref><sp/>methods_count<sp/>=<sp/>get_methods().size();</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/>hostToBe(methods_count,<sp/>&amp;methods_count);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/>os.write(reinterpret_cast&lt;const<sp/>char*&gt;(&amp;methods_count),<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal"><sp/>methods_count);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>method<sp/>:<sp/>get_methods())<sp/>{</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>method-&gt;unparse(os);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classSgAsmJvmMethodTable_1aebcdc48a70def19e9afc632ecb7e51da" kindref="member">SgAsmJvmMethodTable::dump</ref>(FILE*<sp/><ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*prefix,<sp/>ssize_t<sp/>idx)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="97"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/>fprintf(<ref refid="deepColoredFunctions3_8C_1ad1351d85ffec3c1176dc31d8e8f8e28a" kindref="member">f</ref>,<sp/></highlight><highlight class="stringliteral">&quot;%s&quot;</highlight><highlight class="normal">,<sp/>prefix);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>method<sp/>:<sp/>get_methods())<sp/>{</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>method-&gt;dump(stdout,<sp/></highlight><highlight class="stringliteral">&quot;method-&gt;&quot;</highlight><highlight class="normal">,<sp/>idx++);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="102"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/frontend/BinaryFormats/JvmMethod.C"/>
+  </compounddef>
+</doxygen>

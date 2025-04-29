@@ -1,0 +1,318 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="iteratedDominanceFrontier_8h" kind="file" language="C++">
+    <compoundname>iteratedDominanceFrontier.h</compoundname>
+    <includes refid="boostGraphCFG_8h" local="no">boostGraphCFG.h</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">set</includes>
+    <includes local="no">map</includes>
+    <includes local="no">iterator</includes>
+    <includes local="no">boost/foreach.hpp</includes>
+    <includes local="no">boost/graph/adjacency_list.hpp</includes>
+    <includes local="no">boost/graph/topological_sort.hpp</includes>
+    <includedby refid="ssaUnfilteredCfgCalculation_8C" local="no">/home/liao6/workspace/rose-github/src/midend/programAnalysis/ssaUnfilteredCfg/ssaUnfilteredCfgCalculation.C</includedby>
+    <includedby refid="staticSingleAssignmentCalculation_8C" local="yes">/home/liao6/workspace/rose-github/src/midend/programAnalysis/staticSingleAssignment/staticSingleAssignmentCalculation.C</includedby>
+    <incdepgraph>
+      <node id="169155">
+        <label>boost/algorithm/string.hpp</label>
+      </node>
+      <node id="169146">
+        <label>/home/liao6/workspace/rose-github/src/midend/programAnalysis/staticSingleAssignment/iteratedDominanceFrontier.h</label>
+        <link refid="iteratedDominanceFrontier_8h"/>
+        <childnode refid="169147" relation="include">
+        </childnode>
+        <childnode refid="169156" relation="include">
+        </childnode>
+        <childnode refid="169157" relation="include">
+        </childnode>
+        <childnode refid="169158" relation="include">
+        </childnode>
+        <childnode refid="169159" relation="include">
+        </childnode>
+        <childnode refid="169160" relation="include">
+        </childnode>
+        <childnode refid="169148" relation="include">
+        </childnode>
+        <childnode refid="169161" relation="include">
+        </childnode>
+      </node>
+      <node id="169150">
+        <label>boost/tuple/tuple.hpp</label>
+      </node>
+      <node id="169159">
+        <label>iterator</label>
+      </node>
+      <node id="169152">
+        <label>boost/graph/dominator_tree.hpp</label>
+      </node>
+      <node id="169161">
+        <label>boost/graph/topological_sort.hpp</label>
+      </node>
+      <node id="169160">
+        <label>boost/foreach.hpp</label>
+      </node>
+      <node id="169151">
+        <label>boost/graph/graphviz.hpp</label>
+      </node>
+      <node id="169153">
+        <label>boost/graph/reverse_graph.hpp</label>
+      </node>
+      <node id="169158">
+        <label>map</label>
+      </node>
+      <node id="169149">
+        <label>boost/bind/bind.hpp</label>
+      </node>
+      <node id="169154">
+        <label>boost/graph/transpose_graph.hpp</label>
+      </node>
+      <node id="169156">
+        <label>vector</label>
+      </node>
+      <node id="169147">
+        <label>boostGraphCFG.h</label>
+        <link refid="boostGraphCFG_8h"/>
+        <childnode refid="169148" relation="include">
+        </childnode>
+        <childnode refid="169149" relation="include">
+        </childnode>
+        <childnode refid="169150" relation="include">
+        </childnode>
+        <childnode refid="169151" relation="include">
+        </childnode>
+        <childnode refid="169152" relation="include">
+        </childnode>
+        <childnode refid="169153" relation="include">
+        </childnode>
+        <childnode refid="169154" relation="include">
+        </childnode>
+        <childnode refid="169155" relation="include">
+        </childnode>
+      </node>
+      <node id="169157">
+        <label>set</label>
+      </node>
+      <node id="169148">
+        <label>boost/graph/adjacency_list.hpp</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="169162">
+        <label>/home/liao6/workspace/rose-github/src/midend/programAnalysis/staticSingleAssignment/iteratedDominanceFrontier.h</label>
+        <link refid="iteratedDominanceFrontier_8h"/>
+        <childnode refid="169163" relation="include">
+        </childnode>
+        <childnode refid="169164" relation="include">
+        </childnode>
+      </node>
+      <node id="169163">
+        <label>/home/liao6/workspace/rose-github/src/midend/programAnalysis/ssaUnfilteredCfg/ssaUnfilteredCfgCalculation.C</label>
+        <link refid="ssaUnfilteredCfgCalculation_8C"/>
+      </node>
+      <node id="169164">
+        <label>/home/liao6/workspace/rose-github/src/midend/programAnalysis/staticSingleAssignment/staticSingleAssignmentCalculation.C</label>
+        <link refid="staticSingleAssignmentCalculation_8C"/>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespacessa__private">ssa_private</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/>DQ<sp/>(10/5/2014):<sp/>This<sp/>is<sp/>more<sp/>strict<sp/>now<sp/>that<sp/>we<sp/>include<sp/>rose_config.h<sp/>in<sp/>the<sp/>sage3basic.h.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/>#include<sp/>&quot;rose.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//<sp/>rose.h<sp/>and<sp/>sage3basic.h<sp/>should<sp/>not<sp/>be<sp/>included<sp/>in<sp/>librose<sp/>header<sp/>files.<sp/>[Robb<sp/>P.<sp/>Matzke<sp/>2014-10-15]</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>#include<sp/>&quot;sage3basic.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="boostGraphCFG_8h" kindref="compound">boostGraphCFG.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;set&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;map&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iterator&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/foreach.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/graph/adjacency_list.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/graph/topological_sort.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacessa__private" kindref="compound">ssa_private</ref></highlight></codeline>
+<codeline lineno="18"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceboost" kindref="compound">boost</ref>;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CfgNodeT&gt;</highlight></codeline>
+<codeline lineno="25" refid="namespacessa__private_1a80e5e493875c753ffd058fdfb1a5a383" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>set&lt;CfgNodeT&gt;<sp/><ref refid="namespacessa__private_1a80e5e493875c753ffd058fdfb1a5a383" kindref="member">calculateIteratedDominanceFrontier</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="extension-functions_8c_1af14a3bb341ca79e17942aff28630d7f9" kindref="member">map</ref>&lt;CfgNodeT,<sp/>set&lt;CfgNodeT&gt;<sp/>&gt;&amp;<sp/>dominanceFrontiers,</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>vector&lt;CfgNodeT&gt;&amp;<sp/>startNodes)</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>set&lt;CfgNodeT&gt;<sp/>result;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>set&lt;CfgNodeT&gt;<sp/>visitedNodes;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vector&lt;CfgNodeT&gt;<sp/>worklist;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>worklist.insert(worklist.end(),<sp/>startNodes.begin(),<sp/>startNodes.end());</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(!worklist.empty())</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CfgNodeT<sp/>currentNode<sp/>=<sp/>worklist.back();</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>worklist.pop_back();</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>visitedNodes.insert(currentNode);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Get<sp/>the<sp/>dominance<sp/>frontier<sp/>of<sp/>the<sp/>node<sp/>and<sp/>add<sp/>it<sp/>to<sp/>the<sp/>results</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(dominanceFrontiers.count(currentNode)<sp/>!=<sp/>0);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>set&lt;CfgNodeT&gt;&amp;<sp/>dominanceFrontier<sp/>=<sp/>dominanceFrontiers.find(currentNode)-&gt;second;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Add<sp/>all<sp/>the<sp/>children<sp/>to<sp/>the<sp/>result<sp/>and<sp/>to<sp/>the<sp/>worklist</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>BOOST_FOREACH(CfgNodeT<sp/>dfNode,<sp/>dominanceFrontier)</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(visitedNodes.count(dfNode)<sp/>&gt;<sp/>0)</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>result.insert(dfNode);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>worklist.push_back(dfNode);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>result;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CfgNodeT,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>CfgEdgeT&gt;</highlight></codeline>
+<codeline lineno="63" refid="namespacessa__private_1a9be234e1575a3771acd99d0cffb7015b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>map&lt;CfgNodeT,<sp/>set&lt;CfgNodeT&gt;<sp/>&gt;<sp/><ref refid="namespacessa__private_1a9be234e1575a3771acd99d0cffb7015b" kindref="member">calculateDominanceFrontiers</ref>(SgFunctionDefinition*<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/>map&lt;CfgNodeT,<sp/>CfgNodeT&gt;*<sp/>iDominatorMap,</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>map&lt;CfgNodeT,<sp/>CfgNodeT&gt;*<sp/>iPostDominatorMap)</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/><ref refid="classssa__private_1_1CFG" kindref="compound">CFG&lt;CfgNodeT, CfgEdgeT&gt;</ref><sp/><ref refid="namespacelegacy_1_1PRE_1a7e4eacf560f2734a28163a177e4fc94f" kindref="member">ControlFlowGraph</ref>;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Build<sp/>a<sp/>CFG<sp/>first</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacelegacy_1_1PRE_1a7e4eacf560f2734a28163a177e4fc94f" kindref="member">ControlFlowGraph</ref><sp/>functionCfg(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Build<sp/>the<sp/>dominator<sp/>tree</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ControlFlowGraph::VertexVertexMap<sp/>dominatorTreeMap<sp/>=<sp/>functionCfg.getDominatorTree();</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//TODO:<sp/>This<sp/>code<sp/>converts<sp/>a<sp/>VertexVertex<sp/>Map<sp/>to<sp/>a<sp/><sp/>boost<sp/>graph.<sp/>Should<sp/>be<sp/>factored<sp/>out</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>adjacency_list&lt;vecS,<sp/>vecS,<sp/>bidirectionalS,<sp/>CfgNodeT&gt;<sp/><ref refid="tree__demo_8cc_1a67da5eb0d06774df410ca788603459f0" kindref="member">TreeType</ref>;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classTree" kindref="compound">TreeType</ref><sp/>domTree;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>graph_traits&lt;TreeType&gt;::vertex_descriptor<sp/>TreeVertex;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>set&lt;CfgNodeT&gt;<sp/>addedNodes;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map&lt;CfgNodeT,<sp/>TreeVertex&gt;<sp/>cfgNodeToVertex;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>BOOST_FOREACH(</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ControlFlowGraph::VertexVertexMap::value_type&amp;<sp/>nodeDominatorPair,<sp/>dominatorTreeMap)</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CfgNodeT<sp/><ref refid="structnode" kindref="compound">node</ref><sp/>=<sp/>*functionCfg[nodeDominatorPair.first];</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CfgNodeT<sp/>dominator<sp/>=<sp/>*functionCfg[nodeDominatorPair.second];</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(addedNodes.count(dominator)<sp/>==<sp/>0)</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TreeVertex<sp/>newVertex<sp/>=<sp/><ref refid="namespaceboost_1a0987c2ddc52b75f5b3673cb2e933efce" kindref="member">add_vertex</ref>(domTree);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cfgNodeToVertex[dominator]<sp/>=<sp/>newVertex;</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>domTree[newVertex]<sp/>=<sp/>dominator;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>addedNodes.insert(dominator);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(addedNodes.count(<ref refid="structnode" kindref="compound">node</ref>)<sp/>==<sp/>0)</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TreeVertex<sp/>newVertex<sp/>=<sp/><ref refid="namespaceboost_1a0987c2ddc52b75f5b3673cb2e933efce" kindref="member">add_vertex</ref>(domTree);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cfgNodeToVertex[<ref refid="extension-functions_8c_1ace29f146c273d2654669dc2c710603e2" kindref="member">node</ref>]<sp/>=<sp/>newVertex;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>domTree[newVertex]<sp/>=<sp/><ref refid="extension-functions_8c_1ace29f146c273d2654669dc2c710603e2" kindref="member">node</ref>;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>addedNodes.insert(<ref refid="structnode" kindref="compound">node</ref>);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Add<sp/>the<sp/>edge<sp/>from<sp/>dominator<sp/>to<sp/>node</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceboost_1a772a3fb804a194da8d269118abff816d" kindref="member">add_edge</ref>(cfgNodeToVertex[dominator],<sp/>cfgNodeToVertex[<ref refid="structnode" kindref="compound">node</ref>],<sp/>domTree);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(iDominatorMap<sp/>!=<sp/>NULL)</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(iDominatorMap-&gt;count(<ref refid="structnode" kindref="compound">node</ref>)<sp/>==<sp/>0);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iDominatorMap-&gt;insert(make_pair(<ref refid="structnode" kindref="compound">node</ref>,<sp/>dominator));</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Get<sp/>a<sp/>topological<sp/>ordering<sp/>of<sp/>the<sp/>vertices</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vector&lt;TreeVertex&gt;<sp/>reverseTopological;</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>topological_sort(domTree,<sp/>back_inserter(reverseTopological));</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Calculate<sp/>all<sp/>the<sp/>dominance<sp/>frontiers.<sp/>This<sp/>algorithm<sp/>is<sp/>from<sp/>figure<sp/>10,<sp/>Cytron<sp/>et.<sp/>al<sp/>1991</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map&lt;CfgNodeT,<sp/>set&lt;CfgNodeT&gt;<sp/>&gt;<sp/>dominanceFrontiers;</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>BOOST_FOREACH(TreeVertex<sp/>v,<sp/>reverseTopological)</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CfgNodeT<sp/>currentNode<sp/>=<sp/>domTree[v];</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>set&lt;CfgNodeT&gt;&amp;<sp/>currentDominanceFrontier<sp/>=<sp/>dominanceFrontiers[currentNode];</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Local<sp/>contribution:<sp/>Iterate<sp/>over<sp/>all<sp/>the<sp/>successors<sp/>of<sp/>v<sp/>in<sp/>the<sp/>control<sp/>flow<sp/>graph</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>BOOST_FOREACH(CfgEdgeT<sp/>outEdge,<sp/>currentNode.outEdges())</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CfgNodeT<sp/>successor<sp/>=<sp/>outEdge.target();</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Get<sp/>the<sp/>immediate<sp/>dominator<sp/>of<sp/>the<sp/>successor</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="namespacelegacy_1_1PRE_1a59ac0a528948ebd8128661b7c458738c" kindref="member">ControlFlowGraph::Vertex</ref><sp/>successorVertex<sp/>=<sp/>functionCfg.getVertexForNode(successor);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!USE_ROSE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>DQ<sp/>(11/3/2011):<sp/>EDG<sp/>compilains<sp/>about<sp/>this<sp/>(but<sp/>GNU<sp/>allowed<sp/>it,<sp/>I<sp/>think<sp/>that<sp/>EDG<sp/>might<sp/>be<sp/>correct.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>since<sp/>it<sp/>might<sp/>be<sp/>a<sp/>private<sp/>variable.<sp/><sp/>But<sp/>since<sp/>we<sp/>are<sp/>only<sp/>trying<sp/>to<sp/>compile<sp/>ROSE<sp/>with<sp/>ROSE<sp/>(using<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>new<sp/>EDG<sp/>4.3<sp/>front-end<sp/>as<sp/>a<sp/>tests)<sp/>we<sp/>can<sp/>just<sp/>skip<sp/>this<sp/>case<sp/>for<sp/>now.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(successorVertex<sp/>!=<sp/><ref refid="namespaceboost_1ad52f87003e4bccad12fd88fc61f09ad0" kindref="member">ControlFlowGraph::GraphTraits::null_vertex</ref>());</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(dominatorTreeMap.count(successorVertex)<sp/>==<sp/>1);</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="namespacelegacy_1_1PRE_1a59ac0a528948ebd8128661b7c458738c" kindref="member">ControlFlowGraph::Vertex</ref><sp/>iDominatorVertex<sp/>=<sp/>dominatorTreeMap[successorVertex];</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CfgNodeT<sp/>iDominator<sp/>=<sp/>*functionCfg[iDominatorVertex];</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//If<sp/>we<sp/>have<sp/>a<sp/>successor<sp/>that<sp/>we<sp/>don&apos;t<sp/>dominate,<sp/>that<sp/>successor<sp/>is<sp/>in<sp/>our<sp/>dominance<sp/>frontier</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(iDominator<sp/>!=<sp/>currentNode)</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>currentDominanceFrontier.insert(successor);</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//&quot;Up&quot;<sp/>contribution.<sp/>Iterate<sp/>over<sp/>all<sp/>children<sp/>in<sp/>the<sp/>dominator<sp/>tree</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>graph_traits&lt;TreeType&gt;::adjacency_iterator<sp/>currentIter,<sp/>lastIter;</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(tie(currentIter,<sp/>lastIter)<sp/>=<sp/>adjacent_vertices(v,<sp/>domTree);<sp/>currentIter<sp/>!=<sp/>lastIter;<sp/>currentIter++)</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CfgNodeT<sp/>childNode<sp/>=<sp/>domTree[*currentIter];</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>set&lt;CfgNodeT&gt;&amp;<sp/>childDominanceFrontier<sp/>=<sp/>dominanceFrontiers[childNode];</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>BOOST_FOREACH(CfgNodeT<sp/>childDFNode,<sp/>childDominanceFrontier)</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Get<sp/>the<sp/>immediate<sp/>dominator<sp/>of<sp/>the<sp/>child<sp/>DF<sp/>node</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="namespacelegacy_1_1PRE_1a59ac0a528948ebd8128661b7c458738c" kindref="member">ControlFlowGraph::Vertex</ref><sp/>childDFVertex<sp/>=<sp/>functionCfg.getVertexForNode(childDFNode);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!USE_ROSE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>DQ<sp/>(11/3/2011):<sp/>EDG<sp/>compilains<sp/>about<sp/>this<sp/>(but<sp/>GNU<sp/>allowed<sp/>it,<sp/>I<sp/>think<sp/>that<sp/>EDG<sp/>might<sp/>be<sp/>correct.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>since<sp/>it<sp/>might<sp/>be<sp/>a<sp/>private<sp/>variable.<sp/><sp/>But<sp/>since<sp/>we<sp/>are<sp/>only<sp/>trying<sp/>to<sp/>compile<sp/>ROSE<sp/>with<sp/>ROSE<sp/>(using<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>new<sp/>EDG<sp/>4.3<sp/>front-end<sp/>as<sp/>a<sp/>tests)<sp/>we<sp/>can<sp/>just<sp/>skip<sp/>this<sp/>case<sp/>for<sp/>now.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(childDFVertex<sp/>!=<sp/><ref refid="namespaceboost_1ad52f87003e4bccad12fd88fc61f09ad0" kindref="member">ControlFlowGraph::GraphTraits::null_vertex</ref>());</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(dominatorTreeMap.count(childDFVertex)<sp/>==<sp/>1);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="namespacelegacy_1_1PRE_1a59ac0a528948ebd8128661b7c458738c" kindref="member">ControlFlowGraph::Vertex</ref><sp/>iDominatorVertex<sp/>=<sp/>dominatorTreeMap[childDFVertex];</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CfgNodeT<sp/>iDominator<sp/>=<sp/>*functionCfg[iDominatorVertex];</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(iDominator<sp/>!=<sp/>currentNode)</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>currentDominanceFrontier.insert(childDFNode);</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//While<sp/>we&apos;re<sp/>at<sp/>it,<sp/>calculate<sp/>the<sp/>postdominator<sp/>tree</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(iPostDominatorMap<sp/>!=<sp/>NULL)</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ControlFlowGraph::VertexVertexMap<sp/>postDominatorTreeMap<sp/>=<sp/>functionCfg.getPostdominatorTree();</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>BOOST_FOREACH(</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ControlFlowGraph::VertexVertexMap::value_type&amp;<sp/>nodePostDominatorPair,<sp/>postDominatorTreeMap)</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CfgNodeT<sp/><ref refid="structnode" kindref="compound">node</ref><sp/>=<sp/>*functionCfg[nodePostDominatorPair.first];</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CfgNodeT<sp/>postDominator<sp/>=<sp/>*functionCfg[nodePostDominatorPair.second];</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(iPostDominatorMap-&gt;count(<ref refid="structnode" kindref="compound">node</ref>)<sp/>==<sp/>0);</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iPostDominatorMap-&gt;insert(make_pair(<ref refid="structnode" kindref="compound">node</ref>,<sp/>postDominator));</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dominanceFrontiers;</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/staticSingleAssignment/iteratedDominanceFrontier.h"/>
+  </compounddef>
+</doxygen>

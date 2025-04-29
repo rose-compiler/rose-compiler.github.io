@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="Sawyer_2Database_8C" kind="file" language="C++">
+    <compoundname>Database.C</compoundname>
+    <includes refid="Sawyer_2Database_8h" local="no">Sawyer/Database.h</includes>
+    <includedby refid="RoseDatabase_8C" local="yes">/home/liao6/workspace/rose-github/src/Sawyer/RoseDatabase.C</includedby>
+    <incdepgraph>
+      <node id="197698">
+        <label>/home/liao6/workspace/rose-github/src/Sawyer/Database.C</label>
+        <link refid="Sawyer_2Database_8C"/>
+        <childnode refid="197699" relation="include">
+        </childnode>
+      </node>
+      <node id="197699">
+        <label>Sawyer/Database.h</label>
+        <link refid="Sawyer_2Database_8h"/>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="197701">
+        <label>/home/liao6/workspace/rose-github/src/Sawyer/RoseDatabase.C</label>
+        <link refid="RoseDatabase_8C"/>
+      </node>
+      <node id="197700">
+        <label>/home/liao6/workspace/rose-github/src/Sawyer/Database.C</label>
+        <link refid="Sawyer_2Database_8C"/>
+        <childnode refid="197701" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//<sp/>WARNING:<sp/>Changes<sp/>to<sp/>this<sp/>file<sp/>must<sp/>be<sp/>contributed<sp/>back<sp/>to<sp/>Sawyer<sp/>or<sp/>else<sp/>they<sp/>will</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>be<sp/>clobbered<sp/>by<sp/>the<sp/>next<sp/>update<sp/>from<sp/>Sawyer.<sp/><sp/>The<sp/>Sawyer<sp/>repository<sp/>is<sp/>at</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>https://gitlab.com/charger7534/sawyer.git.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Sawyer_2Database_8h" kindref="compound">Sawyer/Database.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>__cplusplus<sp/>&gt;=<sp/>201103L</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment">//<sp/>When<sp/>compiling<sp/>this<sp/>file,<sp/>use<sp/>C-preprocessor<sp/>macros<sp/>SAWYER_NO_SQLITE<sp/>and/or<sp/>SAWYER_NO_POSTGRESQL<sp/>if<sp/>you<sp/>need<sp/>to</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="comment">//<sp/>disable<sp/>one<sp/>or<sp/>both<sp/>of<sp/>the<sp/>drivers.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SAWYER_NO_POSTGRESQL</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="DatabasePostgresql_8h" kindref="compound">Sawyer/DatabasePostgresql.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SAWYER_NO_SQLITE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="DatabaseSqlite_8h" kindref="compound">Sawyer/DatabaseSqlite.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/regex.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceSawyer" kindref="compound">Sawyer</ref><sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Database<sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal">std::string</highlight></codeline>
+<codeline lineno="28"><highlight class="normal">Connection::uriDocString()<sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;The<sp/>following<sp/>URLs<sp/>are<sp/>recognized<sp/>(if<sp/>you<sp/>don&apos;t<sp/>see<sp/>any<sp/>listed<sp/>here,<sp/>it<sp/>means<sp/>that<sp/>no<sp/>drivers<sp/>are<sp/>configured).&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SAWYER_NO_SQLITE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;@named{SQLite}{The<sp/>uniform<sp/>resource<sp/>locator<sp/>for<sp/>SQLite<sp/>databases<sp/>has<sp/>the<sp/>format<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;\&quot;sqlite://@v{filename}\&quot;<sp/>or<sp/>just<sp/>\&quot;@v{filename}\&quot;&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;where<sp/>@v{filename}<sp/>is<sp/>the<sp/>name<sp/>of<sp/>a<sp/>file<sp/>in<sp/>the<sp/>local<sp/>filesystem.}&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SAWYER_NO_POSTGRESQL</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;@named{PostgreSQL}{The<sp/>uniform<sp/>resource<sp/>locator<sp/>for<sp/>PostgreSQL<sp/>databases<sp/>has<sp/>the<sp/>format<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;\&quot;postgresql://[@v{user}[:@v{password}]@][@v{hostname}[:@v{port}]][/@v{database}]\&quot;<sp/>where<sp/>@v{user}<sp/>is<sp/>the<sp/>database<sp/>user<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;name;<sp/>@v{password}<sp/>is<sp/>the<sp/>user&apos;s<sp/>password;<sp/>@v{hostname}<sp/>is<sp/>the<sp/>host<sp/>name<sp/>or<sp/>IP<sp/>address<sp/>of<sp/>the<sp/>database<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;server,<sp/>defaulting<sp/>to<sp/>the<sp/>localhost;<sp/>@v{port}<sp/>is<sp/>the<sp/>TCP<sp/>port<sp/>number<sp/>at<sp/>which<sp/>the<sp/>server<sp/>listens;<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;and<sp/>@v{database}<sp/>is<sp/>the<sp/>name<sp/>of<sp/>the<sp/>database.}&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal">Connection</highlight></codeline>
+<codeline lineno="47"><highlight class="normal">Connection::fromUri(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;uri)<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::regex<sp/>sqlite1(</highlight><highlight class="stringliteral">&quot;sqlite://(.+)&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::regex<sp/>sqlite2(</highlight><highlight class="stringliteral">&quot;([^:@]+)&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>user<sp/><sp/><sp/><sp/><sp/><sp/><sp/>passwd<sp/><sp/><sp/><sp/>host<sp/><sp/><sp/><sp/><sp/><sp/><sp/>port<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>db</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::regex<sp/>postgresql1(</highlight><highlight class="stringliteral">&quot;postgresql://([^:@/]+)(:([^@]*))?@([^:@/]+)(:([^:@/]+))?/(.+)&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>host<sp/><sp/><sp/><sp/><sp/><sp/>port<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>db</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::regex<sp/>postgresql2(</highlight><highlight class="stringliteral">&quot;postgresql://([^:@/])(:([^:@/]+))?/(.+)&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::smatch<sp/>found;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SAWYER_NO_SQLITE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(boost::regex_match(uri,<sp/>found,<sp/>sqlite1))</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Sqlite(found.str(1));</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SAWYER_NO_POSTGRESQL</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(boost::regex_match(uri,<sp/>found,<sp/>postgresql1))<sp/>{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Postgresql::Locator<sp/>loc;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>loc.user<sp/>=<sp/>found.str(1);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>loc.password<sp/>=<sp/>found.str(3);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>loc.hostname<sp/>=<sp/>found.str(4);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>loc.port<sp/>=<sp/>found.str(6);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>loc.database<sp/>=<sp/>found.str(7);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Postgresql(loc);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(boost::regex_match(uri,<sp/>found,<sp/>postgresql2))<sp/>{</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Postgresql::Locator<sp/>loc;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>loc.hostname<sp/>=<sp/>found.str(1);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>loc.port<sp/>=<sp/>found.str(3);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>loc.database<sp/>=<sp/>found.str(4);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Postgresql(loc);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SAWYER_NO_SQLITE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(boost::regex_match(uri,<sp/>found,<sp/>sqlite2))</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Sqlite(found.str(1));</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/><ref refid="classException" kindref="compound">Exception</ref>(</highlight><highlight class="stringliteral">&quot;invalid<sp/>database<sp/>URI:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/>uri);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/Sawyer/Database.C"/>
+  </compounddef>
+</doxygen>

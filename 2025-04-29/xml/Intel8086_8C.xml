@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="Intel8086_8C" kind="file" language="C++">
+    <compoundname>Intel8086.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="197078">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="197075">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="197076" relation="include">
+        </childnode>
+        <childnode refid="197077" relation="include">
+        </childnode>
+        <childnode refid="197078" relation="include">
+        </childnode>
+      </node>
+      <node id="197077">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="197074">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/Architecture/Intel8086.C</label>
+        <link refid="Intel8086_8C"/>
+        <childnode refid="197075" relation="include">
+        </childnode>
+      </node>
+      <node id="197076">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="197075" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Intel8086_8h" kindref="compound">Rose/BinaryAnalysis/Architecture/Intel8086.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Disassembler_2Base_8h" kindref="compound">Rose/BinaryAnalysis/Disassembler/Base.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="DispatcherX86_8h" kindref="compound">Rose/BinaryAnalysis/InstructionSemantics/DispatcherX86.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Unparser_2X86_8h" kindref="compound">Rose/BinaryAnalysis/Unparser/X86.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose" kindref="compound">Rose</ref><sp/>{</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">BinaryAnalysis<sp/>{</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Disassembler_1_1Mips_1_1Decoder_1a9e3d4950ff21664841afe58edfb752c7" kindref="member">Architecture</ref><sp/>{</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal">Intel8086::Intel8086()</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>X86(</highlight><highlight class="stringliteral">&quot;intel-8086&quot;</highlight><highlight class="normal">,<sp/>2)<sp/>{}</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal">Intel8086::~Intel8086()<sp/>{}</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal">Intel8086::Ptr</highlight></codeline>
+<codeline lineno="19"><highlight class="normal">Intel8086::instance()<sp/>{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Ptr(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>Intel8086);</highlight></codeline>
+<codeline lineno="21"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal">RegisterDictionary::Ptr</highlight></codeline>
+<codeline lineno="24"><highlight class="normal">Intel8086::registerDictionary()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>SAWYER_THREAD_TRAITS::Mutex<sp/><ref refid="namespaceSawyer_1_1Attribute_1a2b49c61067f52bdabcc9decab134a1bb" kindref="member">mutex</ref>;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>SAWYER_THREAD_TRAITS::LockGuard<sp/>lock(<ref refid="namespaceSawyer_1_1Attribute_1a2b49c61067f52bdabcc9decab134a1bb" kindref="member">mutex</ref>);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!registerDictionary_.isCached())<sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>regs<sp/>=<sp/>RegisterDictionary::instance(<ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref>());</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>16-bit<sp/>general<sp/>purpose<sp/>registers.<sp/>Each<sp/>has<sp/>three<sp/>names<sp/>depending<sp/>on<sp/>which<sp/>bytes<sp/>are<sp/>reference.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;al&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_ax,<sp/>0,<sp/>8);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;ah&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_ax,<sp/>8,<sp/>8);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;ax&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_ax,<sp/>0,<sp/>16);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;bl&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_bx,<sp/>0,<sp/>8);</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;bh&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_bx,<sp/>8,<sp/>8);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;bx&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_bx,<sp/>0,<sp/>16);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;cl&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_cx,<sp/>0,<sp/>8);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;ch&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_cx,<sp/>8,<sp/>8);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;cx&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_cx,<sp/>0,<sp/>16);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;dl&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_dx,<sp/>0,<sp/>8);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;dh&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_dx,<sp/>8,<sp/>8);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;dx&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_dx,<sp/>0,<sp/>16);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>16-bit<sp/>segment<sp/>registers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;cs&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_segment,<sp/>x86_segreg_cs,<sp/>0,<sp/>16);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;ds&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_segment,<sp/>x86_segreg_ds,<sp/>0,<sp/>16);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;ss&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_segment,<sp/>x86_segreg_ss,<sp/>0,<sp/>16);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;es&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_segment,<sp/>x86_segreg_es,<sp/>0,<sp/>16);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>16-bit<sp/>pointer<sp/>registers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;sp&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_sp,<sp/>0,<sp/>16);<sp/></highlight><highlight class="comment">//<sp/>stack<sp/>pointer</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;spl&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_sp,<sp/>0,<sp/>8);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;bp&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_bp,<sp/>0,<sp/>16);<sp/></highlight><highlight class="comment">//<sp/>base<sp/>pointer</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;bpl&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_bp,<sp/>0,<sp/>8);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;ip&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_ip,<sp/>0,<sp/>0,<sp/>16);<sp/><sp/></highlight><highlight class="comment">//<sp/>instruction<sp/>pointer</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;ipl&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_ip,<sp/>0,<sp/>0,<sp/>8);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Array<sp/>indexing<sp/>registers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;si&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_si,<sp/>0,<sp/>16);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;sil&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_si,<sp/>0,<sp/>8);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;di&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_di,<sp/>0,<sp/>16);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;dil&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_gpr,<sp/>x86_gpr_di,<sp/>0,<sp/>8);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Flags<sp/>with<sp/>official<sp/>names.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;flags&quot;</highlight><highlight class="normal">,<sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/><sp/>0,<sp/>16);<sp/></highlight><highlight class="comment">//<sp/>all<sp/>flags</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;cf&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/><sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/><sp/>0,<sp/><sp/>1);<sp/></highlight><highlight class="comment">//<sp/>carry<sp/>status<sp/>flag</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;pf&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/><sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/><sp/>2,<sp/><sp/>1);<sp/></highlight><highlight class="comment">//<sp/>parity<sp/>status<sp/>flag</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;af&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/><sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/><sp/>4,<sp/><sp/>1);<sp/></highlight><highlight class="comment">//<sp/>adjust<sp/>status<sp/>flag</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;zf&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/><sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/><sp/>6,<sp/><sp/>1);<sp/></highlight><highlight class="comment">//<sp/>zero<sp/>status<sp/>flag</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;sf&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/><sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/><sp/>7,<sp/><sp/>1);<sp/></highlight><highlight class="comment">//<sp/>sign<sp/>status<sp/>flag</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;tf&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/><sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/><sp/>8,<sp/><sp/>1);<sp/></highlight><highlight class="comment">//<sp/>trap<sp/>system<sp/>flag</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;if&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/><sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/><sp/>9,<sp/><sp/>1);<sp/></highlight><highlight class="comment">//<sp/>interrupt<sp/>enable<sp/>system<sp/>flag</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;df&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/><sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/>10,<sp/><sp/>1);<sp/></highlight><highlight class="comment">//<sp/>direction<sp/>control<sp/>flag</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;of&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/><sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/>11,<sp/><sp/>1);<sp/></highlight><highlight class="comment">//<sp/>overflow<sp/>status<sp/>flag</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;nt&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/><sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/>14,<sp/><sp/>1);<sp/></highlight><highlight class="comment">//<sp/>nested<sp/>task<sp/>system<sp/>flag</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Flags<sp/>without<sp/>names</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;f1&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/><sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/><sp/>1,<sp/><sp/>1);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;f3&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/><sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/><sp/>3,<sp/><sp/>1);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;f5&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/><sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/><sp/>5,<sp/><sp/>1);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;f12&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/>12,<sp/><sp/>1);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;f13&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/>13,<sp/><sp/>1);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;insert(</highlight><highlight class="stringliteral">&quot;f15&quot;</highlight><highlight class="normal">,<sp/><sp/><sp/>x86_regclass_flags,<sp/>x86_flags_status,<sp/>15,<sp/><sp/>1);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Special<sp/>registers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;instructionPointerRegister(</highlight><highlight class="stringliteral">&quot;ip&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;stackPointerRegister(</highlight><highlight class="stringliteral">&quot;sp&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;stackFrameRegister(</highlight><highlight class="stringliteral">&quot;bp&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regs-&gt;stackSegmentRegister(</highlight><highlight class="stringliteral">&quot;ss&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>registerDictionary_<sp/>=<sp/>regs;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>registerDictionary_.get();</highlight></codeline>
+<codeline lineno="102"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal">Intel8086::matchesHeader(<ref refid="classSgAsmGenericHeader" kindref="compound">SgAsmGenericHeader</ref>*)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/Architecture/Intel8086.C"/>
+  </compounddef>
+</doxygen>

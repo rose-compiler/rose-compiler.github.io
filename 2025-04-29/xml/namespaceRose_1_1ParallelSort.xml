@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="namespaceRose_1_1ParallelSort" kind="namespace" language="C++">
+    <compoundname>Rose::ParallelSort</compoundname>
+    <innernamespace refid="namespaceRose_1_1ParallelSort_1_1Private">Rose::ParallelSort::Private</innernamespace>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceRose_1_1ParallelSort_1ad2cf3da4a1f6d16ce3821089158ec290" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class RandomAccessIterator</type>
+          </param>
+          <param>
+            <type>class Compare</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Rose::ParallelSort::quicksort</definition>
+        <argsstring>(RandomAccessIterator begin, RandomAccessIterator end, size_t nThreads, Compare compare)</argsstring>
+        <name>quicksort</name>
+        <param>
+          <type>RandomAccessIterator</type>
+          <declname>begin</declname>
+        </param>
+        <param>
+          <type>RandomAccessIterator</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref></type>
+          <declname>nThreads</declname>
+        </param>
+        <param>
+          <type>Compare</type>
+          <declname>compare</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sort values in parallel. Sorts the values between <computeroutput>begin</computeroutput> (inclusive) and <computeroutput>end</computeroutput> (exclusive) according to the comparator <computeroutput>compare</computeroutput> using <computeroutput>nthreads</computeroutput> threads. Multi-threading is only used if the size of the range of values exceeds a certain threshold.</para><para>Note: using normal C++ iterators with debugging support will result in slower execution the more threads are used because the iterator dereference operators serialize some sanity checks which causes lock contention. It is best to do the sanity check once up front, then then call the sort function with pointers. For example:</para><para><programlisting><codeline><highlight class="normal">std::vector&lt;Thing&gt;<sp/>data;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>This<sp/>method<sp/>might<sp/>get<sp/>slower<sp/>as<sp/>nthreads<sp/>increases</highlight></codeline>
+<codeline><highlight class="normal">quicksort(data.begin(),<sp/>data.end(),<sp/>thingComparer,<sp/>nthreads);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>But<sp/>this<sp/>should<sp/>scale<sp/>well<sp/>provided<sp/>data.size()<sp/>is<sp/>large<sp/>enough.</highlight></codeline>
+<codeline><highlight class="normal">quicksort(&amp;data[0],<sp/>&amp;data[0]+data.size(),<sp/>thingComparer,<sp/>nthreads);</highlight></codeline>
+</programlisting> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/Rose/ParallelSort.h" line="141" column="1" bodyfile="/home/liao6/workspace/rose-github/src/Rose/ParallelSort.h" bodystart="141" bodyend="162"/>
+        <references refid="namespaceRose_1_1ParallelSort_1_1Private_1a8e7b4540f0e97828eb6f3f0a5480b48c" compoundref="ParallelSort_8h" startline="66" endline="70">Rose::ParallelSort::Private::addWork</references>
+        <references refid="namespaceSawyer_1_1Container_1_1BitVectorSupport_1a2b849b9f8cb2af310d49c83c9ebaf1cc" compoundref="BitVectorSupport_8h" startline="1237" endline="1263">Sawyer::Container::BitVectorSupport::compare</references>
+        <references refid="namespaceRose_1_1StringUtility_1af5db0a39edbecf0d631e1218496b3087" compoundref="SplitJoin_8C" startline="61" endline="63">Rose::StringUtility::join</references>
+        <references refid="qeditor_8cpp_1a0f22fef15e1a46d7611e58390b23a1f5" compoundref="qeditor_8cpp" startline="2419" endline="2428">max</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Algorithms for parallel sorting.</para><para>These algorithms use multiple threads to sort large arrays of values in parallel. Their usage is similar to std::sort in terms of the arguments, but they also take an additional argument to specify the number of threads. The following algorithms are implemented:</para><para><itemizedlist>
+<listitem>
+<para><ref refid="namespaceRose_1_1ParallelSort_1ad2cf3da4a1f6d16ce3821089158ec290" kindref="member">quicksort()</ref> </para></listitem>
+</itemizedlist>
+</para>    </detaileddescription>
+    <location file="/home/liao6/workspace/rose-github/src/Rose/ParallelSort.h" line="22" column="1"/>
+  </compounddef>
+</doxygen>

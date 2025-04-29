@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="Phi_8C" kind="file" language="C++">
+    <compoundname>Phi.C</compoundname>
+    <includes refid="Phi_8h" local="yes">Phi.h</includes>
+    <incdepgraph>
+      <node id="154977">
+        <label>list</label>
+      </node>
+      <node id="154972">
+        <label>/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/Phi.C</label>
+        <link refid="Phi_8C"/>
+        <childnode refid="154973" relation="include">
+        </childnode>
+      </node>
+      <node id="154973">
+        <label>Phi.h</label>
+        <link refid="Phi_8h"/>
+        <childnode refid="154974" relation="include">
+        </childnode>
+        <childnode refid="154975" relation="include">
+        </childnode>
+      </node>
+      <node id="154975">
+        <label>OpenAnalysis/CFG/CFG.h</label>
+        <link refid="OpenAnalysis_2CFG_2CFG_8h"/>
+        <childnode refid="154976" relation="include">
+        </childnode>
+        <childnode refid="154977" relation="include">
+        </childnode>
+        <childnode refid="154978" relation="include">
+        </childnode>
+        <childnode refid="154974" relation="include">
+        </childnode>
+        <childnode refid="154979" relation="include">
+        </childnode>
+        <childnode refid="154984" relation="include">
+        </childnode>
+      </node>
+      <node id="154974">
+        <label>map</label>
+      </node>
+      <node id="154983">
+        <label>Exception.h</label>
+        <link refid="midend_2programAnalysis_2OpenAnalysis_2Utils_2Exception_8h"/>
+        <childnode refid="154981" relation="include">
+        </childnode>
+      </node>
+      <node id="154979">
+        <label>OpenAnalysis/Utils/DGraph.h</label>
+        <link refid="DGraph_8h"/>
+        <childnode refid="154980" relation="include">
+        </childnode>
+      </node>
+      <node id="154984">
+        <label>OpenAnalysis/Interface/IRInterface.h</label>
+        <link refid="IRInterface_8h"/>
+        <childnode refid="154985" relation="include">
+        </childnode>
+      </node>
+      <node id="154981">
+        <label>iostream</label>
+      </node>
+      <node id="154980">
+        <label>BaseGraph.h</label>
+        <link refid="BaseGraph_8h"/>
+        <childnode refid="154981" relation="include">
+        </childnode>
+        <childnode refid="154977" relation="include">
+        </childnode>
+        <childnode refid="154978" relation="include">
+        </childnode>
+        <childnode refid="154982" relation="include">
+        </childnode>
+        <childnode refid="154983" relation="include">
+        </childnode>
+      </node>
+      <node id="154982">
+        <label>Iterator.h</label>
+        <link refid="Iterator_8h"/>
+      </node>
+      <node id="154978">
+        <label>set</label>
+      </node>
+      <node id="154976">
+        <label>cstring</label>
+      </node>
+      <node id="154985">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//<sp/>$Id:<sp/>Phi.C,v<sp/>1.1<sp/>2004/07/07<sp/>10:26:34<sp/>dquinlan<sp/>Exp<sp/>$</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>-*-C++-*-</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/>*<sp/>BeginRiceCopyright<sp/>*****************************************************</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Copyright<sp/>((c))<sp/>2002,<sp/>Rice<sp/>University<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>All<sp/>rights<sp/>reserved.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="comment">//<sp/>modification,<sp/>are<sp/>permitted<sp/>provided<sp/>that<sp/>the<sp/>following<sp/>conditions<sp/>are</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="comment">//<sp/>met:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="comment">//<sp/>*<sp/>Redistributions<sp/>of<sp/>source<sp/>code<sp/>must<sp/>retain<sp/>the<sp/>above<sp/>copyright</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="comment">//<sp/>*<sp/>Redistributions<sp/>in<sp/>binary<sp/>form<sp/>must<sp/>reproduce<sp/>the<sp/>above<sp/>copyright</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer<sp/>in<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>documentation<sp/>and/or<sp/>other<sp/>materials<sp/>provided<sp/>with<sp/>the<sp/>distribution.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">//<sp/>*<sp/>Neither<sp/>the<sp/>name<sp/>of<sp/>Rice<sp/>University<sp/>(RICE)<sp/>nor<sp/>the<sp/>names<sp/>of<sp/>its</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>contributors<sp/>may<sp/>be<sp/>used<sp/>to<sp/>endorse<sp/>or<sp/>promote<sp/>products<sp/>derived<sp/>from</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>this<sp/>software<sp/>without<sp/>specific<sp/>prior<sp/>written<sp/>permission.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="comment">//<sp/>This<sp/>software<sp/>is<sp/>provided<sp/>by<sp/>RICE<sp/>and<sp/>contributors<sp/>&quot;as<sp/>is&quot;<sp/>and<sp/>any</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="comment">//<sp/>express<sp/>or<sp/>implied<sp/>warranties,<sp/>including,<sp/>but<sp/>not<sp/>limited<sp/>to,<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">//<sp/>implied<sp/>warranties<sp/>of<sp/>merchantability<sp/>and<sp/>fitness<sp/>for<sp/>a<sp/>particular</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="comment">//<sp/>purpose<sp/>are<sp/>disclaimed.<sp/>In<sp/>no<sp/>event<sp/>shall<sp/>RICE<sp/>or<sp/>contributors<sp/>be</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="comment">//<sp/>liable<sp/>for<sp/>any<sp/>direct,<sp/>indirect,<sp/>incidental,<sp/>special,<sp/>exemplary,<sp/>or</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="comment">//<sp/>consequential<sp/>damages<sp/>(including,<sp/>but<sp/>not<sp/>limited<sp/>to,<sp/>procurement<sp/>of</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="comment">//<sp/>substitute<sp/>goods<sp/>or<sp/>services;<sp/>loss<sp/>of<sp/>use,<sp/>data,<sp/>or<sp/>profits;<sp/>or</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>business<sp/>interruption)<sp/>however<sp/>caused<sp/>and<sp/>on<sp/>any<sp/>theory<sp/>of<sp/>liability,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>whether<sp/>in<sp/>contract,<sp/>strict<sp/>liability,<sp/>or<sp/>tort<sp/>(including<sp/>negligence</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="comment">//<sp/>or<sp/>otherwise)<sp/>arising<sp/>in<sp/>any<sp/>way<sp/>out<sp/>of<sp/>the<sp/>use<sp/>of<sp/>this<sp/>software,<sp/>even</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">//<sp/>if<sp/>advised<sp/>of<sp/>the<sp/>possibility<sp/>of<sp/>such<sp/>damage.<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="comment">//<sp/>*******************************************************<sp/>EndRiceCopyright<sp/>*</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Best<sp/>seen<sp/>in<sp/>120-column<sp/>wide<sp/>window<sp/>(or<sp/>print<sp/>in<sp/>landscape<sp/>mode).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="comment">//<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>Mint.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Arun<sp/>Chauhan<sp/>(achauhan@cs.rice.edu),<sp/>Dept<sp/>of<sp/>Computer<sp/>Science,<sp/>Rice<sp/>University,<sp/>2001.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="comment">//<sp/>OpenAnalysis<sp/>headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="Phi_8h" kindref="compound">Phi.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52" refid="classPhi_1a0a0d972afb5bce86f1518b4c47b8189b" refkind="member"><highlight class="normal"><ref refid="classPhi_1a0a0d972afb5bce86f1518b4c47b8189b" kindref="member">Phi::dump</ref><sp/>(ostream&amp;<sp/>os)</highlight></codeline>
+<codeline lineno="53"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/>os<sp/>&lt;&lt;<sp/><ref refid="classPhi_1a24b57cf018d16a60f53544541adddf02" kindref="member">cfg</ref>-&gt;<ref refid="classCFG_1abdd33127e5be86785f671389593589c3" kindref="member">GetIRInterface</ref>().<ref refid="classIRInterface_1aa7b28207a01ab0114b446b9df8c639c0" kindref="member">GetSymNameFromSymHandle</ref>(<ref refid="classPhi_1a44859a57e1aded6b114b81b43957a08d" kindref="member">sym</ref>)<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>=<sp/>phi<sp/>(&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><ref refid="classPhi_1_1ArgIterator" kindref="compound">ArgIterator</ref><sp/>arg_iter(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><ref refid="classCFG_1_1Node" kindref="compound">CFG::Node</ref>*<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><ref refid="IRInterface_8h_1ad2cde269fec4d605339267d33c05e67f" kindref="member">LeafHandle</ref><sp/>l;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">)arg_iter)<sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref><sp/>=<sp/>arg_iter;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>l<sp/>=<sp/>arg_iter;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>-&gt;dump(os);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;:&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classPhi_1a24b57cf018d16a60f53544541adddf02" kindref="member">cfg</ref>-&gt;<ref refid="classCFG_1abdd33127e5be86785f671389593589c3" kindref="member">GetIRInterface</ref>().<ref refid="classIRInterface_1a67e751b8a535839a686f62f038dbfe94" kindref="member">PrintLeaf</ref>(l,<sp/>os);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>++arg_iter;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>((</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">)arg_iter)<sp/>{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,<sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref><sp/>=<sp/>arg_iter;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>l<sp/>=<sp/>arg_iter;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>-&gt;dump(os);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;:&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classPhi_1a24b57cf018d16a60f53544541adddf02" kindref="member">cfg</ref>-&gt;<ref refid="classCFG_1abdd33127e5be86785f671389593589c3" kindref="member">GetIRInterface</ref>().<ref refid="classIRInterface_1a67e751b8a535839a686f62f038dbfe94" kindref="member">PrintLeaf</ref>(l,<sp/>os);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>++arg_iter;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;)&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/Phi.C"/>
+  </compounddef>
+</doxygen>

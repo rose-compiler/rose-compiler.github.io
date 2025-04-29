@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="classSSA" kind="class" language="C++" prot="public">
+    <compoundname>SSA</compoundname>
+    <includes refid="SSA_8h" local="no">SSA.h</includes>
+    <innerclass refid="classSSA_1_1Def" prot="public">SSA::Def</innerclass>
+    <innerclass refid="classSSA_1_1LeafDef" prot="public">SSA::LeafDef</innerclass>
+    <innerclass refid="classSSA_1_1LeafUse" prot="public">SSA::LeafUse</innerclass>
+    <innerclass refid="classSSA_1_1PhiDef" prot="public">SSA::PhiDef</innerclass>
+    <innerclass refid="classSSA_1_1PhiNodesIterator" prot="public">SSA::PhiNodesIterator</innerclass>
+    <innerclass refid="classSSA_1_1PhiUse" prot="public">SSA::PhiUse</innerclass>
+    <innerclass refid="classSSA_1_1Use" prot="public">SSA::Use</innerclass>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="classSSA_1a3a9535b2ece7a3adcede1722a42b688c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend class</type>
+        <definition>friend class PhiNodesIterator</definition>
+        <argsstring></argsstring>
+        <name>PhiNodesIterator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/SSA.h" line="59" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/SSA.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classSSA_1a3848fe3e881c51da67edf16a050729ba" prot="private" static="no" mutable="no">
+        <type><ref refid="classCFG" kindref="compound">CFG</ref> *</type>
+        <definition>CFG* SSA::cfg</definition>
+        <argsstring></argsstring>
+        <name>cfg</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/SSA.h" line="132" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/SSA.h" bodystart="132" bodyend="-1"/>
+        <referencedby refid="classSSA_1a2bb3a5acdf50d70df668bf167c39dfec" compoundref="SSA_8C" startline="123" endline="150">dump</referencedby>
+        <referencedby refid="classSSA_1a6ee9f0938b10dc79772d0e6bdd108808" compoundref="SSA_8C" startline="72" endline="117">SSA</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classSSA_1aa6a2230505a83ff8abf7b9d7d6b627ce" prot="private" static="no" mutable="no">
+        <type><ref refid="extension-functions_8c_1af14a3bb341ca79e17942aff28630d7f9" kindref="member">std::map</ref>&lt; <ref refid="classCFG_1_1Node" kindref="compound">CFG::Node</ref> *, std::set&lt; <ref refid="classPhi" kindref="compound">Phi</ref> * &gt; &gt;</type>
+        <definition>std::map&lt;CFG::Node*, std::set&lt;Phi*&gt; &gt; SSA::phi_node_sets</definition>
+        <argsstring></argsstring>
+        <name>phi_node_sets</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/SSA.h" line="133" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/SSA.h" bodystart="133" bodyend="-1"/>
+        <referencedby refid="classSSA_1_1PhiNodesIterator_1ae50597f7119b7b6f80af97213d0d707e" compoundref="SSA_8h" startline="119" endline="119">SSA::PhiNodesIterator::PhiNodesIterator</referencedby>
+        <referencedby refid="classSSA_1a6ee9f0938b10dc79772d0e6bdd108808" compoundref="SSA_8C" startline="72" endline="117">SSA</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classSSA_1a6ee9f0938b10dc79772d0e6bdd108808" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SSA::SSA</definition>
+        <argsstring>(CFG &amp;_cfg)</argsstring>
+        <name>SSA</name>
+        <param>
+          <type><ref refid="classCFG" kindref="compound">CFG</ref> &amp;</type>
+          <declname>_cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="classSSA" kindref="compound">SSA</ref> constructor computes the dominator tree, and dominance frontiers from it, for the given <ref refid="classCFG" kindref="compound">CFG</ref>. Using the dominance frontiers, it then inserts phi functions using the following algorithm (from the book &quot;Engineering a
+Compiler&quot;, by Keith D. Cooper and Linda Torczon, chapter &quot;Data-flow Analysis&quot;). The set NonLocals is the set of all upwardly exposed uses in each node of the <ref refid="classCFG" kindref="compound">CFG</ref> and is computed using the <ref refid="classCFG" kindref="compound">CFG</ref> method &quot;compute_uses_sets&quot;. The map Blocks maps a variable name i to the set of <ref refid="classCFG" kindref="compound">CFG</ref> nodes (basic blocks) where it is defined.</para><para><preformatted>
+for each name i in NonLocals
+    <ref refid="classWorkList" kindref="compound">WorkList</ref> &lt;<ndash/> Blocks(i)
+    for each block b in <ref refid="classWorkList" kindref="compound">WorkList</ref>
+        for each block d in Dominance_Frontier(b)
+            insert a phi function for i in d
+            <ref refid="classWorkList" kindref="compound">WorkList</ref> &lt;<ndash/> <ref refid="classWorkList" kindref="compound">WorkList</ref> + d
+</preformatted> </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/SSA.h" line="56" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/SSA.C" bodystart="72" bodyend="117"/>
+        <references refid="xomp__accelerator__sched__test_8c_1aa242a9d8afb254d7ca68236fc725e0d6" compoundref="xomp__accelerator__sched__test_8c" startline="120">b</references>
+        <references refid="classSSA_1a3848fe3e881c51da67edf16a050729ba" compoundref="SSA_8h" startline="132">cfg</references>
+        <references refid="classDomTree_1a5dba812e49775bceef3541ed28c1cfb5" compoundref="DomTree_8C" startline="163" endline="189">DomTree::compute_dominance_frontiers</references>
+        <references refid="classCFG_1a92637c40b2c01546430336b5b6754482" compoundref="CFG_8C" startline="916" endline="948">CFG::compute_uses_sets</references>
+        <references refid="classDomTree_1ac90061d1d78c47becf34002d9dd4eb1f" compoundref="DomTree_8h" startline="92" endline="92">DomTree::domtree_node</references>
+        <references refid="classPhi_1a0a0d972afb5bce86f1518b4c47b8189b" compoundref="Phi_8C" startline="52" endline="76">Phi::dump</references>
+        <references refid="classDomTree_1a57750edf48d2db7a1b5c5d14e47dd9eb" compoundref="DomTree_8C" startline="195" endline="232">DomTree::dump</references>
+        <references refid="classCFG_1_1Node_1a895372f34601a41b8456cfe998b4c66c" compoundref="OpenAnalysis_2CFG_2CFG_8h" startline="170" endline="170">CFG::Node::dump</references>
+        <references refid="classCFG_1abdd33127e5be86785f671389593589c3" compoundref="OpenAnalysis_2CFG_2CFG_8h" startline="127" endline="127">CFG::GetIRInterface</references>
+        <references refid="classIRInterface_1a397d8f2240cdac424050758328419278">IRInterface::GetSymHandle</references>
+        <references refid="classSSA_1aa6a2230505a83ff8abf7b9d7d6b627ce" compoundref="SSA_8h" startline="133">phi_node_sets</references>
+      </memberdef>
+      <memberdef kind="function" id="classSSA_1a993b68690aa93df61035fb36a08400af" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>SSA::~SSA</definition>
+        <argsstring>()</argsstring>
+        <name>~SSA</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/SSA.h" line="57" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/SSA.h" bodystart="57" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="classSSA_1a2bb3a5acdf50d70df668bf167c39dfec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SSA::dump</definition>
+        <argsstring>(ostream &amp;)</argsstring>
+        <name>dump</name>
+        <param>
+          <type>ostream &amp;</type>
+          <defname>os</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/SSA.h" line="129" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/SSA.C" bodystart="123" bodyend="150"/>
+        <references refid="classSSA_1a3848fe3e881c51da67edf16a050729ba" compoundref="SSA_8h" startline="132">cfg</references>
+        <references refid="classCFG_1abdd33127e5be86785f671389593589c3" compoundref="OpenAnalysis_2CFG_2CFG_8h" startline="127" endline="127">CFG::GetIRInterface</references>
+        <references refid="classIRInterface_1aa7b28207a01ab0114b446b9df8c639c0">IRInterface::GetSymNameFromSymHandle</references>
+        <references refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" compoundref="TarjanIntervals_8C" startline="175">n</references>
+        <references refid="classCFG_1ac1bd29f98ef99fbf3ae35a9ebf3636e6" compoundref="OpenAnalysis_2CFG_2CFG_8h" startline="255" endline="255">CFG::subprog_name</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="25593">
+        <label>CFG</label>
+        <link refid="classCFG"/>
+        <childnode refid="25594" relation="public-inheritance">
+        </childnode>
+        <childnode refid="25597" relation="usage">
+          <edgelabel>the_worklist</edgelabel>
+        </childnode>
+        <childnode refid="25598" relation="usage">
+          <edgelabel>entry</edgelabel>
+          <edgelabel>exit</edgelabel>
+        </childnode>
+        <childnode refid="25600" relation="usage">
+          <edgelabel>ir</edgelabel>
+        </childnode>
+      </node>
+      <node id="25595">
+        <label>BaseGraph</label>
+        <link refid="classBaseGraph"/>
+        <childnode refid="25596" relation="usage">
+          <edgelabel>root_node</edgelabel>
+        </childnode>
+      </node>
+      <node id="25598">
+        <label>CFG::Node</label>
+        <link refid="classCFG_1_1Node"/>
+        <childnode refid="25599" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="25592">
+        <label>SSA</label>
+        <link refid="classSSA"/>
+        <childnode refid="25593" relation="usage">
+          <edgelabel>cfg</edgelabel>
+        </childnode>
+      </node>
+      <node id="25600">
+        <label>IRInterface</label>
+        <link refid="classIRInterface"/>
+      </node>
+      <node id="25597">
+        <label>Worklist</label>
+        <link refid="classWorklist"/>
+      </node>
+      <node id="25599">
+        <label>DGraph::Node</label>
+        <link refid="classDGraph_1_1Node"/>
+        <childnode refid="25596" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="25596">
+        <label>BaseGraph::Node</label>
+        <link refid="classBaseGraph_1_1Node"/>
+        <childnode refid="25596" relation="usage">
+          <edgelabel>dfs_succ</edgelabel>
+          <edgelabel>bfs_succ</edgelabel>
+        </childnode>
+      </node>
+      <node id="25594">
+        <label>DGraph</label>
+        <link refid="classDGraph"/>
+        <childnode refid="25595" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/SSA.h" line="54" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/SSA/SSA.h" bodystart="54" bodyend="134"/>
+    <listofallmembers>
+      <member refid="classSSA_1a3848fe3e881c51da67edf16a050729ba" prot="private" virt="non-virtual"><scope>SSA</scope><name>cfg</name></member>
+      <member refid="classSSA_1a2bb3a5acdf50d70df668bf167c39dfec" prot="public" virt="non-virtual"><scope>SSA</scope><name>dump</name></member>
+      <member refid="classSSA_1aa6a2230505a83ff8abf7b9d7d6b627ce" prot="private" virt="non-virtual"><scope>SSA</scope><name>phi_node_sets</name></member>
+      <member refid="classSSA_1a3a9535b2ece7a3adcede1722a42b688c" prot="public" virt="non-virtual"><scope>SSA</scope><name>PhiNodesIterator</name></member>
+      <member refid="classSSA_1a6ee9f0938b10dc79772d0e6bdd108808" prot="public" virt="non-virtual"><scope>SSA</scope><name>SSA</name></member>
+      <member refid="classSSA_1a993b68690aa93df61035fb36a08400af" prot="public" virt="non-virtual"><scope>SSA</scope><name>~SSA</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

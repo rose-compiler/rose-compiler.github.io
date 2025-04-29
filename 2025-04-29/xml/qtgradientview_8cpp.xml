@@ -1,0 +1,416 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="qtgradientview_8cpp" kind="file" language="C++">
+    <compoundname>qtgradientview.cpp</compoundname>
+    <includes refid="qtgradientview_8h" local="yes">qtgradientview.h</includes>
+    <includes refid="qtgradientmanager_8h" local="yes">qtgradientmanager.h</includes>
+    <includes refid="qtgradientdialog_8h" local="yes">qtgradientdialog.h</includes>
+    <includes refid="qtgradientutils_8h" local="yes">qtgradientutils.h</includes>
+    <includes local="no">QtGui/QPainter</includes>
+    <includes local="no">QtGui/QMessageBox</includes>
+    <includes local="no">QtGui/QClipboard</includes>
+    <includes local="yes">moc_qtgradientview.cxx</includes>
+    <incdepgraph>
+      <node id="222732">
+        <label>QtGui/QMessageBox</label>
+      </node>
+      <node id="222731">
+        <label>QtGui/QPainter</label>
+      </node>
+      <node id="222733">
+        <label>QtGui/QClipboard</label>
+      </node>
+      <node id="222725">
+        <label>QtXml/QDomDocument</label>
+      </node>
+      <node id="222721">
+        <label>ui_qtgradientview.h</label>
+      </node>
+      <node id="222723">
+        <label>QtCore/QObject</label>
+      </node>
+      <node id="222722">
+        <label>qtgradientmanager.h</label>
+        <link refid="qtgradientmanager_8h"/>
+        <childnode refid="222723" relation="include">
+        </childnode>
+        <childnode refid="222720" relation="include">
+        </childnode>
+        <childnode refid="222724" relation="include">
+        </childnode>
+        <childnode refid="222725" relation="include">
+        </childnode>
+        <childnode refid="222726" relation="include">
+        </childnode>
+        <childnode refid="222727" relation="include">
+        </childnode>
+      </node>
+      <node id="222734">
+        <label>moc_qtgradientview.cxx</label>
+      </node>
+      <node id="222728">
+        <label>qtgradientdialog.h</label>
+        <link refid="qtgradientdialog_8h"/>
+        <childnode refid="222729" relation="include">
+        </childnode>
+      </node>
+      <node id="222729">
+        <label>QtGui/QDialog</label>
+      </node>
+      <node id="222727">
+        <label>QtGui/QGradient</label>
+      </node>
+      <node id="222719">
+        <label>QtGui/QWidget</label>
+      </node>
+      <node id="222718">
+        <label>qtgradientview.h</label>
+        <link refid="qtgradientview_8h"/>
+        <childnode refid="222719" relation="include">
+        </childnode>
+        <childnode refid="222720" relation="include">
+        </childnode>
+        <childnode refid="222721" relation="include">
+        </childnode>
+      </node>
+      <node id="222724">
+        <label>QtCore/QSize</label>
+      </node>
+      <node id="222730">
+        <label>qtgradientutils.h</label>
+        <link refid="qtgradientutils_8h"/>
+        <childnode refid="222727" relation="include">
+        </childnode>
+        <childnode refid="222731" relation="include">
+        </childnode>
+      </node>
+      <node id="222717">
+        <label>/home/liao6/workspace/rose-github/src/roseExtensions/qtWidgets/QtGradientEditor/qtgradientview.cpp</label>
+        <link refid="qtgradientview_8cpp"/>
+        <childnode refid="222718" relation="include">
+        </childnode>
+        <childnode refid="222722" relation="include">
+        </childnode>
+        <childnode refid="222728" relation="include">
+        </childnode>
+        <childnode refid="222730" relation="include">
+        </childnode>
+        <childnode refid="222731" relation="include">
+        </childnode>
+        <childnode refid="222732" relation="include">
+        </childnode>
+        <childnode refid="222733" relation="include">
+        </childnode>
+        <childnode refid="222734" relation="include">
+        </childnode>
+      </node>
+      <node id="222726">
+        <label>QtXml/QDomElement</label>
+      </node>
+      <node id="222720">
+        <label>QtCore/QMap</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/****************************************************************************</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Copyright<sp/>(C)<sp/>2009<sp/>Nokia<sp/>Corporation<sp/>and/or<sp/>its<sp/>subsidiary(-ies).</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>Contact:<sp/>Qt<sp/>Software<sp/>Information<sp/>(qt-info@nokia.com)</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="6"><highlight class="comment">**<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>tools<sp/>applications<sp/>of<sp/>the<sp/>Qt<sp/>Toolkit.</highlight></codeline>
+<codeline lineno="7"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="8"><highlight class="comment">**<sp/>$QT_BEGIN_LICENSE:LGPL$</highlight></codeline>
+<codeline lineno="9"><highlight class="comment">**<sp/>Commercial<sp/>Usage</highlight></codeline>
+<codeline lineno="10"><highlight class="comment">**<sp/>Licensees<sp/>holding<sp/>valid<sp/>Qt<sp/>Commercial<sp/>licenses<sp/>may<sp/>use<sp/>this<sp/>file<sp/>in</highlight></codeline>
+<codeline lineno="11"><highlight class="comment">**<sp/>accordance<sp/>with<sp/>the<sp/>Qt<sp/>Commercial<sp/>License<sp/>Agreement<sp/>provided<sp/>with<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment">**<sp/>Software<sp/>or,<sp/>alternatively,<sp/>in<sp/>accordance<sp/>with<sp/>the<sp/>terms<sp/>contained<sp/>in</highlight></codeline>
+<codeline lineno="13"><highlight class="comment">**<sp/>a<sp/>written<sp/>agreement<sp/>between<sp/>you<sp/>and<sp/>Nokia.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="15"><highlight class="comment">**<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public<sp/>License<sp/>Usage</highlight></codeline>
+<codeline lineno="16"><highlight class="comment">**<sp/>Alternatively,<sp/>this<sp/>file<sp/>may<sp/>be<sp/>used<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser</highlight></codeline>
+<codeline lineno="17"><highlight class="comment">**<sp/>General<sp/>Public<sp/>License<sp/>version<sp/>2.1<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software</highlight></codeline>
+<codeline lineno="18"><highlight class="comment">**<sp/>Foundation<sp/>and<sp/>appearing<sp/>in<sp/>the<sp/>file<sp/>LICENSE.LGPL<sp/>included<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="19"><highlight class="comment">**<sp/>packaging<sp/>of<sp/>this<sp/>file.<sp/><sp/>Please<sp/>review<sp/>the<sp/>following<sp/>information<sp/>to</highlight></codeline>
+<codeline lineno="20"><highlight class="comment">**<sp/>ensure<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public<sp/>License<sp/>version<sp/>2.1<sp/>requirements</highlight></codeline>
+<codeline lineno="21"><highlight class="comment">**<sp/>will<sp/>be<sp/>met:<sp/>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="23"><highlight class="comment">**<sp/>In<sp/>addition,<sp/>as<sp/>a<sp/>special<sp/>exception,<sp/>Nokia<sp/>gives<sp/>you<sp/>certain</highlight></codeline>
+<codeline lineno="24"><highlight class="comment">**<sp/>additional<sp/>rights.<sp/>These<sp/>rights<sp/>are<sp/>described<sp/>in<sp/>the<sp/>Nokia<sp/>Qt<sp/>LGPL</highlight></codeline>
+<codeline lineno="25"><highlight class="comment">**<sp/>Exception<sp/>version<sp/>1.0,<sp/>included<sp/>in<sp/>the<sp/>file<sp/>LGPL_EXCEPTION.txt<sp/>in<sp/>this</highlight></codeline>
+<codeline lineno="26"><highlight class="comment">**<sp/>package.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="28"><highlight class="comment">**<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>Usage</highlight></codeline>
+<codeline lineno="29"><highlight class="comment">**<sp/>Alternatively,<sp/>this<sp/>file<sp/>may<sp/>be<sp/>used<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU</highlight></codeline>
+<codeline lineno="30"><highlight class="comment">**<sp/>General<sp/>Public<sp/>License<sp/>version<sp/>3.0<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software</highlight></codeline>
+<codeline lineno="31"><highlight class="comment">**<sp/>Foundation<sp/>and<sp/>appearing<sp/>in<sp/>the<sp/>file<sp/>LICENSE.GPL<sp/>included<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="32"><highlight class="comment">**<sp/>packaging<sp/>of<sp/>this<sp/>file.<sp/><sp/>Please<sp/>review<sp/>the<sp/>following<sp/>information<sp/>to</highlight></codeline>
+<codeline lineno="33"><highlight class="comment">**<sp/>ensure<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>version<sp/>3.0<sp/>requirements<sp/>will<sp/>be</highlight></codeline>
+<codeline lineno="34"><highlight class="comment">**<sp/>met:<sp/>http://www.gnu.org/copyleft/gpl.html.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="36"><highlight class="comment">**<sp/>If<sp/>you<sp/>are<sp/>unsure<sp/>which<sp/>license<sp/>is<sp/>appropriate<sp/>for<sp/>your<sp/>use,<sp/>please</highlight></codeline>
+<codeline lineno="37"><highlight class="comment">**<sp/>contact<sp/>the<sp/>sales<sp/>department<sp/>at<sp/>qt-sales@nokia.com.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment">**<sp/>$QT_END_LICENSE$</highlight></codeline>
+<codeline lineno="39"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="40"><highlight class="comment">****************************************************************************/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="qtgradientview_8h" kindref="compound">qtgradientview.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="qtgradientmanager_8h" kindref="compound">qtgradientmanager.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="qtgradientdialog_8h" kindref="compound">qtgradientdialog.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="qtgradientutils_8h" kindref="compound">qtgradientutils.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;QtGui/QPainter&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;QtGui/QMessageBox&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;QtGui/QClipboard&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal">QT_BEGIN_NAMESPACE</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52" refid="classQtGradientView_1a29d1f0425f43e0b41f15a2dead7479c1" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classQtGradientView_1a29d1f0425f43e0b41f15a2dead7479c1" kindref="member">QtGradientView::slotGradientAdded</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QGradient<sp/>&amp;gradient)</highlight></codeline>
+<codeline lineno="53"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>QListWidgetItem<sp/>*item<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>QListWidgetItem(<ref refid="classQtGradientUtils_1a4af9b6523065a5a5e78c9f6d87f85f6f" kindref="member">QtGradientUtils::gradientPixmap</ref>(gradient),<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>item-&gt;setToolTip(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>item-&gt;setSizeHint(QSize(72,<sp/>84));</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>item-&gt;setFlags(item-&gt;flags()<sp/>|<sp/>Qt::ItemIsEditable);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a3b22a604f8188834deca84a8b0f543b5" kindref="member">m_idToItem</ref>[<ref refid="AdaStatement_8C_1a251415ca06792d60d2f2b16097139a68" kindref="member">id</ref>]<sp/>=<sp/>item;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a89e9712a92264e1072b57a580bd0efb6" kindref="member">m_itemToId</ref>[item]<sp/>=<sp/><ref refid="AdaStatement_8C_1a251415ca06792d60d2f2b16097139a68" kindref="member">id</ref>;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63" refid="classQtGradientView_1aafd59670bc60d189bc58a7a80ee454e1" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classQtGradientView_1aafd59670bc60d189bc58a7a80ee454e1" kindref="member">QtGradientView::slotGradientRenamed</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;newId)</highlight></codeline>
+<codeline lineno="64"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="classQtGradientView_1a3b22a604f8188834deca84a8b0f543b5" kindref="member">m_idToItem</ref>.contains(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">))</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>QListWidgetItem<sp/>*item<sp/>=<sp/><ref refid="classQtGradientView_1a3b22a604f8188834deca84a8b0f543b5" kindref="member">m_idToItem</ref>.value(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>item-&gt;setText(newId);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>item-&gt;setToolTip(newId);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a89e9712a92264e1072b57a580bd0efb6" kindref="member">m_itemToId</ref>[item]<sp/>=<sp/>newId;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a3b22a604f8188834deca84a8b0f543b5" kindref="member">m_idToItem</ref>.remove(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a3b22a604f8188834deca84a8b0f543b5" kindref="member">m_idToItem</ref>[newId]<sp/>=<sp/>item;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76" refid="classQtGradientView_1a68eb45d75b8fddbb62357c3823ff33aa" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classQtGradientView_1a68eb45d75b8fddbb62357c3823ff33aa" kindref="member">QtGradientView::slotGradientChanged</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QGradient<sp/>&amp;newGradient)</highlight></codeline>
+<codeline lineno="77"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="classQtGradientView_1a3b22a604f8188834deca84a8b0f543b5" kindref="member">m_idToItem</ref>.contains(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">))</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>QListWidgetItem<sp/>*item<sp/>=<sp/><ref refid="classQtGradientView_1a3b22a604f8188834deca84a8b0f543b5" kindref="member">m_idToItem</ref>.value(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>item-&gt;setIcon(<ref refid="classQtGradientUtils_1a4af9b6523065a5a5e78c9f6d87f85f6f" kindref="member">QtGradientUtils::gradientPixmap</ref>(newGradient));</highlight></codeline>
+<codeline lineno="83"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85" refid="classQtGradientView_1a9cfaacb5965b85d98b3b459dc3a61b09" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classQtGradientView_1a9cfaacb5965b85d98b3b459dc3a61b09" kindref="member">QtGradientView::slotGradientRemoved</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="86"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="classQtGradientView_1a3b22a604f8188834deca84a8b0f543b5" kindref="member">m_idToItem</ref>.contains(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">))</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>QListWidgetItem<sp/>*item<sp/>=<sp/><ref refid="classQtGradientView_1a3b22a604f8188834deca84a8b0f543b5" kindref="member">m_idToItem</ref>.value(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>item;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a89e9712a92264e1072b57a580bd0efb6" kindref="member">m_itemToId</ref>.remove(item);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a3b22a604f8188834deca84a8b0f543b5" kindref="member">m_idToItem</ref>.remove(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96" refid="classQtGradientView_1a6b3149ae9b6e5a43cbb59475e6609a03" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classQtGradientView_1a6b3149ae9b6e5a43cbb59475e6609a03" kindref="member">QtGradientView::slotNewGradient</ref>()</highlight></codeline>
+<codeline lineno="97"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ok;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>QListWidgetItem<sp/>*item<sp/>=<sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;currentItem();</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>QGradient<sp/>grad<sp/>=<sp/>QLinearGradient();</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(item)</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>grad<sp/>=<sp/><ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>-&gt;<ref refid="classQtGradientManager_1a61af6bb32f1b8c172b85d3db8fb85fae" kindref="member">gradients</ref>().value(<ref refid="classQtGradientView_1a89e9712a92264e1072b57a580bd0efb6" kindref="member">m_itemToId</ref>.value(item));</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>QGradient<sp/>gradient<sp/>=<sp/><ref refid="classQtGradientDialog_1a4af7363ffd3c5ff68f20a1ca4f8d5560" kindref="member">QtGradientDialog::getGradient</ref>(&amp;ok,<sp/>grad,<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!ok)</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>QString<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal"><sp/>=<sp/><ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>-&gt;<ref refid="classQtGradientManager_1aa3c75502cb81be78cab98939dfd88456" kindref="member">addGradient</ref>(tr(</highlight><highlight class="stringliteral">&quot;Grad&quot;</highlight><highlight class="normal">),<sp/>gradient);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;setCurrentItem(<ref refid="classQtGradientView_1a3b22a604f8188834deca84a8b0f543b5" kindref="member">m_idToItem</ref>.value(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="109"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111" refid="classQtGradientView_1abac03ea67e981d6cdca4cc10e849f632" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classQtGradientView_1abac03ea67e981d6cdca4cc10e849f632" kindref="member">QtGradientView::slotEditGradient</ref>()</highlight></codeline>
+<codeline lineno="112"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ok;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>QListWidgetItem<sp/>*item<sp/>=<sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;currentItem();</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!item)</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal"><sp/>=<sp/><ref refid="classQtGradientView_1a89e9712a92264e1072b57a580bd0efb6" kindref="member">m_itemToId</ref>.value(item);</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>QGradient<sp/>grad<sp/>=<sp/><ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>-&gt;<ref refid="classQtGradientManager_1a61af6bb32f1b8c172b85d3db8fb85fae" kindref="member">gradients</ref>().value(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>QGradient<sp/>gradient<sp/>=<sp/><ref refid="classQtGradientDialog_1a4af7363ffd3c5ff68f20a1ca4f8d5560" kindref="member">QtGradientDialog::getGradient</ref>(&amp;ok,<sp/>grad,<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!ok)</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>-&gt;<ref refid="classQtGradientManager_1a0c63a451f531799bad0822629cd66825" kindref="member">changeGradient</ref>(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/>gradient);</highlight></codeline>
+<codeline lineno="125"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127" refid="classQtGradientView_1ad7ee8d07cd6018c1be7963eff2fbbc18" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classQtGradientView_1ad7ee8d07cd6018c1be7963eff2fbbc18" kindref="member">QtGradientView::slotRemoveGradient</ref>()</highlight></codeline>
+<codeline lineno="128"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/>QListWidgetItem<sp/>*item<sp/>=<sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;currentItem();</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!item)</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(QMessageBox::question(</highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>tr(</highlight><highlight class="stringliteral">&quot;Remove<sp/>Gradient&quot;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tr(</highlight><highlight class="stringliteral">&quot;Are<sp/>you<sp/>sure<sp/>you<sp/>want<sp/>to<sp/>remove<sp/>the<sp/>selected<sp/>gradient?&quot;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>QMessageBox::Yes<sp/>|<sp/>QMessageBox::Cancel,<sp/>QMessageBox::Cancel)<sp/>!=<sp/>QMessageBox::Yes)</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal"><sp/>=<sp/><ref refid="classQtGradientView_1a89e9712a92264e1072b57a580bd0efb6" kindref="member">m_itemToId</ref>.value(item);</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>-&gt;<ref refid="classQtGradientManager_1a2b3d28f739260fdd2240dc8a38d4a259" kindref="member">removeGradient</ref>(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="140"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142" refid="classQtGradientView_1ad7ad31f7b925208e95f1832f9d86ee0a" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classQtGradientView_1ad7ad31f7b925208e95f1832f9d86ee0a" kindref="member">QtGradientView::slotRenameGradient</ref>()</highlight></codeline>
+<codeline lineno="143"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>QListWidgetItem<sp/>*item<sp/>=<sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;currentItem();</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!item)</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;editItem(item);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151" refid="classQtGradientView_1a33fac33871770dc8f6c5b5c2644d653a" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classQtGradientView_1ad7ad31f7b925208e95f1832f9d86ee0a" kindref="member">QtGradientView::slotRenameGradient</ref>(QListWidgetItem<sp/>*item)</highlight></codeline>
+<codeline lineno="152"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!item)</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal"><sp/>=<sp/><ref refid="classQtGradientView_1a89e9712a92264e1072b57a580bd0efb6" kindref="member">m_itemToId</ref>.value(item);</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>-&gt;<ref refid="classQtGradientManager_1a873c30a097457583940bafbbdd2a4aca" kindref="member">renameGradient</ref>(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/>item-&gt;text());</highlight></codeline>
+<codeline lineno="158"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160" refid="classQtGradientView_1ac6c7614fb2d79fa764383bcaf7a0612b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classQtGradientView_1ac6c7614fb2d79fa764383bcaf7a0612b" kindref="member">QtGradientView::slotCurrentItemChanged</ref>(QListWidgetItem<sp/>*item)</highlight></codeline>
+<codeline lineno="161"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1ab4cdc72570a252a72becf23b022e00ed" kindref="member">m_editAction</ref>-&gt;setEnabled(item);</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a0abd61c376d415ecda39ffcc6c69755c" kindref="member">m_renameAction</ref>-&gt;setEnabled(item);</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1aac5e1aca61d4268110b1f15576878b61" kindref="member">m_removeAction</ref>-&gt;setEnabled(item);</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>emit<sp/><ref refid="classQtGradientView_1ab1d2dd844637907504aae2ed78373cc2" kindref="member">currentGradientChanged</ref>(<ref refid="classQtGradientView_1a89e9712a92264e1072b57a580bd0efb6" kindref="member">m_itemToId</ref>.value(item));</highlight></codeline>
+<codeline lineno="166"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168" refid="classQtGradientView_1a9a847f471487e589ad52a9cef86e7ba0" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classQtGradientView_1a9a847f471487e589ad52a9cef86e7ba0" kindref="member">QtGradientView::slotGradientActivated</ref>(QListWidgetItem<sp/>*item)</highlight></codeline>
+<codeline lineno="169"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal"><sp/>=<sp/><ref refid="classQtGradientView_1a89e9712a92264e1072b57a580bd0efb6" kindref="member">m_itemToId</ref>.value(item);</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">.isEmpty())</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>emit<sp/><ref refid="classQtGradientView_1af316f013df2e85d006bedc6a686fa57f" kindref="member">gradientActivated</ref>(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="173"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175" refid="classQtGradientView_1afcfb25644d6c067a24a12a8ea930e2eb" refkind="member"><highlight class="normal"><ref refid="classQtGradientView_1afcfb25644d6c067a24a12a8ea930e2eb" kindref="member">QtGradientView::QtGradientView</ref>(QWidget<sp/>*parent)</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>QWidget(parent)</highlight></codeline>
+<codeline lineno="177"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.setupUi(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;setViewMode(QListView::IconMode);</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;setMovement(QListView::Static);</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;setTextElideMode(Qt::ElideRight);</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;setResizeMode(QListWidget::Adjust);</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;setIconSize(QSize(64,<sp/>64));</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;setEditTriggers(QAbstractItemView::NoEditTriggers);</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/>QPalette<sp/>pal<sp/>=<sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;viewport()-&gt;palette();</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pixSize<sp/>=<sp/>18;</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/>QPixmap<sp/>pm(2<sp/>*<sp/>pixSize,<sp/>2<sp/>*<sp/>pixSize);</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/>QColor<sp/>c1<sp/>=<sp/>palette().color(QPalette::Midlight);</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/>QColor<sp/>c2<sp/>=<sp/>palette().color(QPalette::Dark);</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/>QPainter<sp/>pmp(&amp;pm);</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/>pmp.fillRect(0,<sp/>0,<sp/>pixSize,<sp/>pixSize,<sp/>c1);</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/>pmp.fillRect(pixSize,<sp/>pixSize,<sp/>pixSize,<sp/>pixSize,<sp/>c1);</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/>pmp.fillRect(0,<sp/>pixSize,<sp/>pixSize,<sp/>pixSize,<sp/>c2);</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/>pmp.fillRect(pixSize,<sp/>0,<sp/>pixSize,<sp/>pixSize,<sp/>c2);</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/>pal.setBrush(QPalette::Base,<sp/>QBrush(pm));</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;viewport()-&gt;setPalette(pal);</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/>connect(<ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget,<sp/>SIGNAL(itemDoubleClicked(QListWidgetItem<sp/>*)),<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>SLOT(<ref refid="classQtGradientView_1a9a847f471487e589ad52a9cef86e7ba0" kindref="member">slotGradientActivated</ref>(QListWidgetItem<sp/>*)));</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/>connect(<ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget,<sp/>SIGNAL(itemChanged(QListWidgetItem<sp/>*)),<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>SLOT(<ref refid="classQtGradientView_1ad7ad31f7b925208e95f1832f9d86ee0a" kindref="member">slotRenameGradient</ref>(QListWidgetItem<sp/>*)));</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/>connect(<ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget,<sp/>SIGNAL(currentItemChanged(QListWidgetItem<sp/>*,<sp/>QListWidgetItem<sp/>*)),<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>SLOT(<ref refid="classQtGradientView_1ac6c7614fb2d79fa764383bcaf7a0612b" kindref="member">slotCurrentItemChanged</ref>(QListWidgetItem<sp/>*)));</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a7e9aec41544097be2c66219cfb7d8a07" kindref="member">m_newAction</ref><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>QAction(QIcon(QLatin1String(</highlight><highlight class="stringliteral">&quot;:/trolltech/qtgradienteditor/images/plus.png&quot;</highlight><highlight class="normal">)),<sp/>tr(</highlight><highlight class="stringliteral">&quot;New...&quot;</highlight><highlight class="normal">),<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1ab4cdc72570a252a72becf23b022e00ed" kindref="member">m_editAction</ref><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>QAction(QIcon(QLatin1String(</highlight><highlight class="stringliteral">&quot;:/trolltech/qtgradienteditor/images/edit.png&quot;</highlight><highlight class="normal">)),<sp/>tr(</highlight><highlight class="stringliteral">&quot;Edit...&quot;</highlight><highlight class="normal">),<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a0abd61c376d415ecda39ffcc6c69755c" kindref="member">m_renameAction</ref><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>QAction(tr(</highlight><highlight class="stringliteral">&quot;Rename&quot;</highlight><highlight class="normal">),<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1aac5e1aca61d4268110b1f15576878b61" kindref="member">m_removeAction</ref><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>QAction(QIcon(QLatin1String(</highlight><highlight class="stringliteral">&quot;:/trolltech/qtgradienteditor/images/minus.png&quot;</highlight><highlight class="normal">)),<sp/>tr(</highlight><highlight class="stringliteral">&quot;Remove&quot;</highlight><highlight class="normal">),<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/>connect(<ref refid="classQtGradientView_1a7e9aec41544097be2c66219cfb7d8a07" kindref="member">m_newAction</ref>,<sp/>SIGNAL(triggered()),<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>SLOT(<ref refid="classQtGradientView_1a6b3149ae9b6e5a43cbb59475e6609a03" kindref="member">slotNewGradient</ref>()));</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/>connect(<ref refid="classQtGradientView_1ab4cdc72570a252a72becf23b022e00ed" kindref="member">m_editAction</ref>,<sp/>SIGNAL(triggered()),<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>SLOT(<ref refid="classQtGradientView_1abac03ea67e981d6cdca4cc10e849f632" kindref="member">slotEditGradient</ref>()));</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/>connect(<ref refid="classQtGradientView_1aac5e1aca61d4268110b1f15576878b61" kindref="member">m_removeAction</ref>,<sp/>SIGNAL(triggered()),<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>SLOT(<ref refid="classQtGradientView_1ad7ee8d07cd6018c1be7963eff2fbbc18" kindref="member">slotRemoveGradient</ref>()));</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/>connect(<ref refid="classQtGradientView_1a0abd61c376d415ecda39ffcc6c69755c" kindref="member">m_renameAction</ref>,<sp/>SIGNAL(triggered()),<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>SLOT(<ref refid="classQtGradientView_1ad7ad31f7b925208e95f1832f9d86ee0a" kindref="member">slotRenameGradient</ref>()));</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;addAction(<ref refid="classQtGradientView_1a7e9aec41544097be2c66219cfb7d8a07" kindref="member">m_newAction</ref>);</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;addAction(<ref refid="classQtGradientView_1ab4cdc72570a252a72becf23b022e00ed" kindref="member">m_editAction</ref>);</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;addAction(<ref refid="classQtGradientView_1a0abd61c376d415ecda39ffcc6c69755c" kindref="member">m_renameAction</ref>);</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;addAction(<ref refid="classQtGradientView_1aac5e1aca61d4268110b1f15576878b61" kindref="member">m_removeAction</ref>);</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"></highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.newButton-&gt;setDefaultAction(<ref refid="classQtGradientView_1a7e9aec41544097be2c66219cfb7d8a07" kindref="member">m_newAction</ref>);</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.editButton-&gt;setDefaultAction(<ref refid="classQtGradientView_1ab4cdc72570a252a72becf23b022e00ed" kindref="member">m_editAction</ref>);</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.renameButton-&gt;setDefaultAction(<ref refid="classQtGradientView_1a0abd61c376d415ecda39ffcc6c69755c" kindref="member">m_renameAction</ref>);</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.removeButton-&gt;setDefaultAction(<ref refid="classQtGradientView_1aac5e1aca61d4268110b1f15576878b61" kindref="member">m_removeAction</ref>);</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;setContextMenuPolicy(Qt::ActionsContextMenu);</highlight></codeline>
+<codeline lineno="229"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"></highlight></codeline>
+<codeline lineno="231" refid="classQtGradientView_1a28a2f470f4a9fa216df03212ab3d6457" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classQtGradientView_1a28a2f470f4a9fa216df03212ab3d6457" kindref="member">QtGradientView::setGradientManager</ref>(<ref refid="classQtGradientManager" kindref="compound">QtGradientManager</ref><sp/>*manager)</highlight></codeline>
+<codeline lineno="232"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref><sp/>==<sp/>manager)</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"></highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>disconnect(<ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>,<sp/>SIGNAL(gradientAdded(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QGradient<sp/>&amp;)),</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>SLOT(<ref refid="classQtGradientView_1a29d1f0425f43e0b41f15a2dead7479c1" kindref="member">slotGradientAdded</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QGradient<sp/>&amp;)));</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>disconnect(<ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>,<sp/>SIGNAL(gradientRenamed(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;)),</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>SLOT(<ref refid="classQtGradientView_1aafd59670bc60d189bc58a7a80ee454e1" kindref="member">slotGradientRenamed</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;)));</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>disconnect(<ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>,<sp/>SIGNAL(gradientChanged(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QGradient<sp/>&amp;)),</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>SLOT(<ref refid="classQtGradientView_1a68eb45d75b8fddbb62357c3823ff33aa" kindref="member">slotGradientChanged</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QGradient<sp/>&amp;)));</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>disconnect(<ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>,<sp/>SIGNAL(gradientRemoved(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;)),</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>SLOT(<ref refid="classQtGradientView_1a9cfaacb5965b85d98b3b459dc3a61b09" kindref="member">slotGradientRemoved</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;)));</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"></highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;clear();</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a3b22a604f8188834deca84a8b0f543b5" kindref="member">m_idToItem</ref>.clear();</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a89e9712a92264e1072b57a580bd0efb6" kindref="member">m_itemToId</ref>.clear();</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"></highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref><sp/>=<sp/>manager;</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>)</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/>QMap&lt;QString,<sp/>QGradient&gt;<sp/>gradients<sp/>=<sp/><ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>-&gt;<ref refid="classQtGradientManager_1a61af6bb32f1b8c172b85d3db8fb85fae" kindref="member">gradients</ref>();</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/>QMapIterator&lt;QString,<sp/>QGradient&gt;<sp/>itGrad(gradients);</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(itGrad.hasNext())<sp/>{</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>itGrad.next();</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a29d1f0425f43e0b41f15a2dead7479c1" kindref="member">slotGradientAdded</ref>(itGrad.key(),<sp/>itGrad.value());</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/>connect(<ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>,<sp/>SIGNAL(gradientAdded(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QGradient<sp/>&amp;)),</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>SLOT(<ref refid="classQtGradientView_1a29d1f0425f43e0b41f15a2dead7479c1" kindref="member">slotGradientAdded</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QGradient<sp/>&amp;)));</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/>connect(<ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>,<sp/>SIGNAL(gradientRenamed(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;)),</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>SLOT(<ref refid="classQtGradientView_1aafd59670bc60d189bc58a7a80ee454e1" kindref="member">slotGradientRenamed</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;)));</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/>connect(<ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>,<sp/>SIGNAL(gradientChanged(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QGradient<sp/>&amp;)),</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>SLOT(<ref refid="classQtGradientView_1a68eb45d75b8fddbb62357c3823ff33aa" kindref="member">slotGradientChanged</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QGradient<sp/>&amp;)));</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/>connect(<ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>,<sp/>SIGNAL(gradientRemoved(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;)),</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>SLOT(<ref refid="classQtGradientView_1a9cfaacb5965b85d98b3b459dc3a61b09" kindref="member">slotGradientRemoved</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;)));</highlight></codeline>
+<codeline lineno="271"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"></highlight></codeline>
+<codeline lineno="273" refid="classQtGradientView_1a86cf3cf71302ab643fd68509b7730977" refkind="member"><highlight class="normal"><ref refid="classQtGradientManager" kindref="compound">QtGradientManager</ref><sp/>*<ref refid="classQtGradientView_1a86cf3cf71302ab643fd68509b7730977" kindref="member">QtGradientView::gradientManager</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="274"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classQtGradientView_1acec3e94285f5a8f80fd3297c6a1a6239" kindref="member">m_manager</ref>;</highlight></codeline>
+<codeline lineno="276"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"></highlight></codeline>
+<codeline lineno="278" refid="classQtGradientView_1aca75e30741b73e9fa925e06abdad77e6" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classQtGradientView_1aca75e30741b73e9fa925e06abdad77e6" kindref="member">QtGradientView::setCurrentGradient</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>QString<sp/>&amp;</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="279"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/>QListWidgetItem<sp/>*item<sp/>=<sp/><ref refid="classQtGradientView_1a3b22a604f8188834deca84a8b0f543b5" kindref="member">m_idToItem</ref>.value(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!item)</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;setCurrentItem(item);</highlight></codeline>
+<codeline lineno="285"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"></highlight></codeline>
+<codeline lineno="287" refid="classQtGradientView_1a566aa1b15c92b54c683212fdf178d84f" refkind="member"><highlight class="normal">QString<sp/><ref refid="classQtGradientView_1a566aa1b15c92b54c683212fdf178d84f" kindref="member">QtGradientView::currentGradient</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="288"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classQtGradientView_1a89e9712a92264e1072b57a580bd0efb6" kindref="member">m_itemToId</ref>.value(<ref refid="classQtGradientView_1a116aa971a0d9fcb2c9e33007650ed795" kindref="member">m_ui</ref>.listWidget-&gt;currentItem());</highlight></codeline>
+<codeline lineno="290"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"></highlight></codeline>
+<codeline lineno="292"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;moc_qtgradientview.cxx&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="293"><highlight class="normal"></highlight></codeline>
+<codeline lineno="294"><highlight class="normal">QT_END_NAMESPACE</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/roseExtensions/qtWidgets/QtGradientEditor/qtgradientview.cpp"/>
+  </compounddef>
+</doxygen>

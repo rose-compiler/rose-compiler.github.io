@@ -1,0 +1,264 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="frontend_2BinaryFormats_2Dwarf_8C" kind="file" language="C++">
+    <compoundname>Dwarf.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="45074">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="45070">
+        <label>/home/liao6/workspace/rose-github/src/frontend/BinaryFormats/Dwarf.C</label>
+        <link refid="frontend_2BinaryFormats_2Dwarf_8C"/>
+        <childnode refid="45071" relation="include">
+        </childnode>
+      </node>
+      <node id="45071">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="45072" relation="include">
+        </childnode>
+        <childnode refid="45073" relation="include">
+        </childnode>
+        <childnode refid="45074" relation="include">
+        </childnode>
+      </node>
+      <node id="45073">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="45072">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="45071" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*************************************************************************************************************************</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>DWARF</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>These<sp/>are<sp/>a<sp/>subset<sp/>(but<sp/>most<sp/>of)<sp/>the<sp/>possible<sp/>Dwarf<sp/>Tags,<sp/>I<sp/>[DQ]<sp/>have<sp/>skipped<sp/>some<sp/>of<sp/>the<sp/>architecture<sp/>specific<sp/>tags</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>(except<sp/>for<sp/>GNU).<sp/><sp/>There<sp/>are<sp/>about<sp/>63<sp/>new<sp/>IR<sp/>nodes<sp/>here.<sp/>These<sp/>are<sp/>kinds<sp/>of<sp/>language<sp/>constructs<sp/>that<sp/>are<sp/>stored<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>&quot;.debug_info&quot;<sp/>section<sp/>when<sp/>dwarf<sp/>debug<sp/>information<sp/>is<sp/>available<sp/>(generated<sp/>by<sp/>the<sp/>compiler)<sp/>in<sp/>the<sp/>binary<sp/>executable.</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*************************************************************************************************************************/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="sage3basic_8h" kindref="compound">sage3basic.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>*</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><ref refid="classSgAsmDwarfArrayType_1ab05478b04101ba9a5175454004fbb78d" kindref="member">SgAsmDwarfArrayType::get_children</ref>()</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_body<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_body<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>();</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p_body;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>*</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><ref refid="classSgAsmDwarfClassType_1a59cf9ec33c261627a36fb05f8d7c5b9b" kindref="member">SgAsmDwarfClassType::get_children</ref>()</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_body<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_body<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>();</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p_body;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>*</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><ref refid="classSgAsmDwarfEnumerationType_1a1052e3ee81cb2975daf0c8d5d139e0c8" kindref="member">SgAsmDwarfEnumerationType::get_children</ref>()</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_body<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_body<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>();</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p_body;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>*</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><ref refid="classSgAsmDwarfLexicalBlock_1ab812682404997928c555ce0a648a8e9e" kindref="member">SgAsmDwarfLexicalBlock::get_children</ref>()</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_body<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_body<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>();</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p_body;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>*</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><ref refid="classSgAsmDwarfCompilationUnit_1addc8533b48cc2001e12ccc5805fad9f8" kindref="member">SgAsmDwarfCompilationUnit::get_children</ref>()</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_language_constructs<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_language_constructs<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>();</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p_language_constructs;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>*</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><ref refid="classSgAsmDwarfStructureType_1aabe65331c964609080d42a120b581cb5" kindref="member">SgAsmDwarfStructureType::get_children</ref>()</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_body<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_body<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>();</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p_body;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>*</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><ref refid="classSgAsmDwarfSubroutineType_1ad1f78b79aff8dd7112ae89a6550fa367" kindref="member">SgAsmDwarfSubroutineType::get_children</ref>()</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_body<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_body<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>();</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p_body;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>*</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><ref refid="classSgAsmDwarfUnionType_1a01e3605d1165f2b5afeb1e010e4581b3" kindref="member">SgAsmDwarfUnionType::get_children</ref>()</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_body<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_body<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>();</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p_body;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>*</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><ref refid="classSgAsmDwarfCommonBlock_1a3d8abd0cf2821cf863b7bcb18ff80b73" kindref="member">SgAsmDwarfCommonBlock::get_children</ref>()</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_body<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_body<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>();</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p_body;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>*</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><ref refid="classSgAsmDwarfInlinedSubroutine_1a5867ac085f509cd9cfc5accabd3c3d76" kindref="member">SgAsmDwarfInlinedSubroutine::get_children</ref>()</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_body<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_body<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>();</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p_body;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>*</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><ref refid="classSgAsmDwarfSubprogram_1a5570b0baa93817945418051c09b3564c" kindref="member">SgAsmDwarfSubprogram::get_children</ref>()</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_body<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_body<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>();</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p_body;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>*</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><ref refid="classSgAsmDwarfNamespace_1aae359c0224dccc225b4c682f5987e888" kindref="member">SgAsmDwarfNamespace::get_children</ref>()</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_body<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_body<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>();</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p_body;</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><ref refid="classSgAsmDwarfConstructList" kindref="compound">SgAsmDwarfConstructList</ref>*</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><ref refid="classSgAsmDwarfConstruct_1a09ca250326e3d156eedc696b6309e6c7" kindref="member">SgAsmDwarfConstruct::get_children</ref>()</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>printf<sp/>(</highlight><highlight class="stringliteral">&quot;Warning:<sp/>base<sp/>class<sp/>of<sp/>virtual<sp/>function<sp/>called<sp/>by<sp/>mistake:<sp/>class_name<sp/>=<sp/>%s<sp/>\n&quot;</highlight><highlight class="normal">,class_name().c_str());</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><ref refid="sageContainer_8h_1a4248c8ce2a918bbe08b09e6d4c07f869" kindref="member">DwarfInstructionSourceMapReturnType</ref></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><ref refid="classSgAsmDwarfLineList_1a013688ec921e2c04eda6758d1eb955d6" kindref="member">SgAsmDwarfLineList::buildInstructionAddressSourcePositionMaps</ref>(<sp/><ref refid="classSgAsmDwarfCompilationUnit" kindref="compound">SgAsmDwarfCompilationUnit</ref>*<sp/>dwarf_cu<sp/>)</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>SgInstructionAddressSourcePositionMapPtrList*<sp/>instruction_source_code_map<sp/>=<sp/>new<sp/>SgInstructionAddressSourcePositionMapPtrList;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>SgSourcePositionInstructionAddressMapPtrList*<sp/>source_code_instruction_map<sp/>=<sp/>new<sp/>SgSourcePositionInstructionAddressMapPtrList;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Build<sp/>this<sp/>as<sp/>static<sp/>local<sp/>data</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="sageContainer_8h_1ad37e79f7011aad320cefe541e45b5f1f" kindref="member">SgInstructionAddressSourcePositionMapPtrList</ref>*<sp/>instruction_source_code_map<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>recomputeMap<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(instruction_source_code_map<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>recomputeMap<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>instruction_source_code_map<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="sageContainer_8h_1ad37e79f7011aad320cefe541e45b5f1f" kindref="member">SgInstructionAddressSourcePositionMapPtrList</ref>;</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(instruction_source_code_map<sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="sageContainer_8h_1ab2f10d63d373f9bcbb6393af20ab5a46" kindref="member">SgSourcePositionInstructionAddressMapPtrList</ref>*<sp/>source_code_instruction_map<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(source_code_instruction_map<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>source_code_instruction_map<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="sageContainer_8h_1ab2f10d63d373f9bcbb6393af20ab5a46" kindref="member">SgSourcePositionInstructionAddressMapPtrList</ref>;</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(source_code_instruction_map<sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(recomputeMap<sp/>==<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(dwarf_cu<sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(dwarf_cu-&gt;get_line_info()<sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgAsmDwarfLinePtrList<sp/>&amp;<sp/><ref refid="classSgAsmDwarfLineList_1a7d82e933dfa2c49988516a147246878f" kindref="member">line_list</ref><sp/>=<sp/>dwarf_cu-&gt;get_line_info()-&gt;get_line_list();</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>listSize<sp/>=<sp/>(int)<sp/><ref refid="classSgAsmDwarfLineList_1a7d82e933dfa2c49988516a147246878f" kindref="member">line_list</ref>.size();</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>listSize;<sp/>i++)</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Loop<sp/>over<sp/>each<sp/>of<sp/>the<sp/>entries<sp/>in<sp/>the<sp/>Dwarf<sp/>line<sp/>section.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="msvc__stdint_8h_1aec6fcb673ff035718c238c8c9d544c47" kindref="member">uint64_t</ref><sp/><ref refid="PTracer_8h_1a4f9ee38b610b3783ed5548aef7a82094" kindref="member">address</ref><sp/>=<sp/><ref refid="classSgAsmDwarfLineList_1a7d82e933dfa2c49988516a147246878f" kindref="member">line_list</ref>[i]-&gt;get_address();</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Note<sp/>that<sp/>file_id<sp/>values<sp/>are<sp/>already<sp/>in<sp/>terms<sp/>of<sp/>the<sp/>Sg_File_Info<sp/>maps</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>between<sp/>file<sp/>name<sp/>integers<sp/>and<sp/>file<sp/>name<sp/>strings.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>file_id<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="classSgAsmDwarfLineList_1a7d82e933dfa2c49988516a147246878f" kindref="member">line_list</ref>[i]-&gt;get_file_id();</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>line<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="classSgAsmDwarfLineList_1a7d82e933dfa2c49988516a147246878f" kindref="member">line_list</ref>[i]-&gt;get_line();</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>column<sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="classSgAsmDwarfLineList_1a7d82e933dfa2c49988516a147246878f" kindref="member">line_list</ref>[i]-&gt;get_column();</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>printf<sp/>(&quot;address<sp/>=<sp/>0x%lx<sp/>file_id<sp/>=<sp/>%d<sp/>line<sp/>=<sp/>%d<sp/><sp/>column<sp/>=<sp/>%d<sp/>\n&quot;,address,file_id,line,column);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="sageContainer_8h_1a80d762df433881f1b781fe1291c72b49" kindref="member">FileIdLineColumnFilePosition</ref><sp/>file_info(file_id,std::pair&lt;int,int&gt;(line,column));</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>This<sp/>works<sp/>for<sp/>stp::map,<sp/>but<sp/>for<sp/>std::multimap</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>instruction_source_code_map-&gt;operator[](address)<sp/><sp/><sp/>=<sp/>file_info;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>source_code_instruction_map-&gt;operator[](file_info)<sp/>=<sp/>address;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>This<sp/>is<sp/>the<sp/>std::multiset<sp/>version<sp/>...</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>instruction_source_code_map-&gt;insert(<ref refid="sageContainer_8h_1a31086a014f4331da27a61945185dab49" kindref="member">AddressFileIdLineColumnFilePositionPair</ref>(<ref refid="PTracer_8h_1a4f9ee38b610b3783ed5548aef7a82094" kindref="member">address</ref>,file_info));</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>source_code_instruction_map-&gt;insert(<ref refid="sageContainer_8h_1a30fc26e4436d72f1c4fd427ec52c30d2" kindref="member">FileIdLineColumnFilePositionAddressPair</ref>(file_info,<ref refid="PTracer_8h_1a4f9ee38b610b3783ed5548aef7a82094" kindref="member">address</ref>));</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>printf<sp/>(&quot;Maps<sp/>were<sp/>computed<sp/>previously<sp/>\n&quot;);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="sageContainer_8h_1a4248c8ce2a918bbe08b09e6d4c07f869" kindref="member">DwarfInstructionSourceMapReturnType</ref><sp/>returnValue(instruction_source_code_map,source_code_instruction_map);</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>returnValue;</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/frontend/BinaryFormats/Dwarf.C"/>
+  </compounddef>
+</doxygen>

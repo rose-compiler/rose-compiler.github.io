@@ -1,0 +1,27 @@
+var Color_8C =
+[
+    [ "ansiColorEscape", "Color_8C.html#a201496f729b9e721fb63570a1372d64b", null ],
+    [ "colorizationParser", "Color_8C.html#a04fa2d42850f4b58048f4bfdf684b1a2", null ],
+    [ "colorName", "Color_8C.html#ae99ad35b40ac313263757ed7e133fd49", null ],
+    [ "darken", "Color_8C.html#a2fec36a8fdc767152439d0972d7a1b2e", null ],
+    [ "fade", "Color_8C.html#a6ee86c2f430a025dc2e46235afde6f10", null ],
+    [ "invertBrightness", "Color_8C.html#a5bf749901d19d52a626e2a73aa4a949b", null ],
+    [ "lighten", "Color_8C.html#a6a637060e2e9f8c95974b9578c1276b9", null ],
+    [ "operator<<", "Color_8C.html#a0cf8c806db9b11ee4f4d467f185a156d", null ],
+    [ "operator<<", "Color_8C.html#a8bd248e0ad6c397684a950dadca6b2bc", null ],
+    [ "operator<<", "Color_8C.html#a0a654a4a2b75b0d1e38139d69a6bf6fa", null ],
+    [ "rgb_from_hue", "Color_8C.html#a5c324c196565dc9ba20eeba673aeddc1", null ],
+    [ "terminal", "Color_8C.html#a9c3bc0a217b391bf7b719cbdfced46d7", null ],
+    [ "toAnsi", "Color_8C.html#a42b93801ef237a6dfe8ade07a7292ed5", null ],
+    [ "toHtml", "Color_8C.html#aa1e54c32a30a2525d58fd664c229fbbf", null ],
+    [ "HSV_BLACK", "Color_8C.html#a7c2f9283397aa29a977e893822e1a0e2", null ],
+    [ "HSV_BLUE", "Color_8C.html#ae243e4d92d768dfb112b4957dcbd7b73", null ],
+    [ "HSV_CLEAR", "Color_8C.html#adfc8d012c6979388c44aebf44057f416", null ],
+    [ "HSV_CYAN", "Color_8C.html#a838d20606cc310083bbefe550a276da5", null ],
+    [ "HSV_GRAY", "Color_8C.html#a9c7be8a109df7859a847fc0b3ae4bd6c", null ],
+    [ "HSV_GREEN", "Color_8C.html#a2db5624b3735d2be6ff111ee70f68e68", null ],
+    [ "HSV_MAGENTA", "Color_8C.html#a703927d490b57b40055a69d1696cd8d9", null ],
+    [ "HSV_RED", "Color_8C.html#ab8eb67a2c13794c51ad8535c53ad2c1a", null ],
+    [ "HSV_WHITE", "Color_8C.html#a55a4a474fe845beb7f7dc019a3132c08", null ],
+    [ "HSV_YELLOW", "Color_8C.html#acdbb7da21309e5ffea5bef62ce30fb11", null ]
+];

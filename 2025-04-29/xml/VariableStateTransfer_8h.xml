@@ -1,0 +1,250 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="VariableStateTransfer_8h" kind="file" language="C++">
+    <compoundname>VariableStateTransfer.h</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="154348">
+        <label>/home/liao6/workspace/rose-github/src/midend/programAnalysis/genericDataflow/simpleAnalyses/VariableStateTransfer.h</label>
+        <link refid="VariableStateTransfer_8h"/>
+        <childnode refid="154349" relation="include">
+        </childnode>
+      </node>
+      <node id="154352">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="154349">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="154350" relation="include">
+        </childnode>
+        <childnode refid="154351" relation="include">
+        </childnode>
+        <childnode refid="154352" relation="include">
+        </childnode>
+      </node>
+      <node id="154351">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="154350">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="154349" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_SOURCE_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_VARIABLESTATETRANSFER_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_VARIABLESTATETRANSFER_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="dataflow_8h" kindref="compound">dataflow.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="latticeFull_8h" kindref="compound">latticeFull.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="liveDeadVarAnalysis_8h" kindref="compound">liveDeadVarAnalysis.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>LatticeType&gt;</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">VariableStateTransfer<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>IntraDFTransferVisitor</highlight></codeline>
+<codeline lineno="15"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>modified;</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>updateModified(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>latModified)<sp/>{<sp/>modified<sp/>=<sp/>latModified<sp/>||<sp/>modified;<sp/>}</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>debugLevel;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/>FiniteVarsExprsProductLattice*<sp/>prodLat;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/>LatticeType<sp/>*getLattice(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SgExpression<sp/>*sgn)<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>sgn<sp/>?<sp/>getLattice(SgExpr2Var(sgn))<sp/>:<sp/>NULL;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/>LatticeType<sp/>*getLattice(varID<sp/><ref refid="sageUtility_8h_1a5254bb18c9c4f7acad7baa8b9a2369a6" kindref="member">var</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">dynamic_cast&lt;</highlight><highlight class="normal">LatticeType<sp/>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(prodLat-&gt;getVarLattice(<ref refid="sageUtility_8h_1a5254bb18c9c4f7acad7baa8b9a2369a6" kindref="member">var</ref>));</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>getLattices(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SgBinaryOp<sp/>*sgn,<sp/>LatticeType*<sp/>&amp;arg1Lat,<sp/>LatticeType*<sp/>&amp;arg2Lat,<sp/>LatticeType*<sp/>&amp;resLat)<sp/>{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>arg1Lat<sp/>=<sp/>getLattice(sgn-&gt;get_lhs_operand());</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>arg2Lat<sp/>=<sp/>getLattice(sgn-&gt;get_rhs_operand());</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>resLat<sp/>=<sp/>getLattice(sgn);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(isSgCompoundAssignOp(sgn))<sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(resLat==NULL<sp/>&amp;&amp;<sp/>arg1Lat<sp/>!=<sp/>NULL)</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>resLat<sp/>=<sp/>arg1Lat;</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Dbg::dbg<sp/>&lt;&lt;<sp/>&quot;transfer<sp/>B,<sp/>resLat=&quot;&lt;&lt;resLat&lt;&lt;&quot;\n&quot;;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(arg1Lat<sp/>&amp;&amp;<sp/>arg2Lat<sp/>&amp;&amp;<sp/>resLat);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>getLattices(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SgUnaryOp<sp/>*sgn,<sp/><sp/>LatticeType*<sp/>&amp;arg1Lat,<sp/>LatticeType*<sp/>&amp;arg2Lat,<sp/>LatticeType*<sp/>&amp;resLat)<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>arg1Lat<sp/>=<sp/>getLattice(sgn-&gt;get_operand());</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>resLat<sp/>=<sp/>getLattice(sgn);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Unary<sp/>Update</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(isSgMinusMinusOp(sgn)<sp/>||<sp/>isSgPlusPlusOp(sgn))<sp/>{</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>arg2Lat<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>LatticeType(1);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Dbg::dbg<sp/>&lt;&lt;<sp/>&quot;res=&quot;&lt;&lt;res.str()&lt;&lt;&quot;<sp/>arg1=&quot;&lt;&lt;arg1.str()&lt;&lt;&quot;<sp/>arg1Lat=&quot;&lt;&lt;arg1Lat&lt;&lt;&quot;,<sp/>arg2Lat=&quot;&lt;&lt;arg2Lat&lt;&lt;&quot;\n&quot;;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Dbg::dbg<sp/>&lt;&lt;<sp/>&quot;transfer<sp/>B,<sp/>resLat=&quot;&lt;&lt;resLat&lt;&lt;&quot;\n&quot;;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(arg1Lat<sp/>&amp;&amp;<sp/>arg2Lat<sp/>&amp;&amp;<sp/>resLat);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/>VariableStateTransfer(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Function&amp;<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>DataflowNode&amp;<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>,<sp/>NodeState&amp;<sp/>state,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;Lattice*&gt;&amp;<sp/>dfInfo,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;debugLevel_)</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>IntraDFTransferVisitor(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>,<sp/>state,<sp/>dfInfo),<sp/>modified(false),<sp/>debugLevel(debugLevel_),<sp/>prodLat(dynamic_cast&lt;FiniteVarsExprsProductLattice*&gt;(*(dfInfo.<ref refid="namespaceRose_1_1builder_1aa5ccb0bd6ca707d263e3272cf9afc082a8d589afa4dfaeeed85fff5aa78e5ff6a" kindref="member">begin</ref>())))</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Dbg::dbg<sp/>&lt;&lt;<sp/>&quot;transfer<sp/>A<sp/>prodLat=&quot;&lt;&lt;prodLat&lt;&lt;&quot;=&quot;&lt;&lt;prodLat-&gt;str(&quot;<sp/><sp/><sp/><sp/>&quot;)&lt;&lt;&quot;\n&quot;;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Make<sp/>sure<sp/>that<sp/>all<sp/>the<sp/>lattices<sp/>are<sp/>initialized</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//prodLat-&gt;initialize();</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;Lattice*&gt;&amp;<sp/>lattices<sp/>=<sp/>prodLat-&gt;getLattices();</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(std::vector&lt;Lattice*&gt;::const_iterator<sp/>it<sp/>=<sp/>lattices.begin();<sp/>it!=lattices.end();<sp/>it++)</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>(dynamic_cast&lt;LatticeType<sp/>*&gt;(*it))-&gt;<ref refid="ASTeval_8h_1a18a80089fe72841079e7993f0e8291f0" kindref="member">initialize</ref>();</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>visit(SgAssignOp<sp/>*sgn)</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>LatticeType<sp/>*lhsLat,<sp/>*rhsLat,<sp/>*resLat;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>getLattices(sgn,<sp/>lhsLat,<sp/>rhsLat,<sp/>resLat);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(debugLevel&gt;=1)<sp/>{</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(resLat)<sp/>Dbg::dbg<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;resLat=\n<sp/><sp/><sp/><sp/>&quot;</highlight><highlight class="normal">&lt;&lt;resLat-&gt;str(</highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/>&quot;</highlight><highlight class="normal">)&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(lhsLat)<sp/>Dbg::dbg<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;lhsLat=\n<sp/><sp/><sp/><sp/>&quot;</highlight><highlight class="normal">&lt;&lt;lhsLat-&gt;str(</highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/>&quot;</highlight><highlight class="normal">)&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(rhsLat)<sp/>Dbg::dbg<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;rhsLat=\n<sp/><sp/><sp/><sp/>&quot;</highlight><highlight class="normal">&lt;&lt;rhsLat-&gt;str(</highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/>&quot;</highlight><highlight class="normal">)&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Copy<sp/>the<sp/>lattice<sp/>of<sp/>the<sp/>right-hand-side<sp/>to<sp/>both<sp/>the<sp/>left-hand-side<sp/>variable<sp/>and<sp/>to<sp/>the<sp/>assignment<sp/>expression<sp/>itself</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(resLat)<sp/></highlight><highlight class="comment">//<sp/>If<sp/>the<sp/>left-hand-side<sp/>contains<sp/>a<sp/>live<sp/>expression<sp/>or<sp/>variable</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/>resLat-&gt;copy(rhsLat);<sp/>modified<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(lhsLat)<sp/></highlight><highlight class="comment">//<sp/>If<sp/>the<sp/>left-hand-side<sp/>contains<sp/>a<sp/>live<sp/>expression<sp/>or<sp/>variable</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/>lhsLat-&gt;copy(rhsLat);<sp/>modified<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>visit(SgAssignInitializer<sp/>*sgn)</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>LatticeType*<sp/>asgnLat<sp/>=<sp/>getLattice(sgn-&gt;get_operand());</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>LatticeType*<sp/>resLat<sp/>=<sp/>getLattice(sgn);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(debugLevel&gt;=1)<sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(asgnLat)<sp/>Dbg::dbg<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;asgnLat=<sp/><sp/><sp/><sp/>&quot;</highlight><highlight class="normal">&lt;&lt;asgnLat-&gt;str(</highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/>&quot;</highlight><highlight class="normal">)&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(resLat)<sp/>Dbg::dbg<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;resLat=<sp/><sp/><sp/><sp/>&quot;</highlight><highlight class="normal">&lt;&lt;resLat-&gt;str(</highlight><highlight class="stringliteral">&quot;<sp/><sp/><sp/><sp/>&quot;</highlight><highlight class="normal">)&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>If<sp/>the<sp/>result<sp/>expression<sp/>is<sp/>live</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(resLat)<sp/>{<sp/>resLat-&gt;copy(asgnLat);<sp/>modified<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>XXX:<sp/>Right<sp/>now,<sp/>we<sp/>take<sp/>the<sp/>meet<sp/>of<sp/>all<sp/>of<sp/>the<sp/>elements<sp/>of<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>initializer.<sp/>This<sp/>could<sp/>be<sp/>enhanced<sp/>with<sp/>an<sp/>improved<sp/>memory</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>abstraction<sp/>to<sp/>treat<sp/>each<sp/>element<sp/>individually.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>visit(SgAggregateInitializer<sp/>*sgn)</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>LatticeType<sp/>*<ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref><sp/>=<sp/>getLattice(sgn);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="SageTreeBuilder_8h_1a3e7ca563887e794ecb5b17cc99a1c0d1" kindref="member">SgExpressionPtrList</ref><sp/>&amp;inits<sp/>=<sp/>sgn-&gt;get_initializers()-&gt;get_expressions();</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(inits.size()<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref>-&gt;copy(getLattice(inits[0]));</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>modified<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>1;<sp/>i<sp/>&lt;<sp/>inits.size();<sp/>++i)</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref>-&gt;meetUpdate(getLattice(inits[i]));</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>XXX:<sp/>This<sp/>needs<sp/>to<sp/>be<sp/>handled<sp/>by<sp/>an<sp/>inter-procedural<sp/>analysis</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>visit(SgConstructorInitializer*)</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/>{<sp/>}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>XXX:<sp/>I<sp/>don&apos;t<sp/>even<sp/>know<sp/>what<sp/>this<sp/>is<sp/>-<sp/>Phil</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>visit(SgDesignatedInitializer*)</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/>{<sp/>}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>visit(SgInitializedName<sp/>*initName)</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/>LatticeType*<sp/>varLat<sp/>=<sp/>getLattice(initName);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(varLat)<sp/>{</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>LatticeType*<sp/>initLat<sp/>=<sp/>getLattice(initName-&gt;get_initializer());</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>If<sp/>there<sp/>was<sp/>no<sp/>initializer,<sp/>leave<sp/>this<sp/>in<sp/>its<sp/>default<sp/>&apos;bottom&apos;<sp/>state</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(initLat)<sp/>{</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>varLat-&gt;copy(initLat);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>modified<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>visit(SgBinaryOp<sp/>*sgn)<sp/>{</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/>LatticeType<sp/>*lhs,<sp/>*rhs,<sp/>*<ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref>;</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>getLattices(sgn,<sp/>lhs,<sp/>rhs,<sp/><ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref>);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref>-&gt;copy(lhs);</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref>-&gt;meetUpdate(rhs);</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>modified<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>visit(SgCompoundAssignOp<sp/>*sgn)<sp/>{</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>LatticeType<sp/>*lhs,<sp/>*rhs,<sp/>*<ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref>;</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/>getLattices(sgn,<sp/>lhs,<sp/>rhs,<sp/><ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref>);</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(lhs)</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>updateModified(lhs-&gt;meetUpdate(rhs));</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Liveness<sp/>of<sp/>the<sp/>result<sp/>implies<sp/>liveness<sp/>of<sp/>LHS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref>-&gt;copy(lhs);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>modified<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>visit(SgCommaOpExp<sp/>*sgn)</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>LatticeType<sp/>*lhsLat,<sp/>*rhsLat,<sp/>*resLat;</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>getLattices(sgn,<sp/>lhsLat,<sp/>rhsLat,<sp/>resLat);</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(resLat)<sp/>{</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>resLat-&gt;copy(rhsLat);</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>modified<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>visit(SgConditionalExp<sp/>*sgn)</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/>LatticeType<sp/>*condLat<sp/>=<sp/>getLattice(sgn-&gt;get_conditional_exp()),</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*trueLat<sp/>=<sp/>getLattice(sgn-&gt;get_true_exp()),</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*falseLat<sp/>=<sp/>getLattice(sgn-&gt;get_false_exp()),</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*resLat<sp/>=<sp/>getLattice(sgn);</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Liveness<sp/>of<sp/>the<sp/>result<sp/>implies<sp/>liveness<sp/>of<sp/>the<sp/>input<sp/>expressions</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(resLat)<sp/>{</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>resLat-&gt;copy(condLat);</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>resLat-&gt;meetUpdate(trueLat);</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>resLat-&gt;meetUpdate(falseLat);</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>modified<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>visit(SgScopeOp<sp/>*)</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Documentation<sp/>says<sp/>this<sp/>is<sp/>no<sp/>longer<sp/>used,<sp/>so<sp/>explicitly<sp/>fail<sp/>if<sp/>we<sp/>see<sp/>it</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ABORT_8h_1a22a360d21e08f28d45bffc6e87d352c5" kindref="member">ROSE_ABORT</ref>();</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>visit(SgBitComplementOp<sp/>*sgn)</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/>LatticeType<sp/>*<ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref><sp/>=<sp/>getLattice(sgn);</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="AdaStatement_8C_1a7c39328288e192ee4f2373d13dd4e47c" kindref="member">res</ref>-&gt;copy(getLattice(sgn-&gt;get_operand()));</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>modified<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="204"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/genericDataflow/simpleAnalyses/VariableStateTransfer.h"/>
+  </compounddef>
+</doxygen>

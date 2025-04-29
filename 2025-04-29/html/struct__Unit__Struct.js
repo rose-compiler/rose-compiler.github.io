@@ -1,0 +1,28 @@
+var struct__Unit__Struct =
+[
+    [ "Can_Be_Main_Program", "struct__Unit__Struct.html#a81345c134444580d52a0c4b7ca4ffe76", null ],
+    [ "Compilation_Command_Line_Options", "struct__Unit__Struct.html#a7bfdcc446096b01dc41fec0e6342cd1a", null ],
+    [ "Compilation_Pragmas", "struct__Unit__Struct.html#ae39621ffca01d7f79ffab9be8301aa12", null ],
+    [ "Context_Clause_Elements", "struct__Unit__Struct.html#abd7f0f0658e817533ad9276654566a54", null ],
+    [ "Corresponding_Body", "struct__Unit__Struct.html#acdd9516c8186825a9fb095410791b0ea", null ],
+    [ "Corresponding_Children", "struct__Unit__Struct.html#a6680d98e86bc99f160af6b86675f3df2", null ],
+    [ "Corresponding_Declaration", "struct__Unit__Struct.html#a41d14026c82e1745a8cc19a06c4cda4b", null ],
+    [ "Corresponding_Parent_Declaration", "struct__Unit__Struct.html#ad06539016060764c3382baee7fc28d90", null ],
+    [ "Corresponding_Subunit_Parent_Body", "struct__Unit__Struct.html#a76e50edf6ff1700fec0c24e74fbc94ff", null ],
+    [ "Debug_Image", "struct__Unit__Struct.html#af3e21be3f76edf988f39750d9017bf31", null ],
+    [ "Exists", "struct__Unit__Struct.html#ad8bbc06845ffd024543f1b5a7e9807bb", null ],
+    [ "ID", "struct__Unit__Struct.html#a1a7580cdcc050a213994aa9ff2cd4b44", null ],
+    [ "Is_Body_Required", "struct__Unit__Struct.html#a528974b74b15b87d24c79ff9ba184869", null ],
+    [ "Is_Standard", "struct__Unit__Struct.html#aaccbbddaf051bce39578ea2e9112d123", null ],
+    [ "Object_Form", "struct__Unit__Struct.html#ac5dd3578c92f89ff2b9668bd48371415", null ],
+    [ "Object_Name", "struct__Unit__Struct.html#ac570e3ffa7996433de7cfcba1cb2613c", null ],
+    [ "Subunits", "struct__Unit__Struct.html#aa6267585ea9ce1ca7073baffeee41642", null ],
+    [ "Text_Form", "struct__Unit__Struct.html#a0af5b767270dd118d6c5f6cbd8963af6", null ],
+    [ "Text_Name", "struct__Unit__Struct.html#a813c0ff007fc37bd7a01107702f97c79", null ],
+    [ "Unique_Name", "struct__Unit__Struct.html#adf75c7cf2ce1e491435398b34ab29e28", null ],
+    [ "Unit_Class", "struct__Unit__Struct.html#abe700bc4e09ea14f9052fdfde98ac070", null ],
+    [ "Unit_Declaration", "struct__Unit__Struct.html#acdeb8095a79a795a8d1618efca3fa517", null ],
+    [ "Unit_Full_Name", "struct__Unit__Struct.html#ab707fbfea5a0ebe164e560ccece62dd6", null ],
+    [ "Unit_Kind", "struct__Unit__Struct.html#a057416ce13127ff34971966da8f87e49", null ],
+    [ "Unit_Origin", "struct__Unit__Struct.html#a1c259f6867a4f44f57e21b0c5013d6a2", null ]
+];

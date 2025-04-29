@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="classSgAsmIndirectRegisterExpression" kind="class" language="C++" prot="public">
+    <compoundname>SgAsmIndirectRegisterExpression</compoundname>
+    <basecompoundref refid="classSgAsmRegisterReferenceExpression" prot="public" virt="non-virtual">SgAsmRegisterReferenceExpression</basecompoundref>
+    <includes refid="SgAsmIndirectRegisterExpression_8h" local="no">SgAsmIndirectRegisterExpression.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classSgAsmIndirectRegisterExpression_1a5f3d502798152f2301aa560a0b021dd6" prot="public" static="no" mutable="no">
+        <type>Rose::BinaryAnalysis::RegisterDescriptor</type>
+        <definition>Rose::BinaryAnalysis::RegisterDescriptor SgAsmIndirectRegisterExpression::stride</definition>
+        <argsstring></argsstring>
+        <name>stride</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Register descriptor stride.</para><para>This is the &quot;stride&quot; referred to in the documentation for this class. This is not an actual register. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmIndirectRegisterExpression.h" line="22" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmIndirectRegisterExpression.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmIndirectRegisterExpression_1a1c0e5064c5d9c10aa9aaddb3619669ea" prot="public" static="no" mutable="no">
+        <type>Rose::BinaryAnalysis::RegisterDescriptor</type>
+        <definition>Rose::BinaryAnalysis::RegisterDescriptor SgAsmIndirectRegisterExpression::offset</definition>
+        <argsstring></argsstring>
+        <name>offset</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Register descriptor offset.</para><para>This is the &quot;offset&quot; referred to in the documentation for this class. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmIndirectRegisterExpression.h" line="28" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmIndirectRegisterExpression.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmIndirectRegisterExpression_1a65772c3dd285c1f4bb7ca6ee774b25b8" prot="public" static="no" mutable="no">
+        <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref></type>
+        <definition>size_t SgAsmIndirectRegisterExpression::index</definition>
+        <argsstring></argsstring>
+        <name>index</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Register descriptor index.</para><para>This is the &quot;index&quot; referred to in the documentation for this class. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmIndirectRegisterExpression.h" line="34" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmIndirectRegisterExpression.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmIndirectRegisterExpression_1a44bdbebcb14cfb97bb661dcc8ea72939" prot="public" static="no" mutable="no">
+        <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref></type>
+        <definition>size_t SgAsmIndirectRegisterExpression::modulus</definition>
+        <argsstring></argsstring>
+        <name>modulus</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Register descriptor modulus.</para><para>This is the &quot;modulus&quot; referred to in the documentation for this class. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmIndirectRegisterExpression.h" line="40" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmIndirectRegisterExpression.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Registers accessed indirectly.</para><para>An indirect register is a register whose descriptor is computed dynamically. The dynamic descriptor is computed by reading &quot;offset&quot; register to obtain an integral value and adding it to the integral &quot;index&quot; modulo the specified &quot;modulus&quot; to obtain an integer <emphasis>i</emphasis>. (These are all properties of this node.) Then, the final register descriptor is calculated by adding <emphasis>i</emphasis> times &quot;stride&quot; to the base register <ref refid="classSgAsmRegisterReferenceExpression_1ae273089ac11cf905311c63e62bcdfa11" kindref="member">SgAsmRegisterReferenceExpression::descriptor</ref>. The <emphasis>i</emphasis> times &quot;stride&quot; multiplies each member of &quot;stride&quot; by <emphasis>i</emphasis>, and addition of two register descriptors is defined as the pair-wise addition of their elements.</para><para>An example of an indirect register is x86 ST(1) which has base register &quot;st&quot;, stride={0,1,0,0}, offset register &quot;fpstatus_top&quot;, index is 1, and modulus is 8. Thus, the dynamically-computed register is:</para><para><programlisting><codeline><highlight class="normal">i<sp/>=<sp/>(read(&quot;fpstatus_top&quot;)<sp/>+<sp/>index)<sp/>%<sp/>modulo;</highlight></codeline>
+<codeline><highlight class="normal">result<sp/>=<sp/>descriptor(&quot;st&quot;)<sp/>+<sp/>{0,1,0,0}<sp/>*<sp/>i;</highlight></codeline>
+</programlisting> </para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="22346">
+        <label>SgAsmRegisterReferenceExpression</label>
+        <link refid="classSgAsmRegisterReferenceExpression"/>
+        <childnode refid="22347" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22345">
+        <label>SgAsmIndirectRegisterExpression</label>
+        <link refid="classSgAsmIndirectRegisterExpression"/>
+        <childnode refid="22346" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22347">
+        <label>SgAsmExpression</label>
+        <link refid="classSgAsmExpression"/>
+        <childnode refid="22348" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22348">
+        <label>SgAsmNode</label>
+        <link refid="classSgAsmNode"/>
+        <childnode refid="22349" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22349">
+        <label>SgNode</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="22357">
+        <label>SgAsmType</label>
+        <link refid="classSgAsmType"/>
+        <childnode refid="22353" relation="public-inheritance">
+        </childnode>
+        <childnode refid="22358" relation="usage">
+          <edgelabel>p_typeRegistry</edgelabel>
+        </childnode>
+      </node>
+      <node id="22355">
+        <label>Sawyer::Attribute::Storage&lt; SyncTag &gt;</label>
+        <link refid="classSawyer_1_1Attribute_1_1Storage"/>
+        <childnode refid="22356" relation="usage">
+          <edgelabel>values_</edgelabel>
+        </childnode>
+      </node>
+      <node id="22351">
+        <label>SgAsmRegisterReferenceExpression</label>
+        <link refid="classSgAsmRegisterReferenceExpression"/>
+        <childnode refid="22352" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22359">
+        <label>string</label>
+      </node>
+      <node id="22356">
+        <label>Sawyer::Container::Map&lt; Id, boost::any &gt;</label>
+        <link refid="classSawyer_1_1Container_1_1Map"/>
+      </node>
+      <node id="22358">
+        <label>Sawyer::Container::Map&lt; std::string, SgAsmType *&gt;</label>
+        <link refid="classSawyer_1_1Container_1_1Map"/>
+      </node>
+      <node id="22350">
+        <label>SgAsmIndirectRegisterExpression</label>
+        <link refid="classSgAsmIndirectRegisterExpression"/>
+        <childnode refid="22351" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22352">
+        <label>SgAsmExpression</label>
+        <link refid="classSgAsmExpression"/>
+        <childnode refid="22353" relation="public-inheritance">
+        </childnode>
+        <childnode refid="22357" relation="usage">
+          <edgelabel>type</edgelabel>
+        </childnode>
+        <childnode refid="22359" relation="usage">
+          <edgelabel>comment</edgelabel>
+        </childnode>
+      </node>
+      <node id="22353">
+        <label>SgAsmNode</label>
+        <link refid="classSgAsmNode"/>
+        <childnode refid="22354" relation="public-inheritance">
+        </childnode>
+        <childnode refid="22355" relation="usage">
+          <edgelabel>attributes</edgelabel>
+        </childnode>
+      </node>
+      <node id="22354">
+        <label>SgNode</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmIndirectRegisterExpression.h" line="16" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmIndirectRegisterExpression.h" bodystart="16" bodyend="41"/>
+    <listofallmembers>
+      <member refid="classSgAsmRegisterReferenceExpression_1a83bc28b7dc5f49727619f3e443a6f7db" prot="public" virt="non-virtual"><scope>SgAsmIndirectRegisterExpression</scope><name>adjustment</name></member>
+      <member refid="classSgAsmExpression_1aad441ac95d114a277755b3dc11230f51" prot="public" virt="non-virtual"><scope>SgAsmIndirectRegisterExpression</scope><name>asSigned</name></member>
+      <member refid="classSgAsmExpression_1a775775438a84b10e18b437870013cb61" prot="public" virt="non-virtual"><scope>SgAsmIndirectRegisterExpression</scope><name>asUnsigned</name></member>
+      <member refid="classSgAsmNode_1a59e9db061aa74eeeda6dfc3d677a6bb7" prot="public" virt="non-virtual"><scope>SgAsmIndirectRegisterExpression</scope><name>attributes</name></member>
+      <member refid="classSgAsmExpression_1a81b56ac99884e5bfb0157ab81956ac35" prot="public" virt="non-virtual"><scope>SgAsmIndirectRegisterExpression</scope><name>comment</name></member>
+      <member refid="classSgAsmRegisterReferenceExpression_1ae273089ac11cf905311c63e62bcdfa11" prot="public" virt="non-virtual"><scope>SgAsmIndirectRegisterExpression</scope><name>descriptor</name></member>
+      <member refid="classSgAsmExpression_1ad134e89c0aa907bf29404c3c202a0d81" prot="public" virt="non-virtual"><scope>SgAsmIndirectRegisterExpression</scope><name>get_nBits</name></member>
+      <member refid="classSgAsmIndirectRegisterExpression_1a65772c3dd285c1f4bb7ca6ee774b25b8" prot="public" virt="non-virtual"><scope>SgAsmIndirectRegisterExpression</scope><name>index</name></member>
+      <member refid="classSgAsmIndirectRegisterExpression_1a44bdbebcb14cfb97bb661dcc8ea72939" prot="public" virt="non-virtual"><scope>SgAsmIndirectRegisterExpression</scope><name>modulus</name></member>
+      <member refid="classSgAsmIndirectRegisterExpression_1a1c0e5064c5d9c10aa9aaddb3619669ea" prot="public" virt="non-virtual"><scope>SgAsmIndirectRegisterExpression</scope><name>offset</name></member>
+      <member refid="classSgAsmIndirectRegisterExpression_1a5f3d502798152f2301aa560a0b021dd6" prot="public" virt="non-virtual"><scope>SgAsmIndirectRegisterExpression</scope><name>stride</name></member>
+      <member refid="classSgAsmExpression_1aca9bcfe2403b7e147dd54ffcfd66c5f2" prot="public" virt="virtual"><scope>SgAsmIndirectRegisterExpression</scope><name>toString</name></member>
+      <member refid="classSgAsmExpression_1adae8e8c8940511bd8deadbeed84b0026" prot="public" virt="non-virtual"><scope>SgAsmIndirectRegisterExpression</scope><name>type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

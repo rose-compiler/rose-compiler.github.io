@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="SmtCommandLine_8C" kind="file" language="C++">
+    <compoundname>SmtCommandLine.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="201180">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="201177">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="201178" relation="include">
+        </childnode>
+        <childnode refid="201179" relation="include">
+        </childnode>
+        <childnode refid="201180" relation="include">
+        </childnode>
+      </node>
+      <node id="201179">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="201176">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/SmtCommandLine.C</label>
+        <link refid="SmtCommandLine_8C"/>
+        <childnode refid="201177" relation="include">
+        </childnode>
+      </node>
+      <node id="201178">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="201177" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SmtCommandLine_8h" kindref="compound">Rose/BinaryAnalysis/SmtCommandLine.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SmtSolver_8h" kindref="compound">Rose/BinaryAnalysis/SmtSolver.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Escape_8h" kindref="compound">Rose/StringUtility/Escape.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SplitJoin_8h" kindref="compound">Rose/StringUtility/SplitJoin.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose" kindref="compound">Rose</ref><sp/>{</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">BinaryAnalysis<sp/>{</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal">listSmtSolverNames(std::ostream<sp/>&amp;out)<sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/>BinaryAnalysis::SmtSolver::Availability<sp/>solvers<sp/>=<sp/>BinaryAnalysis::SmtSolver::availability();</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>foundSolver<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>out<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;solver<sp/>\&quot;none\&quot;<sp/>is<sp/>available\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(BinaryAnalysis::SmtSolver::Availability::value_type<sp/>&amp;<ref refid="structnode" kindref="compound">node</ref>:<sp/>solvers)<sp/>{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;solver<sp/>\&quot;&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<ref refid="structnode" kindref="compound">node</ref>.first<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\&quot;<sp/>is<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;(<ref refid="structnode" kindref="compound">node</ref>.second?</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">:</highlight><highlight class="stringliteral">&quot;not<sp/>&quot;</highlight><highlight class="normal">)<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;available\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="structnode" kindref="compound">node</ref>.second)</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>foundSolver<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>foundSolver;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal">std::string</highlight></codeline>
+<codeline lineno="26"><highlight class="normal">validateSmtSolverName(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;name)<sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>BinaryAnalysis::SmtSolver::Availability<sp/>solvers<sp/>=<sp/>BinaryAnalysis::SmtSolver::availability();</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(solvers.find(name)<sp/>!=<sp/>solvers.end())</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;SMT<sp/>solver<sp/>\&quot;&quot;</highlight><highlight class="normal"><sp/>+<sp/><ref refid="namespaceRose_1_1StringUtility_1a2a9836b2467940ca49381e594b1a44f9" kindref="member">StringUtility::cEscape</ref>(name)<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;\&quot;<sp/>is<sp/>not<sp/>recognized&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal">std::string</highlight></codeline>
+<codeline lineno="34"><highlight class="normal">bestSmtSolverName()<sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref>;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BinaryAnalysis::SmtSolverPtr<sp/>&amp;solver<sp/>=<sp/>BinaryAnalysis::SmtSolver::bestAvailable())</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref><sp/>=<sp/>solver-&gt;name();</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref>;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal">checkSmtCommandLineArg(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;arg,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;listSwitch,<sp/>std::ostream<sp/>&amp;out)<sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="stringliteral">&quot;list&quot;</highlight><highlight class="normal"><sp/>==<sp/>arg)<sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>listSmtSolverNames(std::cout);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;solver<sp/>\&quot;best\&quot;<sp/>is<sp/>an<sp/>alias<sp/>for<sp/>\&quot;&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;bestSmtSolverName()<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>exit(0);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>==<sp/>arg<sp/>||<sp/></highlight><highlight class="stringliteral">&quot;none&quot;</highlight><highlight class="normal"><sp/>==<sp/>arg<sp/>||<sp/></highlight><highlight class="stringliteral">&quot;best&quot;</highlight><highlight class="normal"><sp/>==<sp/>arg)<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>no<sp/>solver</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>err<sp/>=<sp/>validateSmtSolverName(arg);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!err.empty())<sp/>{</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out<sp/>&lt;&lt;err<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!listSwitch.empty())</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;use<sp/>\&quot;&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;listSwitch<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\&quot;<sp/>to<sp/>get<sp/>a<sp/>list<sp/>of<sp/>supported<sp/>solvers.\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>exit(1);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal">std::string</highlight></codeline>
+<codeline lineno="61"><highlight class="normal">smtSolverDocumentationString(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;dfltValue)<sp/>{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">StringUtility;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>docstr<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Specifies<sp/>which<sp/>connection<sp/>is<sp/>used<sp/>to<sp/>interface<sp/>to<sp/>an<sp/>SMT<sp/>solver<sp/>for<sp/>analyses<sp/>that<sp/>don&apos;t<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;otherwise<sp/>specify<sp/>a<sp/>solver.<sp/>The<sp/>choices<sp/>are<sp/>names<sp/>of<sp/>solver<sp/>interfaces,<sp/>\&quot;none\&quot;<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;(or<sp/>the<sp/>empty<sp/>string),<sp/>\&quot;best\&quot;,<sp/>or<sp/>\&quot;list\&quot;.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>SmtSolver::Availability<sp/>solvers<sp/>=<sp/>SmtSolver::availability();</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/>enabled,<sp/>disabled;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SmtSolver::Availability::value_type<sp/>&amp;<ref refid="structnode" kindref="compound">node</ref>:<sp/>solvers)<sp/>{</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="structnode" kindref="compound">node</ref>.second)<sp/>{</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>enabled.push_back(</highlight><highlight class="stringliteral">&quot;\&quot;&quot;</highlight><highlight class="normal"><sp/>+<sp/><ref refid="namespaceRose_1_1StringUtility_1a2a9836b2467940ca49381e594b1a44f9" kindref="member">cEscape</ref>(<ref refid="structnode" kindref="compound">node</ref>.first)<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;\&quot;&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>disabled.push_back(</highlight><highlight class="stringliteral">&quot;\&quot;&quot;</highlight><highlight class="normal"><sp/>+<sp/><ref refid="namespaceRose_1_1StringUtility_1a2a9836b2467940ca49381e594b1a44f9" kindref="member">cEscape</ref>(<ref refid="structnode" kindref="compound">node</ref>.first)<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;\&quot;&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(enabled.empty())<sp/>{</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>docstr<sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;<sp/>ROSE<sp/>was<sp/>not<sp/>configured<sp/>with<sp/>any<sp/>SMT<sp/>solvers.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>docstr<sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;<sp/>The<sp/>following<sp/>solvers<sp/>are<sp/>available<sp/>in<sp/>this<sp/>configuration:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/><ref refid="namespaceRose_1_1StringUtility_1a6c20945433bddf1092f754ec248eb128" kindref="member">joinEnglish</ref>(enabled)<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!disabled.empty())<sp/>{</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>docstr<sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;<sp/>These<sp/>solvers<sp/>would<sp/>be<sp/>available,<sp/>but<sp/>were<sp/>not<sp/>configured:<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/><ref refid="namespaceRose_1_1StringUtility_1a6c20945433bddf1092f754ec248eb128" kindref="member">joinEnglish</ref>(disabled)<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>docstr<sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;<sp/>In<sp/>general,<sp/>solvers<sp/>ending<sp/>with<sp/>\&quot;-exe\&quot;<sp/>translate<sp/>the<sp/>ROSE<sp/>internal<sp/>representation<sp/>to<sp/>text,<sp/>send<sp/>the<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;text<sp/>to<sp/>a<sp/>solver<sp/>executable<sp/>program<sp/>which<sp/>then<sp/>parses<sp/>it<sp/>to<sp/>another<sp/>internal<sp/>representation,<sp/>solves,<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;converts<sp/>its<sp/>internal<sp/>representation<sp/>to<sp/>text,<sp/>which<sp/>ROSE<sp/>then<sp/>reads<sp/>and<sp/>parses.<sp/>These<sp/>\&quot;-exe\&quot;<sp/>parsers<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;are<sp/>therefore<sp/>quite<sp/>slow,<sp/>but<sp/>work<sp/>well<sp/>for<sp/>debugging.<sp/>On<sp/>the<sp/>other<sp/>hand,<sp/>the<sp/>\&quot;-lib\&quot;<sp/>parsers<sp/>use<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;a<sp/>solver<sp/>library<sp/>and<sp/>can<sp/>avoid<sp/>two<sp/>of<sp/>the<sp/>four<sp/>translation<sp/>steps,<sp/>but<sp/>don&apos;t<sp/>produce<sp/>much<sp/>debugging<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;output.<sp/>To<sp/>debug<sp/>solvers,<sp/>enable<sp/>the<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/><ref refid="rose-config_8C_1ad74b5ffc82ad5accdc2ab798a63a3a7c" kindref="member">SmtSolver::mlog</ref>.<ref refid="classSawyer_1_1Message_1_1Facility_1a9022de820229ae1fa978a944647281c8" kindref="member">name</ref>()<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;<sp/>diagnostic<sp/>facility<sp/>(see<sp/>@s{log}).&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>docstr<sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;<sp/>The<sp/>default<sp/>is<sp/>\&quot;&quot;</highlight><highlight class="normal"><sp/>+<sp/>dfltValue<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;\&quot;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="stringliteral">&quot;best&quot;</highlight><highlight class="normal"><sp/>==<sp/>dfltValue)<sp/>{</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(SmtSolverPtr<sp/>solver<sp/>=<sp/>SmtSolver::bestAvailable())<sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>docstr<sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;,<sp/>which<sp/>currently<sp/>means<sp/>\&quot;&quot;</highlight><highlight class="normal"><sp/>+<sp/>solver-&gt;name()<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;\&quot;.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>docstr<sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;,<sp/>which<sp/>currently<sp/>mean<sp/>\&quot;none\&quot;.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>docstr<sp/>+=<sp/></highlight><highlight class="stringliteral">&quot;.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>docstr;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal">SmtSolverValidator::operator()(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classSawyer_1_1CommandLine_1_1ParserResult" kindref="compound">Sawyer::CommandLine::ParserResult</ref><sp/>&amp;cmdline)<sp/>{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(cmdline.<ref refid="classSawyer_1_1CommandLine_1_1ParserResult_1ad8e40b0fb2c6534c767221f869e785da" kindref="member">have</ref>(</highlight><highlight class="stringliteral">&quot;smt-solver&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>arg<sp/>=<sp/>cmdline.<ref refid="classSawyer_1_1CommandLine_1_1ParserResult_1a62fe3aa1716bfb03a9e837110068c8c0" kindref="member">parsed</ref>(</highlight><highlight class="stringliteral">&quot;smt-solver&quot;</highlight><highlight class="normal">,<sp/>0).<ref refid="classSawyer_1_1CommandLine_1_1ParsedValue_1a720391db94e0237bbaf157b3607c5311" kindref="member">as</ref>&lt;std::string&gt;();</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(cmdline.<ref refid="classSawyer_1_1CommandLine_1_1ParserResult_1a0c17a5fc45a2796e8174091e97cda2c6" kindref="member">parser</ref>().<ref refid="classSawyer_1_1CommandLine_1_1Parser_1a9d3682b427852ed02b065a768fbb9ce5" kindref="member">errorStream</ref>().get())<sp/>{</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>checkSmtCommandLineArg(arg,<sp/></highlight><highlight class="stringliteral">&quot;--smt-solver=list&quot;</highlight><highlight class="normal">,<sp/>*cmdline.<ref refid="classSawyer_1_1CommandLine_1_1ParserResult_1a0c17a5fc45a2796e8174091e97cda2c6" kindref="member">parser</ref>().<ref refid="classSawyer_1_1CommandLine_1_1Parser_1a9d3682b427852ed02b065a768fbb9ce5" kindref="member">errorStream</ref>().get());</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>checkSmtCommandLineArg(arg,<sp/></highlight><highlight class="stringliteral">&quot;--smt-solver=list&quot;</highlight><highlight class="normal">,<sp/>std::cerr);</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="116"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="118"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/SmtCommandLine.C"/>
+  </compounddef>
+</doxygen>

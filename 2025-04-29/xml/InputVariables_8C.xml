@@ -1,0 +1,198 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="InputVariables_8C" kind="file" language="C++">
+    <compoundname>InputVariables.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="197878">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="197874">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/Concolic/InputVariables.C</label>
+        <link refid="InputVariables_8C"/>
+        <childnode refid="197875" relation="include">
+        </childnode>
+      </node>
+      <node id="197875">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="197876" relation="include">
+        </childnode>
+        <childnode refid="197877" relation="include">
+        </childnode>
+        <childnode refid="197878" relation="include">
+        </childnode>
+      </node>
+      <node id="197877">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="197876">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="197875" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_CONCOLIC_TESTING</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="InputVariables_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/InputVariables.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="ExecutionEvent_8h" kindref="compound">Rose/BinaryAnalysis/Concolic/ExecutionEvent.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SmtSolver_8h" kindref="compound">Rose/BinaryAnalysis/SmtSolver.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SymbolicExpression_8h" kindref="compound">Rose/BinaryAnalysis/SymbolicExpression.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/lexical_cast.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose" kindref="compound">Rose</ref><sp/>{</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">BinaryAnalysis<sp/>{</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Concolic<sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="comment">//<sp/>Input<sp/>Variables</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal">InputVariables::InputVariables()<sp/>{}</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal">InputVariables::~InputVariables()<sp/>{}</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal">InputVariables::Ptr</highlight></codeline>
+<codeline lineno="24"><highlight class="normal">InputVariables::instance()<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Ptr(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>InputVariables);</highlight></codeline>
+<codeline lineno="26"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SymbolicExpression::ExprExprHashMap&amp;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal">InputVariables::bindings()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>bindings_;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal">InputVariables::activate(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ExecutionEvent::Ptr<sp/>&amp;event,<sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic_1adc45efb8e14579c4757d3aff808ad0f6" kindref="member">InputType</ref><sp/>inputType,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>idx1,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>idx2)<sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(event);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(event-&gt;variable());</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a5bf94698243e55044b0733246ba8d881" kindref="member">ASSERT_forbid</ref>(<ref refid="IRInterface_8h_1afff49d7a9271441d55a306e4b48ed029ac157bdf0b85a40d2619cbc8bc1ae5fe2" kindref="member">InputType::NONE</ref><sp/>==<sp/>inputType);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>deactivate(event);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1builder_1a2b5a2fe66ca55380e239cb7591317a2baf1edc500eb1136f10c17eeffb9eecbc5" kindref="member">define</ref>(event,<sp/>inputType,<sp/>idx1,<sp/>idx2);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(event-&gt;value())</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bindVariableValue(event-&gt;variable(),<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal">-&gt;value());</highlight></codeline>
+<codeline lineno="43"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal">InputVariables::deactivate(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ExecutionEvent::Ptr<sp/>&amp;event)<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(event<sp/>&amp;&amp;<sp/>event-&gt;variable())</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>unbindVariableValue(event-&gt;variable());</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>undefine(event);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal">InputVariables::playback(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ExecutionEvent::Ptr<sp/>&amp;event)<sp/>{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(event<sp/>&amp;&amp;<sp/>event-&gt;variable())<sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(event-&gt;value())</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bindVariableValue(event-&gt;variable(),<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal">-&gt;value());</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="IRInterface_8h_1afff49d7a9271441d55a306e4b48ed029ac157bdf0b85a40d2619cbc8bc1ae5fe2" kindref="member">InputType::NONE</ref><sp/>!=<sp/>event-&gt;inputType())</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>variables_.insert(event-&gt;variable()-&gt;variableId().get(),<sp/>event);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal">InputVariables::unplayback(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ExecutionEvent::Ptr<sp/>&amp;event)<sp/>{</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(event<sp/>&amp;&amp;<sp/>event-&gt;variable())<sp/>{</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>unbindVariableValue(event-&gt;variable());</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>variables_.erase(*event-&gt;variable()-&gt;variableId());</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal">InputVariables::print(std::ostream<sp/>&amp;out,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;prefix)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Variables::Node<sp/>&amp;<ref refid="structnode" kindref="compound">node</ref>:<sp/>variables_.nodes())<sp/>{</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="msvc__stdint_8h_1aec6fcb673ff035718c238c8c9d544c47" kindref="member">uint64_t</ref><sp/>variableNumber<sp/>=<sp/><ref refid="structnode" kindref="compound">node</ref>.key();</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ExecutionEvent::Ptr<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>=<sp/><ref refid="structnode" kindref="compound">node</ref>.value();</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out<sp/>&lt;&lt;prefix<sp/>&lt;&lt;</highlight><highlight class="keyword">event</highlight><highlight class="normal">-&gt;name()<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;<sp/>=<sp/>v&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;variableNumber<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal">InputVariables::define(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ExecutionEvent::Ptr<sp/>&amp;event,<sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic_1adc45efb8e14579c4757d3aff808ad0f6" kindref="member">InputType</ref><sp/>inputType,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>idx1,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>idx2)<sp/>{</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(event);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(event-&gt;variable());</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a8bcb03629cd31aca32228c8d9f779bd0" kindref="member">ASSERT_require2</ref>(<ref refid="IRInterface_8h_1afff49d7a9271441d55a306e4b48ed029ac157bdf0b85a40d2619cbc8bc1ae5fe2" kindref="member">InputType::NONE</ref><sp/>==<sp/>event-&gt;inputType(),<sp/></highlight><highlight class="stringliteral">&quot;already<sp/>defined&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a5bf94698243e55044b0733246ba8d881" kindref="member">ASSERT_forbid</ref>(<ref refid="IRInterface_8h_1afff49d7a9271441d55a306e4b48ed029ac157bdf0b85a40d2619cbc8bc1ae5fe2" kindref="member">InputType::NONE</ref><sp/>==<sp/>inputType);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(<ref refid="namespaceRose_1a40bc915018a8c6733abb60f0a025ed9b" kindref="member">INVALID_INDEX</ref><sp/>==<sp/>idx2<sp/>||<sp/><ref refid="namespaceRose_1a40bc915018a8c6733abb60f0a025ed9b" kindref="member">INVALID_INDEX</ref><sp/>!=<sp/>idx1);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>undefine(event);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal">-&gt;inputType(inputType,<sp/>idx1,<sp/>idx2);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>variables_.insert(event-&gt;variable()-&gt;variableId().get(),<sp/>event);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal">InputVariables::undefine(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ExecutionEvent::Ptr<sp/>&amp;event)<sp/>{</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(event)<sp/>{</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(event-&gt;variable())</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>variables_.erase(event-&gt;variable()-&gt;variableId().get());</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal">-&gt;inputType(<ref refid="IRInterface_8h_1afff49d7a9271441d55a306e4b48ed029ac157bdf0b85a40d2619cbc8bc1ae5fe2" kindref="member">InputType::NONE</ref>,<sp/><ref refid="namespaceRose_1a40bc915018a8c6733abb60f0a025ed9b" kindref="member">INVALID_INDEX</ref>,<sp/><ref refid="namespaceRose_1a40bc915018a8c6733abb60f0a025ed9b" kindref="member">INVALID_INDEX</ref>);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal">InputVariables::bind(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ExecutionEvent::Ptr<sp/>&amp;event)<sp/>{</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(event);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(event-&gt;variable()<sp/>&amp;&amp;<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal">-&gt;value())</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bindVariableValue(event-&gt;variable(),<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal">-&gt;value());</highlight></codeline>
+<codeline lineno="106"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal">InputVariables::unbind(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ExecutionEvent::Ptr<sp/>&amp;event)<sp/>{</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(event);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>unbindVariableValue(event-&gt;variable());</highlight></codeline>
+<codeline lineno="112"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal">InputVariables::bindVariableValue(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SymbolicExpression::Ptr<sp/>&amp;<ref refid="namespaceFortran_1_1parser_1ac52786a7a1a8a8277fa7a1493b451bb1" kindref="member">variable</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SymbolicExpression::Ptr<sp/>&amp;value)<sp/>{</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(<ref refid="namespaceFortran_1_1parser_1ac52786a7a1a8a8277fa7a1493b451bb1" kindref="member">variable</ref>);</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(value);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>bindings_.insert(std::make_pair(<ref refid="namespaceFortran_1_1parser_1ac52786a7a1a8a8277fa7a1493b451bb1" kindref="member">variable</ref>,<sp/>value));</highlight></codeline>
+<codeline lineno="119"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal">InputVariables::unbindVariableValue(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SymbolicExpression::Ptr<sp/>&amp;<ref refid="namespaceFortran_1_1parser_1ac52786a7a1a8a8277fa7a1493b451bb1" kindref="member">variable</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespaceFortran_1_1parser_1ac52786a7a1a8a8277fa7a1493b451bb1" kindref="member">variable</ref>)</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bindings_.erase(<ref refid="namespaceFortran_1_1parser_1ac52786a7a1a8a8277fa7a1493b451bb1" kindref="member">variable</ref>);</highlight></codeline>
+<codeline lineno="125"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal">ExecutionEvent::Ptr</highlight></codeline>
+<codeline lineno="128"><highlight class="normal">InputVariables::event(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;<ref refid="namespaceVirtualCFG_1a628512d2e52cd793afd1f4c53c3eb6d2" kindref="member">variableName</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(<ref refid="namespaceVirtualCFG_1a628512d2e52cd793afd1f4c53c3eb6d2" kindref="member">variableName</ref>.size()<sp/>&gt;=<sp/>2);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(<ref refid="namespaceVirtualCFG_1a628512d2e52cd793afd1f4c53c3eb6d2" kindref="member">variableName</ref>[0]<sp/>==<sp/></highlight><highlight class="charliteral">&apos;v&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="msvc__stdint_8h_1aec6fcb673ff035718c238c8c9d544c47" kindref="member">uint64_t</ref><sp/>varId<sp/>=<sp/>boost::lexical_cast&lt;<ref refid="msvc__stdint_8h_1aec6fcb673ff035718c238c8c9d544c47" kindref="member">uint64_t</ref>&gt;(<ref refid="namespaceVirtualCFG_1a628512d2e52cd793afd1f4c53c3eb6d2" kindref="member">variableName</ref>.substr(1));</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>variables_.getOrDefault(varId);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal">ExecutionEvent::Ptr</highlight></codeline>
+<codeline lineno="136"><highlight class="normal">InputVariables::event(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SymbolicExpression::Ptr<sp/>&amp;<ref refid="namespaceFortran_1_1parser_1ac52786a7a1a8a8277fa7a1493b451bb1" kindref="member">variable</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(<ref refid="namespaceFortran_1_1parser_1ac52786a7a1a8a8277fa7a1493b451bb1" kindref="member">variable</ref>);</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1a78e8f09ab5fb0c4aa9ed20991ed93a3d" kindref="member">ASSERT_require</ref>(<ref refid="namespaceFortran_1_1parser_1ac52786a7a1a8a8277fa7a1493b451bb1" kindref="member">variable</ref>-&gt;isScalarVariable());</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="msvc__stdint_8h_1aec6fcb673ff035718c238c8c9d544c47" kindref="member">uint64_t</ref><sp/>varId<sp/>=<sp/>*<ref refid="namespaceFortran_1_1parser_1ac52786a7a1a8a8277fa7a1493b451bb1" kindref="member">variable</ref>-&gt;variableId();</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>variables_.getOrDefault(varId);</highlight></codeline>
+<codeline lineno="141"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal">InputVariables::addBindingsToSolver(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SmtSolver::Ptr<sp/>&amp;solver)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(solver);</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>&amp;<ref refid="structnode" kindref="compound">node</ref>:<sp/>bindings_)<sp/>{</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SymbolicExpression::Ptr<sp/><ref refid="namespaceN_1a34ff54a2f3a4f40b764204d527917650" kindref="member">eq</ref><sp/>=<sp/>SymbolicExpression::makeEq(<ref refid="structnode" kindref="compound">node</ref>.first,<sp/><ref refid="structnode" kindref="compound">node</ref>.second);</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>solver-&gt;insert(<ref refid="namespaceN_1a34ff54a2f3a4f40b764204d527917650" kindref="member">eq</ref>);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/Concolic/InputVariables.C"/>
+  </compounddef>
+</doxygen>

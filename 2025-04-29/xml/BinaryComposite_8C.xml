@@ -1,0 +1,190 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="BinaryComposite_8C" kind="file" language="C++">
+    <compoundname>BinaryComposite.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="45031">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="45027">
+        <label>/home/liao6/workspace/rose-github/src/frontend/BinaryFormats/BinaryComposite.C</label>
+        <link refid="BinaryComposite_8C"/>
+        <childnode refid="45028" relation="include">
+        </childnode>
+      </node>
+      <node id="45028">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="45029" relation="include">
+        </childnode>
+        <childnode refid="45030" relation="include">
+        </childnode>
+        <childnode refid="45031" relation="include">
+        </childnode>
+      </node>
+      <node id="45030">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="45029">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="45028" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>SgBinaryComposite<sp/>is<sp/>a<sp/>container<sp/>for<sp/>binary<sp/>files.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="sage3basic_8h" kindref="compound">sage3basic.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="BinaryLoader_8h" kindref="compound">Rose/BinaryAnalysis/BinaryLoader.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="BinaryAnalysis_2Dwarf_2BasicTypes_8h" kindref="compound">Rose/BinaryAnalysis/Dwarf/BasicTypes.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Partitioner2_2Engine_8h" kindref="compound">Rose/BinaryAnalysis/Partitioner2/Engine.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::string;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::vector;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose" kindref="compound">Rose</ref>;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose_1_1Diagnostics" kindref="compound">Rose::Diagnostics</ref>;<sp/></highlight><highlight class="comment">//<sp/>for<sp/>mlog,<sp/>INFO,<sp/>WARN,<sp/>ERROR,<sp/>FATAL,<sp/>etc.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal">SgBinaryComposite::SgBinaryComposite(vector&lt;string&gt;<sp/>&amp;argv,<sp/>SgProject*<sp/><ref refid="java__support_8C_1a453b843c3024736580c8e7a96a553cbe" kindref="member">project</ref>)</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/>:<sp/>SgBinaryComposite()</highlight></codeline>
+<codeline lineno="17"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/>SgFile::doSetupForConstructor(argv,<sp/><ref refid="java__support_8C_1a453b843c3024736580c8e7a96a553cbe" kindref="member">project</ref>);</highlight></codeline>
+<codeline lineno="19"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal">SgBinaryComposite::post_construction_initialization()<sp/>{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Don&apos;t<sp/>call<sp/>parent<sp/>initialization<sp/>or<sp/>allow<sp/>it<sp/>to<sp/>be<sp/>called<sp/>twice<sp/>(this<sp/>function<sp/>is<sp/>virtual!)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_genericFileList<sp/>==<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_genericFileList<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmGenericFileList" kindref="compound">SgAsmGenericFileList</ref>();</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_genericFileList-&gt;set_parent(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p_interpretations<sp/>==<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_interpretations<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmInterpretationList" kindref="compound">SgAsmInterpretationList</ref>();</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p_interpretations-&gt;set_parent(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1a0d997e865b4599f59d4f460baede99b5" kindref="member">Rose::is_binary_executable</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>set_binary_only(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>set_outputLanguage(SgFile::e_Binary_language);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>set_inputLanguage(SgFile::e_Binary_language);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>set_sourceFileUsesBinaryFileExtension(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Don&apos;t<sp/>do<sp/>C++<sp/>stuff</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>set_requires_C_preprocessor(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>set_disable_edg_backend(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>set_disable_sage_backend(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>set_skip_transformation(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>set_skip_commentsAndDirectives(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>SgBinaryComposite::callFrontEnd()<sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SgFile::callFrontEnd();</highlight></codeline>
+<codeline lineno="51"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Parses<sp/>a<sp/>single<sp/>binary<sp/>file<sp/>and<sp/>adds<sp/>a<sp/>SgAsmGenericFile<sp/>node<sp/>under<sp/>this<sp/>SgBinaryComposite<sp/>node.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal">SgBinaryComposite::buildAsmAST(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>executableFileName)<sp/>{</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(get_verbose()<sp/>&gt;<sp/>0<sp/>||<sp/>SgProject::get_verbose()<sp/>&gt;<sp/>0)</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>printf<sp/>(</highlight><highlight class="stringliteral">&quot;Disassemble<sp/>executableFileName<sp/>=<sp/>%s<sp/>\n&quot;</highlight><highlight class="normal">,executableFileName.c_str());</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Parse<sp/>the<sp/>binary<sp/>container,<sp/>but<sp/>do<sp/>not<sp/>disassemble<sp/>instructions<sp/>yet.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericFile" kindref="compound">SgAsmGenericFile</ref><sp/>*<ref refid="namespaceCLANG__ROSE__Graph_1a2c7f41554eb3a676b91d695feda40748" kindref="member">file</ref><sp/>=<sp/><ref refid="classSgAsmExecutableFileFormat_1ad1ab88a96c63eda4d8d332c1827b234c" kindref="member">SgAsmExecutableFileFormat::parseBinaryFormat</ref>(executableFileName.c_str());</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(<ref refid="namespaceCLANG__ROSE__Graph_1a2c7f41554eb3a676b91d695feda40748" kindref="member">file</ref>);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Attach<sp/>the<sp/>file<sp/>to<sp/>this<sp/>node</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>get_genericFileList()-&gt;get_files().push_back(<ref refid="namespaceCLANG__ROSE__Graph_1a2c7f41554eb3a676b91d695feda40748" kindref="member">file</ref>);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCLANG__ROSE__Graph_1a2c7f41554eb3a676b91d695feda40748" kindref="member">file</ref>-&gt;set_parent(get_genericFileList());</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Add<sp/>a<sp/>disassembly<sp/>interpretation<sp/>for<sp/>each<sp/>header.<sp/>Actual<sp/>disassembly<sp/>will<sp/>occur<sp/>later.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>NOTE:<sp/>This<sp/>probably<sp/>isn&apos;t<sp/>the<sp/>right<sp/>place<sp/>to<sp/>add<sp/>interpretation<sp/>nodes,<sp/>but<sp/>I&apos;m<sp/>leaving<sp/>it<sp/>here<sp/>for<sp/>the<sp/>time<sp/>being.<sp/>We</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/>probably<sp/>don&apos;t<sp/>want<sp/>an<sp/>interpretation<sp/>for<sp/>each<sp/>header<sp/>if<sp/>we&apos;re<sp/>doing<sp/>dynamic<sp/>linking.<sp/>[RPM<sp/>2009-09-17]</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SgAsmGenericHeaderPtrList<sp/>&amp;headers<sp/>=<sp/><ref refid="namespaceCLANG__ROSE__Graph_1a2c7f41554eb3a676b91d695feda40748" kindref="member">file</ref>-&gt;get_headers()-&gt;get_headers();</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>headers.size();<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmInterpretation" kindref="compound">SgAsmInterpretation</ref>*<sp/>interp<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classSgAsmInterpretation" kindref="compound">SgAsmInterpretation</ref>();</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>get_interpretations()-&gt;get_interpretations().push_back(interp);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>interp-&gt;set_parent(get_interpretations());</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>interp-&gt;get_headers()-&gt;get_headers().push_back(headers[i]);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>DQ<sp/>(3/14/2009):<sp/>Dwarf<sp/>support<sp/>now<sp/>works<sp/>within<sp/>ROSE<sp/>when<sp/>used<sp/>with<sp/>Intel<sp/>Pin</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>(was<sp/>a<sp/>huge<sp/>problem<sp/>until<sp/>everything<sp/>(e.g.<sp/>libdwarf)<sp/>was<sp/>dynamically<sp/>linked).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>DQ<sp/>(11/7/2008):<sp/>New<sp/>Dwarf<sp/>support<sp/>in<sp/>ROSE<sp/>(Dwarf<sp/>IR<sp/>nodes<sp/>are<sp/>generated<sp/>in<sp/>the<sp/>AST).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSawyer_1ab7a7698e6d0e5068df898cbe4c7ce995" kindref="member">BinaryAnalysis::Dwarf::parse</ref>(<ref refid="namespaceCLANG__ROSE__Graph_1a2c7f41554eb3a676b91d695feda40748" kindref="member">file</ref>);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Make<sp/>sure<sp/>this<sp/>node<sp/>is<sp/>correctly<sp/>parented</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(SageInterface::getEnclosingNode&lt;SgProject&gt;(</highlight><highlight class="keyword">this</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>DQ<sp/>(2/21/2016):<sp/>Added<sp/>&quot;error:<sp/>&quot;<sp/>to<sp/>allow<sp/>this<sp/>to<sp/>be<sp/>caught<sp/>by<sp/>the<sp/>ROSE<sp/>Matrix<sp/>Testing.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref><sp/>(!<sp/></highlight><highlight class="stringliteral">&quot;[FATAL]<sp/>[ROSE]<sp/>[frontend]<sp/>[Binary<sp/>analysis]<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;error:<sp/>ROSE<sp/>was<sp/>not<sp/>configured<sp/>to<sp/>support<sp/>the<sp/>binary<sp/>analysis<sp/>frontend.&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Builds<sp/>the<sp/>entire<sp/>AST<sp/>under<sp/>the<sp/>SgBinaryComposite<sp/>node:</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>figures<sp/>out<sp/>what<sp/>binary<sp/>files<sp/>are<sp/>needed</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>parses<sp/>binary<sp/>container<sp/>of<sp/>each<sp/>file<sp/>(SgAsmGenericFile<sp/>nodes)</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>optionally<sp/>disassembles<sp/>instructions<sp/>(SgAsmInterpretation<sp/>nodes)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal">SgBinaryComposite::buildAST(vector&lt;string&gt;<sp/></highlight><highlight class="comment">/*argv*/</highlight><highlight class="normal">,<sp/>vector&lt;string&gt;<sp/></highlight><highlight class="comment">/*inputCommandLine*/</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Parse<sp/>the<sp/>specified<sp/>binary<sp/>file<sp/>to<sp/>create<sp/>the<sp/>AST.<sp/>Do<sp/>not<sp/>disassemble<sp/>instructions<sp/>yet.<sp/>If<sp/>the<sp/>file<sp/>is<sp/>dynamically</highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>linked<sp/>then<sp/>optionally<sp/>load<sp/>(i.e.,<sp/>parse<sp/>the<sp/>container,<sp/>map<sp/>sections<sp/>into<sp/>process<sp/>address<sp/>space,<sp/>and<sp/>perform<sp/>relocation</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>fixups)<sp/>all<sp/>dependencies<sp/>also.<sp/><sp/>See<sp/>the<sp/>BinaryLoader<sp/>class<sp/>for<sp/>details.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(get_isLibraryArchive())<sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(get_libraryArchiveObjectFileNameList().empty()<sp/>==<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(get_libraryArchiveObjectFileNameList().empty()<sp/>==<sp/>(get_isLibraryArchive()<sp/>==<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>get_libraryArchiveObjectFileNameList().size();<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>printf(</highlight><highlight class="stringliteral">&quot;Build<sp/>binary<sp/>AST<sp/>for<sp/>get_libraryArchiveObjectFileNameList()[%&quot;</highlight><highlight class="normal"><sp/>PRIuPTR<sp/></highlight><highlight class="stringliteral">&quot;]<sp/>=<sp/>%s<sp/>\n&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>i,<sp/>get_libraryArchiveObjectFileNameList()[i].c_str());</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>filename<sp/>=<sp/>get_libraryArchiveObjectFileNameList()[i];</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>printf(</highlight><highlight class="stringliteral">&quot;Build<sp/>SgAsmGenericFile<sp/>from:<sp/>%s<sp/>\n&quot;</highlight><highlight class="normal">,<sp/>filename.c_str());</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>buildAsmAST(filename);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(get_libraryArchiveObjectFileNameList().empty());</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1AST_1_1IO_1a935c7a9be3c93f70ebf5002b11af42aa" kindref="member">BinaryAnalysis::BinaryLoader::load</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>get_read_executable_file_format_only());</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Disassemble<sp/>each<sp/>interpretation</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!get_read_executable_file_format_only())<sp/>{</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SgAsmInterpretationPtrList<sp/>&amp;interps<sp/>=<sp/>get_interpretations()-&gt;get_interpretations();</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i=0;<sp/>i&lt;interps.size();<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Rose::BinaryAnalysis::Partitioner2::Engine::disassembleForRoseFrontend(interps[i]);</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>DQ<sp/>(1/22/2008):<sp/>The<sp/>generated<sp/>unparsed<sp/>assemble<sp/>code<sp/>can<sp/>not<sp/>currently<sp/>be<sp/>compiled<sp/>because<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>addresses<sp/>are<sp/>unparsed<sp/>(see<sp/>Jeremiah<sp/>for<sp/>details).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Skip<sp/>running<sp/>gnu<sp/>assemble<sp/>on<sp/>the<sp/>output<sp/>since<sp/>we<sp/>include<sp/>text<sp/>that<sp/>would<sp/>make<sp/>this<sp/>a<sp/>problem.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(get_verbose()<sp/>&gt;<sp/>1)</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>printf(</highlight><highlight class="stringliteral">&quot;set_skipfinalCompileStep(true)<sp/>because<sp/>we<sp/>are<sp/>on<sp/>a<sp/>binary<sp/>&apos;%s&apos;\n&quot;</highlight><highlight class="normal">,<sp/>this-&gt;get_sourceFileNameWithoutPath().c_str());</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/>this-&gt;set_skipfinalCompileStep(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>DQ<sp/>(2/21/2016):<sp/>Added<sp/>&quot;error:<sp/>&quot;<sp/>to<sp/>allow<sp/>this<sp/>to<sp/>be<sp/>caught<sp/>by<sp/>the<sp/>ROSE<sp/>Matrix<sp/>Testing.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref><sp/>(!<sp/></highlight><highlight class="stringliteral">&quot;[FATAL]<sp/>[ROSE]<sp/>[frontend]<sp/>[Binary<sp/>analysis]<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;error:<sp/>ROSE<sp/>was<sp/>not<sp/>configured<sp/>to<sp/>support<sp/>the<sp/>binary<sp/>analysis<sp/>frontend.&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>frontendErrorLevel<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>frontendErrorLevel;</highlight></codeline>
+<codeline lineno="144"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/frontend/BinaryFormats/BinaryComposite.C"/>
+  </compounddef>
+</doxygen>

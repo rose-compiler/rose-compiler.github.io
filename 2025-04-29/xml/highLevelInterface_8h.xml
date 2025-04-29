@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="highLevelInterface_8h" kind="file" language="C++">
+    <compoundname>highLevelInterface.h</compoundname>
+    <includedby refid="highLevelInterface_8C" local="yes">/home/liao6/workspace/rose-github/src/frontend/SageIII/sageInterface/highLevelInterface.C</includedby>
+    <invincdepgraph>
+      <node id="86025">
+        <label>/home/liao6/workspace/rose-github/src/frontend/SageIII/sageInterface/highLevelInterface.C</label>
+        <link refid="highLevelInterface_8C"/>
+      </node>
+      <node id="86024">
+        <label>/home/liao6/workspace/rose-github/src/frontend/SageIII/sageInterface/highLevelInterface.h</label>
+        <link refid="highLevelInterface_8h"/>
+        <childnode refid="86025" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespaceHighLevelInterface">HighLevelInterface</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//<sp/>This<sp/>is<sp/>part<sp/>of<sp/>a<sp/>sub-project<sp/>within<sp/>ROSE<sp/>to<sp/>define<sp/>a<sp/>higher<sp/>level<sp/>interface<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>for<sp/>the<sp/>construction<sp/>of<sp/>the<sp/>AST.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>***********<sp/>Notes<sp/>on<sp/>the<sp/>construction<sp/>of<sp/>IR<sp/>nodes<sp/>in<sp/>ROSE<sp/>from<sp/>scratch<sp/>**********</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"></highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/><sp/><sp/>Building<sp/>IR<sp/>nodes<sp/>in<sp/>ROSE<sp/>is<sp/>a<sp/>matter<sp/>of<sp/>following<sp/>a<sp/>few<sp/>rules,<sp/>most<sp/>IR<sp/>nodes</highlight></codeline>
+<codeline lineno="9"><highlight class="comment">are<sp/>easy<sp/>to<sp/>build,<sp/>but<sp/>a<sp/>few<sp/>are<sp/>more<sp/>complex.<sp/><sp/>This<sp/>High<sp/>Level<sp/>Intefce<sp/>defines<sp/>simple</highlight></codeline>
+<codeline lineno="10"><highlight class="comment">functions<sp/>to<sp/>call<sp/>to<sp/>simplify<sp/>how<sp/>an<sp/>AST<sp/>can<sp/>be<sp/>built<sp/>up<sp/>from<sp/>scratch.</highlight></codeline>
+<codeline lineno="11"><highlight class="comment">General<sp/>rules<sp/>are:</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/><sp/><sp/>1)<sp/>Use<sp/>the<sp/>new<sp/>IR<sp/>nodes<sp/>constructors<sp/>that<sp/>do<sp/>NOT<sp/>take<sp/>a<sp/>Sg_File_Info<sp/>pointer.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/>E.g.<sp/>SgForStatement<sp/>(SgStatement<sp/>*test,<sp/>SgExpression<sp/>*increment,<sp/>SgBasicBlock<sp/>*loop_body)</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"></highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/><sp/><sp/>2)<sp/>Always<sp/>set<sp/>the<sp/>scope<sp/>if<sp/>the<sp/>scope<sp/>is<sp/>explicitly<sp/>defined<sp/>in<sp/>that<sp/>IR<sp/>node<sp/></highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/>(call<sp/>SgStatement::hasExplicitScope()<sp/>to<sp/>test<sp/>for<sp/>this).</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"></highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/><sp/><sp/>3)<sp/>The<sp/>parent<sp/>of<sp/>the<sp/>IR<sp/>nodes<sp/>should<sp/>be<sp/>set<sp/>if<sp/>it<sp/>is<sp/>a<sp/>SgLocatedNode<sp/>or<sp/>a<sp/>for<sp/>a<sp/>few<sp/>case<sp/>of<sp/>a<sp/>SgSupport<sp/>IR<sp/>node:</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/>(SgInitializedName,<sp/>SgFile,<sp/>SgDirectory,<sp/>Sg_File_Info,<sp/>SgModifier,<sp/>SgSymbolTable,<sp/>SgTemplateArgument,<sp/>SgTemplateArgumentList,</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/>SgFunctionParameterTypeList,<sp/>SgBaseClass,<sp/>SgTemplateParameter,<sp/>SgTemplateParameterList,<sp/>SgTypedefSeq,<sp/>(and<sp/>maybe<sp/>a<sp/>few<sp/>others)).</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"></highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/><sp/><sp/>4)<sp/>Set<sp/>the<sp/>source<sp/>code<sp/>poisition,<sp/>call<sp/>SgLocatedNode::set_startOfConstruct()<sp/>with<sp/>a<sp/>valid</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/>Sg_File_Info<sp/>object.<sp/>Also,<sp/>call<sp/>SgLocatedNode::set_endOfConstruct()<sp/>with<sp/>a<sp/>valid<sp/></highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/>Sg_File_Info<sp/>object.<sp/><sp/>Note<sp/>that<sp/>all<sp/>Sg_File_Info<sp/>object<sp/>must<sp/>be<sp/>unique<sp/>(can<sp/>not<sp/>be<sp/>shared).</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/><sp/><sp/>5)<sp/>For<sp/>SgExpression<sp/>objects,<sp/>if<sp/>the<sp/>expression<sp/>is<sp/>an<sp/>operator,<sp/>then<sp/>the<sp/>position<sp/>location<sp/>of</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/>the<sp/>operator<sp/>need<sp/>be<sp/>set.<sp/><sp/>The<sp/>operator<sp/>position<sp/>is<sp/>optional,<sp/>so<sp/>need<sp/>not<sp/>be<sp/>set<sp/>for<sp/></highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/>transformations<sp/>(I<sp/>think).</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"></highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/><sp/><sp/>6)<sp/>Declarations<sp/>which<sp/>generate<sp/>symbols<sp/>need<sp/>to<sp/>be<sp/>added<sp/>to<sp/>symbol<sp/>tables<sp/>(use<sp/>member<sp/>function<sp/></highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/>hasAssociatedSymbol()<sp/>to<sp/>check<sp/>if<sp/>a<sp/>symbol<sp/>is<sp/>defined<sp/>for<sp/>a<sp/>declaration).</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"></highlight></codeline>
+<codeline lineno="33"><highlight class="comment">For<sp/>source<sp/>location<sp/>position<sp/>information,<sp/>if<sp/>an<sp/>AST<sp/>is<sp/>being<sp/>constructed<sp/>from<sp/>scratch,<sp/>then<sp/>it</highlight></codeline>
+<codeline lineno="34"><highlight class="comment">does<sp/>not<sp/>correspond<sp/>to<sp/>a<sp/>position<sp/>in<sp/>the<sp/>source<sp/>code<sp/>and<sp/>the<sp/>Sg_File_Info<sp/>object<sp/>should<sp/>be</highlight></codeline>
+<codeline lineno="35"><highlight class="comment">generated<sp/>by<sp/>a<sp/>static<sp/>member<sp/>function<sp/>Sg_File_Info::generateDefaultFileInfoForTransformationNode().</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"></highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="namespaceHighLevelInterface" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceHighLevelInterface" kindref="compound">HighLevelInterface</ref><sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="namespaceHighLevelInterface_1a59be48d54e44760c9e8c3689546dbf96" refkind="member"><highlight class="normal">SgScopeStatementPtrList<sp/><ref refid="namespaceHighLevelInterface_1a59be48d54e44760c9e8c3689546dbf96" kindref="member">currentScope</ref>;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceHighLevelInterface_1a09db7f2e2503cd85a875ced0fd76e571" kindref="member">buildInitializedName</ref>();</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceHighLevelInterface_1ac71260e103c5fd200cfb015eed7f959b" kindref="member">buildVariableDeclaration</ref>();</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceHighLevelInterface_1acbeb6ac2b81f78d9ac87dd572f6643a0" kindref="member">buildValueExpression</ref>();</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><ref refid="rosedll_8h_1a526910c303031fe78eee386204e4760f" kindref="member">ROSE_DLL_API</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceHighLevelInterface_1a7e07fc9c1c2ce28d687b4b85dde89d7b" kindref="member">buildAddOperator</ref>();</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Functions<sp/>to<sp/>set<sp/>details<sp/>required<sp/>to<sp/>pass<sp/>later<sp/>consistancy<sp/>testing...</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceHighLevelInterface_1a679b937622b7740a3558e1902d95655a" kindref="member">setStatementDetails</ref><sp/><sp/><sp/>(<sp/>SgStatement*<sp/><sp/><sp/>stmt,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgNode*<sp/>parent,<sp/>SgScopeStatement*<sp/>scope<sp/>);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceHighLevelInterface_1a8796328bdf8f5a0b0d71b70d5753c2de" kindref="member">setExpressionDetails</ref><sp/><sp/>(<sp/>SgExpression*<sp/><sp/><ref refid="namespaceFortran_1_1parser_1a3af18db366f87e7588e79bc736d7cadd" kindref="member">expr</ref>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SgNode*<sp/>parent<sp/>);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceHighLevelInterface_1a3ea9f908d7495588fa3a6ac7264a9ad5" kindref="member">setLocatedNodeDetails</ref><sp/>(<sp/>SgLocatedNode*<sp/>locatedNode,<sp/>SgNode*<sp/>parent<sp/>);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="60"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/frontend/SageIII/sageInterface/highLevelInterface.h"/>
+  </compounddef>
+</doxygen>

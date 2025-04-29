@@ -1,0 +1,426 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="OpenAnalysis_2CallGraph_2CallGraph_8C" kind="file" language="C++">
+    <compoundname>CallGraph.C</compoundname>
+    <includes local="no">cstdlib</includes>
+    <includes local="no">cstring</includes>
+    <includes local="no">cassert</includes>
+    <includes local="no">iostream</includes>
+    <includes refid="OpenAnalysis_2CallGraph_2CallGraph_8h" local="yes">CallGraph.h</includes>
+    <incdepgraph>
+      <node id="142795">
+        <label>list</label>
+      </node>
+      <node id="142792">
+        <label>cassert</label>
+      </node>
+      <node id="142796">
+        <label>map</label>
+      </node>
+      <node id="142801">
+        <label>Exception.h</label>
+        <link refid="midend_2programAnalysis_2OpenAnalysis_2Utils_2Exception_8h"/>
+        <childnode refid="142793" relation="include">
+        </childnode>
+      </node>
+      <node id="142789">
+        <label>/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/CallGraph/CallGraph.C</label>
+        <link refid="OpenAnalysis_2CallGraph_2CallGraph_8C"/>
+        <childnode refid="142790" relation="include">
+        </childnode>
+        <childnode refid="142791" relation="include">
+        </childnode>
+        <childnode refid="142792" relation="include">
+        </childnode>
+        <childnode refid="142793" relation="include">
+        </childnode>
+        <childnode refid="142794" relation="include">
+        </childnode>
+      </node>
+      <node id="142797">
+        <label>OpenAnalysis/Utils/DGraph.h</label>
+        <link refid="DGraph_8h"/>
+        <childnode refid="142798" relation="include">
+        </childnode>
+      </node>
+      <node id="142802">
+        <label>OpenAnalysis/Interface/IRInterface.h</label>
+        <link refid="IRInterface_8h"/>
+        <childnode refid="142803" relation="include">
+        </childnode>
+      </node>
+      <node id="142794">
+        <label>CallGraph.h</label>
+        <link refid="OpenAnalysis_2CallGraph_2CallGraph_8h"/>
+        <childnode refid="142791" relation="include">
+        </childnode>
+        <childnode refid="142795" relation="include">
+        </childnode>
+        <childnode refid="142796" relation="include">
+        </childnode>
+        <childnode refid="142797" relation="include">
+        </childnode>
+        <childnode refid="142802" relation="include">
+        </childnode>
+      </node>
+      <node id="142790">
+        <label>cstdlib</label>
+      </node>
+      <node id="142793">
+        <label>iostream</label>
+      </node>
+      <node id="142798">
+        <label>BaseGraph.h</label>
+        <link refid="BaseGraph_8h"/>
+        <childnode refid="142793" relation="include">
+        </childnode>
+        <childnode refid="142795" relation="include">
+        </childnode>
+        <childnode refid="142799" relation="include">
+        </childnode>
+        <childnode refid="142800" relation="include">
+        </childnode>
+        <childnode refid="142801" relation="include">
+        </childnode>
+      </node>
+      <node id="142800">
+        <label>Iterator.h</label>
+        <link refid="Iterator_8h"/>
+      </node>
+      <node id="142799">
+        <label>set</label>
+      </node>
+      <node id="142791">
+        <label>cstring</label>
+      </node>
+      <node id="142803">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="OpenAnalysis_2CallGraph_2CallGraph_8C_1a04300a2cb71d9a96c36f57b326bcd8d1" prot="public" static="yes" mutable="no">
+        <type>const char *</type>
+        <definition>const char* edgeTypeToString[]</definition>
+        <argsstring>[]</argsstring>
+        <name>edgeTypeToString</name>
+        <initializer>= { 
+  &quot;NORMAL_EDGE&quot; 
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/CallGraph/CallGraph.C" line="95" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/CallGraph/CallGraph.C" bodystart="95" bodyend="-1"/>
+        <referencedby refid="classCallGraph_1_1Edge_1a8d78aaec3e6de6ab14c79176d7e9dd51" compoundref="OpenAnalysis_2CallGraph_2CallGraph_8C" startline="99" endline="102">CallGraph::Edge::dump</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//<sp/>$Id:<sp/>CallGraph.C,v<sp/>1.1<sp/>2004/07/07<sp/>10:26:34<sp/>dquinlan<sp/>Exp<sp/>$</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>-*-C++-*-</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/>*<sp/>BeginRiceCopyright<sp/>*****************************************************</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Copyright<sp/>((c))<sp/>2002,<sp/>Rice<sp/>University<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>All<sp/>rights<sp/>reserved.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="comment">//<sp/>modification,<sp/>are<sp/>permitted<sp/>provided<sp/>that<sp/>the<sp/>following<sp/>conditions<sp/>are</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="comment">//<sp/>met:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="comment">//<sp/>*<sp/>Redistributions<sp/>of<sp/>source<sp/>code<sp/>must<sp/>retain<sp/>the<sp/>above<sp/>copyright</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="comment">//<sp/>*<sp/>Redistributions<sp/>in<sp/>binary<sp/>form<sp/>must<sp/>reproduce<sp/>the<sp/>above<sp/>copyright</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer<sp/>in<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>documentation<sp/>and/or<sp/>other<sp/>materials<sp/>provided<sp/>with<sp/>the<sp/>distribution.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">//<sp/>*<sp/>Neither<sp/>the<sp/>name<sp/>of<sp/>Rice<sp/>University<sp/>(RICE)<sp/>nor<sp/>the<sp/>names<sp/>of<sp/>its</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>contributors<sp/>may<sp/>be<sp/>used<sp/>to<sp/>endorse<sp/>or<sp/>promote<sp/>products<sp/>derived<sp/>from</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>this<sp/>software<sp/>without<sp/>specific<sp/>prior<sp/>written<sp/>permission.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="comment">//<sp/>This<sp/>software<sp/>is<sp/>provided<sp/>by<sp/>RICE<sp/>and<sp/>contributors<sp/>&quot;as<sp/>is&quot;<sp/>and<sp/>any</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="comment">//<sp/>express<sp/>or<sp/>implied<sp/>warranties,<sp/>including,<sp/>but<sp/>not<sp/>limited<sp/>to,<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">//<sp/>implied<sp/>warranties<sp/>of<sp/>merchantability<sp/>and<sp/>fitness<sp/>for<sp/>a<sp/>particular</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="comment">//<sp/>purpose<sp/>are<sp/>disclaimed.<sp/>In<sp/>no<sp/>event<sp/>shall<sp/>RICE<sp/>or<sp/>contributors<sp/>be</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="comment">//<sp/>liable<sp/>for<sp/>any<sp/>direct,<sp/>indirect,<sp/>incidental,<sp/>special,<sp/>exemplary,<sp/>or</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="comment">//<sp/>consequential<sp/>damages<sp/>(including,<sp/>but<sp/>not<sp/>limited<sp/>to,<sp/>procurement<sp/>of</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="comment">//<sp/>substitute<sp/>goods<sp/>or<sp/>services;<sp/>loss<sp/>of<sp/>use,<sp/>data,<sp/>or<sp/>profits;<sp/>or</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>business<sp/>interruption)<sp/>however<sp/>caused<sp/>and<sp/>on<sp/>any<sp/>theory<sp/>of<sp/>liability,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>whether<sp/>in<sp/>contract,<sp/>strict<sp/>liability,<sp/>or<sp/>tort<sp/>(including<sp/>negligence</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="comment">//<sp/>or<sp/>otherwise)<sp/>arising<sp/>in<sp/>any<sp/>way<sp/>out<sp/>of<sp/>the<sp/>use<sp/>of<sp/>this<sp/>software,<sp/>even</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">//<sp/>if<sp/>advised<sp/>of<sp/>the<sp/>possibility<sp/>of<sp/>such<sp/>damage.<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="comment">//<sp/>*******************************************************<sp/>EndRiceCopyright<sp/>*</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Best<sp/>seen<sp/>in<sp/>120-column<sp/>wide<sp/>window<sp/>(or<sp/>print<sp/>in<sp/>landscape<sp/>mode).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="comment">//<sp/>standard<sp/>headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>NO_STD_CHEADERS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&lt;stdlib.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&lt;assert.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&lt;cstdlib&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&lt;cstring&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&lt;cassert&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;<sp/></highlight><highlight class="comment">//<sp/>For<sp/>compatibility<sp/>with<sp/>non-std<sp/>C<sp/>headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::ostream;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::endl;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::cout;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::cerr;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Mint<sp/>headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="OpenAnalysis_2CallGraph_2CallGraph_8h" kindref="compound">CallGraph.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classCallGraph_1_1Node_1aeafa7bfc1a4bc3dd00303768beaf2230" kindref="member">CallGraph::Node::label_count</ref><sp/>=<sp/>0;<sp/></highlight><highlight class="comment">//<sp/>First<sp/>node<sp/>will<sp/>be<sp/>numbered<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="classCallGraph_1a6da3f1439844740b6ff55ab871536c45" refkind="member"><highlight class="normal"><ref refid="classCallGraph_1a6da3f1439844740b6ff55ab871536c45" kindref="member">CallGraph::CallGraph</ref><sp/>(<ref refid="classIRInterface" kindref="compound">IRInterface</ref><sp/>&amp;_ir,<sp/><ref refid="classIRProcIterator" kindref="compound">IRProcIterator</ref><sp/>*procInter,<sp/></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="IRInterface_8h_1aa484e382a7b37a571d25b4fdb41faf10" kindref="member">SymHandle</ref>&amp;<sp/>_name)<sp/></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/>:<sp/>ir(_ir)</highlight></codeline>
+<codeline lineno="69"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><ref refid="classCallGraph_1a24ce763b4690121453fbe05ac9bd16e1" kindref="member">entry</ref><sp/>=<sp/><ref refid="classCallGraph_1aead361c79ed095b5f95d5ef3363ed081" kindref="member">exit</ref><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><ref refid="classCallGraph_1a690043ec9dd82bed8e1b115a0fc08e83" kindref="member">name</ref><sp/>=<sp/>_name;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><ref refid="classCallGraph_1abd1c62528078f0ae84320129637bbaac" kindref="member">build_graph</ref>(procInter);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75" refid="classCallGraph_1a7714337a3d1ff0cf280e803484154243" refkind="member"><highlight class="normal"><ref refid="classCallGraph_1a7714337a3d1ff0cf280e803484154243" kindref="member">CallGraph::~CallGraph</ref>()</highlight></codeline>
+<codeline lineno="76"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><ref refid="classCallGraph_1a24ce763b4690121453fbe05ac9bd16e1" kindref="member">entry</ref><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><ref refid="classCallGraph_1aead361c79ed095b5f95d5ef3363ed081" kindref="member">exit</ref><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85" refid="classCallGraph_1_1Edge_1a96b13be37dc1a97ef57bad69dada1250" refkind="member"><highlight class="normal"><ref refid="classCallGraph_1_1Edge_1a96b13be37dc1a97ef57bad69dada1250" kindref="member">CallGraph::Edge::Edge</ref><sp/>(<ref refid="classCallGraph_1_1Node" kindref="compound">CallGraph::Node</ref>*<sp/>n1,<sp/><ref refid="classCallGraph_1_1Node" kindref="compound">CallGraph::Node</ref>*<sp/>n2,<sp/></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classCallGraph_1aae46fcd2e261c63cedcf876fbbb227f5" kindref="member">EdgeType</ref><sp/>_type)<sp/></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/>:<sp/><ref refid="classDGraph" kindref="compound">DGraph</ref>::<ref refid="classCallGraph_1_1Edge" kindref="compound">Edge</ref>(n1,<sp/>n2)</highlight></codeline>
+<codeline lineno="88"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><ref refid="classCallGraph_1_1Edge_1ac1617321f85d2b064c8ed401fed143c6" kindref="member">type</ref><sp/>=<sp/>_type;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="OpenAnalysis_2CallGraph_2CallGraph_8C_1a04300a2cb71d9a96c36f57b326bcd8d1" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*<ref refid="OpenAnalysis_2CallGraph_2CallGraph_8C_1a04300a2cb71d9a96c36f57b326bcd8d1" kindref="member">edgeTypeToString</ref>[]<sp/>=<sp/>{<sp/></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/></highlight><highlight class="stringliteral">&quot;NORMAL_EDGE&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">//<sp/>FIXME<sp/>(make<sp/>CFG&apos;s<sp/>version<sp/>static)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99" refid="classCallGraph_1_1Edge_1a8d78aaec3e6de6ab14c79176d7e9dd51" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classCallGraph_1_1Edge_1a8d78aaec3e6de6ab14c79176d7e9dd51" kindref="member">CallGraph::Edge::dump</ref>(ostream&amp;<sp/>os)</highlight></codeline>
+<codeline lineno="100"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/>os<sp/>&lt;&lt;<sp/><ref refid="OpenAnalysis_2CallGraph_2CallGraph_8C_1a04300a2cb71d9a96c36f57b326bcd8d1" kindref="member">edgeTypeToString</ref>[type];</highlight></codeline>
+<codeline lineno="102"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106" refid="classCallGraph_1abd1c62528078f0ae84320129637bbaac" refkind="member"><highlight class="normal"><ref refid="classCallGraph_1abd1c62528078f0ae84320129637bbaac" kindref="member">CallGraph::build_graph</ref>(<ref refid="classIRProcIterator" kindref="compound">IRProcIterator</ref>*<sp/>procIter)</highlight></codeline>
+<codeline lineno="107"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Iterate<sp/>over<sp/>all<sp/>the<sp/>procedures<sp/>in<sp/>the<sp/>program</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/>;<sp/>procIter-&gt;<ref refid="classIRProcIterator_1a8100f3976082a5a7dd8c381b9efce381" kindref="member">IsValid</ref>();<sp/>++(*procIter))<sp/>{<sp/></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Create<sp/>a<sp/>node<sp/>for<sp/>this<sp/>procedure</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="IRInterface_8h_1a3a9f5a1b98e4a41693721279b965f07d" kindref="member">ProcHandle</ref><sp/>currProc<sp/>=<sp/>procIter-&gt;<ref refid="classIRProcIterator_1abda7bed00e18b7d75142fe1e560628ef" kindref="member">Current</ref>();</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="IRInterface_8h_1aa484e382a7b37a571d25b4fdb41faf10" kindref="member">SymHandle</ref><sp/>currProcSym<sp/>=<sp/><ref refid="classCallGraph_1a1685e19d2e48e3fe74267565975d7fcd" kindref="member">ir</ref>.<ref refid="classIRInterface_1a3c1fbd5e252f9189089cefdd91b6864a" kindref="member">GetProcSymHandle</ref>(currProc);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classCallGraph_1_1Node" kindref="compound">CallGraph::Node</ref>*<sp/>currProcNode<sp/>=<sp/><ref refid="classCallGraph_1af4b7e2da8d80d8b1378ae5f48e2ad8da" kindref="member">FindOrAddNode</ref>(currProcSym);</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>currProcNode-&gt;<ref refid="classCallGraph_1_1Node_1aa1447d72b1bbbf4cf79b6e4745c36c27" kindref="member">add_def</ref>(currProc);<sp/></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Iterate<sp/>over<sp/>the<sp/>statements<sp/>of<sp/>this<sp/>procedure</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classIRStmtIterator" kindref="compound">IRStmtIterator</ref><sp/>*stmtIter<sp/>=<sp/><ref refid="classCallGraph_1a1685e19d2e48e3fe74267565975d7fcd" kindref="member">ir</ref>.<ref refid="classIRInterface_1a8cc4e3cfa27e581414fe1c5cd5e5df60" kindref="member">ProcBody</ref>(currProc);</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classCallGraph_1a6eb6fd36991e866f1e801234b6d92614" kindref="member">build_graph_from_block</ref>(currProcNode,<sp/>stmtIter);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>stmtIter;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Recursively<sp/>build<sp/>all<sp/>statement<sp/>blocks<sp/>within<sp/>a<sp/>procedure</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="127" refid="classCallGraph_1a6eb6fd36991e866f1e801234b6d92614" refkind="member"><highlight class="normal"><ref refid="classCallGraph_1a6eb6fd36991e866f1e801234b6d92614" kindref="member">CallGraph::build_graph_from_block</ref>(<ref refid="classCallGraph_1_1Node" kindref="compound">CallGraph::Node</ref>*<sp/>currProcNode,</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classIRStmtIterator" kindref="compound">IRStmtIterator</ref>*<sp/>stmtIter)</highlight></codeline>
+<codeline lineno="129"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Iterate<sp/>over<sp/>the<sp/>statements<sp/>of<sp/>this<sp/>block<sp/>adding<sp/>procedure<sp/>references</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/>;<sp/>stmtIter-&gt;<ref refid="classIRStmtIterator_1a8ac281ca49411d3c34229df268d77cf0" kindref="member">IsValid</ref>();<sp/>++(*stmtIter))<sp/>{</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="IRInterface_8h_1a439e252e95d0ebb473b20c6b721e7253" kindref="member">StmtHandle</ref><sp/>stmt<sp/>=<sp/>stmtIter-&gt;<ref refid="classIRStmtIterator_1a78ee4b6648b0f870d4d29852da66c015" kindref="member">Current</ref>();</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(<ref refid="classCallGraph_1a1685e19d2e48e3fe74267565975d7fcd" kindref="member">ir</ref>.<ref refid="classIRInterface_1a96b5f5f34620f7407390738a16b26eeb" kindref="member">GetStmtType</ref>(stmt))<sp/>{</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="IRInterface_8h_1afff49d7a9271441d55a306e4b48ed029a69192dcf9d77f0f90d86e7540148c081" kindref="member">COMPOUND</ref>:<sp/>{</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classIRStmtIterator" kindref="compound">IRStmtIterator</ref>*<sp/>it<sp/>=<sp/><ref refid="classCallGraph_1a1685e19d2e48e3fe74267565975d7fcd" kindref="member">ir</ref>.<ref refid="classIRInterface_1ab9a0a0db015967dbc034346d59388677" kindref="member">GetFirstInCompound</ref>(stmt);</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classCallGraph_1a6eb6fd36991e866f1e801234b6d92614" kindref="member">build_graph_from_block</ref>(currProcNode,<sp/>it);</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>it;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="IRInterface_8h_1afff49d7a9271441d55a306e4b48ed029a61f7f1587bd5fe978d9ff3ece8d0624c" kindref="member">LOOP</ref>:</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="IRInterface_8h_1afff49d7a9271441d55a306e4b48ed029ab225f39b06b13227e312d85a470f67ed" kindref="member">END_TESTED_LOOP</ref>:<sp/>{</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classIRStmtIterator" kindref="compound">IRStmtIterator</ref>*<sp/>it<sp/>=<sp/><ref refid="classCallGraph_1a1685e19d2e48e3fe74267565975d7fcd" kindref="member">ir</ref>.<ref refid="classIRInterface_1afab4ec66dbdda86b686c37d63b998c99" kindref="member">LoopBody</ref>(stmt);</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classCallGraph_1a6eb6fd36991e866f1e801234b6d92614" kindref="member">build_graph_from_block</ref>(currProcNode,<sp/>it);</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>it;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="IRInterface_8h_1afff49d7a9271441d55a306e4b48ed029a84710733e7139b109431f9c17eadf118" kindref="member">STRUCT_TWOWAY_CONDITIONAL</ref>:<sp/>{</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classIRStmtIterator" kindref="compound">IRStmtIterator</ref><sp/>*it1<sp/>=<sp/><ref refid="classCallGraph_1a1685e19d2e48e3fe74267565975d7fcd" kindref="member">ir</ref>.<ref refid="classIRInterface_1a73630e8625300ed09b667dddf22a66a0" kindref="member">TrueBody</ref>(stmt),<sp/>*it2<sp/>=<sp/><ref refid="classCallGraph_1a1685e19d2e48e3fe74267565975d7fcd" kindref="member">ir</ref>.<ref refid="classIRInterface_1ac4c180c359f97cea2dda584dcda136f2" kindref="member">ElseBody</ref>(stmt);</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classCallGraph_1a6eb6fd36991e866f1e801234b6d92614" kindref="member">build_graph_from_block</ref>(currProcNode,<sp/>it1);</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classCallGraph_1a6eb6fd36991e866f1e801234b6d92614" kindref="member">build_graph_from_block</ref>(currProcNode,<sp/>it2);</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>it1;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>it2;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="IRInterface_8h_1afff49d7a9271441d55a306e4b48ed029a9f4a0913981214101792f80e5ea1fc66" kindref="member">STRUCT_MULTIWAY_CONDITIONAL</ref>:<sp/>{</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>numcases<sp/>=<sp/><ref refid="classCallGraph_1a1685e19d2e48e3fe74267565975d7fcd" kindref="member">ir</ref>.<ref refid="classIRInterface_1a0224c66ba2f7ea391be1270274b08b6c" kindref="member">NumMultiCases</ref>(stmt);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>numcases;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classIRStmtIterator" kindref="compound">IRStmtIterator</ref>*<sp/>it<sp/>=<sp/><ref refid="classCallGraph_1a1685e19d2e48e3fe74267565975d7fcd" kindref="member">ir</ref>.<ref refid="classIRInterface_1acc11f326686a1c4095d45ba8377be786" kindref="member">MultiBody</ref>(stmt,<sp/>i);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classCallGraph_1a6eb6fd36991e866f1e801234b6d92614" kindref="member">build_graph_from_block</ref>(currProcNode,<sp/>it);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>it;</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classIRStmtIterator" kindref="compound">IRStmtIterator</ref>*<sp/>it<sp/>=<sp/><ref refid="classCallGraph_1a1685e19d2e48e3fe74267565975d7fcd" kindref="member">ir</ref>.<ref refid="classIRInterface_1a6cbb8685bc89a1c6899f8b086b973367" kindref="member">GetMultiCatchall</ref>(stmt);</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classCallGraph_1a6eb6fd36991e866f1e801234b6d92614" kindref="member">build_graph_from_block</ref>(currProcNode,<sp/>it);</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>it;</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="IRInterface_8h_1afff49d7a9271441d55a306e4b48ed029a07e60cb98b656b187ee3c6d1106707cf" kindref="member">USTRUCT_TWOWAY_CONDITIONAL_T</ref>:</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="IRInterface_8h_1afff49d7a9271441d55a306e4b48ed029a943cad22a8f55be232afbd5628648422" kindref="member">USTRUCT_TWOWAY_CONDITIONAL_F</ref>:</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="IRInterface_8h_1afff49d7a9271441d55a306e4b48ed029a42e957d4c8ec1a1119b628cddf81f556" kindref="member">USTRUCT_MULTIWAY_CONDITIONAL</ref>:<sp/>{</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:<sp/>{</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Iterate<sp/>over<sp/>procedure<sp/>calls<sp/>of<sp/>a<sp/>statement</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classIRCallsiteIterator" kindref="compound">IRCallsiteIterator</ref>*<sp/>callsiteIt<sp/>=<sp/><ref refid="classCallGraph_1a1685e19d2e48e3fe74267565975d7fcd" kindref="member">ir</ref>.<ref refid="classIRInterface_1a0b7de5d6ae84f7ec81da01b677864abc" kindref="member">GetCallsites</ref>(stmt);</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/>;<sp/>callsiteIt-&gt;<ref refid="classIRCallsiteIterator_1a2cad11d901c73e00ee59c12ab7777c47" kindref="member">IsValid</ref>();<sp/>++(*callsiteIt))<sp/>{</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="IRInterface_8h_1a0ed951a3db666c841cfd61145334a9c5" kindref="member">ExprHandle</ref><sp/><ref refid="namespaceFortran_1_1parser_1a3af18db366f87e7588e79bc736d7cadd" kindref="member">expr</ref><sp/>=<sp/>callsiteIt-&gt;<ref refid="classIRCallsiteIterator_1a25f96e14d17367f356f12940897bbca5" kindref="member">Current</ref>();</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="IRInterface_8h_1aa484e382a7b37a571d25b4fdb41faf10" kindref="member">SymHandle</ref><sp/>sym<sp/>=<sp/><ref refid="classCallGraph_1a1685e19d2e48e3fe74267565975d7fcd" kindref="member">ir</ref>.<ref refid="classIRInterface_1a397d8f2240cdac424050758328419278" kindref="member">GetSymHandle</ref>(<ref refid="namespaceFortran_1_1parser_1a3af18db366f87e7588e79bc736d7cadd" kindref="member">expr</ref>);</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Add<sp/>a<sp/>node<sp/>(if<sp/>nonexistent)<sp/>and<sp/>edge</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classCallGraph_1_1Node" kindref="compound">CallGraph::Node</ref>*<sp/><ref refid="structnode" kindref="compound">node</ref><sp/>=<sp/><ref refid="classCallGraph_1af4b7e2da8d80d8b1378ae5f48e2ad8da" kindref="member">FindOrAddNode</ref>(sym);</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structnode" kindref="compound">node</ref>-&gt;add_use(<ref refid="namespaceFortran_1_1parser_1a3af18db366f87e7588e79bc736d7cadd" kindref="member">expr</ref>);</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classCallGraph_1a493e4fd26c91fd1f0a99ac813b342c92" kindref="member">connect</ref>(currProcNode,<sp/><ref refid="structnode" kindref="compound">node</ref>,<sp/><ref refid="classCallGraph_1aae46fcd2e261c63cedcf876fbbb227f5aee953255dab76fc1a0104777424f5cd0" kindref="member">NORMAL_EDGE</ref>);</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>callsiteIt;</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="192"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><ref refid="classCallGraph_1_1Node" kindref="compound">CallGraph::Node</ref>*<sp/></highlight></codeline>
+<codeline lineno="196" refid="classCallGraph_1af4b7e2da8d80d8b1378ae5f48e2ad8da" refkind="member"><highlight class="normal"><ref refid="classCallGraph_1af4b7e2da8d80d8b1378ae5f48e2ad8da" kindref="member">CallGraph::FindOrAddNode</ref>(<ref refid="IRInterface_8h_1aa484e382a7b37a571d25b4fdb41faf10" kindref="member">SymHandle</ref><sp/>sym)</highlight></codeline>
+<codeline lineno="197"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><ref refid="classCallGraph_1_1Node" kindref="compound">CallGraph::Node</ref>*<sp/><ref refid="structnode" kindref="compound">node</ref><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/>SymToNodeMap::iterator<sp/>it<sp/>=<sp/><ref refid="classCallGraph_1aa19dcc95e84017c787cee4dfc90573ad" kindref="member">symToNodeMap</ref>.find(sym);</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it<sp/>==<sp/><ref refid="classCallGraph_1aa19dcc95e84017c787cee4dfc90573ad" kindref="member">symToNodeMap</ref>.end())<sp/>{</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structnode" kindref="compound">node</ref><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classCallGraph_1_1Node" kindref="compound">CallGraph::Node</ref>(sym);</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classDGraph_1a4d5fa4c0a7ee0194c34f233388337708" kindref="member">add</ref>(<ref refid="structnode" kindref="compound">node</ref>);</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classCallGraph_1aa19dcc95e84017c787cee4dfc90573ad" kindref="member">symToNodeMap</ref>.insert(SymToNodeMap::value_type(sym,<sp/><ref refid="structnode" kindref="compound">node</ref>));</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structnode" kindref="compound">node</ref><sp/>=<sp/>(*it).second;</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/>assert(<ref refid="structnode" kindref="compound">node</ref><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="extension-functions_8c_1ace29f146c273d2654669dc2c710603e2" kindref="member">node</ref>;</highlight></codeline>
+<codeline lineno="211"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="215" refid="classCallGraph_1a7cb69ecaeb6efcc99ae45d62dd894400" refkind="member"><highlight class="normal"><ref refid="classCallGraph_1a7cb69ecaeb6efcc99ae45d62dd894400" kindref="member">CallGraph::dump</ref><sp/>(ostream&amp;<sp/>os)</highlight></codeline>
+<codeline lineno="216"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;=====<sp/>CallGraph:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="classCallGraph_1a1685e19d2e48e3fe74267565975d7fcd" kindref="member">ir</ref>.<ref refid="classIRInterface_1aa7b28207a01ab0114b446b9df8c639c0" kindref="member">GetSymNameFromSymHandle</ref>(<ref refid="classCallGraph_1a690043ec9dd82bed8e1b115a0fc08e83" kindref="member">name</ref>)<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>=====\n&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>print<sp/>the<sp/>contents<sp/>of<sp/>all<sp/>the<sp/>nodes</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><ref refid="classBaseGraph_1_1NodesIterator" kindref="compound">NodesIterator</ref><sp/>nodes_iter(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/>;<sp/>(bool)nodes_iter;<sp/>++nodes_iter)<sp/>{</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classCallGraph_1_1Node" kindref="compound">CallGraph::Node</ref>*<sp/><ref refid="structnode" kindref="compound">node</ref><sp/>=<sp/></highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">dynamic_cast&lt;</highlight><highlight class="normal"><ref refid="classCallGraph_1_1Node" kindref="compound">CallGraph::Node</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">((<ref refid="classDGraph_1_1Node" kindref="compound">DGraph::Node</ref>*)nodes_iter);</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structnode" kindref="compound">node</ref>-&gt;longdump(</highlight><highlight class="keyword">this</highlight><highlight class="normal">,<sp/>os);</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;====================&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="233"><highlight class="normal"></highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="237" refid="classCallGraph_1_1Node_1a78e281e669b755d68f7c2262acf9b8b1" refkind="member"><highlight class="normal"><ref refid="classCallGraph_1_1Node_1a78e281e669b755d68f7c2262acf9b8b1" kindref="member">CallGraph::Node::dump</ref><sp/>(ostream&amp;<sp/>os)</highlight></codeline>
+<codeline lineno="238"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/>os<sp/>&lt;&lt;<sp/>sym;</highlight></codeline>
+<codeline lineno="240"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"></highlight></codeline>
+<codeline lineno="242"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="243" refid="classCallGraph_1_1Node_1a20301d03adab243339b0abcdf72adb14" refkind="member"><highlight class="normal"><ref refid="classCallGraph_1_1Node_1a20301d03adab243339b0abcdf72adb14" kindref="member">CallGraph::Node::shortdump</ref><sp/>(<ref refid="classCallGraph" kindref="compound">CallGraph</ref><sp/>*cgraph,<sp/>ostream&amp;<sp/>os)</highlight></codeline>
+<codeline lineno="244"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><ref refid="classIRInterface" kindref="compound">IRInterface</ref>&amp;<sp/><ref refid="classCallGraph_1a1685e19d2e48e3fe74267565975d7fcd" kindref="member">ir</ref><sp/>=<sp/>cgraph-&gt;<ref refid="classCallGraph_1ae7661e583ba48fb1b915a2ac74f2c2f1" kindref="member">GetIRInterface</ref>();</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sym<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&lt;no-symbol&gt;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/><ref refid="classCallGraph_1a1685e19d2e48e3fe74267565975d7fcd" kindref="member">ir</ref>.<ref refid="classIRInterface_1aa7b28207a01ab0114b446b9df8c639c0" kindref="member">GetSymNameFromSymHandle</ref>(sym);</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>(IsDefined()<sp/>?<sp/></highlight><highlight class="stringliteral">&quot;[defined]&quot;</highlight><highlight class="normal"><sp/>:<sp/></highlight><highlight class="stringliteral">&quot;[referenced]&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="252"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="255" refid="classCallGraph_1_1Node_1a24a8fd8e5a26aec5712048a80a2714a7" refkind="member"><highlight class="normal"><ref refid="classCallGraph_1_1Node_1a24a8fd8e5a26aec5712048a80a2714a7" kindref="member">CallGraph::Node::longdump</ref><sp/>(<ref refid="classCallGraph" kindref="compound">CallGraph</ref><sp/>*cgraph,<sp/>ostream&amp;<sp/>os)</highlight></codeline>
+<codeline lineno="256"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>print<sp/>the<sp/>node<sp/>ID</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><ref refid="classIRInterface" kindref="compound">IRInterface</ref>&amp;<sp/><ref refid="classCallGraph_1a1685e19d2e48e3fe74267565975d7fcd" kindref="member">ir</ref><sp/>=<sp/>cgraph-&gt;<ref refid="classCallGraph_1ae7661e583ba48fb1b915a2ac74f2c2f1" kindref="member">GetIRInterface</ref>();</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;CallGraph<sp/>Node:<sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/>shortdump(cgraph,<sp/>os);</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(num_incoming()<sp/>==<sp/>0)</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>(root)&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(cgraph-&gt;<ref refid="classCallGraph_1a06e925280da1d2f63ffd8655fa19ea02" kindref="member">Entry</ref>()<sp/>==<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>[ENTRY]&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(cgraph-&gt;<ref refid="classCallGraph_1a2c6b83faff31b270a06da27929c0b902" kindref="member">Exit</ref>()<sp/>==<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>[EXIT]&quot;</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/>os<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>print<sp/>the<sp/>source(s)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>count<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><ref refid="classDGraph_1_1SourceNodesIterator" kindref="compound">SourceNodesIterator</ref><sp/>srcIt(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/>;<sp/>(bool)srcIt;<sp/>++srcIt,<sp/>++count)<sp/>{</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classCallGraph_1_1Node" kindref="compound">Node</ref>*<sp/><ref refid="structnode" kindref="compound">node</ref><sp/>=<sp/></highlight><highlight class="keyword">dynamic_cast&lt;</highlight><highlight class="normal"><ref refid="classCallGraph_1_1Node" kindref="compound">Node</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">((<ref refid="classDGraph_1_1Node" kindref="compound">DGraph::Node</ref>*)srcIt);</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(count<sp/>==<sp/>0)<sp/>{<sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>&lt;--<sp/>(&quot;</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,<sp/>&quot;</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"></highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structnode" kindref="compound">node</ref>-&gt;shortdump(cgraph,<sp/>os);</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(count<sp/>&gt;<sp/>0)<sp/>{<sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;)&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;<sp/>}</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>print<sp/>the<sp/>sink(s)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/>count<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><ref refid="classDGraph_1_1OutgoingEdgesIterator" kindref="compound">OutgoingEdgesIterator</ref><sp/>outIt(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/>;<sp/>(bool)outIt;<sp/>++outIt,<sp/>++count)<sp/>{</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classCallGraph_1_1Edge" kindref="compound">Edge</ref>*<sp/><ref refid="namespacedot_1a09bab4a7f028a8ec468e5134bbfb14fe" kindref="member">edge</ref><sp/>=<sp/></highlight><highlight class="keyword">dynamic_cast&lt;</highlight><highlight class="normal"><ref refid="classCallGraph_1_1Edge" kindref="compound">Edge</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">((<ref refid="classDGraph_1_1Edge" kindref="compound">DGraph::Edge</ref>*)outIt);</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classCallGraph_1_1Node" kindref="compound">Node</ref>*<sp/><ref refid="structnode" kindref="compound">node</ref><sp/>=<sp/></highlight><highlight class="keyword">dynamic_cast&lt;</highlight><highlight class="normal"><ref refid="classCallGraph_1_1Node" kindref="compound">Node</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<ref refid="namespacedot_1a09bab4a7f028a8ec468e5134bbfb14fe" kindref="member">edge</ref>-&gt;sink());</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(count<sp/>==<sp/>0)<sp/>{<sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>--&gt;<sp/>(&quot;</highlight><highlight class="normal">;<sp/>}<sp/></highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,<sp/>&quot;</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structnode" kindref="compound">node</ref>-&gt;shortdump(cgraph,<sp/>os);</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>[&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacedot_1a09bab4a7f028a8ec468e5134bbfb14fe" kindref="member">edge</ref>-&gt;dump(os);</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;]&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(count<sp/>&gt;<sp/>0)<sp/>{<sp/>os<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;)&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;<sp/>}</highlight></codeline>
+<codeline lineno="298"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"></highlight><highlight class="comment">//--------------------------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/OpenAnalysis/CallGraph/CallGraph.C"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="_2home_2liao6_2workspace_2rose-github_2src_2frontend_2Experimental_Csharp_ROSE_Connection_2csharpBuilder_8h-example" kind="example">
+    <compoundname>/home/liao6/workspace/rose-github/src/frontend/Experimental_Csharp_ROSE_Connection/csharpBuilder.h</compoundname>
+    <briefdescription>
+<para>creates a using directive with unique C# identifier uid. </para>    </briefdescription>
+    <detaileddescription>
+<para>creates a using directive with unique C# identifier uid. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>uid</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a unique key representing the C# declaration </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>levels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of components of the name</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+pops of levels names from the name stack, assembles them to a single name and creates a new SgUsingDeclaration. The new IR node will get uid as its unique ID.</para><para>namestack-&gt;Text-&gt;System usingDirective(x, 2) =&gt; &quot;System.Text&quot; <simplesect kind="note"><para>currently a hidden namespace with the name is created </para></simplesect>
+<xrefsect id="todo_1_todo000026"><xreftitle>Todo</xreftitle><xrefdescription><para>use namespace declaration uids instead of names<itemizedlist>
+<listitem><para>can we get these from the roselyn parser? </para></listitem></itemizedlist>
+</para></xrefdescription></xrefsect><programlisting filename="/home/liao6/workspace/rose-github/src/frontend/Experimental_Csharp_ROSE_Connection/csharpBuilder.h"><codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_CSHARP_BUILDER_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_CSHARP_BUILDER_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">SgNode;</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>AST<sp/>builder<sp/>functions</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacecsharp__translator" kindref="compound">csharp_translator</ref></highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1a2744e95176aa495b299679757276ca3b" kindref="member">SeqKind</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacecsharp__translator_1a2744e95176aa495b299679757276ca3baad85e8a61945630a2aabfdb082d21925" kindref="member">GLOBALSCOPESEQ</ref><sp/>=<sp/>2,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacecsharp__translator_1a2744e95176aa495b299679757276ca3ba0d0a377c791b10e4cf56065707e9df50" kindref="member">CLASSMEMBERSEQ</ref><sp/>=<sp/>3,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacecsharp__translator_1a2744e95176aa495b299679757276ca3ba8093105aeb5b18d955f1d6aa0098519a" kindref="member">PARAMETERSEQ</ref><sp/><sp/><sp/>=<sp/>4,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacecsharp__translator_1a2744e95176aa495b299679757276ca3ba06c632fecb189ca57a94aae2f3c06d28" kindref="member">METHODBODYSEQ</ref><sp/><sp/>=<sp/>5,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacecsharp__translator_1a2744e95176aa495b299679757276ca3bac6d38a73e9f3591f15d64451b95e440c" kindref="member">EXPRLISTSEQ</ref><sp/><sp/><sp/><sp/>=<sp/>6,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacecsharp__translator_1a2744e95176aa495b299679757276ca3ba9d3c75c7273aab457f73edf43d6386c1" kindref="member">IFSTMT</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>7,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacecsharp__translator_1a2744e95176aa495b299679757276ca3ba999b151f1dabcd8457cef298628d5342" kindref="member">FORSTMT</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>8,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacecsharp__translator_1a2744e95176aa495b299679757276ca3ba247114b5ac85d6c38245c6787d9c5b19" kindref="member">WHILESTMT</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>9,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1aecf75f22f0dcb544d14a2d9cc76097b4" kindref="member">helloFromCxx</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1ac88d73583218d5261a75b2b1114158c6" kindref="member">beginSeq</ref>(<ref refid="namespacecsharp__translator_1a2744e95176aa495b299679757276ca3b" kindref="member">SeqKind</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1ae981b296bc81571a2b64c976827a49f1" kindref="member">closeSeq</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1a1f03da250d29612a44f0cd27f276e9f4" kindref="member">predefinedType</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1ad6b0718dee7ecdf42f03f4ab40ed0266" kindref="member">name</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1a3b58b5e3f11afa72e808bd8ccea5b7a1" kindref="member">usingDirective</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>uid,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespacestringify_1_1ConstrGraph_1ada81e5e666c83aaf09a86a2e1189d9a7" kindref="member">levels</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1ade5efe9da4be3b9e10c119b3bffa49dc" kindref="member">varDecl</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>uid);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1af180e269ed632052037daca7c5f6c46f" kindref="member">paramDecl</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>uid);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1a2c587e07f5af3ab25cc36ad0b8a78796" kindref="member">classDecl</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>uid);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1a88d44aa4d8deb02e0577435dbd43ca74" kindref="member">methodDecl</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>uid);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1a06c243b515e9cbeaef307d5339b67b28" kindref="member">stageMethodDecl</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>uid);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1a70190befe84f40f8c0a577a072c6fed7" kindref="member">refVarParamDecl</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>uid);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1ac962588dafe9e6d5be3cfaa900f73105" kindref="member">refFunDecl</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>uid);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1aae432db204b461838646a63b3b8df03d" kindref="member">initVarParamDecl</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>uid);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>statement<sp/>builders</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1ac9f5f6f8726a863a78e4c9dc096c661f" kindref="member">returnStmt</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" kindref="member">args</ref>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>expression<sp/>builders</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1a584256226474bfc57d7f96ef3a85417a" kindref="member">valueInitializer</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1a48133feb7cf5dbb2fdfaf9fe759ed7a5" kindref="member">literal</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>lit);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1abe9a271b231d18ba9137a7c6c6c413cc" kindref="member">binary</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>rep);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecsharp__translator_1aff93d9dd4ebda9f8ac08de4de37dbf81" kindref="member">basicFinalChecks</ref>();</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">SgNode*<sp/><ref refid="csharpBuilder_8C_1ae976e547b245581d62e7006acd28e388" kindref="member">popBuiltAST</ref>();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>_CSHARP_BUILDER_H<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+</programlisting> </para>    </detaileddescription>
+  </compounddef>
+</doxygen>

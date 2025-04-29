@@ -1,0 +1,322 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="varSets_8C" kind="file" language="C++">
+    <compoundname>varSets.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="154400">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="154397">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="154398" relation="include">
+        </childnode>
+        <childnode refid="154399" relation="include">
+        </childnode>
+        <childnode refid="154400" relation="include">
+        </childnode>
+      </node>
+      <node id="154396">
+        <label>/home/liao6/workspace/rose-github/src/midend/programAnalysis/genericDataflow/variables/varSets.C</label>
+        <link refid="varSets_8C"/>
+        <childnode refid="154397" relation="include">
+        </childnode>
+      </node>
+      <node id="154399">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="154398">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="154397" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_SOURCE_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="varSets_8h" kindref="compound">varSets.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;set&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">varSets</highlight></codeline>
+<codeline lineno="10"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>adds<sp/>to<sp/>declaredVars<sp/>the<sp/>set<sp/>of<sp/>all<sp/>variables<sp/>declared<sp/>within<sp/>the<sp/>given<sp/>AST<sp/>sub-tree</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>onlyGlobal<sp/>-<sp/>if<sp/>onlyGlobal==true,<sp/>only<sp/>global<sp/>variables<sp/>are<sp/>added</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>getCompilerGen<sp/>-<sp/>if<sp/>=true,<sp/>the<sp/>returned<sp/>set<sp/>includes<sp/>compiler-generated<sp/>variables<sp/>and<sp/>doesn&apos;t<sp/>if<sp/>=false</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>getDeclaredVars(SgNode*<sp/>root,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>onlyGlobal,<sp/>varIDSet&amp;<sp/>declaredVars,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>getCompilerGen);</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>adds<sp/>to<sp/>refVars<sp/>the<sp/>set<sp/>of<sp/>all<sp/>variables<sp/>referenced<sp/>in<sp/>the<sp/>given<sp/>function</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>getReferencedVars(SgFunctionDefinition*<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/>varIDSet<sp/>&amp;refVars);</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*=======================================</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/><sp/><sp/><sp/>=============<sp/><sp/><sp/>Globals<sp/><sp/><sp/>=============</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/><sp/><sp/><sp/>=======================================*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>varIDSet<sp/>globalVars;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>varIDSet<sp/>globalArrays;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>varIDSet<sp/>globalScalars;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>globalVars_initialized=</highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>initializes<sp/>globalVars,<sp/>globalArrays<sp/>and<sp/>globalScalars</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>initGlobalVars(SgProject*<sp/><ref refid="java__support_8C_1a453b843c3024736580c8e7a96a553cbe" kindref="member">project</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>getCompilerGen=</highlight><highlight class="keyword">false</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(!globalVars_initialized)</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>getDeclaredVars(<ref refid="java__support_8C_1a453b843c3024736580c8e7a96a553cbe" kindref="member">project</ref>,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">,<sp/>globalVars,<sp/>getCompilerGen);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>globalArrays<sp/>=<sp/>arraysFilter(globalVars);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>globalScalars<sp/>=<sp/>scalarsFilter(globalVars);</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>globalVars_initialized<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>returns<sp/>the<sp/>set<sp/>of<sp/>all<sp/>global<sp/>variables</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>getCompilerGen<sp/>-<sp/>if<sp/>=true,<sp/>the<sp/>returned<sp/>set<sp/>includes<sp/>compiler-generated<sp/>variables<sp/>and<sp/>doesn&apos;t<sp/>if<sp/>=false</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/>varIDSet&amp;<sp/>getGlobalVars(SgProject*<sp/><ref refid="java__support_8C_1a453b843c3024736580c8e7a96a553cbe" kindref="member">project</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>getCompilerGen)</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>initGlobalVars(<ref refid="java__support_8C_1a453b843c3024736580c8e7a96a553cbe" kindref="member">project</ref>,<sp/>getCompilerGen);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>globalVars;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>returns<sp/>the<sp/>set<sp/>of<sp/>all<sp/>global<sp/>arrays</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>getCompilerGen<sp/>-<sp/>if<sp/>=true,<sp/>the<sp/>returned<sp/>set<sp/>includes<sp/>compiler-generated<sp/>variables<sp/>and<sp/>doesn&apos;t<sp/>if<sp/>=false</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/>varIDSet&amp;<sp/>getGlobalArrays(SgProject*<sp/><ref refid="java__support_8C_1a453b843c3024736580c8e7a96a553cbe" kindref="member">project</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>getCompilerGen)</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>initGlobalVars(<ref refid="java__support_8C_1a453b843c3024736580c8e7a96a553cbe" kindref="member">project</ref>,<sp/>getCompilerGen);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>globalArrays;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>returns<sp/>the<sp/>set<sp/>of<sp/>all<sp/>global<sp/>scalars</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>getCompilerGen<sp/>-<sp/>if<sp/>=true,<sp/>the<sp/>returned<sp/>set<sp/>includes<sp/>compiler-generated<sp/>variables<sp/>and<sp/>doesn&apos;t<sp/>if<sp/>=false</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/>varIDSet&amp;<sp/>getGlobalScalars(SgProject*<sp/><ref refid="java__support_8C_1a453b843c3024736580c8e7a96a553cbe" kindref="member">project</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>getCompilerGen)</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>initGlobalVars(<ref refid="java__support_8C_1a453b843c3024736580c8e7a96a553cbe" kindref="member">project</ref>,<sp/>getCompilerGen);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>globalScalars;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*=======================================</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/><sp/><sp/><sp/>============<sp/><sp/><sp/>Locals<sp/><sp/><sp/>============</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/><sp/><sp/><sp/>=======================================*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>map<sp/>&lt;Function,<sp/>bool&gt;<sp/>localVars_initialized;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>map<sp/>&lt;Function,<sp/>varIDSet&gt;<sp/>localVars;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>map<sp/>&lt;Function,<sp/>varIDSet&gt;<sp/>localArrays;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>map<sp/>&lt;Function,<sp/>varIDSet&gt;<sp/>localScalars;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>initLocalVars(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Function&amp;<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>getCompilerGen=</highlight><highlight class="keyword">false</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(localVars_initialized.find(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>)<sp/>==<sp/>localVars_initialized.end())</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//printf(&quot;initLocalVars(%s)<sp/>initializing,<sp/>func.get_declaration()=%p\n&quot;,<sp/>func.get_name().str(),<sp/>func.get_declaration());</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>getDeclaredVars(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>.get_declaration(),<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/>localVars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>],<sp/>getCompilerGen);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>getDeclaredVars(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>.get_definition(),<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/>localVars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>],<sp/>getCompilerGen);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>localArrays[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>]<sp/>=<sp/>arraysFilter(localVars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>]);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>localScalars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>]<sp/>=<sp/>scalarsFilter(localVars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>]);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>localVars_initialized[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>returns<sp/>the<sp/>set<sp/>of<sp/>variables<sp/>declared<sp/>in<sp/>the<sp/>given<sp/>function</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/>varIDSet&amp;<sp/>getLocalVars(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Function&amp;<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>getCompilerGen)</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>initLocalVars(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/>getCompilerGen);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>localVars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>];</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>returns<sp/>the<sp/>set<sp/>of<sp/>arrays<sp/>declared<sp/>in<sp/>the<sp/>given<sp/>function</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/>varIDSet&amp;<sp/>getLocalArrays(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Function&amp;<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>getCompilerGen)</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>initLocalVars(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/>getCompilerGen);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>localArrays[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>];</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>returns<sp/>the<sp/>set<sp/>of<sp/>scalars<sp/>declared<sp/>in<sp/>the<sp/>given<sp/>function</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/>varIDSet&amp;<sp/>getLocalScalars(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Function&amp;<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>getCompilerGen)</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>initLocalVars(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/>getCompilerGen);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>localScalars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>];</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*=================================================</highlight></codeline>
+<codeline lineno="111"><highlight class="comment"><sp/><sp/><sp/><sp/>============<sp/><sp/><sp/>Function<sp/>Parameters<sp/><sp/><sp/>============</highlight></codeline>
+<codeline lineno="112"><highlight class="comment"><sp/><sp/><sp/><sp/>=================================================*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>set<sp/>&lt;Function&gt;<sp/>funcParams_initialized;</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>map<sp/>&lt;Function,<sp/>varIDSet&gt;<sp/>funcParamVars;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>map<sp/>&lt;Function,<sp/>varIDSet&gt;<sp/>funcParamArrays;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>map<sp/>&lt;Function,<sp/>varIDSet&gt;<sp/>funcParamScalars;</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>initFuncParams(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Function&amp;<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>getCompilerGen)</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(funcParams_initialized.find(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>)<sp/>==<sp/>funcParams_initialized.end())</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="sageContainer_8h_1af5484e8d253ed1622192c3c08221ff2e" kindref="member">SgInitializedNamePtrList</ref><sp/><ref refid="AdaStatement_8C_1a02281ca4e33b94303a691b8f9324073b" kindref="member">params</ref><sp/>=<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>.get_params();</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(SgInitializedNamePtrList::iterator<sp/>itParams<sp/>=<sp/><ref refid="AdaStatement_8C_1a02281ca4e33b94303a691b8f9324073b" kindref="member">params</ref>.begin();<sp/></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>itParams!=<ref refid="AdaStatement_8C_1a02281ca4e33b94303a691b8f9324073b" kindref="member">params</ref>.end();<sp/>itParams++)<sp/>{</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>skip<sp/>over<sp/>compiler-generated<sp/>names<sp/>if<sp/>necessary</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(!getCompilerGen<sp/>&amp;&amp;<sp/>(*itParams)-&gt;get_file_info()-&gt;isCompilerGenerated())</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>varID<sp/><ref refid="sageUtility_8h_1a5254bb18c9c4f7acad7baa8b9a2369a6" kindref="member">var</ref>(*itParams);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>funcParamVars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>].insert(<ref refid="sageUtility_8h_1a5254bb18c9c4f7acad7baa8b9a2369a6" kindref="member">var</ref>);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>funcParamArrays[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>]<sp/>=<sp/>arraysFilter(funcParamVars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>]);</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>funcParamScalars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>]<sp/>=<sp/>scalarsFilter(funcParamVars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>]);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>funcParams_initialized.insert(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>returns<sp/>the<sp/>set<sp/>of<sp/>variables<sp/>that<sp/>are<sp/>the<sp/>parameters<sp/>of<sp/>the<sp/>given<sp/>function</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/>varIDSet&amp;<sp/>getFuncParamVars(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Function&amp;<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>getCompilerGen)</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>initFuncParams(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/>getCompilerGen);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>funcParamVars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>];</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>returns<sp/>the<sp/>set<sp/>of<sp/>arrays<sp/>that<sp/>are<sp/>the<sp/>parameters<sp/>of<sp/>the<sp/>given<sp/>function</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/>varIDSet&amp;<sp/>getFuncParamArrays(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Function&amp;<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>getCompilerGen)</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>initFuncParams(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/>getCompilerGen);</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>localArrays[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>];</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>returns<sp/>the<sp/>set<sp/>of<sp/>scalars<sp/>that<sp/>are<sp/>the<sp/>parameters<sp/>of<sp/>the<sp/>given<sp/>function</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/>varIDSet&amp;<sp/>getFuncParamlScalars(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Function&amp;<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>getCompilerGen)</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/>initFuncParams(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/>getCompilerGen);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>localScalars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>];</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*=======================================</highlight></codeline>
+<codeline lineno="162"><highlight class="comment"><sp/><sp/><sp/><sp/>========<sp/><sp/>Referenced<sp/>Variables<sp/><sp/>=======</highlight></codeline>
+<codeline lineno="163"><highlight class="comment"><sp/><sp/><sp/><sp/>=======================================*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>map<sp/>&lt;Function,<sp/>bool&gt;<sp/>refVars_initialized;</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>map<sp/>&lt;Function,<sp/>varIDSet&gt;<sp/>refVars;</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>map<sp/>&lt;Function,<sp/>varIDSet&gt;<sp/>refArrays;</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>map<sp/>&lt;Function,<sp/>varIDSet&gt;<sp/>refScalars;</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>initFuncRefVars(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Function&amp;<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>)</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(refVars_initialized.find(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>)<sp/>==<sp/>refVars_initialized.end())</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>SgFunctionDefinition*<sp/><ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref><sp/>=<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>.get_definition();</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(<ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>);</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>getReferencedVars(<ref refid="TarjanIntervals_8C_1a76f11d9a0a47b94f72c2d0e77fb32240" kindref="member">n</ref>,<sp/>refVars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>]);</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>refArrays[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>]<sp/>=<sp/>arraysFilter(refVars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>]);</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>refScalars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>]<sp/>=<sp/>scalarsFilter(refVars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>]);</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>refVars_initialized[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>returns<sp/>the<sp/>set<sp/>of<sp/>variables<sp/>referenced<sp/>in<sp/>the<sp/>given<sp/>function</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/>varIDSet&amp;<sp/>getFuncRefVars(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Function&amp;<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>)</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/>initFuncRefVars(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>);</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>refVars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>];</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>returns<sp/>the<sp/>set<sp/>of<sp/>arrays<sp/>referenced<sp/>in<sp/>the<sp/>given<sp/>function</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/>varIDSet&amp;<sp/>getFuncRefArrays(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Function&amp;<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>)</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/>initFuncRefVars(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>);</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>refArrays[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>];</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>returns<sp/>the<sp/>set<sp/>of<sp/>scalars<sp/>referenced<sp/>in<sp/>the<sp/>given<sp/>function</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/>varIDSet&amp;<sp/>getFuncRefScalars(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Function&amp;<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>)</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/>initFuncRefVars(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>);</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>refScalars[<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>];</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*=======================================</highlight></codeline>
+<codeline lineno="206"><highlight class="comment"><sp/><sp/><sp/><sp/>============<sp/><sp/><sp/>Utilities<sp/><sp/><sp/>============</highlight></codeline>
+<codeline lineno="207"><highlight class="comment"><sp/><sp/><sp/><sp/>=======================================*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>adds<sp/>to<sp/>declaredVars<sp/>the<sp/>set<sp/>of<sp/>all<sp/>variables<sp/>declared<sp/>within<sp/>the<sp/>given<sp/>AST<sp/>sub-tree</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>onlyGlobal<sp/>-<sp/>if<sp/>onlyGlobal==true,<sp/>only<sp/>global<sp/>variables<sp/>are<sp/>added</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>getCompilerGen<sp/>-<sp/>if<sp/>=true,<sp/>the<sp/>returned<sp/>set<sp/>includes<sp/>compiler-generated<sp/>variables<sp/>and<sp/>doesn&apos;t<sp/>if<sp/>=false</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>getDeclaredVars(SgNode*<sp/>root,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>onlyGlobal,<sp/>varIDSet&amp;<sp/>declaredVars,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>getCompilerGen=</highlight><highlight class="keyword">false</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/>Rose_STL_Container&lt;SgNode*&gt;<sp/>initNames<sp/>=<sp/><ref refid="namespaceNodeQuery_1a2ee0563a940105a5551b64f84791eaff" kindref="member">NodeQuery::querySubTree</ref>(root,<sp/>V_SgInitializedName);</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(Rose_STL_Container&lt;SgNode*&gt;::iterator<sp/>it<sp/>=<sp/>initNames.begin();<sp/>it<sp/>!=<sp/>initNames.end();<sp/>it++)</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(<ref refid="virtualCFG_8h_1a2e0cd44426c0477280c833ae2f1827a7" kindref="member">isSgInitializedName</ref>(*it));</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>skip<sp/>over<sp/>compiler-generated<sp/>names<sp/>if<sp/>necessary</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(!getCompilerGen<sp/>&amp;&amp;<sp/>(*it)-&gt;get_file_info()-&gt;isCompilerGenerated())</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"></highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>varID<sp/><ref refid="sageUtility_8h_1a5254bb18c9c4f7acad7baa8b9a2369a6" kindref="member">var</ref>(<ref refid="virtualCFG_8h_1a2e0cd44426c0477280c833ae2f1827a7" kindref="member">isSgInitializedName</ref>(*it));</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//printf(&quot;<sp/><sp/><sp/>getDeclaredVars()<sp/>var=%s\n&quot;,<sp/>var.str().c_str());</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>if<sp/>this<sp/>is<sp/>a<sp/>declaration<sp/>of<sp/>a<sp/>variable<sp/>with<sp/>a<sp/>globally<sp/>visible<sp/>scope</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//if(isGlobalVarDecl(isSgInitializedName(*it)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(!onlyGlobal<sp/>||<sp/><ref refid="sageUtility_8h_1a5254bb18c9c4f7acad7baa8b9a2369a6" kindref="member">var</ref>.isGlobal())</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//printf(&quot;<sp/><sp/><sp/><sp/><sp/><sp/><sp/>inserting\n&quot;);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>declaredVars.insert(<ref refid="sageUtility_8h_1a5254bb18c9c4f7acad7baa8b9a2369a6" kindref="member">var</ref>);</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"></highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>adds<sp/>to<sp/>refVars<sp/>the<sp/>set<sp/>of<sp/>all<sp/>variables<sp/>referenced<sp/>in<sp/>the<sp/>given<sp/>function</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>getReferencedVars(SgFunctionDefinition*<sp/><ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>,<sp/>varIDSet<sp/>&amp;refVars)</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/>printf(&quot;getting<sp/>vars<sp/>of<sp/>function<sp/>%s,<sp/>%s\n&quot;,<sp/>func-&gt;get_declaration()-&gt;get_name().str(),<sp/>func-&gt;get_file_info()-&gt;isCompilerGenerated()?<sp/>&quot;Compiler<sp/>generated&quot;:<sp/>&quot;In<sp/>Original<sp/>Code&quot;);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="240"><highlight class="normal"></highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(!<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>-&gt;get_file_info()-&gt;isCompilerGenerated())</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>refVars<sp/>=<sp/>getVarRefsInSubtree(<ref refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" kindref="member">func</ref>);</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"></highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>given<sp/>a<sp/>set<sp/>of<sp/>variables,<sp/>creates<sp/>a<sp/>new<sp/>set<sp/>that<sp/>only<sp/>contains<sp/>the<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>array<sp/>variables<sp/>in<sp/>the<sp/>original<sp/>set<sp/>and<sp/>returns<sp/>this<sp/>set</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/>varIDSet<sp/>arraysFilter(varIDSet&amp;<sp/>vars)</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/>varIDSet<sp/>arrays;</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(varIDSet::iterator<sp/>it=vars.begin();<sp/>it!=vars.end();<sp/>it++)</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(((varID)(*it)).isArrayType())</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>arrays.insert(*it);</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>arrays;</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"></highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>given<sp/>a<sp/>set<sp/>of<sp/>variables,<sp/>creates<sp/>a<sp/>new<sp/>set<sp/>that<sp/>only<sp/>contains<sp/>the<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>non-array<sp/>variables<sp/>in<sp/>the<sp/>original<sp/>set<sp/>and<sp/>returns<sp/>this<sp/>set</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/>varIDSet<sp/>scalarsFilter(varIDSet&amp;<sp/>vars)</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/>varIDSet<sp/>scalars;</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(varIDSet::iterator<sp/>it=vars.begin();<sp/>it!=vars.end();<sp/>it++)</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(!((varID)(*it)).isArrayType())</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>scalars.insert(*it);</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>scalars;</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"></highlight></codeline>
+<codeline lineno="277"><highlight class="normal">}</highlight><highlight class="comment">//namespace<sp/>varSets</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="278"><highlight class="normal"></highlight></codeline>
+<codeline lineno="279"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/genericDataflow/variables/varSets.C"/>
+  </compounddef>
+</doxygen>

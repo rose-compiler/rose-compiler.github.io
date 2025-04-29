@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="DispatcherPowerpc_8h" kind="file" language="C++">
+    <compoundname>DispatcherPowerpc.h</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <includedby refid="_2DispatcherPowerpc_8h" local="no">/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/InstructionSemantics2/DispatcherPowerpc.h</includedby>
+    <incdepgraph>
+      <node id="199774">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="199770">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/InstructionSemantics/DispatcherPowerpc.h</label>
+        <link refid="DispatcherPowerpc_8h"/>
+        <childnode refid="199771" relation="include">
+        </childnode>
+      </node>
+      <node id="199771">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="199772" relation="include">
+        </childnode>
+        <childnode refid="199773" relation="include">
+        </childnode>
+        <childnode refid="199774" relation="include">
+        </childnode>
+      </node>
+      <node id="199773">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="199772">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="199771" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="199776">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/InstructionSemantics2/DispatcherPowerpc.h</label>
+        <link refid="_2DispatcherPowerpc_8h"/>
+      </node>
+      <node id="199775">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/InstructionSemantics/DispatcherPowerpc.h</label>
+        <link refid="DispatcherPowerpc_8h"/>
+        <childnode refid="199776" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//<sp/>Semantics<sp/>for<sp/>32-bit<sp/>Motorola-IBM<sp/>PowerPC<sp/>microprocessors<sp/>using<sp/>ROSE<sp/>instruction<sp/>semantics<sp/>API2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>This<sp/>code<sp/>was<sp/>derived<sp/>from<sp/>$ROSE/projects/assemblyToSourceAst/powerpcInstructionSemantics.h,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/>which<sp/>is<sp/>mostly<sp/>a<sp/>copy<sp/>of<sp/>$ROSE/projects/SemanticSignatureVectors/powerpcInstructionSemantics.h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>ROSE<sp/>style<sp/>guide<sp/>indicates<sp/>that<sp/>PowerPC,<sp/>when<sp/>used<sp/>as<sp/>part<sp/>of<sp/>a<sp/>symbol<sp/>in<sp/>ROSE<sp/>source<sp/>code,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>should<sp/>be<sp/>capitalized<sp/>as<sp/>&quot;Powerpc&quot;<sp/>(e.g.,<sp/>&quot;DispatcherPowerpc&quot;,<sp/>the<sp/>same<sp/>rule<sp/>that<sp/>consistently</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="comment">//<sp/>capitializes<sp/>x86<sp/>as<sp/>&quot;DispatcherX86&quot;).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ROSE_BinaryAnalysis_InstructionSemantics_DispatcherPowerpc_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ROSE_BinaryAnalysis_InstructionSemantics_DispatcherPowerpc_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="BinaryAnalysis_2BasicTypes_8h" kindref="compound">Rose/BinaryAnalysis/BasicTypes.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="BaseSemantics_8h" kindref="compound">Rose/BinaryAnalysis/InstructionSemantics/BaseSemantics.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BOOST_SERIALIZATION</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/serialization/access.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/serialization/base_object.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/serialization/export.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/serialization/split_member.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose" kindref="compound">Rose</ref><sp/>{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">BinaryAnalysis<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">InstructionSemantics<sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>boost::shared_ptr&lt;class<sp/>DispatcherPowerpc&gt;<sp/>DispatcherPowerpcPtr;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">DispatcherPowerpc:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>BaseSemantics::Dispatcher<sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Super<sp/>=<sp/>BaseSemantics::Dispatcher;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Ptr<sp/>=<sp/>DispatcherPowerpcPtr;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>RegisterDescriptor<sp/>REG_IAR,<sp/>REG_LR,<sp/>REG_XER,<sp/>REG_XER_CA,<sp/>REG_XER_OV,<sp/>REG_XER_SO,<sp/>REG_CTR;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>RegisterDescriptor<sp/>REG_CR,<sp/>REG_CR0,<sp/>REG_CR0_LT;</highlight></codeline>
+<codeline lineno="48"><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BOOST_SERIALIZATION</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">friend</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">boost::serialization::access;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>S&gt;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>save(S<sp/>&amp;s,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">/*version*/</highlight><highlight class="normal">)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>s<sp/>&amp;<sp/>BOOST_SERIALIZATION_BASE_OBJECT_NVP(Super);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>S&gt;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceRose_1_1AST_1_1IO_1a935c7a9be3c93f70ebf5002b11af42aa" kindref="member">load</ref>(S<sp/>&amp;s,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">/*version*/</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>s<sp/>&amp;<sp/>BOOST_SERIALIZATION_BASE_OBJECT_NVP(Super);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>regcache_init();</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iproc_init();</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>memory_init();</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>BOOST_SERIALIZATION_SPLIT_MEMBER();</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>DispatcherPowerpc();<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>used<sp/>only<sp/>by<sp/>boost::serialization</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>DispatcherPowerpc(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::BaseConstPtr&amp;);<sp/></highlight><highlight class="comment">//<sp/>Prototypical<sp/>constructor</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>DispatcherPowerpc(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::BaseConstPtr&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BaseSemantics::RiscOperatorsPtr&amp;);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>~DispatcherPowerpc();</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>iproc_init();</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>regcache_init();</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>memory_init();</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>DispatcherPowerpcPtr<sp/>instance(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::BaseConstPtr&amp;);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>DispatcherPowerpcPtr<sp/>instance(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Architecture::BaseConstPtr&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BaseSemantics::RiscOperatorsPtr&amp;);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>BaseSemantics::DispatcherPtr<sp/>create(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BaseSemantics::RiscOperatorsPtr&amp;)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>DispatcherPowerpcPtr<sp/>promote(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BaseSemantics::DispatcherPtr&amp;);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>RegisterDescriptor<sp/>instructionPointerRegister()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>RegisterDescriptor<sp/>callReturnRegister()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iprocKey(<ref refid="classSgAsmInstruction" kindref="compound">SgAsmInstruction</ref><sp/>*insn_)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>setXerOverflow(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BaseSemantics::SValuePtr<sp/>&amp;hadOverflow);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>updateCr0(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BaseSemantics::SValuePtr<sp/>&amp;result);</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>BaseSemantics::SValuePtr<sp/>readAndUpdate(BaseSemantics::RiscOperators*,<sp/><ref refid="classSgAsmExpression" kindref="compound">SgAsmExpression</ref>*,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>valueNBits);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>writeAndUpdate(BaseSemantics::RiscOperators*,<sp/><ref refid="classSgAsmExpression" kindref="compound">SgAsmExpression</ref><sp/>*<ref refid="namespaceRose_1_1Diagnostics_1a1ba0507284dc0ed4bf22f0a5f3fe5ac4" kindref="member">destination</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>BaseSemantics::SValuePtr<sp/>&amp;value);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="134"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BOOST_SERIALIZATION</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal">BOOST_CLASS_EXPORT_KEY(Rose::BinaryAnalysis::InstructionSemantics::DispatcherPowerpc);</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/InstructionSemantics/DispatcherPowerpc.h"/>
+  </compounddef>
+</doxygen>

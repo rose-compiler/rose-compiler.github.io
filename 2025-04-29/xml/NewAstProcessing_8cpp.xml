@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="NewAstProcessing_8cpp" kind="file" language="C++">
+    <compoundname>NewAstProcessing.cpp</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="NewAstProcessing_8cpp_1a66af91dc2cccff24806b79cc8a36d7aa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool inFileToTraverse</definition>
+        <argsstring>(SgNode *node, bool traversalConstraint, SgFile *fileToVisit)</argsstring>
+        <name>inFileToTraverse</name>
+        <param>
+          <type>SgNode *</type>
+          <declname>node</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>traversalConstraint</declname>
+        </param>
+        <param>
+          <type>SgFile *</type>
+          <declname>fileToVisit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/roseExtensions/qtWidgets/AstProcessing/NewAstProcessing.cpp" line="16" column="1" bodyfile="/home/liao6/workspace/rose-github/src/roseExtensions/qtWidgets/AstProcessing/NewAstProcessing.cpp" bodystart="16" bodyend="20"/>
+        <referencedby refid="classAstProcessing_1_1TopDown_1aa13cfe0b3c0411cfc298454345e4434c" compoundref="AstProcessing__TopDown__impl_8h" startline="56" endline="75">AstProcessing::TopDown&lt; AstTopDownBaseEvaluator&lt; InheritedAttribute &gt;, InheritedAttribute &gt;::performTraverse</referencedby>
+        <referencedby refid="classAstProcessing_1_1BottomUp_1a636a90d6da2f09abbd76e0ab394839fa" compoundref="AstProcessing__BottomUp__impl_8h" startline="64" endline="87">AstProcessing::BottomUp&lt; AstBottomUpBaseEvaluator&lt; SynthesizedAttribute &gt;, SynthesizedAttribute &gt;::performTraverse</referencedby>
+        <referencedby refid="classAstProcessing_1_1TopDownBottomUp_1ad1524776b1937c9595a3d5e3f496aea1" compoundref="AstProcessing__TopDownBottomUp__impl_8h" startline="66" endline="92">AstProcessing::TopDownBottomUp&lt; AstTopDownBottomUpBaseEvaluator&lt; InheritedAttribute, SynthesizedAttribute &gt;, InheritedAttribute, SynthesizedAttribute &gt;::performTraverse</referencedby>
+        <referencedby refid="classAstProcessing_1_1TopDown_1a28ae74b11af6f1121105de6e75e37b5a" compoundref="AstProcessing__TopDown__impl_8h" startline="19" endline="29">AstProcessing::TopDown&lt; AstTopDownBaseEvaluator&lt; InheritedAttribute &gt;, InheritedAttribute &gt;::traverseWithinFile</referencedby>
+        <referencedby refid="classAstProcessing_1_1BottomUp_1af5f0858f40b2f4e6300b1caab1e281c0" compoundref="AstProcessing__BottomUp__impl_8h" startline="25" endline="37">AstProcessing::BottomUp&lt; AstBottomUpBaseEvaluator&lt; SynthesizedAttribute &gt;, SynthesizedAttribute &gt;::traverseWithinFile</referencedby>
+        <referencedby refid="classAstProcessing_1_1TopDownBottomUp_1a69e9f123ba7b07fe9150dc218b176005" compoundref="AstProcessing__TopDownBottomUp__impl_8h" startline="23" endline="36">AstProcessing::TopDownBottomUp&lt; AstTopDownBottomUpBaseEvaluator&lt; InheritedAttribute, SynthesizedAttribute &gt;, InheritedAttribute, SynthesizedAttribute &gt;::traverseWithinFile</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//#include<sp/>&quot;rose.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">SgNode;</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">SgFile;</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Original<sp/>Author<sp/>(AstProcessing<sp/>classes):<sp/>Markus<sp/>Schordan</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Rewritten<sp/>by:<sp/>Gergo<sp/>Barany</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="comment">//<sp/>$Id:<sp/>AstProcessing.C,v<sp/>1.10<sp/>2008/01/25<sp/>02:25:48<sp/>dquinlan<sp/>Exp<sp/>$</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="comment">//<sp/>For<sp/>information<sp/>about<sp/>the<sp/>changes<sp/>introduced<sp/>during<sp/>the<sp/>rewrite,<sp/>see</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="comment">//<sp/>the<sp/>comment<sp/>in<sp/>AstProcessing.h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="comment">//<sp/>GB<sp/>(05/30/2007):<sp/>This<sp/>was<sp/>completely<sp/>rewritten<sp/>from<sp/>the<sp/>old<sp/>version<sp/>to</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">//<sp/>use<sp/>much<sp/>more<sp/>efficient<sp/>comparisons<sp/>now<sp/>available<sp/>to<sp/>us;<sp/>it<sp/>also<sp/>never</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="comment">//<sp/>causes<sp/>visits<sp/>to<sp/>included<sp/>files,<sp/>something<sp/>that<sp/>happened<sp/>from<sp/>time<sp/>to</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="comment">//<sp/>time<sp/>with<sp/>the<sp/>old<sp/>version.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16" refid="NewAstProcessing_8h_1a66af91dc2cccff24806b79cc8a36d7aa" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="NewAstProcessing_8cpp_1a66af91dc2cccff24806b79cc8a36d7aa" kindref="member">inFileToTraverse</ref>(SgNode*<sp/><ref refid="structnode" kindref="compound">node</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>traversalConstraint,<sp/>SgFile*<sp/>fileToVisit)</highlight></codeline>
+<codeline lineno="17"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>If<sp/>traversing<sp/>without<sp/>constraint,<sp/>just<sp/>continue.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>if<sp/>(!traversalConstraint)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(traversalConstraint<sp/>==<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>DQ<sp/>(1/21/2008):<sp/>Recently<sp/>added<sp/>SgAsmNodes<sp/>for<sp/>binaries<sp/>also<sp/>do<sp/>not<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>have<sp/>a<sp/>SgFileInfo<sp/>object.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Of<sp/>all<sp/>the<sp/>nodes<sp/>to<sp/>be<sp/>traversed,<sp/>only<sp/>SgProject<sp/>is<sp/>allowed<sp/>to<sp/>have</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>a<sp/>NULL<sp/>file<sp/>info;<sp/>go<sp/>ahead<sp/>and<sp/>try<sp/>to<sp/>traverse<sp/>it<sp/>(even<sp/>though<sp/>this</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>does<sp/>not<sp/>make<sp/>sense<sp/>since<sp/>it<sp/>is<sp/>not<sp/>within<sp/>any<sp/>file).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="structnode" kindref="compound">node</ref>-&gt;get_file_info()<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>DQ<sp/>(1/20/2008):<sp/>This<sp/>fails<sp/>for<sp/>binary<sp/>files,<sp/>why<sp/>is<sp/>this!</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>if<sp/>(isSgProject(node)<sp/>==<sp/>NULL)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/>printf<sp/>(&quot;What<sp/>node<sp/>is<sp/>this:<sp/>node<sp/>=<sp/>%p<sp/>=<sp/>%s<sp/>\n&quot;,node,node-&gt;class_name().c_str());<sp/>//<sp/>SageInterface::get_name(node).c_str());</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>ROSE_ASSERT(isSgProject(node)<sp/>!=<sp/>NULL);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(isSgProject(<ref refid="structnode" kindref="compound">node</ref>)<sp/>==<sp/>NULL<sp/>&amp;&amp;<sp/>isSgAsmNode(<ref refid="structnode" kindref="compound">node</ref>)<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>printf<sp/>(</highlight><highlight class="stringliteral">&quot;Error:<sp/>SgTreeTraversal_inFileToTraverse()<sp/>---<sp/>node-&gt;get_file_info()<sp/>==<sp/>NULL:<sp/>node<sp/>=<sp/>%p<sp/>=<sp/>%s<sp/>\n&quot;</highlight><highlight class="normal">,<ref refid="structnode" kindref="compound">node</ref>,<ref refid="structnode" kindref="compound">node</ref>-&gt;class_name().c_str());</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" kindref="member">ROSE_ASSERT</ref>(isSgProject(<ref refid="structnode" kindref="compound">node</ref>)<sp/>!=<sp/>NULL<sp/>||<sp/>isSgAsmNode(<ref refid="structnode" kindref="compound">node</ref>)<sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Traverse<sp/>compiler<sp/>generated<sp/>code<sp/>and<sp/>code<sp/>generated<sp/>from</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>transformations,<sp/>unless<sp/>it<sp/>is<sp/>&quot;frontend<sp/>specific&quot;<sp/>like<sp/>the<sp/>stuff<sp/>in</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>rose_edg_required_macros_and_functions.h.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isFrontendSpecific<sp/>=<sp/><ref refid="structnode" kindref="compound">node</ref>-&gt;get_file_info()-&gt;isFrontendSpecific();</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isCompilerGeneratedOrPartOfTransformation;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(isFrontendSpecific)</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>isCompilerGeneratedOrPartOfTransformation<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>DQ<sp/>(11/14/2008):<sp/>Implicitly<sp/>defined<sp/>functions<sp/>in<sp/>Fortran<sp/>are<sp/>not<sp/>marked<sp/>as<sp/>compiler<sp/>generated<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>(the<sp/>function<sp/>body<sp/>is<sp/>at<sp/>least<sp/>explicit<sp/>in<sp/>the<sp/>source<sp/>file),<sp/>but<sp/>the<sp/>function<sp/>declaration<sp/>IR<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>nodes<sp/>is<sp/>marked<sp/>as<sp/>coming<sp/>from<sp/>file<sp/>==<sp/>NULL_FILE<sp/>and<sp/>it<sp/>is<sp/>also<sp/>marked<sp/>as<sp/>&quot;outputInCodeGeneration&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>So<sp/>it<sp/>should<sp/>be<sp/>traversed<sp/>so<sp/>that<sp/>we<sp/>can<sp/>see<sp/>the<sp/>function<sp/>body<sp/>and<sp/>so<sp/>that<sp/>it<sp/>can<sp/>be<sp/>a<sp/>proper<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>part<sp/>of<sp/>the<sp/>definition<sp/>of<sp/>the<sp/>AST.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>isCompilerGeneratedOrPartOfTransformation<sp/>=<sp/>node-&gt;get_file_info()-&gt;isCompilerGenerated()<sp/>||<sp/>node-&gt;get_file_info()-&gt;isTransformation();</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isOutputInCodeGeneration<sp/>=<sp/><ref refid="structnode" kindref="compound">node</ref>-&gt;get_file_info()-&gt;isOutputInCodeGeneration();</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>isCompilerGeneratedOrPartOfTransformation<sp/>=<sp/><ref refid="structnode" kindref="compound">node</ref>-&gt;get_file_info()-&gt;isCompilerGenerated()<sp/>||<sp/><ref refid="structnode" kindref="compound">node</ref>-&gt;get_file_info()-&gt;isTransformation()<sp/>||<sp/>isOutputInCodeGeneration;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Traverse<sp/>this<sp/>node<sp/>if<sp/>it<sp/>is<sp/>in<sp/>the<sp/>file<sp/>we<sp/>want<sp/>to<sp/>visit.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isRightFile<sp/>=<sp/><ref refid="structnode" kindref="compound">node</ref>-&gt;get_file_info()-&gt;isSameFile(fileToVisit);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>This<sp/>function<sp/>is<sp/>meant<sp/>to<sp/>traverse<sp/>input<sp/>files<sp/>in<sp/>the<sp/>sense<sp/>of<sp/>not</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>visiting<sp/>&quot;header&quot;<sp/>files<sp/>(a<sp/>fuzzy<sp/>concept).<sp/>But<sp/>not<sp/>every<sp/>#included<sp/>file</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>is<sp/>a<sp/>header,<sp/>&quot;code&quot;<sp/>(another<sp/>fuzzy<sp/>concept)<sp/>can<sp/>also<sp/>be<sp/>#included;<sp/>see</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>test2005_157.C<sp/>for<sp/>an<sp/>example.<sp/>We<sp/>want<sp/>to<sp/>traverse<sp/>such<sp/>code,<sp/>so<sp/>we</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>cannot<sp/>rely<sp/>on<sp/>just<sp/>comparing<sp/>files.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>following<sp/>heuristic<sp/>is<sp/>therefore<sp/>used:<sp/>If<sp/>a<sp/>node<sp/>is<sp/>included<sp/>from</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>global<sp/>scope<sp/>or<sp/>from<sp/>within<sp/>a<sp/>namespace<sp/>definition,<sp/>we<sp/>guess<sp/>that<sp/>it<sp/>is</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>a<sp/>header<sp/>and<sp/>don&apos;t<sp/>traverse<sp/>it.<sp/>Otherwise,<sp/>we<sp/>guess<sp/>that<sp/>it<sp/>is<sp/>&quot;code&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>and<sp/>do<sp/>traverse<sp/>it.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isCode<sp/>=<sp/><ref refid="structnode" kindref="compound">node</ref>-&gt;get_parent()<sp/>!=<sp/>NULL</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>&amp;&amp;<sp/>!isSgGlobal(<ref refid="structnode" kindref="compound">node</ref>-&gt;get_parent())</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>&amp;&amp;<sp/>!isSgNamespaceDefinitionStatement(<ref refid="structnode" kindref="compound">node</ref>-&gt;get_parent());</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>traverseNode;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(isCompilerGeneratedOrPartOfTransformation<sp/>||<sp/>isRightFile<sp/>||<sp/>isCode)</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>traverseNode<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>traverseNode<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>traverseNode;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/roseExtensions/qtWidgets/AstProcessing/NewAstProcessing.cpp"/>
+  </compounddef>
+</doxygen>

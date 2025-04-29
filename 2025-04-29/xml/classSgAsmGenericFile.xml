@@ -1,0 +1,2346 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="classSgAsmGenericFile" kind="class" language="C++" prot="public">
+    <compoundname>SgAsmGenericFile</compoundname>
+    <basecompoundref refid="classSgAsmExecutableFileFormat" prot="public" virt="non-virtual">SgAsmExecutableFileFormat</basecompoundref>
+    <includes refid="SgAsmGenericFile_8h" local="no">SgAsmGenericFile.h</includes>
+      <sectiondef kind="user-defined">
+      <memberdef kind="function" id="classSgAsmGenericFile_1a8bf464647db244b8e15e3922f20b13de" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>DataConverter *</type>
+        <definition>DataConverter* SgAsmGenericFile::get_dataConverter</definition>
+        <argsstring>() const</argsstring>
+        <name>get_dataConverter</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Data converter.</para><para>Function to encode/decode data as it&apos;s transferred to/from disk. The default is to do no transformation. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="142" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a932a10a09cfdf7827a1c700ce05f8a02" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::set_dataConverter</definition>
+        <argsstring>(DataConverter *)</argsstring>
+        <name>set_dataConverter</name>
+        <param>
+          <type>DataConverter *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="143" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <memberdef kind="function" id="classSgAsmGenericFile_1af819798cead2e60d4ab8d34e11c568a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::shiftExtend</definition>
+        <argsstring>(SgAsmGenericSection *, Rose::BinaryAnalysis::Address sa, Rose::BinaryAnalysis::Address sn, AddressSpace, Elasticity)</argsstring>
+        <name>shiftExtend</name>
+        <param>
+          <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>sa</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>sn</declname>
+        </param>
+        <param>
+          <type><ref refid="classSgAsmGenericFile_1ae86e310e8abb3d0a044ee16e1bc6c9eb" kindref="member">AddressSpace</ref></type>
+        </param>
+        <param>
+          <type><ref refid="classSgAsmGenericFile_1af29ae621857658ed39d2524011eef404" kindref="member">Elasticity</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Moves and enlarges a section.</para><para>Shifts (to a higher offset) and/or enlarges the specified section, S, taking all other sections into account. The positions of sections are based on their preferred virtual mappings rather than the actual mapping.</para><para>The neighborhood(S) is S itself and the set of all sections that overlap or are adjacent to the neighborhood of S, recursively.</para><para>The address space can be partitioned into three categories: <itemizedlist>
+<listitem><para>Section: part of an address space that is referenced by an <ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> other than a &quot;hole&quot; section. </para></listitem>
+<listitem><para>Hole: part of an address space that is referenced only by a &quot;hole&quot; section. </para></listitem>
+<listitem><para>Unref: part of an address space that is not used by any section, including any &quot;hole&quot; section.</para></listitem>
+</itemizedlist>
+The last two categories define parts of the address space that can be optionally elastic<ndash/>they expand or contract to take up slack or provide space for neighboring sections. This is controlled by the &quot;elasticity&quot; argument.</para><para>Note that when elasticity is ELASTIC_HOLE we simply ignore the &quot;hole&quot; sections, effectively removing their addresses from the range of addresses under consideration. This avoids complications that arise when a &quot;hole&quot; overlaps with a real section (due to someone changing offsets in an incompatible manner), but causes the hole offset and size to remain fixed. (FIXME RPM 2008-10-20)</para><para>When section S is shifted by &apos;Sa&apos; bytes and/or enlarged by &apos;Sn&apos; bytes, other sections are affected as follows: <itemizedlist>
+<listitem><para>Cat L: Not affected </para></listitem>
+<listitem><para>Cat R: Shifted by Sa+Sn if they are in neighborhood(S). Otherwise the amount of shifting depends on the size of the hole right of neighborhood(S). </para></listitem>
+<listitem><para>Cat C: Shifted Sa and enlarged Sn. </para></listitem>
+<listitem><para>Cat O: If starting address are the same: Shifted Sa. If starting address not equal: Englarged Sa+Sn </para></listitem>
+<listitem><para>Cat I: Shifted Sa, not enlarged </para></listitem>
+<listitem><para>Cat <ref refid="classB" kindref="compound">B</ref>: Not shifted, but enlarged Sn </para></listitem>
+<listitem><para>Cat E: Shifted Sa and enlarged Sn</para></listitem>
+</itemizedlist>
+Generally speaking, the AddressSpace argument should be <ref refid="classSgAsmGenericFile_1ae86e310e8abb3d0a044ee16e1bc6c9ebaaf608aa529572cd9033f53dcac68097c" kindref="member">SgAsmGenericFile::ADDRSP_ALL</ref> in order to adjust both file and memory offsets and sizes in a consistent manner.</para><para>To change the address and/or size of S without regard to other sections in the same file, use set_offset() and set_size() (for file address space) or set_mapped_preferred_rva() and set_mapped_size() (for memory address space). </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="319" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1afc9a2a51220831f9925cf83c4bc4a2a9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::shiftExtend</definition>
+        <argsstring>(SgAsmGenericSection *s, Rose::BinaryAnalysis::Address sa, Rose::BinaryAnalysis::Address sn)</argsstring>
+        <name>shiftExtend</name>
+        <param>
+          <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>sa</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>sn</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="321" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-type">
+      <memberdef kind="enum" id="classSgAsmGenericFile_1ae86e310e8abb3d0a044ee16e1bc6c9eb" prot="public" static="no" strong="no">
+        <type></type>
+        <name>AddressSpace</name>
+        <enumvalue id="classSgAsmGenericFile_1ae86e310e8abb3d0a044ee16e1bc6c9eba9083ca9e09a0d01250b92a63d0dda22b" prot="public">
+          <name>ADDRSP_MEMORY</name>
+          <initializer>= 0x0001</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmGenericFile_1ae86e310e8abb3d0a044ee16e1bc6c9eba80686c4045a0b3495044a22c840e4f77" prot="public">
+          <name>ADDRSP_FILE</name>
+          <initializer>= 0x0002</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmGenericFile_1ae86e310e8abb3d0a044ee16e1bc6c9ebaaf608aa529572cd9033f53dcac68097c" prot="public">
+          <name>ADDRSP_ALL</name>
+          <initializer>= 0x0003</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Section modification functions for <ref refid="classSgAsmGenericFile_1af819798cead2e60d4ab8d34e11c568a3" kindref="member">shiftExtend</ref>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="23" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="23" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="enum" id="classSgAsmGenericFile_1af29ae621857658ed39d2524011eef404" prot="public" static="no" strong="no">
+        <type></type>
+        <name>Elasticity</name>
+        <enumvalue id="classSgAsmGenericFile_1af29ae621857658ed39d2524011eef404a3118e0ab7640900385b0b6719c5e1b38" prot="public">
+          <name>ELASTIC_NONE</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Nothing is elastic; other parts of space are shifted. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmGenericFile_1af29ae621857658ed39d2524011eef404a21e3926eefe9c11df0a7b9c7d0b2cf24" prot="public">
+          <name>ELASTIC_UNREF</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Unreferenced address space is elastic. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classSgAsmGenericFile_1af29ae621857658ed39d2524011eef404a4f653980791bcbb59a1d18d808cd41a9" prot="public">
+          <name>ELASTIC_HOLE</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Unreferenced and &quot;hole&quot; sections are elastic. </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Elasticity argument for <ref refid="classSgAsmGenericFile_1af819798cead2e60d4ab8d34e11c568a3" kindref="member">shiftExtend</ref>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="30" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="30" bodyend="34"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classSgAsmGenericFile_1ae8b1505855763365325b704cbea567ed" prot="public" static="no" mutable="no">
+        <type><ref refid="classSgAsmDwarfCompilationUnitList" kindref="compound">SgAsmDwarfCompilationUnitList</ref> *</type>
+        <definition>SgAsmDwarfCompilationUnitList* SgAsmGenericFile::dwarfInfo</definition>
+        <argsstring></argsstring>
+        <name>dwarfInfo</name>
+        <initializer>= <ref refid="ModuleBuilder_8h_1ab979d9d4b4923f7c54d6caa6e1a61936" kindref="member">nullptr</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: DWARF debugging hiearchy. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="42" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmGenericFile_1a9d23477a0b67fd2c45d87ac920786445" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string SgAsmGenericFile::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Name of file. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="46" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmGenericFile_1a97c9f9ae9b5df5a5138cf938c0f912e5" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int SgAsmGenericFile::fd</definition>
+        <argsstring></argsstring>
+        <name>fd</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Read-only file descriptor.</para><para>Negative represents lack of valid file descriptor. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="52" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmGenericFile_1aa8e493ba9f22d1de2c7b9383322d1240" prot="public" static="no" mutable="no">
+        <type>struct stat</type>
+        <definition>struct stat SgAsmGenericFile::sb</definition>
+        <argsstring></argsstring>
+        <name>sb</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="52" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmGenericFile_1a3d64ba5e68141c95b9168fdacec7d8a1" prot="public" static="no" mutable="no">
+        <type>SgFileContentList</type>
+        <definition>SgFileContentList SgAsmGenericFile::data</definition>
+        <argsstring></argsstring>
+        <name>data</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Contents of the file. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="59" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmGenericFile_1a8a420e5bd1478a102e08722405cab917" prot="public" static="no" mutable="no">
+        <type><ref refid="classSgAsmGenericHeaderList" kindref="compound">SgAsmGenericHeaderList</ref> *</type>
+        <definition>SgAsmGenericHeaderList* SgAsmGenericFile::headers</definition>
+        <argsstring></argsstring>
+        <name>headers</name>
+        <initializer>= createAndParent&lt;<ref refid="classSgAsmGenericHeaderList" kindref="compound">SgAsmGenericHeaderList</ref>&gt;(this)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: <ref refid="classList" kindref="compound">List</ref> of all headers in file.</para><para>This is stored as a pointer to another node that contains the list due to limitations of ROSETTA. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="65" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmGenericFile_1a7495efbaaafbcfe1a3475c71c0852201" prot="public" static="no" mutable="no">
+        <type><ref refid="classSgAsmGenericSectionList" kindref="compound">SgAsmGenericSectionList</ref> *</type>
+        <definition>SgAsmGenericSectionList* SgAsmGenericFile::holes</definition>
+        <argsstring></argsstring>
+        <name>holes</name>
+        <initializer>= createAndParent&lt;<ref refid="classSgAsmGenericSectionList" kindref="compound">SgAsmGenericSectionList</ref>&gt;(this)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Addresses unreferenced during parsing.</para><para>This is a pointer to a node that contains a list of pointers to the holes. It is done this way rather than storing the list directly, because of limitations of ROSETTA. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="72" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmGenericFile_1a6441355e8f5188d0633c7afb4abcb763" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool SgAsmGenericFile::truncateZeros</definition>
+        <argsstring></argsstring>
+        <name>truncateZeros</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Whether to truncate zeros on writes. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="76" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmGenericFile_1af26d6a71928c341f26951280f1f4fa84" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool SgAsmGenericFile::trackingReferences</definition>
+        <argsstring></argsstring>
+        <name>trackingReferences</name>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Whether to track referenced areas during parsing. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="80" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmGenericFile_1af78dd857b6ad2ac165d7307d2f1cf5dd" prot="public" static="no" mutable="no">
+        <type>Rose::BinaryAnalysis::AddressIntervalSet</type>
+        <definition>Rose::BinaryAnalysis::AddressIntervalSet SgAsmGenericFile::referencedExtents</definition>
+        <argsstring></argsstring>
+        <name>referencedExtents</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Addresses referenced during parsing. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="84" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmGenericFile_1aba0245ae76a69db304808a369f74af82" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool SgAsmGenericFile::neuter</definition>
+        <argsstring></argsstring>
+        <name>neuter</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: If set, refuse to unparse file. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="88" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classSgAsmGenericFile_1a7a244391ccffe2be28395b48b0d542e0" prot="private" static="no" mutable="yes">
+        <type>Rose::BinaryAnalysis::AddressIntervalSet *</type>
+        <definition>Rose::BinaryAnalysis::AddressIntervalSet* SgAsmGenericFile::p_unreferenced_cache</definition>
+        <argsstring></argsstring>
+        <name>p_unreferenced_cache</name>
+        <initializer>= <ref refid="ModuleBuilder_8h_1ab979d9d4b4923f7c54d6caa6e1a61936" kindref="member">nullptr</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="94" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSgAsmGenericFile_1ad0a740cafe44e46911aa45b35e945d46" prot="private" static="no" mutable="no">
+        <type>DataConverter *</type>
+        <definition>DataConverter* SgAsmGenericFile::p_data_converter</definition>
+        <argsstring></argsstring>
+        <name>p_data_converter</name>
+        <initializer>= <ref refid="ModuleBuilder_8h_1ab979d9d4b4923f7c54d6caa6e1a61936" kindref="member">nullptr</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="95" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classSgAsmGenericFile_1a09410b5da440e13a16adfe7c66938144" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmGenericFile" kindref="compound">SgAsmGenericFile</ref> *</type>
+        <definition>SgAsmGenericFile* SgAsmGenericFile::parse</definition>
+        <argsstring>(std::string file_name)</argsstring>
+        <name>parse</name>
+        <param>
+          <type>std::string</type>
+          <declname>file_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Loads file contents into memory. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="102" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1acac80d6d58329bef0b16742bebff5c8d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::reallocate</definition>
+        <argsstring>()</argsstring>
+        <name>reallocate</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="104" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a76038fa98a5f4d96501e67de9e0cd1cb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::unparse</definition>
+        <argsstring>(std::ostream &amp;) const</argsstring>
+        <name>unparse</name>
+        <param>
+          <type>std::ostream &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Mirror image of parsing an executable file.</para><para>The result (unless the AST has been modified) should be identical to the original file. If the file&apos;s neuter property is true, then rather than creating a binary file, the output will contain a note indicating that the neuter property is set. This is intended to prevent ASTs that represent malicious binaries from accidently being used to create the binary. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="112" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a469ed2b51ade57050d360d148db90c52" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::extendToEof</definition>
+        <argsstring>(std::ostream &amp;) const</argsstring>
+        <name>extendToEof</name>
+        <param>
+          <type>std::ostream &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Extend the output file by writing the last byte if it hasn&apos;t been written yet. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="115" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a6be2550dfa236c7568b43817fff210e6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::dump</definition>
+        <argsstring>(FILE *) const</argsstring>
+        <name>dump</name>
+        <param>
+          <type>FILE *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Print basic info about the sections of a file. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="118" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a6559122f82991a9e67cbaef2a0e81d14" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::dumpAll</definition>
+        <argsstring>(bool in_cwd=true, const char *ext=NULL)</argsstring>
+        <name>dumpAll</name>
+        <param>
+          <type>bool</type>
+          <declname>in_cwd</declname>
+          <defval>true</defval>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>ext</declname>
+          <defval>NULL</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Print text file containing all known information about a binary file.</para><para>If in_cwd is set, then the file is created in the current working directory rather than the directory containing the binary file (the default is to create the file in the current working directory). If <computeroutput>ext</computeroutput> is non-null then these characters are added to the end of the binary file name. The default null pointer causes the string &quot;.dump&quot; to be appended to the file name. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="126" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a1d9615fd77720353c6730d9fbd632538" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::dumpAll</definition>
+        <argsstring>(const std::string &amp;dumpname)</argsstring>
+        <name>dumpAll</name>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>dumpname</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Print text file containing all known information about a binary file. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="129" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a04818ce0a4e45ee63d32616378100e98" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const Rose::BinaryAnalysis::AddressIntervalSet &amp;</type>
+        <definition>const Rose::BinaryAnalysis::AddressIntervalSet&amp; SgAsmGenericFile::get_unreferencedExtents</definition>
+        <argsstring>() const</argsstring>
+        <name>get_unreferencedExtents</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the parts of the file that have never been referenced. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="132" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a652b09742cd769b8108a6f8007b46eb6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::markReferencedExtent</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address start_rva, Rose::BinaryAnalysis::Address size)</argsstring>
+        <name>markReferencedExtent</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>start_rva</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Marks part of a file as having been referenced if tracking references. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="135" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a4e0f3f486efeb2c67535c9692e8e1da9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        <definition>Rose::BinaryAnalysis::Address SgAsmGenericFile::get_currentSize</definition>
+        <argsstring>() const</argsstring>
+        <name>get_currentSize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns current size of file based on section with highest ending address. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="147" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a82b10e025dd96736b9d4fa6c63c36f3d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        <definition>Rose::BinaryAnalysis::Address SgAsmGenericFile::get_originalSize</definition>
+        <argsstring>() const</argsstring>
+        <name>get_originalSize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns original size of file, based on file system. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="150" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a3cbd66fab388ffaae757f6071317abea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref></type>
+        <definition>size_t SgAsmGenericFile::readContent</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address offset, void *dst_buf, Rose::BinaryAnalysis::Address size, bool strict=true)</argsstring>
+        <name>readContent</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>offset</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>dst_buf</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>size</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>strict</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reads data from a file.</para><para>Reads up to <computeroutput>size</computeroutput> bytes of data from the file beginning at the specified byte offset (measured from the beginning of the file), placing the result in <computeroutput>dst_buf</computeroutput>, and returning the number of bytes read. If the number of bytes read is less than <computeroutput>size</computeroutput> then one of two things happen: if <computeroutput>strict</computeroutput> is true then an <ref refid="classSgAsmExecutableFileFormat_1_1ShortRead" kindref="compound">SgAsmExecutableFileFormat::ShortRead</ref> exception is thrown; otherwise <computeroutput>dst_buf</computeroutput> is zero padded so that exactly <computeroutput>size</computeroutput> bytes are always initialized. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="159" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1adf24cf546b0e1dc7044aea2fa57d659f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref></type>
+        <definition>size_t SgAsmGenericFile::readContent</definition>
+        <argsstring>(const Rose::BinaryAnalysis::MemoryMap::Ptr &amp;, Rose::BinaryAnalysis::Address va, void *dst_buf, Rose::BinaryAnalysis::Address size, bool strict=true)</argsstring>
+        <name>readContent</name>
+        <param>
+          <type>const Rose::BinaryAnalysis::MemoryMap::Ptr &amp;</type>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>va</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>dst_buf</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>size</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>strict</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reads data from a file.</para><para>Reads up to <computeroutput>size</computeroutput> bytes of data starting at the specified (absolute) virtual address. The <computeroutput>map</computeroutput> specifies how virtual addresses are mapped to file offsets. As bytes are read, if we encounter a virtual address that is not mapped we stop reading and do one of two things: if <computeroutput>strict</computeroutput> is set then a Rose::BinaryAnalysis::MemoryMap::NotMapped exception is thrown; otherwise the rest of the <computeroutput>dst_buf</computeroutput> is zero filled and the number of bytes read (not filled) is returned. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="167" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a7afdc85910dc8697f3088f65cb638ed7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string SgAsmGenericFile::readContentString</definition>
+        <argsstring>(const Rose::BinaryAnalysis::MemoryMap::Ptr &amp;, Rose::BinaryAnalysis::Address va, bool strict=true)</argsstring>
+        <name>readContentString</name>
+        <param>
+          <type>const Rose::BinaryAnalysis::MemoryMap::Ptr &amp;</type>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>va</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>strict</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reads a string from a file.</para><para>Returns the string stored at the specified (absolute) virtual address. The returned string contains the bytes beginning at the starting virtual address and continuing until we reach a NUL byte or an address which is not mapped. If we reach an address which is not mapped then one of two things happen: if <computeroutput>strict</computeroutput> is set then a Rose::BinaryAnalysis::MemoryMap::NotMapped exception is thrown; otherwise the string is simply terminated. The returned string does not include the NUL byte. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="177" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a77ae23611362849e0546d5830e997ca5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string SgAsmGenericFile::readContentString</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address abs_offset, bool strict=true)</argsstring>
+        <name>readContentString</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>abs_offset</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>strict</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reads a string from a file.</para><para>Returns the NUL-terminated string stored at the specified relative virtual address. The returned string contains the bytes beginning at the specified starting file offset and continuing until we reach a NUL byte or an invalid file offset. If we reach an invalid file offset one of two things happen: if <computeroutput>strict</computeroutput> is set (the default) then an <ref refid="classSgAsmExecutableFileFormat_1_1ShortRead" kindref="compound">SgAsmExecutableFileFormat::ShortRead</ref> exception is thrown; otherwise the string is simply terminated. The returned string does not include the NUL byte. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="186" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a2dfc6e675a769656f1f5349858f438c2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>const SgFileContentList &amp;</type>
+        <definition>const SgFileContentList&amp; SgAsmGenericFile::content</definition>
+        <argsstring>()</argsstring>
+        <name>content</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Property: Entire file contents. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="189" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="189" bodyend="189"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a3b90528ee738047c8167c4e4a70ef59a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>SgFileContentList</type>
+        <definition>SgFileContentList SgAsmGenericFile::content</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address offset, Rose::BinaryAnalysis::Address size)</argsstring>
+        <name>content</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>offset</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns a vector that points to part of the file.</para><para>Returns a vector that points to part of the file content without actually ever reading or otherwise referencing the file content until the vector elements are referenced. If the desired extent falls entirely or partially outside the range of data known to the file then throw an <ref refid="classSgAsmExecutableFileFormat_1_1ShortRead" kindref="compound">SgAsmExecutableFileFormat::ShortRead</ref> exception. This function never updates reference tracking lists for the file. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="197" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a117fe311a5d178b43934ea7c75f6f360" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>SgAsmGenericSectionPtrList</type>
+        <definition>SgAsmGenericSectionPtrList SgAsmGenericFile::get_mappedSections</definition>
+        <argsstring>() const</argsstring>
+        <name>get_mappedSections</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns list of all sections in the file that are memory mapped, including headers and holes. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="200" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a9f516df9fd944e502724b4158563f06a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>SgAsmGenericSectionPtrList</type>
+        <definition>SgAsmGenericSectionPtrList SgAsmGenericFile::get_sections</definition>
+        <argsstring>(bool include_holes=true) const</argsstring>
+        <name>get_sections</name>
+        <param>
+          <type>bool</type>
+          <declname>include_holes</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns list of all sections in the file (including headers, holes, etc). </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="203" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a091d75ba965bf4f41915c7de80016737" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>SgAsmGenericSectionPtrList</type>
+        <definition>SgAsmGenericSectionPtrList SgAsmGenericFile::get_sectionsById</definition>
+        <argsstring>(int id) const</argsstring>
+        <name>get_sectionsById</name>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns sections having specified ID across all headers, including headers and holes. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="206" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a3f3210e4bf2a776bd660d2fafed3774c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>SgAsmGenericSectionPtrList</type>
+        <definition>SgAsmGenericSectionPtrList SgAsmGenericFile::get_sectionsByName</definition>
+        <argsstring>(std::string, char sep=&apos;\0&apos;) const</argsstring>
+        <name>get_sectionsByName</name>
+        <param>
+          <type>std::string</type>
+        </param>
+        <param>
+          <type>char</type>
+          <declname>sep</declname>
+          <defval>&apos;\0&apos;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns all sections having specified name across all headers, including headers and holes. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="209" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a5566cde10a3d090d311d6cb993638813" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>SgAsmGenericSectionPtrList</type>
+        <definition>SgAsmGenericSectionPtrList SgAsmGenericFile::get_sectionsByOffset</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address offset, Rose::BinaryAnalysis::Address size) const</argsstring>
+        <name>get_sectionsByOffset</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>offset</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Find sections by their offset.</para><para>Returns all sections that contain all of the specified portion of the file across all headers, including headers and holes. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="215" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1ab2ef30537d869985c778db2f604072dd" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>SgAsmGenericSectionPtrList</type>
+        <definition>SgAsmGenericSectionPtrList SgAsmGenericFile::get_sectionsByRva</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address rva) const</argsstring>
+        <name>get_sectionsByRva</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>rva</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Find sections by address.</para><para>Returns all sections that are mapped to include the specified relative virtual address across all headers, including headers and holes. This uses the preferred mapping of the section rather than the actual mapping. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="221" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1aaf8a50c1f0bde4d5e15f8d8ed3a7d699" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>SgAsmGenericSectionPtrList</type>
+        <definition>SgAsmGenericSectionPtrList SgAsmGenericFile::get_sectionsByVa</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address va) const</argsstring>
+        <name>get_sectionsByVa</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>va</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Find sections by address.</para><para>Returns all sections that are mapped to include the specified virtual address across all headers, including headers and holes. This uses the preferred mapping rather than the actual mapping. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="227" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a17b5f0a3d8e934933693fac1f64c4b0a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        <definition>SgAsmGenericSection* SgAsmGenericFile::get_sectionById</definition>
+        <argsstring>(int id, size_t *nfound=0) const</argsstring>
+        <name>get_sectionById</name>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref> *</type>
+          <declname>nfound</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Find section with specified ID.</para><para>Returns the pointer to section with the specified ID across all headers only if there&apos;s exactly one match. Headers and holes are included in the results. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="233" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1ae6535e1ca82e67fdfbe0630b43fae9e8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        <definition>SgAsmGenericSection* SgAsmGenericFile::get_sectionByName</definition>
+        <argsstring>(const std::string &amp;, char sep=0, size_t *nfound=0) const</argsstring>
+        <name>get_sectionByName</name>
+        <param>
+          <type>const std::string &amp;</type>
+        </param>
+        <param>
+          <type>char</type>
+          <declname>sep</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref> *</type>
+          <declname>nfound</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Find section by name.</para><para>Returns pointer to the section with the specified name, or NULL if there isn&apos;t exactly one match. Any characters in the name after the first occurrence of SEP are ignored (default is NUL). For instance, if sep==&apos;$&apos; then the following names are all equivalent: .idata, .idata$, and .idata$1 </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="240" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a30e11fe6f89f0aed8454a87ffb44501c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        <definition>SgAsmGenericSection* SgAsmGenericFile::get_sectionByOffset</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address offset, Rose::BinaryAnalysis::Address size, size_t *nfound=0) const</argsstring>
+        <name>get_sectionByOffset</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>offset</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>size</declname>
+        </param>
+        <param>
+          <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref> *</type>
+          <declname>nfound</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Find section by file offset.</para><para>Returns single section that contains all of the specified portion of the file across all headers, including headers and holes. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="247" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a3b5d5d86baf07a8b4bbe8070f4b5da91" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        <definition>SgAsmGenericSection* SgAsmGenericFile::get_sectionByRva</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address rva, size_t *nfound=0) const</argsstring>
+        <name>get_sectionByRva</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>rva</declname>
+        </param>
+        <param>
+          <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref> *</type>
+          <declname>nfound</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Find section by address.</para><para>Returns single section that is mapped to include the specified relative virtual file address across all headers, including headers and holes. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="253" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a39dd78337d550aec513446a373f26c93" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        <definition>SgAsmGenericSection* SgAsmGenericFile::get_sectionByVa</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address va, size_t *nfound=0) const</argsstring>
+        <name>get_sectionByVa</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>va</declname>
+        </param>
+        <param>
+          <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref> *</type>
+          <declname>nfound</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Find section by address.</para><para>Returns single section that is mapped to include the specified virtual address across all headers. See also <ref refid="classSgAsmGenericFile_1a881c6c7252c0f0d732854b0ada6f6f9d" kindref="member">get_bestSectionByVa</ref>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="259" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a881c6c7252c0f0d732854b0ada6f6f9d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        <definition>SgAsmGenericSection* SgAsmGenericFile::get_bestSectionByVa</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address va, size_t *nfound=0) const</argsstring>
+        <name>get_bestSectionByVa</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>va</declname>
+        </param>
+        <param>
+          <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref> *</type>
+          <declname>nfound</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Find section by address.</para><para>Similar to <ref refid="classSgAsmGenericFile_1a39dd78337d550aec513446a373f26c93" kindref="member">get_sectionByVa</ref> except when more than one section contains the specified virtual address this choose the &quot;best&quot; one. All candidates must map the virtual address to the same file address or else we fail (return null and number of candidates). See <ref refid="classSgAsmGenericFile_1a8142c5c8725c12307ad89ed40aa78dde" kindref="member">bestSectionByVa</ref> for definition of &quot;best&quot;. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="266" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a1386fa2de529da2c61988dfc21cf9561" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        <definition>Rose::BinaryAnalysis::Address SgAsmGenericFile::get_nextSectionOffset</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address offset)</argsstring>
+        <name>get_nextSectionOffset</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>offset</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>File offset of next section.</para><para>Given a file address, return the file offset of the following section. If there is no following section then return an address of -1 (when signed) </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="328" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a19af530ae4e1701f18171eec1c761ee2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::addHole</definition>
+        <argsstring>(SgAsmGenericSection *)</argsstring>
+        <name>addHole</name>
+        <param>
+          <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds a new hole to the file.</para><para>This is called implicitly by the hole constructor. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="333" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1ac84d3e9edc3e472e3c28ac7765d386d0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::removeHole</definition>
+        <argsstring>(SgAsmGenericSection *)</argsstring>
+        <name>removeHole</name>
+        <param>
+          <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Removes a hole from the list of holes in a file. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="336" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a47eae5f0d37b7869a92c629b1f8a1aa9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::fillHoles</definition>
+        <argsstring>()</argsstring>
+        <name>fillHoles</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Find holes in file and create sections to fill them.</para><para>Synthesizes &quot;hole&quot; sections to describe the parts of the file that are not yet referenced by other sections. Note that holes are used to represent parts of the original file data, before sections were modified by walking the AST (at this time it is not possible to create a hole outside the original file content). </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="343" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1abe3754c110e34d4af0c975c3536ee6a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::unfillHoles</definition>
+        <argsstring>()</argsstring>
+        <name>unfillHoles</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Deletes &quot;hole&quot; sections.</para><para>Undoes what <ref refid="classSgAsmGenericFile_1a47eae5f0d37b7869a92c629b1f8a1aa9" kindref="member">fillHoles</ref> did. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="348" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a4e5128083f0085f16312365c56faef78" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::addHeader</definition>
+        <argsstring>(SgAsmGenericHeader *)</argsstring>
+        <name>addHeader</name>
+        <param>
+          <type><ref refid="classSgAsmGenericHeader" kindref="compound">SgAsmGenericHeader</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds a new header to the file.</para><para>This is called implicitly by the header constructor </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="353" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1adca66e5e9668e85c8c25370c12b7afb3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::removeHeader</definition>
+        <argsstring>(SgAsmGenericHeader *)</argsstring>
+        <name>removeHeader</name>
+        <param>
+          <type><ref refid="classSgAsmGenericHeader" kindref="compound">SgAsmGenericHeader</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Removes a header from the header list in a file. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="356" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1abdef228421a3554d1c1dafc565601458" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmGenericHeader" kindref="compound">SgAsmGenericHeader</ref> *</type>
+        <definition>SgAsmGenericHeader* SgAsmGenericFile::get_header</definition>
+        <argsstring>(SgAsmExecutableFileFormat::ExecFamily)</argsstring>
+        <name>get_header</name>
+        <param>
+          <type><ref refid="classSgAsmExecutableFileFormat_1aa4a1858391921731cd54cf531fcfa65d" kindref="member">SgAsmExecutableFileFormat::ExecFamily</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the header for the specified format. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="359" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1abd76d1e3af1cc81b96f5ec06385088e6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>const char* SgAsmGenericFile::formatName</definition>
+        <argsstring>() const</argsstring>
+        <name>formatName</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return a string describing the file format.</para><para>This uses the last header so that files like PE, NE, LE, LX, etc. which also have a DOS header report the format of the second (PE, etc.) header rather than the DOS header. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="365" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a5e6e11860a5f048da3e78dd6dda4fcd7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmDwarfCompilationUnitList" kindref="compound">SgAsmDwarfCompilationUnitList</ref> *</type>
+        <definition>SgAsmDwarfCompilationUnitList* SgAsmGenericFile::get_dwarf_info</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_dwarfInfo&quot;)</argsstring>
+        <name>get_dwarf_info</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="375" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a7ad70cb7f3363216196ceb242c3d188e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::set_dwarf_info</definition>
+        <argsstring>(SgAsmDwarfCompilationUnitList *) ROSE_DEPRECATED(&quot;use set_dwarfInfo&quot;)</argsstring>
+        <name>set_dwarf_info</name>
+        <param>
+          <type><ref refid="classSgAsmDwarfCompilationUnitList" kindref="compound">SgAsmDwarfCompilationUnitList</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="376" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a59f32872d7378d44e3b6ab987861c860" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SgAsmGenericFile::get_truncate_zeros</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_truncateZeros&quot;)</argsstring>
+        <name>get_truncate_zeros</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="377" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a4dc80e705f3bfc4077524267cbc15a80" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::set_truncate_zeros</definition>
+        <argsstring>(bool) ROSE_DEPRECATED(&quot;use set_truncateZeros&quot;)</argsstring>
+        <name>set_truncate_zeros</name>
+        <param>
+          <type>bool</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="378" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a54420f618753e8fb50ca454132c08186" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SgAsmGenericFile::get_tracking_references</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_trackingReferences&quot;)</argsstring>
+        <name>get_tracking_references</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="379" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1aa705eed7e0fdcae8b77e344cb44f7443" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::set_tracking_references</definition>
+        <argsstring>(bool) ROSE_DEPRECATED(&quot;use set_trackingReferences&quot;)</argsstring>
+        <name>set_tracking_references</name>
+        <param>
+          <type>bool</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="380" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a3732f8d17dc0868be47c4f7fed73cc20" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const Rose::BinaryAnalysis::AddressIntervalSet &amp;</type>
+        <definition>const Rose::BinaryAnalysis::AddressIntervalSet&amp; SgAsmGenericFile::get_referenced_extents</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_referencedExtents&quot;)</argsstring>
+        <name>get_referenced_extents</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="381" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a76e632de14feb7c14b816164381b3e30" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::set_referenced_extents</definition>
+        <argsstring>(const Rose::BinaryAnalysis::AddressIntervalSet &amp;) ROSE_DEPRECATED(&quot;use set_referencedExtents&quot;)</argsstring>
+        <name>set_referenced_extents</name>
+        <param>
+          <type>const Rose::BinaryAnalysis::AddressIntervalSet &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="382" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1af53884afc7424f510eeb73b20ac62c3d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::extend_to_eof</definition>
+        <argsstring>(std::ostream &amp;) const ROSE_DEPRECATED(&quot;use extendToEof&quot;)</argsstring>
+        <name>extend_to_eof</name>
+        <param>
+          <type>std::ostream &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="383" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a2d81438180ded84d3851d89702a6c7cf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::dump_all</definition>
+        <argsstring>(bool in_cwd=true, const char *ext=NULL) ROSE_DEPRECATED(&quot;use dumpAll&quot;)</argsstring>
+        <name>dump_all</name>
+        <param>
+          <type>bool</type>
+          <declname>in_cwd</declname>
+          <defval>true</defval>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>ext</declname>
+          <defval>NULL</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="384" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a17ef32d4c24807ce4c554eeadc44810f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::dump_all</definition>
+        <argsstring>(const std::string &amp;dumpname) ROSE_DEPRECATED(&quot;use dumpAll&quot;)</argsstring>
+        <name>dump_all</name>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>dumpname</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="385" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a1de0ec0401faed84aa5f405284a72d5d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const Rose::BinaryAnalysis::AddressIntervalSet &amp;</type>
+        <definition>const Rose::BinaryAnalysis::AddressIntervalSet&amp; SgAsmGenericFile::get_unreferenced_extents</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_unreferencedExtents&quot;)</argsstring>
+        <name>get_unreferenced_extents</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="386" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1abad4ae4fbbed2b71e2fb5f290e6d77dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::mark_referenced_extent</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address, Rose::BinaryAnalysis::Address) ROSE_DEPRECATED(&quot;use markReferencedExtent&quot;)</argsstring>
+        <name>mark_referenced_extent</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="388" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a8f0718aa77b7b59f6645621312a9bbc1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>DataConverter *</type>
+        <definition>DataConverter* SgAsmGenericFile::get_data_converter</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_dataConverter&quot;)</argsstring>
+        <name>get_data_converter</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="390" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a23d3549c982aecd7b66aba19be397b19" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::set_data_converter</definition>
+        <argsstring>(DataConverter *) ROSE_DEPRECATED(&quot;use set_dataConverter&quot;)</argsstring>
+        <name>set_data_converter</name>
+        <param>
+          <type>DataConverter *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="391" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1ad7af3da56613dc6349fbab478b39907f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        <definition>Rose::BinaryAnalysis::Address SgAsmGenericFile::get_current_size</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_currentSize&quot;)</argsstring>
+        <name>get_current_size</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="392" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a5d5e8acc4ef7b0fa1ca9760212880642" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        <definition>Rose::BinaryAnalysis::Address SgAsmGenericFile::get_orig_size</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_originalSize&quot;)</argsstring>
+        <name>get_orig_size</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="393" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a8c0f16f3ac48acdd2510c5af1c10e2ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref></type>
+        <definition>size_t SgAsmGenericFile::read_content</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address, void *, Rose::BinaryAnalysis::Address, bool=true) ROSE_DEPRECATED(&quot;use readContent&quot;)</argsstring>
+        <name>read_content</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <param>
+          <type>void *</type>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <param>
+          <type>bool</type>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="394" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a07860522af8c2d2e2850c4e7713fead8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref></type>
+        <definition>size_t SgAsmGenericFile::read_content</definition>
+        <argsstring>(const Rose::BinaryAnalysis::MemoryMap::Ptr &amp;, Rose::BinaryAnalysis::Address, void *, Rose::BinaryAnalysis::Address, bool=true) ROSE_DEPRECATED(&quot;use readContent&quot;)</argsstring>
+        <name>read_content</name>
+        <param>
+          <type>const Rose::BinaryAnalysis::MemoryMap::Ptr &amp;</type>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <param>
+          <type>void *</type>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <param>
+          <type>bool</type>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="396" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1ad7c6432547449f988d49649559278cf2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string SgAsmGenericFile::read_content_str</definition>
+        <argsstring>(const Rose::BinaryAnalysis::MemoryMap::Ptr &amp;, Rose::BinaryAnalysis::Address, bool=true) ROSE_DEPRECATED(&quot;use readContentString&quot;)</argsstring>
+        <name>read_content_str</name>
+        <param>
+          <type>const Rose::BinaryAnalysis::MemoryMap::Ptr &amp;</type>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <param>
+          <type>bool</type>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="398" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1ae1597cd34cbf8dad60959e994f1a774a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string SgAsmGenericFile::read_content_str</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address, bool=true) ROSE_DEPRECATED(&quot;use readContentString&quot;)</argsstring>
+        <name>read_content_str</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <param>
+          <type>bool</type>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="400" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a7b921846bbae0f894c56e47f1dbae599" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>SgAsmGenericSectionPtrList</type>
+        <definition>SgAsmGenericSectionPtrList SgAsmGenericFile::get_mapped_sections</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use get_mappedSections&quot;)</argsstring>
+        <name>get_mapped_sections</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="401" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a25484995a2cc692068a1b698ec28a1b9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>SgAsmGenericSectionPtrList</type>
+        <definition>SgAsmGenericSectionPtrList SgAsmGenericFile::get_sections_by_id</definition>
+        <argsstring>(int id) const ROSE_DEPRECATED(&quot;use get_sectionById&quot;)</argsstring>
+        <name>get_sections_by_id</name>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="402" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a83a1598c5ef261458551a3f2d5205029" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>SgAsmGenericSectionPtrList</type>
+        <definition>SgAsmGenericSectionPtrList SgAsmGenericFile::get_sections_by_name</definition>
+        <argsstring>(std::string, char=&apos;\0&apos;) const ROSE_DEPRECATED(&quot;use get_sectionsByName&quot;)</argsstring>
+        <name>get_sections_by_name</name>
+        <param>
+          <type>std::string</type>
+        </param>
+        <param>
+          <type>char</type>
+          <defval>&apos;\0&apos;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="403" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1ad2b6835c1b6a7b1e13fefb44c1851c23" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>SgAsmGenericSectionPtrList</type>
+        <definition>SgAsmGenericSectionPtrList SgAsmGenericFile::get_sections_by_offset</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address, Rose::BinaryAnalysis::Address) const ROSE_DEPRECATED(&quot;use get_sectionsByOffset&quot;)</argsstring>
+        <name>get_sections_by_offset</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="404" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a56cbdbc02570857c5f66041521aaf056" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>SgAsmGenericSectionPtrList</type>
+        <definition>SgAsmGenericSectionPtrList SgAsmGenericFile::get_sections_by_rva</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address) const ROSE_DEPRECATED(&quot;use get_sectionsByRva&quot;)</argsstring>
+        <name>get_sections_by_rva</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="406" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1ace934c640bf104e56dba3fed2d039fd1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>SgAsmGenericSectionPtrList</type>
+        <definition>SgAsmGenericSectionPtrList SgAsmGenericFile::get_sections_by_va</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address) const ROSE_DEPRECATED(&quot;use get_sectionsByVa&quot;)</argsstring>
+        <name>get_sections_by_va</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="407" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a0a6ad5591d6a6ef368aabe5e15c39eea" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        <definition>SgAsmGenericSection* SgAsmGenericFile::get_section_by_id</definition>
+        <argsstring>(int, size_t *=nullptr) const ROSE_DEPRECATED(&quot;use get_sectionById&quot;)</argsstring>
+        <name>get_section_by_id</name>
+        <param>
+          <type>int</type>
+        </param>
+        <param>
+          <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref> *</type>
+          <defval><ref refid="ModuleBuilder_8h_1ab979d9d4b4923f7c54d6caa6e1a61936" kindref="member">nullptr</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="408" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a21f6d7bd7de70a81c33a3be8faa61168" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        <definition>SgAsmGenericSection* SgAsmGenericFile::get_section_by_name</definition>
+        <argsstring>(const std::string &amp;, char=0, size_t *=nullptr) const ROSE_DEPRECATED(&quot;use get_sectionByName&quot;)</argsstring>
+        <name>get_section_by_name</name>
+        <param>
+          <type>const std::string &amp;</type>
+        </param>
+        <param>
+          <type>char</type>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref> *</type>
+          <defval><ref refid="ModuleBuilder_8h_1ab979d9d4b4923f7c54d6caa6e1a61936" kindref="member">nullptr</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="409" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a5a1f6adb08bd0d70cf89b68ca98809ea" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        <definition>SgAsmGenericSection* SgAsmGenericFile::get_section_by_offset</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address, Rose::BinaryAnalysis::Address, size_t *=nullptr) const ROSE_DEPRECATED(&quot;use get_sectionByOffset&quot;)</argsstring>
+        <name>get_section_by_offset</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <param>
+          <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref> *</type>
+          <defval><ref refid="ModuleBuilder_8h_1ab979d9d4b4923f7c54d6caa6e1a61936" kindref="member">nullptr</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="411" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1aa04f91027e080332025db48d90e19eee" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        <definition>SgAsmGenericSection* SgAsmGenericFile::get_section_by_rva</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address, size_t *=nullptr) const ROSE_DEPRECATED(&quot;use get_sectionByRva&quot;)</argsstring>
+        <name>get_section_by_rva</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <param>
+          <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref> *</type>
+          <defval><ref refid="ModuleBuilder_8h_1ab979d9d4b4923f7c54d6caa6e1a61936" kindref="member">nullptr</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="413" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1ab07f5022963f2c9528a944204eb17ab1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        <definition>SgAsmGenericSection* SgAsmGenericFile::get_section_by_va</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address, size_t *=nullptr) const ROSE_DEPRECATED(&quot;use get_sectionByVa&quot;)</argsstring>
+        <name>get_section_by_va</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <param>
+          <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref> *</type>
+          <defval><ref refid="ModuleBuilder_8h_1ab979d9d4b4923f7c54d6caa6e1a61936" kindref="member">nullptr</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="415" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a7fe25d43bc25b769a9a7a81b42b66daf" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        <definition>SgAsmGenericSection* SgAsmGenericFile::get_best_section_by_va</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address, size_t *=nullptr) const ROSE_DEPRECATED(&quot;use get_bestSectionByVa&quot;)</argsstring>
+        <name>get_best_section_by_va</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <param>
+          <type><ref refid="clang-builtin-opencl_8h_1a028b7cbca0d37bbc9bc219370525227f" kindref="member">size_t</ref> *</type>
+          <defval><ref refid="ModuleBuilder_8h_1ab979d9d4b4923f7c54d6caa6e1a61936" kindref="member">nullptr</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="417" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a6dd6307eab3b90cb9de41600d0c476e9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::shift_extend</definition>
+        <argsstring>(SgAsmGenericSection *, Rose::BinaryAnalysis::Address, Rose::BinaryAnalysis::Address, AddressSpace, Elasticity) ROSE_DEPRECATED(&quot;use shiftExtend&quot;)</argsstring>
+        <name>shift_extend</name>
+        <param>
+          <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <param>
+          <type><ref refid="classSgAsmGenericFile_1ae86e310e8abb3d0a044ee16e1bc6c9eb" kindref="member">AddressSpace</ref></type>
+        </param>
+        <param>
+          <type><ref refid="classSgAsmGenericFile_1af29ae621857658ed39d2524011eef404" kindref="member">Elasticity</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="421" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1ae225a9ace2519d9e68d9f3c2598e5079" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::shift_extend</definition>
+        <argsstring>(SgAsmGenericSection *, Rose::BinaryAnalysis::Address, Rose::BinaryAnalysis::Address) ROSE_DEPRECATED(&quot;use shiftExtend&quot;)</argsstring>
+        <name>shift_extend</name>
+        <param>
+          <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="423" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a75dd00a7a61a882a5ee1d6d1bd98efb7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        <definition>Rose::BinaryAnalysis::Address SgAsmGenericFile::get_next_section_offset</definition>
+        <argsstring>(Rose::BinaryAnalysis::Address) ROSE_DEPRECATED(&quot;use get_nextSectionOffset&quot;)</argsstring>
+        <name>get_next_section_offset</name>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="425" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1ad77baecf8344279082395bc49e9592d7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::add_hole</definition>
+        <argsstring>(SgAsmGenericSection *) ROSE_DEPRECATED(&quot;use addHole&quot;)</argsstring>
+        <name>add_hole</name>
+        <param>
+          <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="427" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1aa5da0b27f5f00b3f868d2147a8869a7c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::remove_hole</definition>
+        <argsstring>(SgAsmGenericSection *) ROSE_DEPRECATED(&quot;use remoeHole&quot;)</argsstring>
+        <name>remove_hole</name>
+        <param>
+          <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="428" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a81d077bc323ebbaaff7be0d5e3c1dbf6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::fill_holes</definition>
+        <argsstring>() ROSE_DEPRECATED(&quot;use fillHoles&quot;)</argsstring>
+        <name>fill_holes</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="429" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1adde92255c997e9afc0e38fd9deb00902" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::unfill_holes</definition>
+        <argsstring>() ROSE_DEPRECATED(&quot;use unfillHoles&quot;)</argsstring>
+        <name>unfill_holes</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="430" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1aa1ec225c425a8f94afb64e1027b8d917" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::add_header</definition>
+        <argsstring>(SgAsmGenericHeader *) ROSE_DEPRECATED(&quot;use addHeader&quot;)</argsstring>
+        <name>add_header</name>
+        <param>
+          <type><ref refid="classSgAsmGenericHeader" kindref="compound">SgAsmGenericHeader</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="431" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a0ac9356c7074c93b9c9006cd78735101" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SgAsmGenericFile::remove_header</definition>
+        <argsstring>(SgAsmGenericHeader *) ROSE_DEPRECATED(&quot;use removeHeader&quot;)</argsstring>
+        <name>remove_header</name>
+        <param>
+          <type><ref refid="classSgAsmGenericHeader" kindref="compound">SgAsmGenericHeader</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="432" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a9cdaba545c6cf6078ac9daa0bd40b5a6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>const char* SgAsmGenericFile::format_name</definition>
+        <argsstring>() const ROSE_DEPRECATED(&quot;use formatName&quot;)</argsstring>
+        <name>format_name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="433" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classSgAsmGenericFile_1a8142c5c8725c12307ad89ed40aa78dde" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        <definition>static SgAsmGenericSection* SgAsmGenericFile::bestSectionByVa</definition>
+        <argsstring>(const SgAsmGenericSectionPtrList &amp;sections, Rose::BinaryAnalysis::Address va)</argsstring>
+        <name>bestSectionByVa</name>
+        <param>
+          <type>const SgAsmGenericSectionPtrList &amp;</type>
+          <declname>sections</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+          <declname>va</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Definition for &quot;best&quot;.</para><para>This is the definition of &quot;best&quot; as used by <ref refid="classSgAsmGenericFile_1a881c6c7252c0f0d732854b0ada6f6f9d" kindref="member">get_bestSectionByVa</ref> and <ref refid="classSgAsmGenericHeader_1ada0e026de3aedb6793cc385c01ff26c6" kindref="member">SgAsmGenericHeader::get_bestSectionByVa</ref>. The specified list of sections is scanned and the best one containing the specified virtual address is returned. The operation is equivalent to the successive elimination of bad sections: first eliminate all sections that do not contain the virtual address. If more than one remains, eliminate all but the smallest. If two or more are tied in size and at least one has a name, eliminate those that don&apos;t have names. If more than one section remains, return the section that is earliest in the specified list of sections. Return the null pointer if no section contains the specified virtual address, or if any two sections that contain the virtual address map it to different parts of the underlying binary file. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="278" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classSgAsmGenericFile_1a8aee2d8776262b9b38dc51efc128ede0" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref> *</type>
+        <definition>static SgAsmGenericSection* SgAsmGenericFile::best_section_by_va</definition>
+        <argsstring>(const SgAsmGenericSectionPtrList &amp;, Rose::BinaryAnalysis::Address) ROSE_DEPRECATED(&quot;use bestSectionByVa&quot;)</argsstring>
+        <name>best_section_by_va</name>
+        <param>
+          <type>const SgAsmGenericSectionPtrList &amp;</type>
+        </param>
+        <param>
+          <type><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Rose::BinaryAnalysis::Address</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="419" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classSgAsmGenericFile_1a8b7ca2c0a9e1fb14deb75ceb5d9d487e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void SgAsmGenericFile::destructorHelper</definition>
+        <argsstring>() override</argsstring>
+        <name>destructorHelper</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="369" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Base class for binary files. </para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="22118">
+        <label>SgAsmExecutableFileFormat</label>
+        <link refid="classSgAsmExecutableFileFormat"/>
+        <childnode refid="22119" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22117">
+        <label>SgAsmGenericFile</label>
+        <link refid="classSgAsmGenericFile"/>
+        <childnode refid="22118" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22119">
+        <label>SgAsmNode</label>
+        <link refid="classSgAsmNode"/>
+        <childnode refid="22120" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22120">
+        <label>SgNode</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="22131">
+        <label>SgAsmGenericSectionList</label>
+        <link refid="classSgAsmGenericSectionList"/>
+        <childnode refid="22122" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22125">
+        <label>Sawyer::Attribute::Storage&lt; SyncTag &gt;</label>
+        <link refid="classSawyer_1_1Attribute_1_1Storage"/>
+        <childnode refid="22126" relation="usage">
+          <edgelabel>values_</edgelabel>
+        </childnode>
+      </node>
+      <node id="22130">
+        <label>SgAsmDwarfInformation</label>
+        <link refid="classSgAsmDwarfInformation"/>
+        <childnode refid="22122" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22128">
+        <label>string</label>
+      </node>
+      <node id="22126">
+        <label>Sawyer::Container::Map&lt; Id, boost::any &gt;</label>
+        <link refid="classSawyer_1_1Container_1_1Map"/>
+      </node>
+      <node id="22127">
+        <label>Sawyer::Message::Facility</label>
+        <link refid="classSawyer_1_1Message_1_1Facility"/>
+        <childnode refid="22128" relation="usage">
+          <edgelabel>comment_</edgelabel>
+          <edgelabel>name_</edgelabel>
+        </childnode>
+      </node>
+      <node id="22122">
+        <label>SgAsmExecutableFileFormat</label>
+        <link refid="classSgAsmExecutableFileFormat"/>
+        <childnode refid="22123" relation="public-inheritance">
+        </childnode>
+        <childnode refid="22127" relation="usage">
+          <edgelabel>mlog</edgelabel>
+        </childnode>
+      </node>
+      <node id="22132">
+        <label>SgAsmGenericHeaderList</label>
+        <link refid="classSgAsmGenericHeaderList"/>
+        <childnode refid="22122" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22129">
+        <label>SgAsmDwarfCompilationUnitList</label>
+        <link refid="classSgAsmDwarfCompilationUnitList"/>
+        <childnode refid="22130" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22121">
+        <label>SgAsmGenericFile</label>
+        <link refid="classSgAsmGenericFile"/>
+        <childnode refid="22122" relation="public-inheritance">
+        </childnode>
+        <childnode refid="22129" relation="usage">
+          <edgelabel>dwarfInfo</edgelabel>
+        </childnode>
+        <childnode refid="22128" relation="usage">
+          <edgelabel>name</edgelabel>
+        </childnode>
+        <childnode refid="22131" relation="usage">
+          <edgelabel>holes</edgelabel>
+        </childnode>
+        <childnode refid="22132" relation="usage">
+          <edgelabel>headers</edgelabel>
+        </childnode>
+      </node>
+      <node id="22123">
+        <label>SgAsmNode</label>
+        <link refid="classSgAsmNode"/>
+        <childnode refid="22124" relation="public-inheritance">
+        </childnode>
+        <childnode refid="22125" relation="usage">
+          <edgelabel>attributes</edgelabel>
+        </childnode>
+      </node>
+      <node id="22124">
+        <label>SgNode</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" line="17" column="1" bodyfile="/home/liao6/workspace/rose-github/src/AstNodes/BinaryAnalysis/SgAsmGenericFile.h" bodystart="17" bodyend="434"/>
+    <listofallmembers>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17a07695e2a88d952cb4a981d839c783bd0" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_86OPEN</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17a57b03ee0dddc6e820c8875701ff6c2a9" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_AIX</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17aa5c3917d6c2f3c03c4ba81a7e3295f7a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_ARM</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17a13e3e24aba6e26369933f511adfe8346" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_FREEBSD</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17a7ace980b3462a0bd57603d5aa8254281" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_HPUX</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17ade848a40cd4be1bc14c39db1cc6838fc" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_HURD</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17a33762934578051ac3d8d1eaee271e140" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_IRIX</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17a831ffc31e0549f5f50b00f0e58eb643a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_JVM</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17af9dfe30f658f0ab59ee61d6f6bda231f" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_LINUX</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17a97bc9cfd8937d459fd500af1d94c0ddf" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_MODESTO</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17a84672ef65c1f1a8d8c6b9afc98f3e79e" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_MONTEREY</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17a364b7f236eba2fdc2118220a3a9da80c" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_MSDOS</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17af834489318d5615a3f2ee73157028390" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_NETBSD</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17acf377c6370ef00694e9936f91c454527" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_NT</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17ad15ff5f564e938432cba57f09f196502" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_OS2</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17a313e929067b64ff06b33b88999395216" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_OTHER</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17ac43c9983147c8f5b52e49bfef642d72d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_SOLARIS</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17ac957bd5c2c372c5fc4bf66a3972abb9d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_SYSV</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17aebf176943357440deeccc45f624a33f3" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_TRU64</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17a1ebad99057b7191ac89dea93388cf28c" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_UNSPECIFIED</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17a39eecdeb4068e81b7b6ae3550cd4936b" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ABI_WIN386</name></member>
+      <member refid="classSgAsmGenericFile_1aa1ec225c425a8f94afb64e1027b8d917" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>add_header</name></member>
+      <member refid="classSgAsmGenericFile_1ad77baecf8344279082395bc49e9592d7" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>add_hole</name></member>
+      <member refid="classSgAsmGenericFile_1a4e5128083f0085f16312365c56faef78" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>addHeader</name></member>
+      <member refid="classSgAsmGenericFile_1a19af530ae4e1701f18171eec1c761ee2" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>addHole</name></member>
+      <member refid="classSgAsmGenericFile_1ae86e310e8abb3d0a044ee16e1bc6c9eb" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>AddressSpace</name></member>
+      <member refid="classSgAsmGenericFile_1ae86e310e8abb3d0a044ee16e1bc6c9ebaaf608aa529572cd9033f53dcac68097c" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ADDRSP_ALL</name></member>
+      <member refid="classSgAsmGenericFile_1ae86e310e8abb3d0a044ee16e1bc6c9eba80686c4045a0b3495044a22c840e4f77" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ADDRSP_FILE</name></member>
+      <member refid="classSgAsmGenericFile_1ae86e310e8abb3d0a044ee16e1bc6c9eba9083ca9e09a0d01250b92a63d0dda22b" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ADDRSP_MEMORY</name></member>
+      <member refid="classSgAsmNode_1a59e9db061aa74eeeda6dfc3d677a6bb7" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>attributes</name></member>
+      <member refid="classSgAsmGenericFile_1a8aee2d8776262b9b38dc51efc128ede0" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>best_section_by_va</name></member>
+      <member refid="classSgAsmGenericFile_1a8142c5c8725c12307ad89ed40aa78dde" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>bestSectionByVa</name></member>
+      <member refid="classSgAsmGenericFile_1a2dfc6e675a769656f1f5349858f438c2" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>content</name></member>
+      <member refid="classSgAsmGenericFile_1a3b90528ee738047c8167c4e4a70ef59a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>content</name></member>
+      <member refid="classSgAsmGenericFile_1a3d64ba5e68141c95b9168fdacec7d8a1" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>data</name></member>
+      <member refid="classSgAsmGenericFile_1a8b7ca2c0a9e1fb14deb75ceb5d9d487e" prot="protected" virt="virtual"><scope>SgAsmGenericFile</scope><name>destructorHelper</name></member>
+      <member refid="classSgAsmGenericFile_1a6be2550dfa236c7568b43817fff210e6" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>dump</name></member>
+      <member refid="classSgAsmGenericFile_1a2d81438180ded84d3851d89702a6c7cf" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>dump_all</name></member>
+      <member refid="classSgAsmGenericFile_1a17ef32d4c24807ce4c554eeadc44810f" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>dump_all</name></member>
+      <member refid="classSgAsmGenericFile_1a6559122f82991a9e67cbaef2a0e81d14" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>dumpAll</name></member>
+      <member refid="classSgAsmGenericFile_1a1d9615fd77720353c6730d9fbd632538" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>dumpAll</name></member>
+      <member refid="classSgAsmGenericFile_1ae8b1505855763365325b704cbea567ed" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>dwarfInfo</name></member>
+      <member refid="classSgAsmGenericFile_1af29ae621857658ed39d2524011eef404a4f653980791bcbb59a1d18d808cd41a9" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ELASTIC_HOLE</name></member>
+      <member refid="classSgAsmGenericFile_1af29ae621857658ed39d2524011eef404a3118e0ab7640900385b0b6719c5e1b38" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ELASTIC_NONE</name></member>
+      <member refid="classSgAsmGenericFile_1af29ae621857658ed39d2524011eef404a21e3926eefe9c11df0a7b9c7d0b2cf24" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ELASTIC_UNREF</name></member>
+      <member refid="classSgAsmGenericFile_1af29ae621857658ed39d2524011eef404" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>Elasticity</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a8624b5b893e68f75dceec02588a4cd17" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ExecABI</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1aa4a1858391921731cd54cf531fcfa65d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ExecFamily</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a27fc70e134433bff16d86749ed5c732a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ExecPurpose</name></member>
+      <member refid="classSgAsmGenericFile_1af53884afc7424f510eeb73b20ac62c3d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>extend_to_eof</name></member>
+      <member refid="classSgAsmGenericFile_1a469ed2b51ade57050d360d148db90c52" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>extendToEof</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1aa4a1858391921731cd54cf531fcfa65da0ba9290c6e39c02894a520b752a09a5a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>FAMILY_DOS</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1aa4a1858391921731cd54cf531fcfa65da028de89083a7ca5d7f5b64df7e9c265b" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>FAMILY_ELF</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1aa4a1858391921731cd54cf531fcfa65da496d2ddabd5c75d75a114ed667c1873d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>FAMILY_JVM</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1aa4a1858391921731cd54cf531fcfa65dac35ad9e112b81d3dabbcc0c401a8ac30" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>FAMILY_LE</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1aa4a1858391921731cd54cf531fcfa65dade455ef53ca1fed7e30758f96b2e39d3" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>FAMILY_LX</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1aa4a1858391921731cd54cf531fcfa65da511d3b87524cd2707b487b55ac11b21b" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>FAMILY_NE</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1aa4a1858391921731cd54cf531fcfa65da369c120c89c5ff9a82d51f85a26ec6cc" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>FAMILY_PE</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1aa4a1858391921731cd54cf531fcfa65daca25c0e683cfc371ee7781fed7ef9734" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>FAMILY_UNSPECIFIED</name></member>
+      <member refid="classSgAsmGenericFile_1a97c9f9ae9b5df5a5138cf938c0f912e5" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>fd</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a83e9c21a95121c9edd853af0d2fa811d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>fileDetails</name></member>
+      <member refid="classSgAsmGenericFile_1a81d077bc323ebbaaff7be0d5e3c1dbf6" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>fill_holes</name></member>
+      <member refid="classSgAsmGenericFile_1a47eae5f0d37b7869a92c629b1f8a1aa9" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>fillHoles</name></member>
+      <member refid="classSgAsmGenericFile_1a9cdaba545c6cf6078ac9daa0bd40b5a6" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>format_name</name></member>
+      <member refid="classSgAsmGenericFile_1abd76d1e3af1cc81b96f5ec06385088e6" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>formatName</name></member>
+      <member refid="classSgAsmGenericFile_1a7fe25d43bc25b769a9a7a81b42b66daf" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_best_section_by_va</name></member>
+      <member refid="classSgAsmGenericFile_1a881c6c7252c0f0d732854b0ada6f6f9d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_bestSectionByVa</name></member>
+      <member refid="classSgAsmGenericFile_1ad7af3da56613dc6349fbab478b39907f" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_current_size</name></member>
+      <member refid="classSgAsmGenericFile_1a4e0f3f486efeb2c67535c9692e8e1da9" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_currentSize</name></member>
+      <member refid="classSgAsmGenericFile_1a8f0718aa77b7b59f6645621312a9bbc1" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_data_converter</name></member>
+      <member refid="classSgAsmGenericFile_1a8bf464647db244b8e15e3922f20b13de" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_dataConverter</name></member>
+      <member refid="classSgAsmGenericFile_1a5e6e11860a5f048da3e78dd6dda4fcd7" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_dwarf_info</name></member>
+      <member refid="classSgAsmGenericFile_1abdef228421a3554d1c1dafc565601458" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_header</name></member>
+      <member refid="classSgAsmGenericFile_1a7b921846bbae0f894c56e47f1dbae599" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_mapped_sections</name></member>
+      <member refid="classSgAsmGenericFile_1a117fe311a5d178b43934ea7c75f6f360" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_mappedSections</name></member>
+      <member refid="classSgAsmGenericFile_1a75dd00a7a61a882a5ee1d6d1bd98efb7" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_next_section_offset</name></member>
+      <member refid="classSgAsmGenericFile_1a1386fa2de529da2c61988dfc21cf9561" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_nextSectionOffset</name></member>
+      <member refid="classSgAsmGenericFile_1a5d5e8acc4ef7b0fa1ca9760212880642" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_orig_size</name></member>
+      <member refid="classSgAsmGenericFile_1a82b10e025dd96736b9d4fa6c63c36f3d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_originalSize</name></member>
+      <member refid="classSgAsmGenericFile_1a3732f8d17dc0868be47c4f7fed73cc20" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_referenced_extents</name></member>
+      <member refid="classSgAsmGenericFile_1a0a6ad5591d6a6ef368aabe5e15c39eea" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_section_by_id</name></member>
+      <member refid="classSgAsmGenericFile_1a21f6d7bd7de70a81c33a3be8faa61168" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_section_by_name</name></member>
+      <member refid="classSgAsmGenericFile_1a5a1f6adb08bd0d70cf89b68ca98809ea" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_section_by_offset</name></member>
+      <member refid="classSgAsmGenericFile_1aa04f91027e080332025db48d90e19eee" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_section_by_rva</name></member>
+      <member refid="classSgAsmGenericFile_1ab07f5022963f2c9528a944204eb17ab1" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_section_by_va</name></member>
+      <member refid="classSgAsmGenericFile_1a17b5f0a3d8e934933693fac1f64c4b0a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_sectionById</name></member>
+      <member refid="classSgAsmGenericFile_1ae6535e1ca82e67fdfbe0630b43fae9e8" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_sectionByName</name></member>
+      <member refid="classSgAsmGenericFile_1a30e11fe6f89f0aed8454a87ffb44501c" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_sectionByOffset</name></member>
+      <member refid="classSgAsmGenericFile_1a3b5d5d86baf07a8b4bbe8070f4b5da91" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_sectionByRva</name></member>
+      <member refid="classSgAsmGenericFile_1a39dd78337d550aec513446a373f26c93" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_sectionByVa</name></member>
+      <member refid="classSgAsmGenericFile_1a9f516df9fd944e502724b4158563f06a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_sections</name></member>
+      <member refid="classSgAsmGenericFile_1a25484995a2cc692068a1b698ec28a1b9" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_sections_by_id</name></member>
+      <member refid="classSgAsmGenericFile_1a83a1598c5ef261458551a3f2d5205029" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_sections_by_name</name></member>
+      <member refid="classSgAsmGenericFile_1ad2b6835c1b6a7b1e13fefb44c1851c23" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_sections_by_offset</name></member>
+      <member refid="classSgAsmGenericFile_1a56cbdbc02570857c5f66041521aaf056" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_sections_by_rva</name></member>
+      <member refid="classSgAsmGenericFile_1ace934c640bf104e56dba3fed2d039fd1" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_sections_by_va</name></member>
+      <member refid="classSgAsmGenericFile_1a091d75ba965bf4f41915c7de80016737" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_sectionsById</name></member>
+      <member refid="classSgAsmGenericFile_1a3f3210e4bf2a776bd660d2fafed3774c" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_sectionsByName</name></member>
+      <member refid="classSgAsmGenericFile_1a5566cde10a3d090d311d6cb993638813" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_sectionsByOffset</name></member>
+      <member refid="classSgAsmGenericFile_1ab2ef30537d869985c778db2f604072dd" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_sectionsByRva</name></member>
+      <member refid="classSgAsmGenericFile_1aaf8a50c1f0bde4d5e15f8d8ed3a7d699" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_sectionsByVa</name></member>
+      <member refid="classSgAsmGenericFile_1a54420f618753e8fb50ca454132c08186" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_tracking_references</name></member>
+      <member refid="classSgAsmGenericFile_1a59f32872d7378d44e3b6ab987861c860" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_truncate_zeros</name></member>
+      <member refid="classSgAsmGenericFile_1a1de0ec0401faed84aa5f405284a72d5d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_unreferenced_extents</name></member>
+      <member refid="classSgAsmGenericFile_1a04818ce0a4e45ee63d32616378100e98" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>get_unreferencedExtents</name></member>
+      <member refid="classSgAsmGenericFile_1a8a420e5bd1478a102e08722405cab917" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>headers</name></member>
+      <member refid="classSgAsmGenericFile_1a7495efbaaafbcfe1a3475c71c0852201" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>holes</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a2b7616620194d3bf24def0e91dc41953" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>initDiagnostics</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>InsSetArchitecture</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224abcb680eafc0c357565994fcc9b05604b" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Advanced_Logic_Corp_Tinyj_emb_family</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a2b2899d0771364cd708f7c3b7e7e0adb" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_AMD_x86_64_architecture</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a733c59d4f854164469bd94d6a4a1279c" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARC_Cores_Tangent_A5</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a73d0355d41d880f99576f2c25f56f2cb" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Argonaut_RISC_Core</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a0b002d7d7b1cc9148012cbfe7ff3627f" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARM_A64</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a004ca507611b90b52a7194e299a78e95" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARM_ARM1</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a997af54ea90410ab60d5427c9b2f1e96" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARM_ARM10E</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a652c9dfff0d6cf7af63e4826a94551d3" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARM_ARM11</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a9217f543d9799f7e64114ace2d9ee972" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARM_ARM2</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ae3fd767265c2cfe6ea22934905fd79a3" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARM_ARM3</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a8a50e8c7dfc4c5c7a355fd187a7754b7" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARM_ARM6</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a1e3db5751c9e3640fc09effd7e918bd1" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARM_ARM7</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ab1d1f83efc501432792799d90d785a48" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARM_ARM7TDMI</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a4e06631cc81a1b17535a841346232b60" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARM_ARM8</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ae6ccffca9d941145454c600a61083a02" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARM_ARM9E</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224acc5e9a5d7f8b8b5ec86b233c8b5baa6f" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARM_ARM9TDMI</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a73035cc4285c74fc5be2ce28063ee66d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARM_Cortex</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a40290a2e66655c9bfc0e644efa4cd2eb" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARM_Family</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a1c145ca1bd2a67b3c25238f9b3e45adb" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARM_StrongARM</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224acf81c9fc30b5d5b2aa0d2fe221adb42f" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ARM_XScale</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224aedf9bfafad31163ff65b5ea347ed16fb" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Atmel_AVR_8bit_microcontroller</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224afad799f53b1df66a98a140b445576d9e" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_ATT_WE_32100</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a18f796f88f8280249cee0d3233730552" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Axis_Communications_32bit_embedded_processor</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ac703bf019a15d5f5b6e5aa3bc3987404" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Denso_NDR1_microprocessor</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224abaae30510fcd3751858c975ac2c2cd7e" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Digital_Alpha</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224aa49475ae3c927b26ac53830c1dabf019" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Digital_Alpha_fake</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a10e3ccb94e80d16e4333bd350e58d438" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Digital_VAX</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a408d5cb3c31e6509644447f5f70ed8b4" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Donald_Knuths_educational_64bit_processor</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ac99791392ddaf25089445a2ccb0c8da2" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_EFI_ByteCode</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a1a8653630d72db0cdfc63e8212d06d8b" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Element_14_64bit_DSP_Processor</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ac0653d745152fe58b50850a431122c3d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_FAMILY_MASK</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae030f759b72d694c6c3ef79385c17608" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>isa_family_to_string</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a622b3c833a69f3484fd607f3447c49cb" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Fujitsu_FR20</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a0ac4bcce8d7fd72a8dde0077baf744f9" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Fujitsu_FR30</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a88e25f6e06f7d34b0a4f67879c5ae3d0" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Fujitsu_MMA_Multimedia_Accelerator</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a6cce2df357a16e10ef6da8eb8d5389bf" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Fujitsu_VPP500</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a5f26553d7eddaa2036ccd334f98f576d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Harvard_University_machine_independent_object_files</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224aeee61c55fd5f2c366db14df7a4055858" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Hitachi_H8_300</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a9b197ea9bb9829e9ae39eb531563699b" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Hitachi_H8_300H</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ad4a88af2f4f91e053712030f82305c2b" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Hitachi_H8_500</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ae6302a7791eec03cca87738b640e0a55" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Hitachi_H8S</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ad8eff38ff0d01235ee3ebfaf66270fef" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Hitachi_SH</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a63561d5922199c68cca4a7f6197febd4" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_HPPA</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a43bdd1267f7670e70e79d4aa77d2c8f9" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_I860_860XP</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ae9d9dc085eedf933e8b939b62f2972a7" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_I860_860XR</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224aa5f3a672178b377cf4363a74dd92f5ed" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_I860_Family</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a04b1daf9fe82eb9b0693dbae56e244dc" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IA32_286</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a8d1f60a24fc227948a5cb39299408255" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IA32_386</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224aa4e586f9745096607a8669a6aacc7273" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IA32_486</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a1130731b31b847247a3a19719fb66dc6" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IA32_AMDK5</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ab99535e938223b095cd6df917ea00ad9" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IA32_Athlon</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ad6c5bd1fb058fe740e64886de97e32d7" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IA32_Cyrix6x86</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a14512f95f1226a08f59252959f250fdd" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IA32_Family</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ac9b41bd7046b1f2652c88721ada04271" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IA32_Pentium</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a6251c4f69c6d19f2739aff154d57b629" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IA32_Pentium4</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a4735ba93e74f294c0e2ed9e432362da9" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IA32_PentiumII</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a9b2daa82a123dd0290ac1653490b51a0" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IA32_PentiumM</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224acb918071a7d03e0b39dd798e408c82f8" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IA32_PentiumPro</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224af1d584b9a49272b787ba97ae20c1012e" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IA64_Family</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a798ab7f319483a6c768bb428a72d9285" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IA64_Itanium</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a86a0b1588ca9ae4bafda072942900c2c" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IA64_Itanium2</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a46f1c3665d3862de7118187ef077fdc6" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IBM_S390</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224aed6431e1d93aa0765d02d23e46f7289a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_IBM_System_370</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ae288e95455fbd3985ea3456f3ce0a6f5" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Infineon_Technologies_32bit_embedded_processor</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a03dd867a5114692c4dcca3418fdfd47d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_JVM</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a054b8586373427bef2d7d937c9f1689a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_LSI_Logic_16bit_DSP_Processor</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a23c2cde73e79fd5a0034cdd0208c769b" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_68000</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a16308afe2ed81fd38eef2fa060e24d3e" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_68008</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a1e86ffedad6c2c7adc111da87893fab2" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_68010</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a887e139ff665540c788883aad0b8b38f" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_68012</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a0bc097e9b25d0ece1b9778ca1c74288c" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_68020</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a4e19240b11dfd3ec906ef2919ebac347" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_68030</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a09bc9fd9205cb4fb42b057a42015c0af" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_68040</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a943bf25d02eeed59637ee41c03d3e981" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_68060</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a383b1c5cbaea74caff0428cd4cf30f37" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_68EC000</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a1984c754e0bad03b9afbded4a0cf40df" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_68EC020</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ade29fa7165d7ce037b034cff94118326" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_68EC030</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ad718f2b609664e715e48ffbe4f6c7d5b" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_68EC040</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a09b97a1af198861da1e0d81fabc8a45b" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_68HC000</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a66924b0874bc76978d0bad95b32f8742" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_68LC040</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a8b7980b5b6da3bf2ab8c348641db7979" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_ColdFire</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a60ea65676579235866ad72d2c97242f9" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_DragonBall</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224aa27a09ce4d0787e9654bedb51339e5ec" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M68K_Family</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ae0825e0a943ea50f20e19961471b96f1" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M88K_88100</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ad56e60c122822d39d6bed00467f95775" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M88K_88110</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a1545869632c84c3077f20b83942b5d99" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M88K_88110MP</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a371ba80d44c14fadda289df5d638323a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M88K_88120</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a1bfafdcf8811cfcb8c1c7e0d126e2df9" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_M88K_Family</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a6851b51417ebf6ac4f5cc54355312778" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Matsushita_AM33</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224aaac82dde58a4b91fa1dd2fb5fbbdc511" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Matsushita_MN10200</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224aabec6e44b7bf8217a1e6b453cb1fcd8b" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Matsushita_MN10300</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a2c7fd1ea5620855be3c186a417c5cf88" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_16</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a0191a9c5c803756e4de3629d092ab2da" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_16FPU</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224af54d05d3e1cd44e300c8ba8f348f967d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_Family</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224abaa385d34311d94b6feeebc5901c884a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_FPU</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224af4b18181eacc70b4efd0cafb4d597594" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_MarkI</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a5aa13caa288a436b88282068d7edf058" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_MarkII</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ae978454e991bb19a48b050cc1ad468ac" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_MarkIII</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a8823e012cf52f84fe57dd649cb82df46" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_R10000</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224af464e8559a97d8815a3e2f5f20bc661d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_R12000</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a307e412e8153d2424335874085bea39c" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_R14000</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a2efdbf94de8e672f7224fc5125f93aac" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_R16000</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a785a3291a8d0ea7231d15513868c6fc5" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_R16000A</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a288b06cceb3c65ab8ae3ab66bd40acad" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_R2000</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ac263f7ba6538f3651c5f81bba3d8bbd6" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_R3000</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a87e6e460e635450045376788ffc2ab75" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_R4000</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a01f8d46b694465baa25eab3e837e9d17" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_R4200</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a93da7efff18c0810aaea1190ad9be6ce" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_R4300</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a5d78df7a0cece5cc912a4c0a0cee4921" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_R4600</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a605139c97c20c80282288b33dc297e59" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_R4650</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a3fd58eb7ad6c3b030a6e8407949e6fac" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_R4700</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a67deee2c6a831a27d1588697ec377552" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_R5000</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a52c5c09df998ce2aff57e0062b4347c7" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_R8000</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a75cc66fb834d54e12bc2bd5c9d1a89e5" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_MIPS_RM7000</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224acc48d7769409e71878fd64f58db8e585" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Mitsubishi_D10V</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a6f48791454116afde3873b8bd9f4ec6d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Mitsubishi_D30V</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a3bf06a2d538775b604c1ee92df42513b" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Mitsubishi_M32R</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a3f44aea7128d25e8e60c5d8dddf575ab" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Motorola_M68HC12</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a65d4b3f3e8688cb74e799380e8a30443" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Motorola_MC68HC05_microcontroller</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a32662f5b323856b210cb1b9474981e23" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Motorola_MC68HC08_microcontroller</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a8bfb8d2d15d94bf7f2eaa69e2e215774" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Motorola_MC68HC11_microcontroller</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a40485f8d97fd856407968be66640c5c9" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Motorola_MC68HC16_microcontroller</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ab3df74a1384061170bb5786b4c5e7b51" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Motorola_RCE</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224aeac3bc014e468a766a588a61fb000ee9" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Motorola_Start_Core_processor</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a45422960bf637b63eb93421106cec893" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_NEC_V800_series</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ad54a930956fa8c68908c72aac5d88961" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_NEC_v850</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a081968680a32073ff78f84395db0a392" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_OpenRISC_32bit_embedded_processor</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a78cd05aac8651d850b331dd1fd399dc0" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_OTHER</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a19d7fb5fe02516beae33f64cd6922658" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_OTHER_Family</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a58c8b8d7c83b19b94e408d7fcc4a9bff" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_picoJava</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a953b580209f38166d0dd7c9e6bfe0fe6" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_PowerPC</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224af8c106b29ff1fbf8ed53a574a9080f28" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_PowerPC_64bit</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a38783d180dfec08f19069a732449bf15" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Siemens_FX66_microcontroller</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224aa81dcafb9527be680e1d4d56eac85792" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Siemens_PCP</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a38125a997653ac0eb7ab66a7e73a4826" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Siemens_Tricore</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224abcc15193a54f500a6d39f6e37974809f" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Silicon_Graphics_SVx</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a6dbed452f4e8752429d606f10808a545" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_SiTera_Prism</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ade6d66ddad983c07f898d89db9b70a24" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Sony_DSP_Processor</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a6b81fc265ac170394281d783c378f26a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Sony_nCPU_embeeded_RISC</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a7012f657c08fc65231436a5fe5dd02de" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_SPARC_Family</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ab1688ce1dc0f01fae2bdf43c30ff6644" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_SPARC_V7</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a5ac1d731099c878bd0e18f5e6048e94b" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_SPARC_V8</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224afedad049b9fb6bd97087457f9c6fbefb" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_SPARC_V8E</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a3eb48a91ccbf7d65f2cf4e32cd7e30de" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_SPARC_V9</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224aa16448c7a13272cce503325f902e6650" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_SPARC_V9JPS1</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224aecd3a6530c967af7eacd61c4ed04c44f" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_SPARC_V9JPS2</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224aebd4a60444a23d12eeec76c4f886a358" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_SPARC_V9UA</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a49d7bf16de29b43da7fc87d33b13d047" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Stanford_MIPS_X</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a24ba9642c2c1f47d3a2949bcf71d190a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_STMicroelectronic_ST100_processor</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224aa28bfec5d363cac1ee12b43aa7e71d25" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_STMicroelectronics_ST19_8bit_microcontroller</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224ab1b70756658a8aba8dcdbd2417078c48" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_STMicroelectronics_ST7_8bit_microcontroller</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a92dd8f5297314846aee1ffd42bfe5d62" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_STMicroelectronics_ST9_plus_8_16_microcontroller</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224acc6417651db5ab2d5f1aa66721621b94" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Sun_v8plus</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224adb9e98606e7a7f297b4dd9b27a64b23d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Tensilica_Xtensa_Architecture</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a98059bdfac824900f541fba929c9df7a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>isa_to_string</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a2a776fb4fb7b6a3f32e93064e64c85c8" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_Toyota_ME16_processor</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a6eb8e07a5942be56f608d2785d3bedb9" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_TRW_RH_32</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a061502eb9ac07accd0def0e21645d692" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_UNSPECIFIED</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a3d04c42794705ae7d9928c77ed1443dd" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_X8664_AMDPhenom</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a9b1b202966537a816490f1a716d24de2" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_X8664_Athlon64</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224afdf251c7f6127b6db81f7c92d2b9eb3c" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_X8664_Family</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a244d01e48278d703a5d1104da5daedc2" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_X8664_IntelCore</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae83545a0f1393e82be1225c168ba5224a8efb5854e6b423cf7345a09b907e3863" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>ISA_X8664_Prescott</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ae0e5cfd8e6810197dd67c2e4ccbe1fb8" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>isaFamilyToString</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a1f1056f2e50b1e7c8f1ae97165a61885" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>isaToString</name></member>
+      <member refid="classSgAsmGenericFile_1abad4ae4fbbed2b71e2fb5f290e6d77dd" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>mark_referenced_extent</name></member>
+      <member refid="classSgAsmGenericFile_1a652b09742cd769b8108a6f8007b46eb6" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>markReferencedExtent</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a0baa46cabcd118e86d9d49e3585bef13" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>mlog</name></member>
+      <member refid="classSgAsmGenericFile_1a9d23477a0b67fd2c45d87ac920786445" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>name</name></member>
+      <member refid="classSgAsmGenericFile_1aba0245ae76a69db304808a369f74af82" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>neuter</name></member>
+      <member refid="classSgAsmGenericFile_1ad0a740cafe44e46911aa45b35e945d46" prot="private" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>p_data_converter</name></member>
+      <member refid="classSgAsmGenericFile_1a7a244391ccffe2be28395b48b0d542e0" prot="private" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>p_unreferenced_cache</name></member>
+      <member refid="classSgAsmGenericFile_1a09410b5da440e13a16adfe7c66938144" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>parse</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1ad1ab88a96c63eda4d8d332c1827b234c" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>parseBinaryFormat</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a27fc70e134433bff16d86749ed5c732aa9f85bbaa9401438fd3dd8170f9767f33" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>PURPOSE_CORE_DUMP</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a27fc70e134433bff16d86749ed5c732aa5cc69aef26eb1c6f0c09d2fe5d26bbec" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>PURPOSE_EXECUTABLE</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a27fc70e134433bff16d86749ed5c732aad7e3c4a113111aaaa3e777fc34b8695d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>PURPOSE_LIBRARY</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a27fc70e134433bff16d86749ed5c732aa1d1fc525d73138992db143b7b9f96e2a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>PURPOSE_OS_SPECIFIC</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a27fc70e134433bff16d86749ed5c732aa50835893ece9f5d64638e16cad13b93f" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>PURPOSE_OTHER</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a27fc70e134433bff16d86749ed5c732aac21975ed7c05c154ac04acf20ffef745" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>PURPOSE_PROC_SPECIFIC</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a27fc70e134433bff16d86749ed5c732aa5292810546db875ee9dccbb6433616b2" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>PURPOSE_UNSPECIFIED</name></member>
+      <member refid="classSgAsmGenericFile_1a8c0f16f3ac48acdd2510c5af1c10e2ab" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>read_content</name></member>
+      <member refid="classSgAsmGenericFile_1a07860522af8c2d2e2850c4e7713fead8" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>read_content</name></member>
+      <member refid="classSgAsmGenericFile_1ad7c6432547449f988d49649559278cf2" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>read_content_str</name></member>
+      <member refid="classSgAsmGenericFile_1ae1597cd34cbf8dad60959e994f1a774a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>read_content_str</name></member>
+      <member refid="classSgAsmGenericFile_1a3cbd66fab388ffaae757f6071317abea" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>readContent</name></member>
+      <member refid="classSgAsmGenericFile_1adf24cf546b0e1dc7044aea2fa57d659f" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>readContent</name></member>
+      <member refid="classSgAsmGenericFile_1a7afdc85910dc8697f3088f65cb638ed7" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>readContentString</name></member>
+      <member refid="classSgAsmGenericFile_1a77ae23611362849e0546d5830e997ca5" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>readContentString</name></member>
+      <member refid="classSgAsmGenericFile_1acac80d6d58329bef0b16742bebff5c8d" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>reallocate</name></member>
+      <member refid="classSgAsmGenericFile_1af78dd857b6ad2ac165d7307d2f1cf5dd" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>referencedExtents</name></member>
+      <member refid="classSgAsmGenericFile_1a0ac9356c7074c93b9c9006cd78735101" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>remove_header</name></member>
+      <member refid="classSgAsmGenericFile_1aa5da0b27f5f00b3f868d2147a8869a7c" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>remove_hole</name></member>
+      <member refid="classSgAsmGenericFile_1adca66e5e9668e85c8c25370c12b7afb3" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>removeHeader</name></member>
+      <member refid="classSgAsmGenericFile_1ac84d3e9edc3e472e3c28ac7765d386d0" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>removeHole</name></member>
+      <member refid="classSgAsmGenericFile_1aa8e493ba9f22d1de2c7b9383322d1240" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>sb</name></member>
+      <member refid="classSgAsmGenericFile_1a23d3549c982aecd7b66aba19be397b19" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>set_data_converter</name></member>
+      <member refid="classSgAsmGenericFile_1a932a10a09cfdf7827a1c700ce05f8a02" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>set_dataConverter</name></member>
+      <member refid="classSgAsmGenericFile_1a7ad70cb7f3363216196ceb242c3d188e" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>set_dwarf_info</name></member>
+      <member refid="classSgAsmGenericFile_1a76e632de14feb7c14b816164381b3e30" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>set_referenced_extents</name></member>
+      <member refid="classSgAsmGenericFile_1aa705eed7e0fdcae8b77e344cb44f7443" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>set_tracking_references</name></member>
+      <member refid="classSgAsmGenericFile_1a4dc80e705f3bfc4077524267cbc15a80" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>set_truncate_zeros</name></member>
+      <member refid="classSgAsmGenericFile_1a6dd6307eab3b90cb9de41600d0c476e9" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>shift_extend</name></member>
+      <member refid="classSgAsmGenericFile_1ae225a9ace2519d9e68d9f3c2598e5079" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>shift_extend</name></member>
+      <member refid="classSgAsmGenericFile_1af819798cead2e60d4ab8d34e11c568a3" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>shiftExtend</name></member>
+      <member refid="classSgAsmGenericFile_1afc9a2a51220831f9925cf83c4bc4a2a9" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>shiftExtend</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a59740d76ca930d80f2639f6daa49873a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>to_string</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a6f1ccabd6445ef121cd3c3340edd3e9a" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>to_string</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a77dc62cbaa3ae1e9c6b1ec4b4ff1520b" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>to_string</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1acbbe78e6967298b0c726495d7ce736ba" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>to_string</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1aadf7d9e91e6fa7c91606093082d73587" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>toString</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a51841eee783e4247474427932ce473d7" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>toString</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a1ddcc7908feb4b25276f3370a1f416c7" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>toString</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a3c5cbaeaeb12235992d41b658973a887" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>toString</name></member>
+      <member refid="classSgAsmGenericFile_1af26d6a71928c341f26951280f1f4fa84" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>trackingReferences</name></member>
+      <member refid="classSgAsmGenericFile_1a6441355e8f5188d0633c7afb4abcb763" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>truncateZeros</name></member>
+      <member refid="classSgAsmGenericFile_1adde92255c997e9afc0e38fd9deb00902" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>unfill_holes</name></member>
+      <member refid="classSgAsmGenericFile_1abe3754c110e34d4af0c975c3536ee6a2" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>unfillHoles</name></member>
+      <member refid="classSgAsmGenericFile_1a76038fa98a5f4d96501e67de9e0cd1cb" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>unparse</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a3d859164653dd2d3a4f4059956dc2905" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>unparseBinaryFormat</name></member>
+      <member refid="classSgAsmExecutableFileFormat_1a885ef99b6198532dddad56053ff523c6" prot="public" virt="non-virtual"><scope>SgAsmGenericFile</scope><name>unparseBinaryFormat</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

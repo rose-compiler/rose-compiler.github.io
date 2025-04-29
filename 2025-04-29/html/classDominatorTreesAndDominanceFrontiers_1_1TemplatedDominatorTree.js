@@ -1,0 +1,27 @@
+var classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree =
+[
+    [ "TemplatedDominatorTree", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#a2d979314380a666f3d93db31137715fb", null ],
+    [ "calculateImmediateDominators", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#a416d2d86323c1ab5b0c55a53426fc241", null ],
+    [ "depthFirstSearch", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#ac1e06b93bbd0ec8ec6ed8a582fb3fc52", null ],
+    [ "dominates", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#ad627d6671ffcd4dac7eda9a55484ebe1", null ],
+    [ "dominates", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#a7c9cb535c26fff1e61d4eba941ac2dfd", null ],
+    [ "eval", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#a1d359ab5ec6a1d34b00a679a8454743a", null ],
+    [ "getCFGNodeFromID", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#aa805047deae5ac13d354c34cbc35093d", null ],
+    [ "getDirectDominatedSet", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#a7ce544b3bf94744b7a427704824ebcf1", null ],
+    [ "getID", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#ae00493ab32387967782f59b947e80064", null ],
+    [ "getImDomID", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#a1e290891e48d85428f21aae97edd852e", null ],
+    [ "getImDomID", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#a12f267de816f6ec17b033f766814bcf4", null ],
+    [ "getSize", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#a02fc20c93aacdffa960cb32a00d1f747", null ],
+    [ "init", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#a5d535a158f4fa7d7ad74b2d21139fcc0", null ],
+    [ "link", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#a1fc945da6f937540b5e2888a1c09ce7b", null ],
+    [ "printInfo", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#a5d04d2a25997fda46dd399313ce075be", null ],
+    [ "writeDot", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#a1b232c04a1374ea9d61283d527d530e2", null ],
+    [ "ancestor", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#a83a718b94f968b0874ac917b88448c49", null ],
+    [ "buckets", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#a8c6de715d5bb64b16eaf6aef54a87966", null ],
+    [ "cfgRoot", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#a1f3a540c4fdf3147786aeccc3ff14b76", null ],
+    [ "dfsParent", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#a0c9441a517750fc2b587a03afb5521b3", null ],
+    [ "idom", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#af7780d5c941a8c7de197a303d2ee6fc9", null ],
+    [ "idToNode", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#aad2486e54d2a479fbff22406c93993d4", null ],
+    [ "nodeToIdMap", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#ad81997812409d90f8b19784d6abedead", null ],
+    [ "semi", "classDominatorTreesAndDominanceFrontiers_1_1TemplatedDominatorTree.html#ac5bb6da49efb4a811d766cd54038afd5", null ]
+];

@@ -1,0 +1,791 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="classDefaultFunctionGenerator" kind="class" language="C++" prot="public">
+    <compoundname>DefaultFunctionGenerator</compoundname>
+    <basecompoundref refid="classSgSimpleProcessing" prot="public" virt="non-virtual">SgSimpleProcessing</basecompoundref>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classDefaultFunctionGenerator_1aed9382383c5ab40a84b7c97ea7345268" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int DefaultFunctionGenerator::pass</definition>
+        <argsstring></argsstring>
+        <name>pass</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="33" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="33" bodyend="-1"/>
+        <referencedby refid="defaultFunctionGenerator_8h_1ad9850c6aa728d45d1b683cca562c7f29" compoundref="defaultFunctionGenerator_8C" startline="3565" endline="3577">defaultFunctionGenerator</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classDefaultFunctionGenerator_1ab439851ce0db248b777b383615aef402" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void DefaultFunctionGenerator::visit</definition>
+        <argsstring>(SgNode *astNode)</argsstring>
+        <name>visit</name>
+        <reimplements refid="classAstSimpleProcessing_1a9677fcc15f558e389f8a826422379256">visit</reimplements>
+        <param>
+          <type>SgNode *</type>
+          <declname>astNode</declname>
+        </param>
+        <briefdescription>
+<para>The visit routine for <ref refid="classDefaultFunctionGenerator" kindref="compound">DefaultFunctionGenerator</ref>, which makes any implicit invocations within a method definition explicit and which creates any necessary default method declaration and definitions for each class. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>astNode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> Sage node.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+This is the driver for the <ref refid="classDefaultFunctionGenerator" kindref="compound">DefaultFunctionGenerator</ref>. It handles method definitions (SgFunctionDefinitions) and class definition (SgClassDefinitions).</para><para>For each method definition: if the method is a constructor or destructor, invoke generateImplicitInvocations to make explicit any implicit invocations within the method. Implicit method invocations do not occur within user-defined operator=. We will generate implicit invocations within compiler-generated operator= when we generate those methods (from generateDefaultFunctionDefinition).</para><para>For each class definition: if a special method (i.e., a copy or default constructor, a destructor, or an operator=) is not defined, generate a method declaration and definition for it. NB: This runs contrary to Stroustrup&apos;s intention (and Leo&apos;s original implementation) which only create compiler-generated methods &quot;as needed.&quot; Our approach is OK because the unparser won&apos;t actually emit any of the method declarations or definitions.k </para>        </detaileddescription>
+        <inbodydescription>
+<para>Despite Stroustrup&apos;s contention that default constructors are only created when needed (i.e., invoked in the program):</para><para>3rd Edition Section 10.4.2 talks about default constructors:</para><para>"<ref refid="classA" kindref="compound">A</ref> default constructor is a constructor that can be called without supplying an argument [so it can have default args] ... If a user has declared a default constructor, that one will be used; otherwise, the compiler will try to generate one if needed and if the user HASN&apos;T DECLARED other constructors."</para><para>we are going to go ahead and create a default or copy contructor, destructor, or operator= whenever they are not defined for a class. Note, however, that they are marked in such a way that they will not be emitted by the unparser, so the backend will not see spurious method definitions.</para>        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="32" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="3312" bodyend="3562"/>
+        <references refid="defaultFunctionGenerator_8C_1af47d169a7e4f29c69ba07c627c5a2aca" compoundref="defaultFunctionGenerator_8C" startline="15">DEBUG_DEFAULT_FUNCTION_GENERATOR</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a4fffb1698a7a59c725a848d3361c976c" compoundref="defaultFunctionGenerator_8C" startline="23">e_assignment_operator</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a1de5e61c282ad893b923491bef0d47ce" compoundref="defaultFunctionGenerator_8C" startline="20">e_constructor</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a0298eac6f6a0e07873ca67eb3f9f13d8" compoundref="defaultFunctionGenerator_8C" startline="22">e_copy_constructor</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689aa2d05a134e8b37020a99c735a02df310" compoundref="defaultFunctionGenerator_8C" startline="21">e_destructor</references>
+        <references refid="defaultFunctionGenerator_8C_1a17951400d30084a7f06d366738ff8051" compoundref="defaultFunctionGenerator_8C" startline="3026" endline="3065">getClassDefinition</references>
+        <references refid="defaultFunctionGenerator_8C_1ab08ca064998420305ba9e9723d47860a" compoundref="defaultFunctionGenerator_8C" startline="1080" endline="1089">isConstructor</references>
+        <references refid="defaultFunctionGenerator_8C_1a81582412290ad53c9eabe1f5ee946277" compoundref="defaultFunctionGenerator_8C" startline="1270" endline="1279">isDestructor</references>
+        <references refid="virtualCFG_8h_1ae249a974a874a71b5d8875444f8f2148">isSgExpression</references>
+        <references refid="virtualCFG_8h_1a2e0cd44426c0477280c833ae2f1827a7">isSgInitializedName</references>
+        <references refid="ROSE__ABORT_8h_1a22a360d21e08f28d45bffc6e87d352c5" compoundref="ROSE__ABORT_8h" startline="25">ROSE_ABORT</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+        <references refid="namespacecsharp__translator_1ade5efe9da4be3b9e10c119b3bffa49dc" compoundref="csharpBuilder_8C" startline="589" endline="598">csharp_translator::varDecl</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classDefaultFunctionGenerator_1aed58d528014b20625a40a6ea88422b11" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>SgMemberFunctionDeclaration *</type>
+        <definition>SgMemberFunctionDeclaration * DefaultFunctionGenerator::getMethodInClass</definition>
+        <argsstring>(SgMemberFunctionDeclaration *method, SgClassDefinition *classDefinition)</argsstring>
+        <name>getMethodInClass</name>
+        <param>
+          <type>SgMemberFunctionDeclaration *</type>
+          <declname>method</declname>
+        </param>
+        <param>
+          <type>SgClassDefinition *</type>
+          <declname>classDefinition</declname>
+        </param>
+        <briefdescription>
+<para>Returns a method declaration within a class of the same type as a specified method. If the method declaration does not exist, create it and the method definition. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>memberFunctionDeclaration</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> method declaration. If method is NULL lookup the default constructor. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>classDefinition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a SgNode representing a class definition. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="classA" kindref="compound">A</ref> SgMemberFunctionDeclaration from classDefinition that has the &quot;same type&quot; as method.</para></simplesect>
+Note: By &quot;same type&quot; we mean the following: If method is a default constructor, return the default constructor defined within classDefinition, else NULL. If method is a copy constructor, return the copy constructor defined within classDefinition, else NULL. If method is a destructor, return the destructor defined within classDefinition, else NULL. If method is operator=, return the operator= defined within classDefinition, else NULL. Otherwise, if method has type signature s and name n, return the method defined within classDefinition having type signature s and name n. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="57" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="1915" bodyend="1953"/>
+        <references refid="defaultFunctionGenerator_8C_1af47d169a7e4f29c69ba07c627c5a2aca" compoundref="defaultFunctionGenerator_8C" startline="15">DEBUG_DEFAULT_FUNCTION_GENERATOR</references>
+        <references refid="defaultFunctionGenerator_8C_1ab0c621e79e547c5014f72ef0b52a5dca" compoundref="defaultFunctionGenerator_8C" startline="1367" endline="1384">declarationToEnumType</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a1de5e61c282ad893b923491bef0d47ce" compoundref="defaultFunctionGenerator_8C" startline="20">e_constructor</references>
+        <references refid="defaultFunctionGenerator_8C_1a67cdbaaef3b148cf9f82dc37de7fb069" compoundref="defaultFunctionGenerator_8C" startline="1494" endline="1529">lookupDefaultConstructorInClass</references>
+        <references refid="defaultFunctionGenerator_8C_1a750dfac61aa8f4d42a747397b11753c0" compoundref="defaultFunctionGenerator_8C" startline="1412" endline="1478">lookupMethodInClass</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+      </memberdef>
+      <memberdef kind="function" id="classDefaultFunctionGenerator_1acf49022794d00d50afb34873677b194d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DefaultFunctionGenerator::generateImplicitInvocations</definition>
+        <argsstring>(SgFunctionDefinition *functionDefinition)</argsstring>
+        <name>generateImplicitInvocations</name>
+        <param>
+          <type>SgFunctionDefinition *</type>
+          <declname>functionDefinition</declname>
+        </param>
+        <briefdescription>
+<para>Makes explicit any implicit invocations of copy constructors, default constructors, operator=, or destructors within functionDefinition. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>functionDefinition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> SgFunctionDefinition representing a function definition.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+Assumes functionDefinition is the definition of a method. If the method is a constructor, destructor, or operator=, other copy or default constructors, destructors, or operator= methods may be implicitly invoked from it. Please see the discussion at the top of this file.</para><para>Let the method&apos;s &quot;flavor&quot; describe whether it is a constructor, destructor, or operator=. generateImplicitInvocations finds any <emphasis>explicit</emphasis> invocations within the method of a method of the same flavor invoked on one of its base classes. It then iterates over each of base class and records which of these had a method (of the same flavor) invoked upon it. Those which did not will have their method implicitly invoked. The task of generateImplicitInvocations is to make these implicit invocations explicit by creating the necessary AST nodes.</para><para>For each base class which has not been invoked, we look up the method of the correct flavor in that base class and create an invocation of it. If that method does not exist, it would be automatically generated by the backend compiler. Therefore, we generate the method definition here.</para><para>NB: The generated order of invocation is probably not correct. I imagine C++ dictates the order in which constructors, destructors, etc. are invoked on base classes. Instead, I just iterate over the base classes and invoke methods in that order (modulo those base classes which have already been invoked). At the bare minimum the ordering of implicit invocations should probably be interleaved with existing explicit invocations (in some way).</para><para>NB: Assuming that a base class is only registered once in get_inheritances, we should only invoke a constructor, destructor, etc. once per base class. Is this the correct behavior with respect to multiple inheritance? How about multiple inheritance when the base class is virtual. </para>        </detaileddescription>
+        <inbodydescription>
+<para>Date: Tue, 20 Jun 2006 10:31:09 -0400 (EDT) From: Brian White <ulink url="mailto:bwhite@csl.cornell.edu">bwhite@csl.cornell.edu</ulink> To: dan quinlan <ulink url="mailto:dquinlan@llnl.gov">dquinlan@llnl.gov</ulink> Subject: constructor normalization: introducing name qualifiers</para><para>Hi Dan,</para><para>I&apos;ve made implicit calls to operator= explicit:</para><para>FooBar &amp;operator=(const class FooBar &amp;rhs) { (*(this))=rhs;</para><para>Unfortunately, this will result in infinite recursion. The operator= I introduced is actually Foo::operator=, where Foo is the base class of FooBar. How can I force the unparser to qualify operator=:</para><para>FooBar &amp;operator=(const class FooBar &amp;rhs) { this-&gt;Foo::operator=(rhs);</para><para>[I think that is the correct syntax.]</para><para>I am currently creating the SgMemberFunctionRefExp as: <verbatim>    SgMemberFunctionRefExp *fr =
+       new SgMemberFunctionRefExp(COMPILERGENERATED_FILE_INFO, f, 0,
+</verbatim> functype, 0); fr-&gt;set_need_qualifier(false);</para><para>i.e., the last need_qualifier arg to the constructor is false. I then explicitly set need_qualifier to false. Presumably, this is redundant. If I set these to true, I get:</para><para>FooBar &amp;operator=(const class FooBar &amp;rhs) { =rhs;</para><para>I suppose I could cast rhs to be of type Foo, so that I wouldn&apos;t need it to be qualified. i.e.,</para><para>FooBar &amp;operator=(const class FooBar &amp;rhs) { (*(this))= (Foo&amp;)rhs;</para><para>should invoke Foo::operator=. Is this the preferred method?</para><para>Thanks, Brian</para><para>Date: Tue, 20 Jun 2006 16:21:19 -0700 From: Daniel J. Quinlan <ulink url="mailto:dquinlan@llnl.gov">dquinlan@llnl.gov</ulink> To: Brian White <ulink url="mailto:bwhite@csl.cornell.edu">bwhite@csl.cornell.edu</ulink> Cc: Peter Collingbourne <ulink url="mailto:collingbourne2@llnl.gov">collingbourne2@llnl.gov</ulink> Subject: Re: constructor normalization: introducing name qualifiers</para><para>Hi Brian, I think you may have to do it the last way, you have come up against a bug reported by Andreas and I that I have not fixed. I tried a few months ago, and it was much harder than I expected, so I backed off and I have not returned to it.</para>        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="103" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="2692" bodyend="3024"/>
+        <references refid="namespaceSageBuilder_1a75436cca4b821e57ef989f68b069323e">SageBuilder::buildCastExp</references>
+        <references refid="namespaceSageBuilder_1ab491d27d57cb0bb597203afa395439b5" compoundref="sageBuilder_8C" startline="8490" endline="8508">SageBuilder::buildPointerType</references>
+        <references refid="namespaceSageBuilder_1aa0f5e1170955f3bff9947bec3b117057" compoundref="sageBuilder_8C" startline="8510" endline="8522">SageBuilder::buildReferenceType</references>
+        <references refid="defaultFunctionGenerator_8C_1af47d169a7e4f29c69ba07c627c5a2aca" compoundref="defaultFunctionGenerator_8C" startline="15">DEBUG_DEFAULT_FUNCTION_GENERATOR</references>
+        <references refid="defaultFunctionGenerator_8C_1a7ebb9d1ab49b290323d9add0aec1fa6f" compoundref="defaultFunctionGenerator_8C" startline="1540" endline="1619">findClassesInvokedViaConstructors</references>
+        <references refid="defaultFunctionGenerator_8C_1ad868c5a418947c93dddbd4c9f08b21f5" compoundref="defaultFunctionGenerator_8C" startline="1780" endline="1827">findClassesInvokedViaDestructors</references>
+        <references refid="defaultFunctionGenerator_8C_1a853cdf2d80f116ecff57861b8b4bc4b2" compoundref="defaultFunctionGenerator_8C" startline="1840" endline="1887">findClassesInvokedViaOperatorEquals</references>
+        <references refid="defaultFunctionGenerator_8C_1a6a9781f99ca5465075199dcdf1ec7272" compoundref="defaultFunctionGenerator_8C" startline="882" endline="963">getClassDeclaration</references>
+        <references refid="defaultFunctionGenerator_8C_1adc8860568e199b2cb2c951408c05dc93" compoundref="defaultFunctionGenerator_8C" startline="1652" endline="1662">getThisExp</references>
+        <references refid="defaultFunctionGenerator_8C_1a9a2007c808d8f719b2744fc41b5c29e7" compoundref="defaultFunctionGenerator_8C" startline="738" endline="752">GetTypeInfo</references>
+        <references refid="defaultFunctionGenerator_8C_1a81e4b4931657432c7d0c4bb19410859e" compoundref="defaultFunctionGenerator_8C" startline="1741" endline="1764">getVarRefForFormal</references>
+        <references refid="defaultFunctionGenerator_8C_1abdc65aced1d1379893c4b86e331511a1" compoundref="defaultFunctionGenerator_8C" startline="666" endline="692">isCompilerGenerated</references>
+        <references refid="defaultFunctionGenerator_8C_1ab08ca064998420305ba9e9723d47860a" compoundref="defaultFunctionGenerator_8C" startline="1080" endline="1089">isConstructor</references>
+        <references refid="defaultFunctionGenerator_8C_1a30bb662618262ca02940d6d1e6741d67" compoundref="defaultFunctionGenerator_8C" startline="1192" endline="1257">isCopyConstructor</references>
+        <references refid="defaultFunctionGenerator_8C_1a81582412290ad53c9eabe1f5ee946277" compoundref="defaultFunctionGenerator_8C" startline="1270" endline="1279">isDestructor</references>
+        <references refid="defaultFunctionGenerator_8C_1aadf256a1ddc6fd19caa400d48da61b45" compoundref="defaultFunctionGenerator_8C" startline="1324" endline="1359">isOperatorEquals</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+      </memberdef>
+      <memberdef kind="function" id="classDefaultFunctionGenerator_1a931ad907a5a2eab4ac28b6b4d47696ac" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>SgClassDefinition *</type>
+        <definition>SgClassDefinition * DefaultFunctionGenerator::get_ClassDeclarationFromNewOp</definition>
+        <argsstring>(SgConstructorInitializer *ctorInitNode)</argsstring>
+        <name>get_ClassDeclarationFromNewOp</name>
+        <param>
+          <type>SgConstructorInitializer *</type>
+          <declname>ctorInitNode</declname>
+        </param>
+        <briefdescription>
+<para>Return the class instantiated by a constructor initializer. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ctorInitNode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> SgConstructorInitializer. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="classA" kindref="compound">A</ref> SgClassDefinition representing the class instantiated by ctorInitNode. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="105" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="2141" bodyend="2149"/>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+      </memberdef>
+      <memberdef kind="function" id="classDefaultFunctionGenerator_1a248eef3206b2016e02459032498c04d7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>SgMemberFunctionDeclaration *</type>
+        <definition>SgMemberFunctionDeclaration * DefaultFunctionGenerator::generateDefaultFunctionDeclaration</definition>
+        <argsstring>(defaultEnumFunctionType enumFunctionType, SgClassDefinition *classDef1)</argsstring>
+        <name>generateDefaultFunctionDeclaration</name>
+        <param>
+          <type><ref refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689" kindref="member">defaultEnumFunctionType</ref></type>
+          <declname>enumFunctionType</declname>
+        </param>
+        <param>
+          <type>SgClassDefinition *</type>
+          <declname>classDef1</declname>
+          <defname>parentClassDef1</defname>
+        </param>
+        <briefdescription>
+<para>Generate a method declaration for a special method and associate it with the specified class definitino. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>enumFunctionType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> defaultEnumFunctionType describing the method declaration to be created. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>parentClassDef1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> SgClassDefinition representing the class to which the method will be added. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="classA" kindref="compound">A</ref> SgMemberFunctionDeclaration representing the declaration created for the specified special method (a default or copy constructor, a destructor, or an operator=). </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+<para>TODO use <ref refid="namespaceSageBuilder" kindref="compound">SageBuilder</ref></para><para>TODO use <ref refid="namespaceSageBuilder" kindref="compound">SageBuilder</ref></para><para>TODO use <ref refid="namespaceSageBuilder" kindref="compound">SageBuilder</ref> </para>        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="106" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="2256" bodyend="2419"/>
+        <references refid="namespaceSageBuilder_1ade62c9001a859ecf8a4884fcf80742b9" compoundref="sageBuilder_8C" startline="7779" endline="7802">SageBuilder::buildBasicBlock</references>
+        <references refid="namespaceSageBuilder_1aa775cc80737ca719bcf03b2bd42a567a" compoundref="sageBuilder_8C" startline="2277" endline="2299">SageBuilder::buildFunctionParameterList</references>
+        <references refid="highLevelInterface_8C_1a8649fa18daf8cc74a8deb7b38686dcdc" compoundref="highLevelInterface_8C" startline="58" endline="69">buildInitializedName</references>
+        <references refid="namespaceSageBuilder_1aa0f5e1170955f3bff9947bec3b117057" compoundref="sageBuilder_8C" startline="8510" endline="8522">SageBuilder::buildReferenceType</references>
+        <references refid="namespacecsharp__translator_1a2c587e07f5af3ab25cc36ad0b8a78796" compoundref="csharpBuilder_8C" startline="646" endline="664">csharp_translator::classDecl</references>
+        <references refid="defaultFunctionGenerator_8C_1a437169f35898b1e197fe8281fb6fc519" compoundref="defaultFunctionGenerator_8C" startline="648">COMPILERGENERATED_FILE_INFO</references>
+        <references refid="fortran__support_8C_1ae492b7851417c0b56bdf5373d0356252" compoundref="fortran__support_8C" startline="740" endline="778">createType</references>
+        <references refid="defaultFunctionGenerator_8C_1af47d169a7e4f29c69ba07c627c5a2aca" compoundref="defaultFunctionGenerator_8C" startline="15">DEBUG_DEFAULT_FUNCTION_GENERATOR</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a4fffb1698a7a59c725a848d3361c976c" compoundref="defaultFunctionGenerator_8C" startline="23">e_assignment_operator</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a1de5e61c282ad893b923491bef0d47ce" compoundref="defaultFunctionGenerator_8C" startline="20">e_constructor</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a0298eac6f6a0e07873ca67eb3f9f13d8" compoundref="defaultFunctionGenerator_8C" startline="22">e_copy_constructor</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689aa2d05a134e8b37020a99c735a02df310" compoundref="defaultFunctionGenerator_8C" startline="21">e_destructor</references>
+        <references refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" compoundref="deepColoredFunctions2_8C" startline="1" endline="4">func</references>
+        <references refid="defaultFunctionGenerator_8C_1a30bb662618262ca02940d6d1e6741d67" compoundref="defaultFunctionGenerator_8C" startline="1192" endline="1257">isCopyConstructor</references>
+        <references refid="ROSE__ABORT_8h_1a22a360d21e08f28d45bffc6e87d352c5" compoundref="ROSE__ABORT_8h" startline="25">ROSE_ABORT</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+      </memberdef>
+      <memberdef kind="function" id="classDefaultFunctionGenerator_1ab20f5263405fed18c9e2acefde99184c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DefaultFunctionGenerator::generateDefaultFunctionDefinition</definition>
+        <argsstring>(defaultEnumFunctionType enumFunctionType, SgMemberFunctionDeclaration *func)</argsstring>
+        <name>generateDefaultFunctionDefinition</name>
+        <param>
+          <type><ref refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689" kindref="member">defaultEnumFunctionType</ref></type>
+          <declname>enumFunctionType</declname>
+        </param>
+        <param>
+          <type>SgMemberFunctionDeclaration *</type>
+          <declname>func</declname>
+        </param>
+        <briefdescription>
+<para>Generate the method definition for a default copy constructor or operator=. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>enumFunctionType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> defaultEnumFunctionType describing the method defintion to be created. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> SgMemberFunctionDeclaration representing the declaration of the method whose definition will be provided. On output the body of the method definition is inserted into the definition&apos;s basic block, which is accessible from func.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+Generated method definition for operator= looks like: Foo &amp;operator=(const class Foo &amp;rhs) { if ((this) == &amp;rhs) { return *(this); } else { } return *(this); }</para><para>Generated method definition for copy constructor looks like: myClass1(const myClass1 &amp;rhs):_count(rhs._count),_data(rhs._data) {} </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="107" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="2026" bodyend="2134"/>
+        <references refid="f18-parse-demo_8cpp_1add13ea0d7008a25a3b938d0a1c6d0675" compoundref="f18-parse-demo_8cpp" startline="49" endline="55">argList</references>
+        <references refid="namespaceSageBuilder_1a8814e7b5bb6cb92086326bb2e2d93b62" compoundref="sageBuilder_8C" startline="5515" endline="5527">SageBuilder::buildAssignInitializer</references>
+        <references refid="namespaceSageBuilder_1ade62c9001a859ecf8a4884fcf80742b9" compoundref="sageBuilder_8C" startline="7779" endline="7802">SageBuilder::buildBasicBlock</references>
+        <references refid="namespaceSageBuilder_1aa2a1bf00f3da7b7b6dcb9a9ea4600483" compoundref="sageBuilder_8C" startline="6401" endline="6408">SageBuilder::buildExprStatement</references>
+        <references refid="namespaceSageBuilder_1aa6ed218ba023af2ebc4e741bf9e6b5c2" compoundref="sageBuilder_8C" startline="6792" endline="6825">SageBuilder::buildIfStmt</references>
+        <references refid="highLevelInterface_8C_1a8649fa18daf8cc74a8deb7b38686dcdc" compoundref="highLevelInterface_8C" startline="58" endline="69">buildInitializedName</references>
+        <references refid="namespaceSageBuilder_1a6968c66760be017b3fdabde8a9151230" compoundref="sageBuilder_8C" startline="7907" endline="7922">SageBuilder::buildReturnStmt</references>
+        <references refid="namespaceSageBuilder_1a3c017070ab180f4f042486c875652b9e" compoundref="sageBuilder_8C" startline="5021" endline="5027">SageBuilder::buildThisExp</references>
+        <references refid="namespaceSageBuilder_1a741be096fc6840c4fe817c3d8348a258" compoundref="sageBuilder_8C" startline="5972" endline="6019">SageBuilder::buildVarRefExp</references>
+        <references refid="defaultFunctionGenerator_8C_1a437169f35898b1e197fe8281fb6fc519" compoundref="defaultFunctionGenerator_8C" startline="648">COMPILERGENERATED_FILE_INFO</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a4fffb1698a7a59c725a848d3361c976c" compoundref="defaultFunctionGenerator_8C" startline="23">e_assignment_operator</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a0298eac6f6a0e07873ca67eb3f9f13d8" compoundref="defaultFunctionGenerator_8C" startline="22">e_copy_constructor</references>
+        <references refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" compoundref="deepColoredFunctions2_8C" startline="1" endline="4">func</references>
+        <references refid="defaultFunctionGenerator_8C_1adc81966b65662e85ab7dd5304b60537c" compoundref="defaultFunctionGenerator_8C" startline="1621" endline="1643">lookupClassSymbol</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+      </memberdef>
+      <memberdef kind="function" id="classDefaultFunctionGenerator_1a6c47ea35bd2393d160bccb46a9bf65c0" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>SgMemberFunctionDeclaration *</type>
+        <definition>SgMemberFunctionDeclaration * DefaultFunctionGenerator::findDefaultFunctionDeclaration</definition>
+        <argsstring>(defaultEnumFunctionType enumFunctionType, SgClassDefinition *classDef1)</argsstring>
+        <name>findDefaultFunctionDeclaration</name>
+        <param>
+          <type><ref refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689" kindref="member">defaultEnumFunctionType</ref></type>
+          <declname>enumFunctionType</declname>
+        </param>
+        <param>
+          <type>SgClassDefinition *</type>
+          <declname>classDef1</declname>
+        </param>
+        <briefdescription>
+<para>Return an existing default member function with a class or NULL if none exists. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>enumFunctionType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> defaultEnumFunctionType describing the method to be looked up in the class. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>classDef1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> SgClassDefinition representing a class within which we will search for the specified method. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="classA" kindref="compound">A</ref> SgMemberFunctionDeclaration representing the requested method, if it exists within the class, and NULL otherwise.</para></simplesect>
+NB: I re-interpreted e_constructor to mean the default constructor, not any constructor (and certainly not the copy constructor which is specified via e_copy_constructor). </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="108" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="1969" bodyend="1999"/>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a4fffb1698a7a59c725a848d3361c976c" compoundref="defaultFunctionGenerator_8C" startline="23">e_assignment_operator</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a1de5e61c282ad893b923491bef0d47ce" compoundref="defaultFunctionGenerator_8C" startline="20">e_constructor</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a0298eac6f6a0e07873ca67eb3f9f13d8" compoundref="defaultFunctionGenerator_8C" startline="22">e_copy_constructor</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689aa2d05a134e8b37020a99c735a02df310" compoundref="defaultFunctionGenerator_8C" startline="21">e_destructor</references>
+        <references refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" compoundref="deepColoredFunctions2_8C" startline="1" endline="4">func</references>
+        <references refid="defaultFunctionGenerator_8C_1a30bb662618262ca02940d6d1e6741d67" compoundref="defaultFunctionGenerator_8C" startline="1192" endline="1257">isCopyConstructor</references>
+        <references refid="defaultFunctionGenerator_8C_1aa8ea389341af6b6a1f4c905994ef17e6" compoundref="defaultFunctionGenerator_8C" startline="1106" endline="1125">isDefaultConstructor</references>
+        <references refid="defaultFunctionGenerator_8C_1aadf256a1ddc6fd19caa400d48da61b45" compoundref="defaultFunctionGenerator_8C" startline="1324" endline="1359">isOperatorEquals</references>
+      </memberdef>
+      <memberdef kind="function" id="classDefaultFunctionGenerator_1ae5c895a6360127e8a173199308940296" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>SgName</type>
+        <definition>SgName DefaultFunctionGenerator::generateDefaultFunctionName</definition>
+        <argsstring>(defaultEnumFunctionType enumFunctionType, SgClassDefinition *parentClassDef)</argsstring>
+        <name>generateDefaultFunctionName</name>
+        <param>
+          <type><ref refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689" kindref="member">defaultEnumFunctionType</ref></type>
+          <declname>enumFunctionType</declname>
+        </param>
+        <param>
+          <type>SgClassDefinition *</type>
+          <declname>parentClassDef</declname>
+        </param>
+        <briefdescription>
+<para>Return the method name corresponding to the method specified via enumFunctionType. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>enumFunctionType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> defaultEnumFunctionType indicating a special method<ndash/> a copy or default constructor, a destructor, or an operator=. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>parentClassDef</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> SgClassDefinition representing the class of the method whose name we seek. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="classA" kindref="compound">A</ref> string holding the name of the special method for the specified class. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="110" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="2162" bodyend="2190"/>
+        <references refid="defaultFunctionGenerator_8C_1af47d169a7e4f29c69ba07c627c5a2aca" compoundref="defaultFunctionGenerator_8C" startline="15">DEBUG_DEFAULT_FUNCTION_GENERATOR</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a4fffb1698a7a59c725a848d3361c976c" compoundref="defaultFunctionGenerator_8C" startline="23">e_assignment_operator</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689aa2d05a134e8b37020a99c735a02df310" compoundref="defaultFunctionGenerator_8C" startline="21">e_destructor</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+      </memberdef>
+      <memberdef kind="function" id="classDefaultFunctionGenerator_1a96acee11a7ef4f07be33b1bd286eb85c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>SgMemberFunctionType *</type>
+        <definition>SgMemberFunctionType * DefaultFunctionGenerator::generateDefaultFunctionType</definition>
+        <argsstring>(defaultEnumFunctionType enumFunctionType, SgClassDefinition *parentClassDef)</argsstring>
+        <name>generateDefaultFunctionType</name>
+        <param>
+          <type><ref refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689" kindref="member">defaultEnumFunctionType</ref></type>
+          <declname>enumFunctionType</declname>
+        </param>
+        <param>
+          <type>SgClassDefinition *</type>
+          <declname>parentClassDef</declname>
+        </param>
+        <briefdescription>
+<para>Return the method type corresponding to the method specified via enumFunctionType. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>enumFunctionType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> defaultEnumFunctionType indicating a special method<ndash/> a copy or default constructor, a destructor, or an operator=. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>parentClassDef</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> SgClassDefinition representing the class of the method whose type we seek. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The SgMemberFunctionType representing the type of the special method for the specified class. The caller is responsible for freeing this memory. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="111" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="2204" bodyend="2242"/>
+        <references refid="namespaceSageBuilder_1ac069b659cb550062c70146a0599fa08e" compoundref="sageBuilder_8C" startline="2329" endline="2354">SageBuilder::buildFunctionParameterTypeList</references>
+        <references refid="namespaceSageBuilder_1a4617cb8da7f71e5f78a19696a294f0b5" compoundref="sageBuilder_8C" startline="2561" endline="2679">SageBuilder::buildMemberFunctionType</references>
+        <references refid="namespaceSageBuilder_1aa0f5e1170955f3bff9947bec3b117057" compoundref="sageBuilder_8C" startline="8510" endline="8522">SageBuilder::buildReferenceType</references>
+        <references refid="fortran__support_8C_1ae492b7851417c0b56bdf5373d0356252" compoundref="fortran__support_8C" startline="740" endline="778">createType</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a4fffb1698a7a59c725a848d3361c976c" compoundref="defaultFunctionGenerator_8C" startline="23">e_assignment_operator</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a0298eac6f6a0e07873ca67eb3f9f13d8" compoundref="defaultFunctionGenerator_8C" startline="22">e_copy_constructor</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+      </memberdef>
+      <memberdef kind="function" id="classDefaultFunctionGenerator_1a0f3967392285177d5b43991d8db00a19" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DefaultFunctionGenerator::generateDefaultFunctionCall</definition>
+        <argsstring>(SgMemberFunctionDeclaration *func, SgClassDefinition *parentClassDef, SgExpression *receiver, SgExpression *arg, SgBasicBlock *basicBlock)</argsstring>
+        <name>generateDefaultFunctionCall</name>
+        <param>
+          <type>SgMemberFunctionDeclaration *</type>
+          <declname>func</declname>
+          <defname>methodFunc</defname>
+        </param>
+        <param>
+          <type>SgClassDefinition *</type>
+          <declname>parentClassDef</declname>
+        </param>
+        <param>
+          <type>SgExpression *</type>
+          <declname>receiver</declname>
+        </param>
+        <param>
+          <type>SgExpression *</type>
+          <declname>arg</declname>
+        </param>
+        <param>
+          <type>SgBasicBlock *</type>
+          <declname>basicBlock</declname>
+        </param>
+        <briefdescription>
+<para>Generate code that invokes a method and <emphasis>prepends</emphasis> the invocation to the specified basic block. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>methodFunc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> SgMemberFunctionDeclaration representing the declaration of the method to be invoked. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>parentClassDef</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> SgClassDefinition representing the method&apos;s class. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>receiver</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> SgExpression that is the receiver expression upon which the method will be invoked. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>arg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> SgExpression that is the actual argument expression to be passed to the method. May be NULL if no actual is to be passed. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>basicBlock</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> SgBasicBlock that is the basic block to which the newly created invocation will be prepended. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="112" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="2437" bodyend="2528"/>
+        <references refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" compoundref="AdaExpression_8C" startline="156">args</references>
+        <references refid="namespaceSageBuilder_1a5b42f38dea7af6bcbee90f7a2d4248ba" compoundref="sageBuilder_8C" startline="5842" endline="5861">SageBuilder::buildExprListExp</references>
+        <references refid="namespaceSageBuilder_1aa2a1bf00f3da7b7b6dcb9a9ea4600483" compoundref="sageBuilder_8C" startline="6401" endline="6408">SageBuilder::buildExprStatement</references>
+        <references refid="namespaceRose_1_1builder_1_1SageBuilderCpp17_1abf01af6de6640b422d6b63e179fd8e2e" compoundref="SageTreeBuilder_8C" startline="2721" endline="2724">Rose::builder::SageBuilderCpp17::buildFunctionCallExp</references>
+        <references refid="namespaceSageBuilder_1af15b77fc87bdf859d7ccd9e900581606" compoundref="sageBuilder_8C" startline="6321" endline="6327">SageBuilder::buildMemberFunctionRefExp</references>
+        <references refid="defaultFunctionGenerator_8C_1af47d169a7e4f29c69ba07c627c5a2aca" compoundref="defaultFunctionGenerator_8C" startline="15">DEBUG_DEFAULT_FUNCTION_GENERATOR</references>
+        <references refid="defaultFunctionGenerator_8C_1ab0c621e79e547c5014f72ef0b52a5dca" compoundref="defaultFunctionGenerator_8C" startline="1367" endline="1384">declarationToEnumType</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a4fffb1698a7a59c725a848d3361c976c" compoundref="defaultFunctionGenerator_8C" startline="23">e_assignment_operator</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a1de5e61c282ad893b923491bef0d47ce" compoundref="defaultFunctionGenerator_8C" startline="20">e_constructor</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a0298eac6f6a0e07873ca67eb3f9f13d8" compoundref="defaultFunctionGenerator_8C" startline="22">e_copy_constructor</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689aa2d05a134e8b37020a99c735a02df310" compoundref="defaultFunctionGenerator_8C" startline="21">e_destructor</references>
+        <references refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" compoundref="deepColoredFunctions2_8C" startline="1" endline="4">func</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+      </memberdef>
+      <memberdef kind="function" id="classDefaultFunctionGenerator_1a8081bcc92c50ae2cc1bb5150feee6c19" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DefaultFunctionGenerator::generateDefaultConstructorCall</definition>
+        <argsstring>(SgMemberFunctionDeclaration *func, SgClassDefinition *parentClassDef, SgExpression *arg, SgCtorInitializerList *ctorInitializerList)</argsstring>
+        <name>generateDefaultConstructorCall</name>
+        <param>
+          <type>SgMemberFunctionDeclaration *</type>
+          <declname>func</declname>
+          <defname>methodFunc</defname>
+        </param>
+        <param>
+          <type>SgClassDefinition *</type>
+          <declname>parentClassDef</declname>
+        </param>
+        <param>
+          <type>SgExpression *</type>
+          <declname>arg</declname>
+        </param>
+        <param>
+          <type>SgCtorInitializerList *</type>
+          <declname>ctorInitializerList</declname>
+        </param>
+        <briefdescription>
+<para>Generate code that invokes a constructor and <emphasis>appends</emphasis> the invocation to the specified constructor initializer list. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>methodFunc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> SgMemberFunctionDeclaration representing the declaration of the constructor to be invoked. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>parentClassDef</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> SgClassDefinition representing the constructor&apos;s class. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>arg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> SgExpression that is the actual argument expression to be passed to the constructor. May be NULL if no actual is to be passed (i.e., if the constructor is the default, rather than the copy, constructor). </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ctorInitializerList</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classA" kindref="compound">A</ref> SgCtorInitializerList that is the constructor initializer list to which the newly created constructor invocation will be appended. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+<para>I believe this corresponds to the SgConstructorInitializer which is created by the call to a_SgInitializer_ptr sageInit = sage_gen_dynamic_init ( ctor_init-&gt;initializer, type, parenthesized_init=* true, force_parens=* true, fileInfo); from sage_gen_ctor_initializers in sage_gen_be.C. Therefore, we force parens to be true.</para>        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="113" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="2546" bodyend="2647"/>
+        <references refid="AdaExpression_8C_1ad3071897549d6677b8bc33f1870236a5" compoundref="AdaExpression_8C" startline="156">args</references>
+        <references refid="namespaceSageBuilder_1a804dc7af580fb25e558837ba67a93d61" compoundref="sageBuilder_8C" startline="5602" endline="5630">SageBuilder::buildConstructorInitializer</references>
+        <references refid="namespaceSageBuilder_1a5b42f38dea7af6bcbee90f7a2d4248ba" compoundref="sageBuilder_8C" startline="5842" endline="5861">SageBuilder::buildExprListExp</references>
+        <references refid="highLevelInterface_8C_1a8649fa18daf8cc74a8deb7b38686dcdc" compoundref="highLevelInterface_8C" startline="58" endline="69">buildInitializedName</references>
+        <references refid="defaultFunctionGenerator_8C_1af47d169a7e4f29c69ba07c627c5a2aca" compoundref="defaultFunctionGenerator_8C" startline="15">DEBUG_DEFAULT_FUNCTION_GENERATOR</references>
+        <references refid="defaultFunctionGenerator_8C_1ab0c621e79e547c5014f72ef0b52a5dca" compoundref="defaultFunctionGenerator_8C" startline="1367" endline="1384">declarationToEnumType</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a1de5e61c282ad893b923491bef0d47ce" compoundref="defaultFunctionGenerator_8C" startline="20">e_constructor</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a0298eac6f6a0e07873ca67eb3f9f13d8" compoundref="defaultFunctionGenerator_8C" startline="22">e_copy_constructor</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689aa2d05a134e8b37020a99c735a02df310" compoundref="defaultFunctionGenerator_8C" startline="21">e_destructor</references>
+        <references refid="deepColoredFunctions2_8C_1a3870bfdd1545f46a9dba1ccc7d0abde8" compoundref="deepColoredFunctions2_8C" startline="1" endline="4">func</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+      </memberdef>
+      <memberdef kind="function" id="classDefaultFunctionGenerator_1a677fc6c04cfd2856dd6c26697bf02a42" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DefaultFunctionGenerator::normalizeCtorInitializer</definition>
+        <argsstring>(SgConstructorInitializer *ctorInit)</argsstring>
+        <name>normalizeCtorInitializer</name>
+        <param>
+          <type>SgConstructorInitializer *</type>
+          <declname>ctorInit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="114" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="3088" bodyend="3117"/>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a1de5e61c282ad893b923491bef0d47ce" compoundref="defaultFunctionGenerator_8C" startline="20">e_constructor</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a0298eac6f6a0e07873ca67eb3f9f13d8" compoundref="defaultFunctionGenerator_8C" startline="22">e_copy_constructor</references>
+        <references refid="defaultFunctionGenerator_8C_1a17951400d30084a7f06d366738ff8051" compoundref="defaultFunctionGenerator_8C" startline="3026" endline="3065">getClassDefinition</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+      </memberdef>
+      <memberdef kind="function" id="classDefaultFunctionGenerator_1a66c86a7ff0f52286e0c8a8c45cbe9902" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>SgInitializer *</type>
+        <definition>SgInitializer * DefaultFunctionGenerator::normalizeInitializer</definition>
+        <argsstring>(SgInitializer *origInit, SgType *objType)</argsstring>
+        <name>normalizeInitializer</name>
+        <param>
+          <type>SgInitializer *</type>
+          <declname>origInit</declname>
+        </param>
+        <param>
+          <type><ref refid="classSgType" kindref="compound">SgType</ref> *</type>
+          <declname>objType</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="115" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="3162" bodyend="3249"/>
+        <references refid="namespaceSageBuilder_1a8814e7b5bb6cb92086326bb2e2d93b62" compoundref="sageBuilder_8C" startline="5515" endline="5527">SageBuilder::buildAssignInitializer</references>
+        <references refid="namespaceSageBuilder_1a804dc7af580fb25e558837ba67a93d61" compoundref="sageBuilder_8C" startline="5602" endline="5630">SageBuilder::buildConstructorInitializer</references>
+        <references refid="namespaceSageBuilder_1a5b42f38dea7af6bcbee90f7a2d4248ba" compoundref="sageBuilder_8C" startline="5842" endline="5861">SageBuilder::buildExprListExp</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a1de5e61c282ad893b923491bef0d47ce" compoundref="defaultFunctionGenerator_8C" startline="20">e_constructor</references>
+        <references refid="defaultFunctionGenerator_8C_1a17951400d30084a7f06d366738ff8051" compoundref="defaultFunctionGenerator_8C" startline="3026" endline="3065">getClassDefinition</references>
+        <references refid="virtualCFG_8h_1ae249a974a874a71b5d8875444f8f2148">isSgExpression</references>
+        <references refid="ROSE__ABORT_8h_1a22a360d21e08f28d45bffc6e87d352c5" compoundref="ROSE__ABORT_8h" startline="25">ROSE_ABORT</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+      </memberdef>
+      <memberdef kind="function" id="classDefaultFunctionGenerator_1a8cf81ee4a224a9fea6f7e2e03c7cb81c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>SgConstructorInitializer *</type>
+        <definition>SgConstructorInitializer * DefaultFunctionGenerator::normalizeAssignInitializer</definition>
+        <argsstring>(SgAssignInitializer *assignInit)</argsstring>
+        <name>normalizeAssignInitializer</name>
+        <param>
+          <type>SgAssignInitializer *</type>
+          <declname>assignInit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="116" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="3119" bodyend="3160"/>
+        <references refid="namespaceSageBuilder_1a804dc7af580fb25e558837ba67a93d61" compoundref="sageBuilder_8C" startline="5602" endline="5630">SageBuilder::buildConstructorInitializer</references>
+        <references refid="namespaceSageBuilder_1a5b42f38dea7af6bcbee90f7a2d4248ba" compoundref="sageBuilder_8C" startline="5842" endline="5861">SageBuilder::buildExprListExp</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a0298eac6f6a0e07873ca67eb3f9f13d8" compoundref="defaultFunctionGenerator_8C" startline="22">e_copy_constructor</references>
+        <references refid="defaultFunctionGenerator_8C_1a17951400d30084a7f06d366738ff8051" compoundref="defaultFunctionGenerator_8C" startline="3026" endline="3065">getClassDefinition</references>
+        <references refid="virtualCFG_8h_1ae249a974a874a71b5d8875444f8f2148">isSgExpression</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+      </memberdef>
+      <memberdef kind="function" id="classDefaultFunctionGenerator_1a13dfd207b9f44cdd1b5e861a4670fe2e" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>SgFunctionCallExp *</type>
+        <definition>SgFunctionCallExp * DefaultFunctionGenerator::translateAssignmentToOperatorEqCall</definition>
+        <argsstring>(SgExpression *lhs, SgExpression *rhs, SgClassDefinition *clsDef)</argsstring>
+        <name>translateAssignmentToOperatorEqCall</name>
+        <param>
+          <type>SgExpression *</type>
+          <declname>lhs</declname>
+        </param>
+        <param>
+          <type>SgExpression *</type>
+          <declname>rhs</declname>
+        </param>
+        <param>
+          <type>SgClassDefinition *</type>
+          <declname>clsDef</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+<para>TODO correct?</para><para>TODO correct? </para>        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="117" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="3251" bodyend="3282"/>
+        <references refid="namespaceSageBuilder_1a5b42f38dea7af6bcbee90f7a2d4248ba" compoundref="sageBuilder_8C" startline="5842" endline="5861">SageBuilder::buildExprListExp</references>
+        <references refid="namespaceRose_1_1builder_1_1SageBuilderCpp17_1abf01af6de6640b422d6b63e179fd8e2e" compoundref="SageTreeBuilder_8C" startline="2721" endline="2724">Rose::builder::SageBuilderCpp17::buildFunctionCallExp</references>
+        <references refid="namespaceSageBuilder_1af15b77fc87bdf859d7ccd9e900581606" compoundref="sageBuilder_8C" startline="6321" endline="6327">SageBuilder::buildMemberFunctionRefExp</references>
+        <references refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689a4fffb1698a7a59c725a848d3361c976c" compoundref="defaultFunctionGenerator_8C" startline="23">e_assignment_operator</references>
+        <references refid="virtualCFG_8h_1ae249a974a874a71b5d8875444f8f2148">isSgExpression</references>
+        <references refid="ROSE__ASSERT_8h_1ac9f4fc9bf4f2fabed3195887675711cf" compoundref="ROSE__ASSERT_8h" startline="55">ROSE_ASSERT</references>
+      </memberdef>
+      <memberdef kind="function" id="classDefaultFunctionGenerator_1a57a752976d4b36efdd9d2113b68d5ef0" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>SgMemberFunctionDeclaration *</type>
+        <definition>SgMemberFunctionDeclaration * DefaultFunctionGenerator::findOrGenerateDefaultFunctionDeclaration</definition>
+        <argsstring>(defaultEnumFunctionType enumFunctionType, SgClassDefinition *classDef1)</argsstring>
+        <name>findOrGenerateDefaultFunctionDeclaration</name>
+        <param>
+          <type><ref refid="defaultFunctionGenerator_8C_1aeb5ce358d78d199fd29b3a088da5e689" kindref="member">defaultEnumFunctionType</ref></type>
+          <declname>enumFunctionType</declname>
+        </param>
+        <param>
+          <type>SgClassDefinition *</type>
+          <declname>classDef1</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="118" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="3073" bodyend="3086"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="5392">
+        <label>DefaultFunctionGenerator</label>
+        <link refid="classDefaultFunctionGenerator"/>
+        <childnode refid="5393" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5393">
+        <label>SgSimpleProcessing</label>
+        <link refid="classSgSimpleProcessing"/>
+        <childnode refid="5394" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5395">
+        <label>SgTreeTraversal&lt; DummyAttribute, DummyAttribute &gt;</label>
+        <link refid="classSgTreeTraversal"/>
+      </node>
+      <node id="5394">
+        <label>AstSimpleProcessing</label>
+        <link refid="classAstSimpleProcessing"/>
+        <childnode refid="5395" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="5396">
+        <label>DefaultFunctionGenerator</label>
+        <link refid="classDefaultFunctionGenerator"/>
+        <childnode refid="5397" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5397">
+        <label>SgSimpleProcessing</label>
+        <link refid="classSgSimpleProcessing"/>
+        <childnode refid="5398" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5399">
+        <label>SgTreeTraversal&lt; DummyAttribute, DummyAttribute &gt;</label>
+        <link refid="classSgTreeTraversal"/>
+        <childnode refid="5400" relation="usage">
+          <edgelabel>synthesizedAttributes</edgelabel>
+        </childnode>
+      </node>
+      <node id="5400">
+        <label>StackFrameVector&lt; T &gt;</label>
+        <link refid="classStackFrameVector"/>
+      </node>
+      <node id="5398">
+        <label>AstSimpleProcessing</label>
+        <link refid="classAstSimpleProcessing"/>
+        <childnode refid="5399" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" line="30" column="1" bodyfile="/home/liao6/workspace/rose-github/src/midend/programTransformation/implicitCodeGeneration/defaultFunctionGenerator.C" bodystart="29" bodyend="121"/>
+    <listofallmembers>
+      <member refid="classAstSimpleProcessing_1abf2d587e2cb73741ba4224d114f97e2a" prot="protected" virt="virtual"><scope>DefaultFunctionGenerator</scope><name>atTraversalEnd</name></member>
+      <member refid="classAstSimpleProcessing_1a5f1e618718fa45a8a07fd87a007401b8" prot="protected" virt="virtual"><scope>DefaultFunctionGenerator</scope><name>atTraversalStart</name></member>
+      <member refid="classSgTreeTraversal_1abdacde92d9511ad1523906c6e02e6bb4" prot="protected" virt="pure-virtual" ambiguityscope="SgTreeTraversal&lt; DummyAttribute, DummyAttribute &gt;::"><scope>DefaultFunctionGenerator</scope><name>evaluateSynthesizedAttribute</name></member>
+      <member refid="classDefaultFunctionGenerator_1a6c47ea35bd2393d160bccb46a9bf65c0" prot="private" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>findDefaultFunctionDeclaration</name></member>
+      <member refid="classDefaultFunctionGenerator_1a57a752976d4b36efdd9d2113b68d5ef0" prot="private" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>findOrGenerateDefaultFunctionDeclaration</name></member>
+      <member refid="classDefaultFunctionGenerator_1a8081bcc92c50ae2cc1bb5150feee6c19" prot="private" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>generateDefaultConstructorCall</name></member>
+      <member refid="classDefaultFunctionGenerator_1a0f3967392285177d5b43991d8db00a19" prot="private" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>generateDefaultFunctionCall</name></member>
+      <member refid="classDefaultFunctionGenerator_1a248eef3206b2016e02459032498c04d7" prot="private" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>generateDefaultFunctionDeclaration</name></member>
+      <member refid="classDefaultFunctionGenerator_1ab20f5263405fed18c9e2acefde99184c" prot="private" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>generateDefaultFunctionDefinition</name></member>
+      <member refid="classDefaultFunctionGenerator_1ae5c895a6360127e8a173199308940296" prot="private" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>generateDefaultFunctionName</name></member>
+      <member refid="classDefaultFunctionGenerator_1a96acee11a7ef4f07be33b1bd286eb85c" prot="private" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>generateDefaultFunctionType</name></member>
+      <member refid="classDefaultFunctionGenerator_1acf49022794d00d50afb34873677b194d" prot="private" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>generateImplicitInvocations</name></member>
+      <member refid="classDefaultFunctionGenerator_1a931ad907a5a2eab4ac28b6b4d47696ac" prot="private" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>get_ClassDeclarationFromNewOp</name></member>
+      <member refid="classDefaultFunctionGenerator_1aed58d528014b20625a40a6ea88422b11" prot="private" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>getMethodInClass</name></member>
+      <member refid="classDefaultFunctionGenerator_1a8cf81ee4a224a9fea6f7e2e03c7cb81c" prot="private" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>normalizeAssignInitializer</name></member>
+      <member refid="classDefaultFunctionGenerator_1a677fc6c04cfd2856dd6c26697bf02a42" prot="private" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>normalizeCtorInitializer</name></member>
+      <member refid="classDefaultFunctionGenerator_1a66c86a7ff0f52286e0c8a8c45cbe9902" prot="private" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>normalizeInitializer</name></member>
+      <member refid="classSgTreeTraversal_1a18bc2379eef6293ecc83cb4c2c516a94" prot="public" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>operator=</name></member>
+      <member refid="classAstSimpleProcessing_1a473b61b6c878fa3102dc309801f158d9" prot="public" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>Order</name></member>
+      <member refid="classDefaultFunctionGenerator_1aed9382383c5ab40a84b7c97ea7345268" prot="public" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>pass</name></member>
+      <member refid="classSgTreeTraversal_1ac4b5bad9b79255ee36a0bd4e1c7c2e2c" prot="protected" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>set_useDefaultIndexBasedTraversal</name></member>
+      <member refid="classSgTreeTraversal_1ae0fc7c03587c709e64d76cf81a1f9696" prot="protected" virt="virtual"><scope>DefaultFunctionGenerator</scope><name>setNodeSuccessors</name></member>
+      <member refid="classSgTreeTraversal_1a9952ebaad7fec366d2ad1d1b8002179c" prot="public" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>SgTreeTraversal</name></member>
+      <member refid="classSgTreeTraversal_1a3e44a3f92348360da6d06dafb1aa4174" prot="public" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>SgTreeTraversal</name></member>
+      <member refid="classSgTreeTraversal_1a132e9a74f435b56e501b05ef12ec6c5d" prot="protected" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>SuccessorsContainer</name></member>
+      <member refid="classSgTreeTraversal_1adcd5f148befc92de1721a2ab7fa5264d" prot="protected" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>SuccessorsContainerRef</name></member>
+      <member refid="classSgTreeTraversal_1abbaa3c86cdf024ea8cbf440977cc0a3c" prot="public" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>SynthesizedAttributesList</name></member>
+      <member refid="classDefaultFunctionGenerator_1a13dfd207b9f44cdd1b5e861a4670fe2e" prot="private" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>translateAssignmentToOperatorEqCall</name></member>
+      <member refid="classAstSimpleProcessing_1a20c9a5994a1411be792ac7d890dc7ef9" prot="public" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>traverse</name></member>
+      <member refid="classSgTreeTraversal_1ae81a206b9b788d6bd8783a8185cb4779" prot="public" virt="non-virtual" ambiguityscope="SgTreeTraversal&lt; DummyAttribute, DummyAttribute &gt;::"><scope>DefaultFunctionGenerator</scope><name>traverse</name></member>
+      <member refid="classAstSimpleProcessing_1ae0b5ca28db41fd51debf25d8adb87394" prot="public" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>traverseInputFiles</name></member>
+      <member refid="classSgTreeTraversal_1a0fcbb73cc8d4e6e9a70e081b4af1ad8a" prot="public" virt="non-virtual" ambiguityscope="SgTreeTraversal&lt; DummyAttribute, DummyAttribute &gt;::"><scope>DefaultFunctionGenerator</scope><name>traverseInputFiles</name></member>
+      <member refid="classAstSimpleProcessing_1aa4e05e383c20b0d47cca5f10b991462c" prot="public" virt="non-virtual"><scope>DefaultFunctionGenerator</scope><name>traverseWithinFile</name></member>
+      <member refid="classSgTreeTraversal_1a5984830a7aa6177d0f416ff29740938d" prot="public" virt="non-virtual" ambiguityscope="SgTreeTraversal&lt; DummyAttribute, DummyAttribute &gt;::"><scope>DefaultFunctionGenerator</scope><name>traverseWithinFile</name></member>
+      <member refid="classDefaultFunctionGenerator_1ab439851ce0db248b777b383615aef402" prot="public" virt="virtual"><scope>DefaultFunctionGenerator</scope><name>visit</name></member>
+      <member refid="classSgTreeTraversal_1a7a09dc2085f5f4dcb498a70a0493d3d0" prot="public" virt="virtual"><scope>DefaultFunctionGenerator</scope><name>~SgTreeTraversal</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

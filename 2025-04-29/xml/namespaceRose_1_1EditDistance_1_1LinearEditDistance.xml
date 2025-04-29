@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="namespaceRose_1_1EditDistance_1_1LinearEditDistance" kind="namespace" language="C++">
+    <compoundname>Rose::EditDistance::LinearEditDistance</compoundname>
+    <innerclass refid="classRose_1_1EditDistance_1_1LinearEditDistance_1_1Analysis" prot="public">Rose::EditDistance::LinearEditDistance::Analysis</innerclass>
+    <innerclass refid="classRose_1_1EditDistance_1_1LinearEditDistance_1_1Node" prot="public">Rose::EditDistance::LinearEditDistance::Node</innerclass>
+    <innerclass refid="classRose_1_1EditDistance_1_1LinearEditDistance_1_1NodeSelector" prot="public">Rose::EditDistance::LinearEditDistance::NodeSelector</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Edit distance for ASTs.</para><para>Computes the edit distance of two abstract syntax trees, a souce and target, by converting each tree to a list of nodes, then computing Levenshtein edit distance on the two lists. The list nodes are constructed from <ref refid="namespaceRose_1_1AST" kindref="compound">AST</ref> nodes using a user-defined type (template parameter) so that the user has full control over when two list nodes are considered equal.</para><para>Example usage:</para><para><programlisting><codeline><highlight class="normal">using<sp/>namespace<sp/>Rose::EditDistance;</highlight></codeline>
+<codeline><highlight class="normal">SgNode<sp/>*ast1=...,<sp/>*ast2=...;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Compare<sp/>AST<sp/>nodes<sp/>only<sp/>by<sp/>their<sp/>class</highlight></codeline>
+<codeline><highlight class="normal">struct<sp/>ListNode:<sp/>LinearEditDistance::Node<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>VariantT<sp/>variant;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>explicit<sp/>ListNode(SgNode<sp/>*treeNode)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>variant<sp/>=<sp/>treeNode-&gt;variantT();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>bool<sp/>operator==(const<sp/>ListNode<sp/>&amp;other)<sp/>const<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>variant<sp/>==<sp/>other.variant;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Create<sp/>an<sp/>object<sp/>that<sp/>will<sp/>perform<sp/>the<sp/>analysis</highlight></codeline>
+<codeline><highlight class="normal">LinearEditDistance::Analysis&lt;ListNode&gt;<sp/>led;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Compute<sp/>the<sp/>distance<sp/>between<sp/>two<sp/>trees</highlight></codeline>
+<codeline><highlight class="normal">size_t<sp/>editDistance<sp/>=<sp/>led.compute(ast1,<sp/>ast2);</highlight></codeline>
+</programlisting> </para>    </detaileddescription>
+    <location file="/home/liao6/workspace/rose-github/src/midend/programAnalysis/EditDistance/LinearEditDistance.h" line="38" column="1"/>
+  </compounddef>
+</doxygen>

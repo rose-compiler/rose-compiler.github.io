@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="BinaryLoaderElfObj_8C" kind="file" language="C++">
+    <compoundname>BinaryLoaderElfObj.C</compoundname>
+    <includes refid="featureTests_8h" local="no">featureTests.h</includes>
+    <incdepgraph>
+      <node id="197417">
+        <label>boost/version.hpp</label>
+      </node>
+      <node id="197414">
+        <label>featureTests.h</label>
+        <link refid="featureTests_8h"/>
+        <childnode refid="197415" relation="include">
+        </childnode>
+        <childnode refid="197416" relation="include">
+        </childnode>
+        <childnode refid="197417" relation="include">
+        </childnode>
+      </node>
+      <node id="197416">
+        <label>rosePublicConfig.h</label>
+      </node>
+      <node id="197413">
+        <label>/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/BinaryLoaderElfObj.C</label>
+        <link refid="BinaryLoaderElfObj_8C"/>
+        <childnode refid="197414" relation="include">
+        </childnode>
+      </node>
+      <node id="197415">
+        <label>RoseFirst.h</label>
+        <link refid="RoseFirst_8h"/>
+        <childnode refid="197414" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="featureTests_8h" kindref="compound">featureTests.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROSE_ENABLE_BINARY_ANALYSIS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="BinaryLoaderElfObj_8h" kindref="compound">Rose/BinaryAnalysis/BinaryLoaderElfObj.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="AST_2Traversal_8h" kindref="compound">Rose/AST/Traversal.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="MemoryMap_8h" kindref="compound">Rose/BinaryAnalysis/MemoryMap.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SgAsmElfFileHeader_8h" kindref="compound">SgAsmElfFileHeader.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SgAsmElfSection_8h" kindref="compound">SgAsmElfSection.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SgAsmGenericSectionList_8h" kindref="compound">SgAsmGenericSectionList.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SgAsmGenericString_8h" kindref="compound">SgAsmGenericString.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Cxx_GrammarDowncast.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceRose" kindref="compound">Rose</ref><sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">BinaryAnalysis<sp/>{</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>This<sp/>binary<sp/>loader<sp/>can<sp/>handle<sp/>ELF<sp/>object<sp/>files.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal">BinaryLoaderElfObj::canLoad(<ref refid="classSgAsmGenericHeader" kindref="compound">SgAsmGenericHeader</ref><sp/>*hdr)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>isSgAsmElfFileHeader(hdr)<sp/>&amp;&amp;<sp/>hdr-&gt;get_executableFormat()-&gt;get_purpose()==<ref refid="classSgAsmExecutableFileFormat_1a27fc70e134433bff16d86749ed5c732aad7e3c4a113111aaaa3e777fc34b8695d" kindref="member">SgAsmExecutableFileFormat::PURPOSE_LIBRARY</ref>;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Same<sp/>as<sp/>parent,<sp/>but<sp/>also<sp/>includes<sp/>sections<sp/>that<sp/>aren&apos;t<sp/>mapped<sp/>but<sp/>which<sp/>contain<sp/>code.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal">SgAsmGenericSectionPtrList</highlight></codeline>
+<codeline lineno="25"><highlight class="normal">BinaryLoaderElfObj::getRemapSections(<ref refid="classSgAsmGenericHeader" kindref="compound">SgAsmGenericHeader</ref><sp/>*<ref refid="TarjanIntervals_8C_1ae2a1cf80596e62d43dc14835ace90b6b" kindref="member">header</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>SgAsmGenericSectionPtrList<sp/>retval<sp/>=<sp/>BinaryLoaderElf::getRemapSections(<ref refid="TarjanIntervals_8C_1ae2a1cf80596e62d43dc14835ace90b6b" kindref="member">header</ref>);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SgAsmGenericSectionPtrList<sp/>&amp;sections<sp/>=<sp/><ref refid="TarjanIntervals_8C_1ae2a1cf80596e62d43dc14835ace90b6b" kindref="member">header</ref>-&gt;get_sections()-&gt;get_sections();</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(SgAsmGenericSectionPtrList::const_iterator<sp/><ref refid="namespaceSageInterface" kindref="compound">si</ref>=sections.begin();<sp/><ref refid="namespaceSageInterface" kindref="compound">si</ref>!=sections.end();<sp/>++<ref refid="namespaceSageInterface" kindref="compound">si</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="classSgAsmElfSection" kindref="compound">SgAsmElfSection</ref><sp/>*section<sp/>=<sp/>isSgAsmElfSection(*<ref refid="namespaceSageInterface" kindref="compound">si</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="SgAsmPESectionTableEntry_8h_1aaf1bd07e95aeff0f585394fccaf479ab" kindref="member">name</ref><sp/>=<sp/>section-&gt;get_name()<sp/>?<sp/>section-&gt;get_name()-&gt;get_string()<sp/>:<sp/>std::string();</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="stringliteral">&quot;.text&quot;</highlight><highlight class="normal"><sp/>==<sp/>name<sp/>||<sp/></highlight><highlight class="stringliteral">&quot;.data&quot;</highlight><highlight class="normal"><sp/>==<sp/>name<sp/>||<sp/></highlight><highlight class="stringliteral">&quot;.rodata&quot;</highlight><highlight class="normal"><sp/>==<sp/>name<sp/>||<sp/></highlight><highlight class="stringliteral">&quot;.bss&quot;</highlight><highlight class="normal"><sp/>==<sp/>name)</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>retval.push_back(section);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>retval;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal">BinaryLoaderElfObj::mappingPermissions(<ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref><sp/>*section_)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmElfSection" kindref="compound">SgAsmElfSection</ref><sp/>*section<sp/>=<sp/>isSgAsmElfSection(section_);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="Assert_8h_1af9e4ecc90109156f4540fad0afad8a9b" kindref="member">ASSERT_not_null</ref>(section);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classSgAsmElfSectionTableEntry" kindref="compound">SgAsmElfSectionTableEntry</ref><sp/>*entry<sp/>=<sp/>section-&gt;get_sectionEntry();</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>retval<sp/>=<sp/>BinaryLoaderElf::mappingPermissions(section);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(0<sp/>==<sp/>retval<sp/>&amp;&amp;<sp/>entry<sp/>!=<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>By<sp/>convention...</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(section-&gt;get_name()-&gt;get_string()<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;.text&quot;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>retval<sp/>=<sp/>MemoryMap::READ_EXECUTE;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(section-&gt;get_name()-&gt;get_string()<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;.data&quot;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>retval<sp/>=<sp/>MemoryMap::READ_WRITE;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(section-&gt;get_name()-&gt;get_string()<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;.bss&quot;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>retval<sp/>=<sp/>MemoryMap::READ_WRITE;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(section-&gt;get_name()-&gt;get_string()<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;.rodata&quot;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>retval<sp/>=<sp/><ref refid="namespaceSawyer_1_1Access_1a2411b09f029161835545ffaec5bf0c73a409c1f72dc65a9517a3ff8b4bb65980c" kindref="member">MemoryMap::READABLE</ref>;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>retval;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Identical<sp/>to<sp/>parent<sp/>class<sp/>but<sp/>with<sp/>this<sp/>minor<sp/>difference:<sp/><sp/>Any<sp/>section<sp/>that<sp/>has<sp/>no<sp/>mapping<sp/>information<sp/>but<sp/>is<sp/>known<sp/>to</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*<sp/>contain<sp/>code<sp/>(SgAsmGenericSection::get_containsCode()<sp/>is<sp/>true)<sp/>is<sp/>mapped<sp/>to<sp/>an<sp/>otherwise<sp/>unused<sp/>area<sp/>of<sp/>the<sp/>virtual</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*<sp/>memory.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1BinaryLoader_1ab05d8566b153b85f7876e436057b7b31" kindref="member">BinaryLoader::MappingContribution</ref></highlight></codeline>
+<codeline lineno="66"><highlight class="normal">BinaryLoaderElfObj::alignValues(<ref refid="classSgAsmGenericSection" kindref="compound">SgAsmGenericSection</ref><sp/>*section,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>MemoryMap::Ptr<sp/>&amp;<ref refid="structmap" kindref="compound">map</ref>,</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>*malign_lo_p,<sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>*malign_hi_p,</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>*va_p,<sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>*mem_size_p,</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>*offset_p,<sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>*file_size_p,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>*map_private_p,</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>*va_offset_p,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>*anon_lo_p,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>*anon_hi_p,</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1BinaryLoader_1a4c830d4c3715821c3d3f424d5049d342" kindref="member">ConflictResolution</ref><sp/>*resolve_p)<sp/>{</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(section-&gt;<ref refid="classSgAsmGenericSection_1a0128ff49841b82db716952b7e37e39d9" kindref="member">isMapped</ref>())</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>BinaryLoaderElf::alignValues(section,<sp/><ref refid="structmap" kindref="compound">map</ref>,<sp/>malign_lo_p,<sp/>malign_hi_p,<sp/>va_p,<sp/>mem_size_p,</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>offset_p,<sp/>file_size_p,<sp/>map_private_p,<sp/>va_offset_p,<sp/>anon_lo_p,<sp/>anon_hi_p,</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>resolve_p);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(section-&gt;get_containsCode()<sp/>&amp;&amp;<sp/>section-&gt;<ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>()<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classSgAsmGenericHeader" kindref="compound">SgAsmGenericHeader</ref><sp/>*<ref refid="TarjanIntervals_8C_1ae2a1cf80596e62d43dc14835ace90b6b" kindref="member">header</ref><sp/>=<sp/>AST::Traversal::findParentTyped&lt;SgAsmGenericHeader&gt;(section);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>baseVa<sp/>=<sp/><ref refid="TarjanIntervals_8C_1ae2a1cf80596e62d43dc14835ace90b6b" kindref="member">header</ref><sp/>?<sp/><ref refid="TarjanIntervals_8C_1ae2a1cf80596e62d43dc14835ace90b6b" kindref="member">header</ref>-&gt;get_baseVa()<sp/>:<sp/>0;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>We<sp/>don&apos;t<sp/>need<sp/>to<sp/>worry<sp/>about<sp/>file<sp/>alignment<sp/>because<sp/>the<sp/>Unix<sp/>loader<sp/>isn&apos;t<sp/>going<sp/>to<sp/>ever<sp/>be<sp/>mapping<sp/>this<sp/>object<sp/>file</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<sp/>anyway.<sp/><sp/>We<sp/>align<sp/>memory<sp/>on<sp/>our<sp/>best<sp/>guess<sp/>of<sp/>a<sp/>page<sp/>boundary,<sp/>4096<sp/>bytes.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>mem_alignment<sp/>=<sp/>4096;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceRose_1_1BinaryAnalysis_1a96dea8c577b1f630cffa84eee5cb03db" kindref="member">Address</ref><sp/>size<sp/>=<sp/>section-&gt;<ref refid="classSgAsmGenericSection_1a30c9666b74ba989dbca8bd0fa00cf4fe" kindref="member">get_size</ref>();</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>AddressInterval<sp/>allocationRegion<sp/>=<sp/>AddressInterval::hull(baseVa,<sp/>AddressInterval::whole().greatest());</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*malign_lo_p<sp/>=<sp/>*malign_hi_p<sp/>=<sp/>mem_alignment;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*va_p<sp/>=<sp/>*(<ref refid="structmap" kindref="compound">map</ref>-&gt;findFreeSpace(size,<sp/>mem_alignment,<sp/>allocationRegion));</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*mem_size_p<sp/>=<sp/>*file_size_p<sp/>=<sp/>size;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*map_private_p<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*offset_p<sp/>=<sp/>section-&gt;<ref refid="classSgAsmGenericSection_1aa20bf74112b6cfaa22a1996c338564b3" kindref="member">get_offset</ref>();</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*va_offset_p<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*anon_lo_p<sp/>=<sp/>*anon_hi_p<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*resolve_p<sp/>=<sp/>RESOLVE_THROW;<sp/></highlight><highlight class="comment">/*shouldn&apos;t<sp/>have<sp/>a<sp/>conflict<sp/>because<sp/>we<sp/>found<sp/>free<sp/>space*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>CONTRIBUTE_ADD;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Not<sp/>mapped<sp/>and<sp/>not<sp/>known<sp/>to<sp/>contain<sp/>code,<sp/>so<sp/>it<sp/>should<sp/>not<sp/>contribute<sp/>to<sp/>the<sp/>final<sp/>map.<sp/>No<sp/>need<sp/>to<sp/>set<sp/>any<sp/>of<sp/>the</highlight></codeline>
+<codeline lineno="99"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>return<sp/>values<sp/>in<sp/>this<sp/>case.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>CONTRIBUTE_NONE;</highlight></codeline>
+<codeline lineno="101"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/home/liao6/workspace/rose-github/src/Rose/BinaryAnalysis/BinaryLoaderElfObj.C"/>
+  </compounddef>
+</doxygen>
