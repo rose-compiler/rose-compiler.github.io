@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.141</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
    </div>
   </td>
  </tr>
@@ -69,13 +69,13 @@ class Sawyer::Container::AddressMap&lt; A, T &gt;</div><p>A mapping from address
 <p>An address map accomplishes the mapping by inheriting from an <a class="el" href="classSawyer_1_1Container_1_1IntervalMap.html">IntervalMap</a>, whose intervals are <code><a class="el" href="classSawyer_1_1Container_1_1Interval.html" title="Range of values delimited by endpoints.">Interval</a></code> and whose values are <code><a class="el" href="classSawyer_1_1Container_1_1AddressSegment.html">AddressSegment&lt;A,T&gt;</a></code>. The <a class="el" href="classSawyer_1_1Container_1_1AddressSegment.html">AddressSegment</a> objects point to reference-counted <a class="el" href="classSawyer_1_1Container_1_1Buffer.html">Buffer</a> objects that hold the values. The same values can be mapped at different addresses by inserting segments at those addresses that point to a common buffer.</p>
 <p>An address map implements read and write concepts for copying values between user-supplied buffers and the storage areas referenced by the map. Many of the address map methods operate over a region of the map described by a set of constraints that are matched within the map. Constraints are indicated by listing them before the map I/O operation, but they do not modify the map in any way&ndash;they exist outside the map. Constraints are combined by logical conjunction. For instance, the <a class="el" href="classSawyer_1_1Container_1_1AddressMap.html#af1f8d5e6092f38ec348503421148dd77">AddressMap::next</a> method returns the lowest address that satisfies the given constraints, or nothing. If we wanted to search for the lowest address beteen 1000 and 1999 inclusive, that has read access but not write access, we would do so like this:</p>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classSawyer_1_1Optional.html">Optional&lt;Address&gt;</a> x = map.within(1000,1999).require(READABLE).prohibit(WRITABLE).next();</div>
-<div class="ttc" id="aclassSawyer_1_1Optional_html"><div class="ttname"><a href="classSawyer_1_1Optional.html">Sawyer::Optional</a></div><div class="ttdoc">Holds a value or nothing.</div><div class="ttdef"><b>Definition</b> <a href="Optional_8h_source.html#l00056">Optional.h:56</a></div></div>
+<div class="ttc" id="aclassSawyer_1_1Optional_html"><div class="ttname"><a href="classSawyer_1_1Optional.html">Sawyer::Optional</a></div><div class="ttdoc">Holds a value or nothing.</div><div class="ttdef"><b>Definition</b> <a href="Optional_8h_source.html#l00054">Optional.h:54</a></div></div>
 </div><!-- fragment --><p>In fact, by making use of the <a class="el" href="classSawyer_1_1Optional.html">Sawyer::Optional</a> API, we can write a loop that iterates over such addresses, although there may be more efficient ways to do this than one address at a time:</p>
 <div class="fragment"><div class="line"><span class="keywordflow">for</span> (<a class="code hl_typedef" href="classSawyer_1_1Container_1_1AddressMap.html#a1134be6cf10571edef9ffe6ab06fd7a9">Address</a> x=1000; map.within(x,1999).<a class="code hl_function" href="classSawyer_1_1Container_1_1AddressMap.html#a82d01f0d9ff8007d7b88039153c2d52d">require</a>(READABLE).<a class="code hl_function" href="classSawyer_1_1Container_1_1AddressMap.html#a45d2f15072209b954e3c055bcacc2e4f">prohibit</a>(WRITABLE).<a class="code hl_function" href="classSawyer_1_1Container_1_1AddressMap.html#af1f8d5e6092f38ec348503421148dd77">next</a>().assignTo(x); ++x) ...</div>
 <div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_a1134be6cf10571edef9ffe6ab06fd7a9"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#a1134be6cf10571edef9ffe6ab06fd7a9">Sawyer::Container::AddressMap::Address</a></div><div class="ttdeci">A Address</div><div class="ttdoc">Type for addresses.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01017">AddressMap.h:1017</a></div></div>
-<div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_a45d2f15072209b954e3c055bcacc2e4f"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#a45d2f15072209b954e3c055bcacc2e4f">Sawyer::Container::AddressMap::prohibit</a></div><div class="ttdeci">AddressMapConstraints&lt; const AddressMap &gt; prohibit(unsigned x) const</div><div class="ttdoc">Constraint: prohibited access bits.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01082">AddressMap.h:1082</a></div></div>
-<div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_a82d01f0d9ff8007d7b88039153c2d52d"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#a82d01f0d9ff8007d7b88039153c2d52d">Sawyer::Container::AddressMap::require</a></div><div class="ttdeci">AddressMapConstraints&lt; const AddressMap &gt; require(unsigned x) const</div><div class="ttdoc">Constraint: required access bits.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01069">AddressMap.h:1069</a></div></div>
-<div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_af1f8d5e6092f38ec348503421148dd77"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#af1f8d5e6092f38ec348503421148dd77">Sawyer::Container::AddressMap::next</a></div><div class="ttdeci">Optional&lt; Address &gt; next(const AddressMapConstraints&lt; const AddressMap &gt; &amp;c, MatchFlags flags=0) const</div><div class="ttdoc">Minimum or maximum address that satisfies constraints.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01482">AddressMap.h:1482</a></div></div>
+<div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_a45d2f15072209b954e3c055bcacc2e4f"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#a45d2f15072209b954e3c055bcacc2e4f">Sawyer::Container::AddressMap::prohibit</a></div><div class="ttdeci">AddressMapConstraints&lt; const AddressMap &gt; prohibit(unsigned x) const</div><div class="ttdoc">Constraint: prohibited access bits.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01087">AddressMap.h:1087</a></div></div>
+<div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_a82d01f0d9ff8007d7b88039153c2d52d"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#a82d01f0d9ff8007d7b88039153c2d52d">Sawyer::Container::AddressMap::require</a></div><div class="ttdeci">AddressMapConstraints&lt; const AddressMap &gt; require(unsigned x) const</div><div class="ttdoc">Constraint: required access bits.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01074">AddressMap.h:1074</a></div></div>
+<div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_af1f8d5e6092f38ec348503421148dd77"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#af1f8d5e6092f38ec348503421148dd77">Sawyer::Container::AddressMap::next</a></div><div class="ttdeci">Optional&lt; Address &gt; next(const AddressMapConstraints&lt; const AddressMap &gt; &amp;c, MatchFlags flags=0) const</div><div class="ttdoc">Minimum or maximum address that satisfies constraints.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01487">AddressMap.h:1487</a></div></div>
 </div><!-- fragment --><p>The next example shows how to read a buffer's worth of values anchored at a particular starting value. The <a class="el" href="classSawyer_1_1Container_1_1AddressMap.html#a3533c4cf1642ffb3a2e0e256c11508fa">read</a> method returns an address interval to indicate what addresses were accessed, but in this case we're only interested in the number of such addresses since we know the starting address.</p>
 <div class="fragment"><div class="line"><a class="code hl_typedef" href="classSawyer_1_1Container_1_1AddressMap.html#aa7a7317b6be4502317ab4357b5989660">Value</a> buf[10];</div>
 <div class="line"><span class="keywordtype">size_t</span> nAccessed = map.at(1000).limit(10).read(buf).size();</div>
@@ -160,7 +160,7 @@ Inheritance diagram for Sawyer::Container::AddressMap&lt; A, T &gt;:</div>
 <div class="center"><img src="classSawyer_1_1Container_1_1AddressMap__inherit__graph.png" border="0" usemap="#aSawyer_1_1Container_1_1AddressMap_3_01A_00_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSawyer_1_1Container_1_1AddressMap_3_01A_00_01T_01_4_inherit__map" id="aSawyer_1_1Container_1_1AddressMap_3_01A_00_01T_01_4_inherit__map">
 <area shape="rect" title="A mapping from address space to values." alt="" coords="22,95,166,135"/>
-<area shape="rect" href="classSawyer_1_1Container_1_1AddressMap.html" title=" " alt="" coords="12,197,176,252"/>
+<area shape="rect" href="classSawyer_1_1Container_1_1AddressMap.html" title=" " alt="" coords="15,197,173,252"/>
 <area shape="poly" title=" " alt="" coords="97,148,97,197,91,197,91,148"/>
 <area shape="rect" href="classSawyer_1_1Container_1_1IntervalMap.html" title="An associative container whose keys are non&#45;overlapping intervals." alt="" coords="5,5,183,45"/>
 <area shape="poly" title=" " alt="" coords="97,59,97,94,91,94,91,59"/>
@@ -251,6 +251,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2ac1bbe4c8188403070b62fbd6e85fa9" id="r_a2ac1bbe4c8188403070b62fbd6e85fa9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSawyer_1_1Container_1_1AddressMap.html#a2ac1bbe4c8188403070b62fbd6e85fa9">AddressMap</a> (const <a class="el" href="classSawyer_1_1Container_1_1AddressMap.html">AddressMap</a> &amp;other, bool copyOnWrite=false)</td></tr>
 <tr class="memdesc:a2ac1bbe4c8188403070b62fbd6e85fa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <br /></td></tr>
 <tr class="separator:a2ac1bbe4c8188403070b62fbd6e85fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86279c0e52cc04daf2498dc29e5da01d" id="r_a86279c0e52cc04daf2498dc29e5da01d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSawyer_1_1Container_1_1AddressMap.html">AddressMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSawyer_1_1Container_1_1AddressMap.html#a86279c0e52cc04daf2498dc29e5da01d">operator=</a> (const <a class="el" href="classSawyer_1_1Container_1_1AddressMap.html">AddressMap</a> &amp;other)</td></tr>
+<tr class="separator:a86279c0e52cc04daf2498dc29e5da01d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a300a26b869a20b7c773f75f7c3d75e04" id="r_a300a26b869a20b7c773f75f7c3d75e04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSawyer_1_1Container_1_1AddressMap.html#a300a26b869a20b7c773f75f7c3d75e04">checkConsistency</a> () const</td></tr>
 <tr class="memdesc:a300a26b869a20b7c773f75f7c3d75e04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check map consistency.  <br /></td></tr>
 <tr class="separator:a300a26b869a20b7c773f75f7c3d75e04"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -959,6 +961,36 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a86279c0e52cc04daf2498dc29e5da01d" name="a86279c0e52cc04daf2498dc29e5da01d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86279c0e52cc04daf2498dc29e5da01d">&#9670;&#160;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class A , class T  = boost::uint8_t&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSawyer_1_1Container_1_1AddressMap.html">AddressMap</a> &amp; <a class="el" href="classSawyer_1_1Container_1_1AddressMap.html">Sawyer::Container::AddressMap</a>&lt; A, T &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSawyer_1_1Container_1_1AddressMap.html">AddressMap</a>&lt; A, T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01064">1064</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+
+</div>
+</div>
 <a id="a82d01f0d9ff8007d7b88039153c2d52d" name="a82d01f0d9ff8007d7b88039153c2d52d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a82d01f0d9ff8007d7b88039153c2d52d">&#9670;&#160;</a></span>require() <span class="overload">[1/2]</span></h2>
 
@@ -988,7 +1020,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: required access bits. </p>
 <p>Constrains address to those that have all of the access bits that are set in <code>x</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01069">1069</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01074">1074</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00239">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::require()</a>.</p>
 
@@ -1023,7 +1055,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: required access bits. </p>
 <p>Constrains address to those that have all of the access bits that are set in <code>x</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01072">1072</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01077">1077</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00239">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::require()</a>.</p>
 
@@ -1058,7 +1090,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: prohibited access bits. </p>
 <p>Constrains addresses to those that have none of the access bits that are set in <code>x</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01082">1082</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01087">1087</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00246">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::prohibit()</a>.</p>
 
@@ -1093,7 +1125,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: prohibited access bits. </p>
 <p>Constrains addresses to those that have none of the access bits that are set in <code>x</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01085">1085</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01090">1090</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00246">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::prohibit()</a>.</p>
 
@@ -1128,7 +1160,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: required and prohibited access bits. </p>
 <p>Constrains address to those that have the specified access bits. This method is the same as calling <a class="el" href="classSawyer_1_1Container_1_1AddressMap.html#a82d01f0d9ff8007d7b88039153c2d52d">require</a> with the specified bit vector, and <a class="el" href="classSawyer_1_1Container_1_1AddressMap.html#a45d2f15072209b954e3c055bcacc2e4f">prohibit</a> with the inverted bit vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01096">1096</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01101">1101</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00253">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::access()</a>.</p>
 
@@ -1163,7 +1195,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: required and prohibited access bits. </p>
 <p>Constrains address to those that have the specified access bits. This method is the same as calling <a class="el" href="classSawyer_1_1Container_1_1AddressMap.html#a82d01f0d9ff8007d7b88039153c2d52d">require</a> with the specified bit vector, and <a class="el" href="classSawyer_1_1Container_1_1AddressMap.html#a45d2f15072209b954e3c055bcacc2e4f">prohibit</a> with the inverted bit vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01099">1099</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01104">1104</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00253">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::access()</a>.</p>
 
@@ -1198,7 +1230,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: segment name substring. </p>
 <p>Constrains addresses to those that belong to a segment that contains string <code>x</code> as part of its name. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01109">1109</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01114">1114</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00258">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::substr()</a>.</p>
 
@@ -1233,7 +1265,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: segment name substring. </p>
 <p>Constrains addresses to those that belong to a segment that contains string <code>x</code> as part of its name. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01112">1112</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01117">1117</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00258">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::substr()</a>.</p>
 
@@ -1268,7 +1300,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: anchor point. </p>
 <p>Constrains addresses to a sequence that begins at <code>x</code>. If address <code>x</code> is not part of the addresses matched by the other constraints, then no address matches. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01123">1123</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01128">1128</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00278">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::at()</a>.</p>
 
@@ -1303,7 +1335,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: anchor point. </p>
 <p>Constrains addresses to a sequence that begins at <code>x</code>. If address <code>x</code> is not part of the addresses matched by the other constraints, then no address matches. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01126">1126</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01131">1131</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00278">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::at()</a>.</p>
 
@@ -1342,7 +1374,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <div class="line">map.at(100).limit(10).read(buf, MATCH_BACKWARD); <span class="comment">// 2</span></div>
 </div><!-- fragment --><p>Expression 1 reads up to 10 values such that the lowest value read is at address 100, while expression 2 reads up to 10 values such that the highest value read is at address 100. In both cases, if address 100 is not mapped (or otherwise does not satisfy the constraints) then nothing is read. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01150">1150</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01155">1155</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00278">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::at()</a>.</p>
 
@@ -1381,7 +1413,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <div class="line">map.at(100).limit(10).read(buf, MATCH_BACKWARD); <span class="comment">// 2</span></div>
 </div><!-- fragment --><p>Expression 1 reads up to 10 values such that the lowest value read is at address 100, while expression 2 reads up to 10 values such that the highest value read is at address 100. In both cases, if address 100 is not mapped (or otherwise does not satisfy the constraints) then nothing is read. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01153">1153</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01158">1158</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00278">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::at()</a>.</p>
 
@@ -1416,7 +1448,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: limit matched size. </p>
 <p>Constrains the matched addresses so that at most <code>x</code> addresses match. Forward matching matches the first <code>x</code> addresses while backward matching matches the last <code>x</code> addresses. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01164">1164</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01169">1169</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00292">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::limit()</a>.</p>
 
@@ -1451,7 +1483,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: limit matched size. </p>
 <p>Constrains the matched addresses so that at most <code>x</code> addresses match. Forward matching matches the first <code>x</code> addresses while backward matching matches the last <code>x</code> addresses. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01167">1167</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01172">1172</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00292">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::limit()</a>.</p>
 
@@ -1486,7 +1518,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: address lower bound. </p>
 <p>Constrains matched addresses so that they are all greater than or equal to <code>x</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01177">1177</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01182">1182</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00299">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::atOrAfter()</a>.</p>
 
@@ -1523,7 +1555,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: address lower bound. </p>
 <p>Constrains matched addresses so that they are all greater than or equal to <code>x</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01180">1180</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01185">1185</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00299">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::atOrAfter()</a>.</p>
 
@@ -1558,7 +1590,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: address upper bound. </p>
 <p>Constrains matched addresses so that they are all less than or equal to <code>x</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01190">1190</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01195">1195</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00312">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::atOrBefore()</a>.</p>
 
@@ -1593,7 +1625,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: address upper bound. </p>
 <p>Constrains matched addresses so that they are all less than or equal to <code>x</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01193">1193</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01198">1198</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00312">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::atOrBefore()</a>.</p>
 
@@ -1628,7 +1660,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: address lower and upper bounds. </p>
 <p>Constrains matched addresses so they are all within the specified interval. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01203">1203</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01208">1208</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00325">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::within()</a>.</p>
 
@@ -1663,7 +1695,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: address lower and upper bounds. </p>
 <p>Constrains matched addresses so they are all within the specified interval. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01206">1206</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01211">1211</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00325">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::within()</a>.</p>
 
@@ -1708,7 +1740,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: address lower and upper bounds. </p>
 <p>Constrains matched addresses so they are all greater than or equal to <code>x</code> and less than or equal to <code>y</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01216">1216</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01221">1221</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00325">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::within()</a>.</p>
 
@@ -1753,7 +1785,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: address lower and upper bounds. </p>
 <p>Constrains matched addresses so they are all greater than or equal to <code>x</code> and less than or equal to <code>y</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01219">1219</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01224">1224</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00325">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::within()</a>.</p>
 
@@ -1798,9 +1830,9 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: address lower and upper bounds. </p>
 <p>Specifies lower and upper bounds. The upper bound is specified indirectly by a size. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01229">1229</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01234">1234</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
-<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00335">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::baseSize()</a>, and <a class="el" href="IntervalMap_8h_source.html#l00704">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00335">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::baseSize()</a>, and <a class="el" href="IntervalMap_8h_source.html#l00733">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::size()</a>.</p>
 
 </div>
 </div>
@@ -1843,9 +1875,9 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: address lower and upper bounds. </p>
 <p>Specifies lower and upper bounds. The upper bound is specified indirectly by a size. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01232">1232</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01237">1237</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
-<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00335">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::baseSize()</a>, and <a class="el" href="IntervalMap_8h_source.html#l00704">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00335">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::baseSize()</a>, and <a class="el" href="IntervalMap_8h_source.html#l00733">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::size()</a>.</p>
 
 </div>
 </div>
@@ -1878,7 +1910,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: address lower bound. </p>
 <p>Constrains matched addresses so that they are all greater than <code>x</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01242">1242</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01247">1247</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00340">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::after()</a>.</p>
 
@@ -1913,7 +1945,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: address lower bound. </p>
 <p>Constrains matched addresses so that they are all greater than <code>x</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01245">1245</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01250">1250</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00340">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::after()</a>.</p>
 
@@ -1948,7 +1980,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: address upper bound. </p>
 <p>Constrains matched addresses so that they are all less than <code>x</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01255">1255</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01260">1260</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00345">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::before()</a>.</p>
 
@@ -1983,7 +2015,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: address upper bound. </p>
 <p>Constrains matched addresses so that they are all less than <code>x</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01258">1258</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01263">1263</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00345">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::before()</a>.</p>
 
@@ -2017,7 +2049,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: single segment. </p>
 <p>Constrains matched addresses so that they all come from the same segment. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01268">1268</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01273">1273</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00350">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::singleSegment()</a>.</p>
 
@@ -2051,7 +2083,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: single segment. </p>
 <p>Constrains matched addresses so that they all come from the same segment. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01271">1271</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01276">1276</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00350">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::singleSegment()</a>.</p>
 
@@ -2086,7 +2118,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: arbitrary segment constraint. </p>
 <p>Constraints matched addresses to those for which the chain of segment predicates return true. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01281">1281</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01286">1286</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00357">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::segmentPredicate()</a>.</p>
 
@@ -2121,7 +2153,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: arbitrary segment constraint. </p>
 <p>Constraints matched addresses to those for which the chain of segment predicates return true. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01284">1284</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01289">1289</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00357">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::segmentPredicate()</a>.</p>
 
@@ -2155,7 +2187,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: matches anything. </p>
 <p>The null constraint matches any mapped address. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01294">1294</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01299">1299</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 </div>
 </div>
@@ -2187,7 +2219,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: matches anything. </p>
 <p>The null constraint matches any mapped address. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01297">1297</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01302">1302</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 </div>
 </div>
@@ -2219,7 +2251,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: matches nothing. </p>
 <p>Constrains addresses so that none of them can match. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01307">1307</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01312">1312</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00271">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::none()</a>.</p>
 
@@ -2255,7 +2287,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Constraint: matches nothing. </p>
 <p>Constrains addresses so that none of them can match. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01310">1310</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01315">1315</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00271">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::none()</a>.</p>
 
@@ -2295,11 +2327,11 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <li>Checks that the buffers of the map are appropriate sizes for the address interval in which they're mapped. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01322">1322</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01327">1327</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
-<p class="reference">References <a class="el" href="Interval_8h_source.html#l00224">Sawyer::Container::Interval&lt; T &gt;::greatest()</a>, <a class="el" href="Interval_8h_source.html#l00218">Sawyer::Container::Interval&lt; T &gt;::least()</a>, <a class="el" href="AddressMap_8h_source.html#l01402">Sawyer::Container::AddressMap&lt; A, T &gt;::nodes()</a>, and <a class="el" href="Interval_8h_source.html#l00302">Sawyer::Container::Interval&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="Interval_8h_source.html#l00224">Sawyer::Container::Interval&lt; T &gt;::greatest()</a>, <a class="el" href="Interval_8h_source.html#l00218">Sawyer::Container::Interval&lt; T &gt;::least()</a>, <a class="el" href="AddressMap_8h_source.html#l01407">Sawyer::Container::AddressMap&lt; A, T &gt;::nodes()</a>, and <a class="el" href="Interval_8h_source.html#l00302">Sawyer::Container::Interval&lt; T &gt;::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="AddressMap_8h_source.html#l01700">Sawyer::Container::AddressMap&lt; A, T &gt;::read()</a>, and <a class="el" href="AddressMap_8h_source.html#l01761">Sawyer::Container::AddressMap&lt; A, T &gt;::write()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="AddressMap_8h_source.html#l01705">Sawyer::Container::AddressMap&lt; A, T &gt;::read()</a>, and <a class="el" href="AddressMap_8h_source.html#l01766">Sawyer::Container::AddressMap&lt; A, T &gt;::write()</a>.</p>
 
 </div>
 </div>
@@ -2331,9 +2363,9 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Number of segments contained in the map. </p>
 <p>Multiple segments may be pointing to the same underlying buffer, and the number of segments is not necessarily the same as the net number of segments inserted and erased. For instance, if a segment is inserted for addresses [0,99] and then a different segment is inserted at [50,59], the map will contain three segments at addresses [0,49], [50,59], and [60,99], although the first and third segment point into different parts of the same buffer. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01347">1347</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01352">1352</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
-<p class="reference">References <a class="el" href="IntervalMap_8h_source.html#l00696">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::nIntervals()</a>.</p>
+<p class="reference">References <a class="el" href="IntervalMap_8h_source.html#l00725">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::nIntervals()</a>.</p>
 
 </div>
 </div>
@@ -2365,7 +2397,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Iterator range for all segments. </p>
 <p>This is just an alias for the <a class="el" href="classSawyer_1_1Container_1_1IntervalMap.html#a70b9c01a8212eba072916db1d746cc9f">values</a> method defined in the super class. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01354">1354</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01359">1359</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="IntervalMap_8h_source.html#l00322">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::values()</a>.</p>
 
@@ -2399,7 +2431,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Iterator range for all segments. </p>
 <p>This is just an alias for the <a class="el" href="classSawyer_1_1Container_1_1IntervalMap.html#a70b9c01a8212eba072916db1d746cc9f">values</a> method defined in the super class. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01355">1355</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01360">1360</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="IntervalMap_8h_source.html#l00322">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::values()</a>.</p>
 
@@ -2447,10 +2479,10 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <div class="fragment"><div class="line"><span class="keyword">typedef</span> <a class="code hl_class" href="classSawyer_1_1Container_1_1AddressSegment.html">AddressMap&lt;Address,Value&gt;::Segment</a> <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AddressMap.html#a30140763fdfb3c3c12e8fd6a1dc22ea9">Segment</a>;</div>
 <div class="line"><span class="keywordflow">for</span> (<a class="code hl_class" href="classSawyer_1_1Container_1_1AddressSegment.html">Segment</a> &amp;segment: map.<a class="code hl_function" href="classSawyer_1_1Container_1_1AddressMap.html#a7c36dc3dc76f1b7ae01af3e7bd73b85a">substr</a>(<span class="stringliteral">&quot;IAT&quot;</span>).<a class="code hl_function" href="classSawyer_1_1Container_1_1AddressMap.html#a800770e4dbdb91ad94db36031da25b33">segments</a>(MATCH_NONCONTIGUOUS))</div>
 <div class="line">    segment.accessibility(segment.accessibility() &amp; ~EXECUTABLE);</div>
-<div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_a7c36dc3dc76f1b7ae01af3e7bd73b85a"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#a7c36dc3dc76f1b7ae01af3e7bd73b85a">Sawyer::Container::AddressMap::substr</a></div><div class="ttdeci">AddressMapConstraints&lt; const AddressMap &gt; substr(const std::string &amp;x) const</div><div class="ttdoc">Constraint: segment name substring.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01109">AddressMap.h:1109</a></div></div>
-<div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_a800770e4dbdb91ad94db36031da25b33"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#a800770e4dbdb91ad94db36031da25b33">Sawyer::Container::AddressMap::segments</a></div><div class="ttdeci">boost::iterator_range&lt; SegmentIterator &gt; segments()</div><div class="ttdoc">Iterator range for all segments.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01354">AddressMap.h:1354</a></div></div>
+<div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_a7c36dc3dc76f1b7ae01af3e7bd73b85a"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#a7c36dc3dc76f1b7ae01af3e7bd73b85a">Sawyer::Container::AddressMap::substr</a></div><div class="ttdeci">AddressMapConstraints&lt; const AddressMap &gt; substr(const std::string &amp;x) const</div><div class="ttdoc">Constraint: segment name substring.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01114">AddressMap.h:1114</a></div></div>
+<div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_a800770e4dbdb91ad94db36031da25b33"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#a800770e4dbdb91ad94db36031da25b33">Sawyer::Container::AddressMap::segments</a></div><div class="ttdeci">boost::iterator_range&lt; SegmentIterator &gt; segments()</div><div class="ttdoc">Iterator range for all segments.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01359">AddressMap.h:1359</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01378">1378</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01383">1383</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 </div>
 </div>
@@ -2493,7 +2525,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Iterator range for all segments. </p>
 <p>This is just an alias for the <a class="el" href="classSawyer_1_1Container_1_1IntervalMap.html#a70b9c01a8212eba072916db1d746cc9f">values</a> method defined in the super class. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01387">1387</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01392">1392</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 </div>
 </div>
@@ -2525,11 +2557,11 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Iterator range for nodes. </p>
 <p>This is just an alias for the <a class="el" href="classSawyer_1_1Container_1_1Graph.html#nodes">Vertices and Edges</a> method defined in the super class. See also the overloaded method of the same name that takes a constraint and thus returns only some nodes. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01402">1402</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01407">1407</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="IntervalMap_8h_source.html#l00306">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::nodes()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="AddressMap_8h_source.html#l01322">Sawyer::Container::AddressMap&lt; A, T &gt;::checkConsistency()</a>, <a class="el" href="AddressMap_8h_source.html#l01524">Sawyer::Container::AddressMap&lt; A, T &gt;::findNode()</a>, <a class="el" href="AddressMap_8h_source.html#l01521">Sawyer::Container::AddressMap&lt; A, T &gt;::findNode()</a>, and <a class="el" href="AddressMap_8h_source.html#l01761">Sawyer::Container::AddressMap&lt; A, T &gt;::write()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="AddressMap_8h_source.html#l01327">Sawyer::Container::AddressMap&lt; A, T &gt;::checkConsistency()</a>, <a class="el" href="AddressMap_8h_source.html#l01529">Sawyer::Container::AddressMap&lt; A, T &gt;::findNode()</a>, <a class="el" href="AddressMap_8h_source.html#l01526">Sawyer::Container::AddressMap&lt; A, T &gt;::findNode()</a>, and <a class="el" href="AddressMap_8h_source.html#l01766">Sawyer::Container::AddressMap&lt; A, T &gt;::write()</a>.</p>
 
 </div>
 </div>
@@ -2561,7 +2593,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Iterator range for nodes. </p>
 <p>This is just an alias for the <a class="el" href="classSawyer_1_1Container_1_1Graph.html#nodes">Vertices and Edges</a> method defined in the super class. See also the overloaded method of the same name that takes a constraint and thus returns only some nodes. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01403">1403</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01408">1408</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="IntervalMap_8h_source.html#l00306">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::nodes()</a>.</p>
 
@@ -2609,12 +2641,12 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <div class="fragment"><div class="line"><span class="keyword">typedef</span> <a class="code hl_class" href="classSawyer_1_1Container_1_1Map_1_1Node.html">AddressMap&lt;Address,Value&gt;::Node</a> <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AddressMap.html#af2c9cf858603ecda80b73929ad8fcbc9">Node</a>;</div>
 <div class="line"><span class="keywordflow">for</span> (<span class="keyword">const</span> <a class="code hl_class" href="classSawyer_1_1Container_1_1Map_1_1Node.html">Node</a> &amp;node: map.<a class="code hl_function" href="classSawyer_1_1Container_1_1AddressMap.html#a038b598dc4b28efc36d616e651021e3d">within</a>(1000,2000).<a class="code hl_function" href="classSawyer_1_1Container_1_1AddressMap.html#a7c36dc3dc76f1b7ae01af3e7bd73b85a">substr</a>(<span class="stringliteral">&quot;IAT&quot;</span>).<a class="code hl_function" href="classSawyer_1_1Container_1_1AddressMap.html#ac607416127deca39cea3ba026eaa893e">nodes</a>(MATCH_NONCONTIGUOUS))</div>
 <div class="line">    std::cout &lt;&lt;<span class="stringliteral">&quot;segment at &quot;</span> &lt;&lt;node.key() &lt;&lt;<span class="stringliteral">&quot; named &quot;</span> &lt;&lt;node.value().name() &lt;&lt;<span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_a038b598dc4b28efc36d616e651021e3d"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#a038b598dc4b28efc36d616e651021e3d">Sawyer::Container::AddressMap::within</a></div><div class="ttdeci">AddressMapConstraints&lt; const AddressMap &gt; within(const Sawyer::Container::Interval&lt; Address &gt; &amp;x) const</div><div class="ttdoc">Constraint: address lower and upper bounds.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01203">AddressMap.h:1203</a></div></div>
-<div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_ac607416127deca39cea3ba026eaa893e"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#ac607416127deca39cea3ba026eaa893e">Sawyer::Container::AddressMap::nodes</a></div><div class="ttdeci">boost::iterator_range&lt; NodeIterator &gt; nodes()</div><div class="ttdoc">Iterator range for nodes.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01402">AddressMap.h:1402</a></div></div>
+<div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_a038b598dc4b28efc36d616e651021e3d"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#a038b598dc4b28efc36d616e651021e3d">Sawyer::Container::AddressMap::within</a></div><div class="ttdeci">AddressMapConstraints&lt; const AddressMap &gt; within(const Sawyer::Container::Interval&lt; Address &gt; &amp;x) const</div><div class="ttdoc">Constraint: address lower and upper bounds.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01208">AddressMap.h:1208</a></div></div>
+<div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_ac607416127deca39cea3ba026eaa893e"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#ac607416127deca39cea3ba026eaa893e">Sawyer::Container::AddressMap::nodes</a></div><div class="ttdeci">boost::iterator_range&lt; NodeIterator &gt; nodes()</div><div class="ttdoc">Iterator range for nodes.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01407">AddressMap.h:1407</a></div></div>
 <div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_af2c9cf858603ecda80b73929ad8fcbc9"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#af2c9cf858603ecda80b73929ad8fcbc9">Sawyer::Container::AddressMap::Node</a></div><div class="ttdeci">Super::Node Node</div><div class="ttdoc">Storage node containing interval/segment pair.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01021">AddressMap.h:1021</a></div></div>
 <div class="ttc" id="aclassSawyer_1_1Container_1_1Map_1_1Node_html"><div class="ttname"><a href="classSawyer_1_1Container_1_1Map_1_1Node.html">Sawyer::Container::Map::Node</a></div><div class="ttdoc">Type for stored nodes.</div><div class="ttdef"><b>Definition</b> <a href="Sawyer_2Map_8h_source.html#l00107">Sawyer/Map.h:107</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01426">1426</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01431">1431</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 </div>
 </div>
@@ -2661,7 +2693,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <div class="line"><span class="keywordflow">for</span> (<span class="keyword">const</span> <a class="code hl_class" href="classSawyer_1_1Container_1_1Map_1_1Node.html">Node</a> &amp;node: map.<a class="code hl_function" href="classSawyer_1_1Container_1_1AddressMap.html#a038b598dc4b28efc36d616e651021e3d">within</a>(1000,2000).<a class="code hl_function" href="classSawyer_1_1Container_1_1AddressMap.html#a7c36dc3dc76f1b7ae01af3e7bd73b85a">substr</a>(<span class="stringliteral">&quot;IAT&quot;</span>).<a class="code hl_function" href="classSawyer_1_1Container_1_1AddressMap.html#ac607416127deca39cea3ba026eaa893e">nodes</a>(MATCH_NONCONTIGUOUS))</div>
 <div class="line">    std::cout &lt;&lt;<span class="stringliteral">&quot;segment at &quot;</span> &lt;&lt;node.key() &lt;&lt;<span class="stringliteral">&quot; named &quot;</span> &lt;&lt;node.value().name() &lt;&lt;<span class="stringliteral">&quot;\n&quot;</span>;</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01435">1435</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01440">1440</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 </div>
 </div>
@@ -2725,11 +2757,11 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <div class="line">        <span class="keywordflow">break</span>;</div>
 <div class="line">}</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01482">1482</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01487">1487</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00292">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::limit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="AddressMap_8h_source.html#l01512">Sawyer::Container::AddressMap&lt; A, T &gt;::exists()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="AddressMap_8h_source.html#l01517">Sawyer::Container::AddressMap&lt; A, T &gt;::exists()</a>.</p>
 
 </div>
 </div>
@@ -2772,7 +2804,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Adress interval that satisfies constraints. </p>
 <p>Returns the lowest or highest (depending on direction) largest address interval that satisfies the specified constraints. The interval can be contiguous (the default), or it may contain unmapped addresses. In any case, all mapped addresses in the returned interval satisfy the constraints. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01496">1496</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01501">1501</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 </div>
 </div>
@@ -2817,9 +2849,9 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <div class="fragment"><div class="line"><span class="keywordflow">if</span> (map.at(1000).require(EXECUTABLE).exists()) ...</div>
 <div class="line">if (map.at(1000).require(EXECUTABLE).next()) ...</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01512">1512</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01517">1517</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
-<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l01482">Sawyer::Container::AddressMap&lt; A, T &gt;::next()</a>.</p>
+<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l01487">Sawyer::Container::AddressMap&lt; A, T &gt;::next()</a>.</p>
 
 </div>
 </div>
@@ -2862,9 +2894,9 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Find node containing address. </p>
 <p>Finds the node that contains the first (or last, depending on direction) address that satisfies the constraints. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01521">1521</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01526">1526</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
-<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00292">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::limit()</a>, and <a class="el" href="AddressMap_8h_source.html#l01402">Sawyer::Container::AddressMap&lt; A, T &gt;::nodes()</a>.</p>
+<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00292">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::limit()</a>, and <a class="el" href="AddressMap_8h_source.html#l01407">Sawyer::Container::AddressMap&lt; A, T &gt;::nodes()</a>.</p>
 
 </div>
 </div>
@@ -2907,9 +2939,9 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Find node containing address. </p>
 <p>Finds the node that contains the first (or last, depending on direction) address that satisfies the constraints. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01524">1524</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01529">1529</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
-<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00292">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::limit()</a>, and <a class="el" href="AddressMap_8h_source.html#l01402">Sawyer::Container::AddressMap&lt; A, T &gt;::nodes()</a>.</p>
+<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00292">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::limit()</a>, and <a class="el" href="AddressMap_8h_source.html#l01407">Sawyer::Container::AddressMap&lt; A, T &gt;::nodes()</a>.</p>
 
 </div>
 </div>
@@ -2953,11 +2985,11 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Searches for the lowest (or highest if direction is <code>MATCH_BACKWARD</code>) interval that is not mapped and returns its address and size. The returned interval will not contain addresses that are less than (or greater than) than <code>boundary</code>. If no such unmapped intervals exist then the empty interval is returned.</p>
 <p>This method does not use constraints since it searches for addresses that do not exist in the map. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01537">1537</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01542">1542</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 <p class="reference">References <a class="el" href="IntervalMap_8h_source.html#l00569">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::firstUnmapped()</a>, and <a class="el" href="IntervalMap_8h_source.html#l00587">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::lastUnmapped()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="AddressMap_8h_source.html#l01550">Sawyer::Container::AddressMap&lt; A, T &gt;::findFreeSpace()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="AddressMap_8h_source.html#l01555">Sawyer::Container::AddressMap&lt; A, T &gt;::findFreeSpace()</a>.</p>
 
 </div>
 </div>
@@ -3013,9 +3045,9 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <p>Finds a suitable region of unmapped address space in which <code>nValues</code> values can be mapped. The return value is either an address where the values can be mapped, or nothing if no such unmapped region is available. The <code>restriction</code> can be used to restrict which addresses are considered. The return value will have the specified alignment and will be either the lowest or highest possible address depending on whether direction is forward or backward.</p>
 <p>This method does not use constraints since it searches for addresses that do not exist in the map. </p>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01550">1550</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01555">1555</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
-<p class="reference">References <a class="el" href="Interval_8h_source.html#l00224">Sawyer::Container::Interval&lt; T &gt;::greatest()</a>, <a class="el" href="Interval_8h_source.html#l00230">Sawyer::Container::Interval&lt; T &gt;::isEmpty()</a>, <a class="el" href="Interval_8h_source.html#l00218">Sawyer::Container::Interval&lt; T &gt;::least()</a>, <a class="el" href="Interval_8h_source.html#l00302">Sawyer::Container::Interval&lt; T &gt;::size()</a>, <a class="el" href="AddressMap_8h_source.html#l01537">Sawyer::Container::AddressMap&lt; A, T &gt;::unmapped()</a>, and <a class="el" href="Interval_8h_source.html#l00191">Sawyer::Container::Interval&lt; T &gt;::whole()</a>.</p>
+<p class="reference">References <a class="el" href="Interval_8h_source.html#l00224">Sawyer::Container::Interval&lt; T &gt;::greatest()</a>, <a class="el" href="Interval_8h_source.html#l00230">Sawyer::Container::Interval&lt; T &gt;::isEmpty()</a>, <a class="el" href="Interval_8h_source.html#l00218">Sawyer::Container::Interval&lt; T &gt;::least()</a>, <a class="el" href="Interval_8h_source.html#l00302">Sawyer::Container::Interval&lt; T &gt;::size()</a>, <a class="el" href="AddressMap_8h_source.html#l01542">Sawyer::Container::AddressMap&lt; A, T &gt;::unmapped()</a>, and <a class="el" href="Interval_8h_source.html#l00191">Sawyer::Container::Interval&lt; T &gt;::whole()</a>.</p>
 
 </div>
 </div>
@@ -3077,10 +3109,10 @@ template&lt;typename Functor &gt; </div>
 <div class="line"><a class="code hl_class" href="classMap.html">Map</a> map = ...;</div>
 <div class="line">Interval&lt;unsigned&gt; where = ...;</div>
 <div class="line">map.within(where).traverse(visitor);</div>
-<div class="ttc" id="aclassMap_html"><div class="ttname"><a href="classMap.html">Map</a></div><div class="ttdoc">Extends std::map with methods that return optional values.</div><div class="ttdef"><b>Definition</b> <a href="util_2Map_8h_source.html#l00013">util/Map.h:13</a></div></div>
-<div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_1_1Visitor_html"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap_1_1Visitor.html">Sawyer::Container::AddressMap::Visitor</a></div><div class="ttdoc">Base class for traversals.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01602">AddressMap.h:1602</a></div></div>
+<div class="ttc" id="aclassMap_html"><div class="ttname"><a href="classMap.html">Map</a></div><div class="ttdoc">Extends std::map with methods that return optional values.</div><div class="ttdef"><b>Definition</b> <a href="util_2Map_8h_source.html#l00016">util/Map.h:16</a></div></div>
+<div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_1_1Visitor_html"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap_1_1Visitor.html">Sawyer::Container::AddressMap::Visitor</a></div><div class="ttdoc">Base class for traversals.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01607">AddressMap.h:1607</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01632">1632</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01637">1637</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 </div>
 </div>
@@ -3143,7 +3175,7 @@ template&lt;typename Functor &gt; </div>
 <div class="line">Interval&lt;unsigned&gt; where = ...;</div>
 <div class="line">map.within(where).traverse(visitor);</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01643">1643</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01648">1648</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 </div>
 </div>
@@ -3204,7 +3236,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <div class="line">Interval&lt;unsigned&gt; where = ...;</div>
 <div class="line">map.within(where).traverse(visitor);</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01653">1653</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01658">1658</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 </div>
 </div>
@@ -3265,7 +3297,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <div class="line">Interval&lt;unsigned&gt; where = ...;</div>
 <div class="line">map.within(where).traverse(visitor);</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01656">1656</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01661">1661</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
 </div>
 </div>
@@ -3329,11 +3361,11 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <div class="fragment"><div class="line"><a class="code hl_typedef" href="classSawyer_1_1Container_1_1AddressMap.html#aa7a7317b6be4502317ab4357b5989660">Value</a> buf[10];</div>
 <div class="line"><span class="keywordtype">size_t</span> nRead = map.at(999).limit(10).read(buf, MATCH_BACKWARD).size();</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01700">1700</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01705">1705</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
-<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l01322">Sawyer::Container::AddressMap&lt; A, T &gt;::checkConsistency()</a>, <a class="el" href="Interval_8h_source.html#l00230">Sawyer::Container::Interval&lt; T &gt;::isEmpty()</a>, <a class="el" href="Interval_8h_source.html#l00218">Sawyer::Container::Interval&lt; T &gt;::least()</a>, and <a class="el" href="Interval_8h_source.html#l00302">Sawyer::Container::Interval&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l01327">Sawyer::Container::AddressMap&lt; A, T &gt;::checkConsistency()</a>, <a class="el" href="Interval_8h_source.html#l00230">Sawyer::Container::Interval&lt; T &gt;::isEmpty()</a>, <a class="el" href="Interval_8h_source.html#l00218">Sawyer::Container::Interval&lt; T &gt;::least()</a>, and <a class="el" href="Interval_8h_source.html#l00302">Sawyer::Container::Interval&lt; T &gt;::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="AddressMap_8h_source.html#l01723">Sawyer::Container::AddressMap&lt; A, T &gt;::read()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="AddressMap_8h_source.html#l01728">Sawyer::Container::AddressMap&lt; A, T &gt;::read()</a>.</p>
 
 </div>
 </div>
@@ -3397,9 +3429,9 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <div class="fragment"><div class="line"><a class="code hl_typedef" href="classSawyer_1_1Container_1_1AddressMap.html#aa7a7317b6be4502317ab4357b5989660">Value</a> buf[10];</div>
 <div class="line"><span class="keywordtype">size_t</span> nRead = map.at(999).limit(10).read(buf, MATCH_BACKWARD).size();</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01723">1723</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01728">1728</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
-<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00292">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::limit()</a>, and <a class="el" href="AddressMap_8h_source.html#l01700">Sawyer::Container::AddressMap&lt; A, T &gt;::read()</a>.</p>
+<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00292">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::limit()</a>, and <a class="el" href="AddressMap_8h_source.html#l01705">Sawyer::Container::AddressMap&lt; A, T &gt;::read()</a>.</p>
 
 </div>
 </div>
@@ -3456,11 +3488,11 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <div class="fragment"><div class="line"><a class="code hl_typedef" href="classSawyer_1_1Container_1_1AddressMap.html#aa7a7317b6be4502317ab4357b5989660">Value</a> buf[10] = { ... };</div>
 <div class="line"><span class="keywordtype">size_t</span> nWritten = map.at(999).limit(10).write(buf, MATCH_BACKWARD).size();</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01761">1761</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01766">1766</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
-<p class="reference">References <a class="el" href="Interval_8h_source.html#l00173">Sawyer::Container::Interval&lt; T &gt;::baseSize()</a>, <a class="el" href="AddressMap_8h_source.html#l01322">Sawyer::Container::AddressMap&lt; A, T &gt;::checkConsistency()</a>, <a class="el" href="Interval_8h_source.html#l00230">Sawyer::Container::Interval&lt; T &gt;::isEmpty()</a>, <a class="el" href="Interval_8h_source.html#l00218">Sawyer::Container::Interval&lt; T &gt;::least()</a>, <a class="el" href="IntervalMap_8h_source.html#l00331">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::lowerBound()</a>, <a class="el" href="AddressMap_8h_source.html#l01402">Sawyer::Container::AddressMap&lt; A, T &gt;::nodes()</a>, <a class="el" href="AddressMap_8h_source.html#l00246">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::prohibit()</a>, and <a class="el" href="Interval_8h_source.html#l00302">Sawyer::Container::Interval&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="Interval_8h_source.html#l00173">Sawyer::Container::Interval&lt; T &gt;::baseSize()</a>, <a class="el" href="AddressMap_8h_source.html#l01327">Sawyer::Container::AddressMap&lt; A, T &gt;::checkConsistency()</a>, <a class="el" href="Interval_8h_source.html#l00230">Sawyer::Container::Interval&lt; T &gt;::isEmpty()</a>, <a class="el" href="Interval_8h_source.html#l00218">Sawyer::Container::Interval&lt; T &gt;::least()</a>, <a class="el" href="IntervalMap_8h_source.html#l00331">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::lowerBound()</a>, <a class="el" href="AddressMap_8h_source.html#l01407">Sawyer::Container::AddressMap&lt; A, T &gt;::nodes()</a>, <a class="el" href="AddressMap_8h_source.html#l00246">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::prohibit()</a>, and <a class="el" href="Interval_8h_source.html#l00302">Sawyer::Container::Interval&lt; T &gt;::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="AddressMap_8h_source.html#l01804">Sawyer::Container::AddressMap&lt; A, T &gt;::write()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="AddressMap_8h_source.html#l01809">Sawyer::Container::AddressMap&lt; A, T &gt;::write()</a>.</p>
 
 </div>
 </div>
@@ -3516,9 +3548,9 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <div class="fragment"><div class="line"><a class="code hl_typedef" href="classSawyer_1_1Container_1_1AddressMap.html#aa7a7317b6be4502317ab4357b5989660">Value</a> buf[10] = { ... };</div>
 <div class="line"><span class="keywordtype">size_t</span> nWritten = map.at(999).limit(10).write(buf, MATCH_BACKWARD).size();</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01804">1804</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01809">1809</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
-<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00292">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::limit()</a>, and <a class="el" href="AddressMap_8h_source.html#l01761">Sawyer::Container::AddressMap&lt; A, T &gt;::write()</a>.</p>
+<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00292">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::limit()</a>, and <a class="el" href="AddressMap_8h_source.html#l01766">Sawyer::Container::AddressMap&lt; A, T &gt;::write()</a>.</p>
 
 </div>
 </div>
@@ -3563,9 +3595,9 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <div class="fragment"><div class="line">map.require(WRITABLE).contiguous(<span class="keyword">false</span>).prune();</div>
 </div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classSawyer_1_1Container_1_1AddressMap.html#ab1d024a2128d70727cfce72518a32bfd" title="Keep only addresses that match constraints.">keep</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01821">1821</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01826">1826</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
-<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00452">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::addressConstraints()</a>, <a class="el" href="IntervalMap_8h_source.html#l00793">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::erase()</a>, <a class="el" href="IntervalSet_8h_source.html#l00554">Sawyer::Container::IntervalSet&lt; I &gt;::insert()</a>, and <a class="el" href="IntervalSet_8h_source.html#l00236">Sawyer::Container::IntervalSet&lt; I &gt;::intervals()</a>.</p>
+<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00452">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::addressConstraints()</a>, <a class="el" href="IntervalMap_8h_source.html#l00822">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::erase()</a>, <a class="el" href="IntervalSet_8h_source.html#l00554">Sawyer::Container::IntervalSet&lt; I &gt;::insert()</a>, and <a class="el" href="IntervalSet_8h_source.html#l00236">Sawyer::Container::IntervalSet&lt; I &gt;::intervals()</a>.</p>
 
 </div>
 </div>
@@ -3610,9 +3642,9 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <div class="fragment"><div class="line">map.require(WRITABLE).contiguous(<span class="keyword">false</span>).keep();</div>
 </div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classSawyer_1_1Container_1_1AddressMap.html#a79044a63583ed0fa8cd49c945372d696" title="Prune away addresses that match constraints.">prune</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01848">1848</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01853">1853</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
-<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00452">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::addressConstraints()</a>, <a class="el" href="IntervalMap_8h_source.html#l00793">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::erase()</a>, <a class="el" href="IntervalSet_8h_source.html#l00554">Sawyer::Container::IntervalSet&lt; I &gt;::insert()</a>, <a class="el" href="IntervalSet_8h_source.html#l00236">Sawyer::Container::IntervalSet&lt; I &gt;::intervals()</a>, and <a class="el" href="IntervalSet_8h_source.html#l00516">Sawyer::Container::IntervalSet&lt; I &gt;::invert()</a>.</p>
+<p class="reference">References <a class="el" href="AddressMap_8h_source.html#l00452">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::addressConstraints()</a>, <a class="el" href="IntervalMap_8h_source.html#l00822">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::erase()</a>, <a class="el" href="IntervalSet_8h_source.html#l00554">Sawyer::Container::IntervalSet&lt; I &gt;::insert()</a>, <a class="el" href="IntervalSet_8h_source.html#l00236">Sawyer::Container::IntervalSet&lt; I &gt;::intervals()</a>, and <a class="el" href="IntervalSet_8h_source.html#l00516">Sawyer::Container::IntervalSet&lt; I &gt;::invert()</a>.</p>
 
 </div>
 </div>
@@ -3671,9 +3703,9 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 <div class="fragment"><div class="line"><span class="keywordtype">unsigned</span> newAccess = READABLE | WRITABLE;</div>
 <div class="line">map.within(100,200).changeAccess(newAccess, ~newAccess);</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01882">1882</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AddressMap_8h_source.html#l01887">1887</a> of file <a class="el" href="AddressMap_8h_source.html">AddressMap.h</a>.</p>
 
-<p class="reference">References <a class="el" href="AddressSegment_8h_source.html#l00193">Sawyer::Container::AddressSegment&lt; A, T &gt;::accessibility()</a>, <a class="el" href="AddressMap_8h_source.html#l00452">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::addressConstraints()</a>, <a class="el" href="IntervalMap_8h_source.html#l00861">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::insert()</a>, <a class="el" href="Interval_8h_source.html#l00218">Sawyer::Container::Interval&lt; T &gt;::least()</a>, and <a class="el" href="AddressSegment_8h_source.html#l00183">Sawyer::Container::AddressSegment&lt; A, T &gt;::offset()</a>.</p>
+<p class="reference">References <a class="el" href="AddressSegment_8h_source.html#l00193">Sawyer::Container::AddressSegment&lt; A, T &gt;::accessibility()</a>, <a class="el" href="AddressMap_8h_source.html#l00452">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;::addressConstraints()</a>, <a class="el" href="IntervalMap_8h_source.html#l00890">Sawyer::Container::IntervalMap&lt; I, T, Policy &gt;::insert()</a>, <a class="el" href="Interval_8h_source.html#l00218">Sawyer::Container::Interval&lt; T &gt;::least()</a>, and <a class="el" href="AddressSegment_8h_source.html#l00183">Sawyer::Container::AddressSegment&lt; A, T &gt;::offset()</a>.</p>
 
 </div>
 </div>
@@ -3683,7 +3715,7 @@ template&lt;class A , class T  = boost::uint8_t&gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Oct 2 2024 00:09:36 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon Jan 19 2026 17:25:19 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

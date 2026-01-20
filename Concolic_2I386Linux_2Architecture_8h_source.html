@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.141</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
    </div>
   </td>
  </tr>
@@ -119,11 +119,11 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keyword">virtual</span> Partitioner2::PartitionerPtr partition(<span class="keyword">const</span> Partitioner2::EnginePtr&amp;, <span class="keyword">const</span> std::string &amp;specimen) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> configureSystemCalls() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> configureSharedMemory(<span class="keyword">const</span> Yaml::Node &amp;config) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespaceRose_1_1AST_1_1IO.html#a935c7a9be3c93f70ebf5002b11af42aa">load</a>(<span class="keyword">const</span> boost::filesystem::path&amp;) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespaceRose_1_1Source_1_1AST_1_1IO.html#aa5b283207c5309acc9e4116683dcf307">load</a>(<span class="keyword">const</span> boost::filesystem::path&amp;) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keyword">virtual</span> ByteOrder::Endianness memoryByteOrder() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keyword">virtual</span> std::vector&lt;ExecutionEventPtr&gt; createMemoryRestoreEvents() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keyword">virtual</span> std::vector&lt;ExecutionEventPtr&gt; createMemoryHashEvents() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keyword">virtual</span> std::vector&lt;ExecutionEventPtr&gt; createMemoryAdjustEvents(<span class="keyword">const</span> MemoryMap::Ptr&amp;, rose_addr_t insnVa) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keyword">virtual</span> std::vector&lt;ExecutionEventPtr&gt; createMemoryAdjustEvents(<span class="keyword">const</span> MemoryMap::Ptr&amp;, Address insnVa) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> playEvent(<span class="keyword">const</span> ExecutionEventPtr&amp;) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> mapMemory(<span class="keyword">const</span> AddressInterval&amp;, <span class="keywordtype">unsigned</span> permissions) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> unmapMemory(<span class="keyword">const</span> AddressInterval&amp;) <span class="keyword">override</span>;</div>
@@ -142,7 +142,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="comment">// Copy (share) some data from the dst map to the src map at where. Generate map and write events that will map the memory</span></div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="comment">// and initialize it when played back.</span></div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    std::vector&lt;ExecutionEventPtr&gt; copyMemory(<span class="keyword">const</span> MemoryMap::Ptr &amp;src, <span class="keyword">const</span> MemoryMap::Ptr &amp;dst, <span class="keyword">const</span> AddressInterval &amp;where,</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                                              rose_addr_t insnVa);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                                              Address insnVa);</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="comment">// List of process memory segments that are not special.</span></div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    std::vector&lt;MemoryMap::ProcessMapRecord&gt; disposableMemory();</div>
@@ -337,14 +337,14 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span> </div>
 <div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="anamespaceRose_1_1AST_1_1IO_html_a935c7a9be3c93f70ebf5002b11af42aa"><div class="ttname"><a href="namespaceRose_1_1AST_1_1IO.html#a935c7a9be3c93f70ebf5002b11af42aa">Rose::AST::IO::load</a></div><div class="ttdeci">ROSE_DLL_API void load(SgProject *project, std::list&lt; std::string &gt; const &amp;filepaths)</div><div class="ttdoc">Load ASTs that have been saved to files.</div></div>
-<div class="ttc" id="anamespaceRose_1_1BinaryAnalysis_1_1SymbolicExpression_html_a357a1787c84ab11ac04ffa566345e57c"><div class="ttname"><a href="namespaceRose_1_1BinaryAnalysis_1_1SymbolicExpression.html#a357a1787c84ab11ac04ffa566345e57c">Rose::BinaryAnalysis::SymbolicExpression::Ptr</a></div><div class="ttdeci">Sawyer::SharedPointer&lt; Node &gt; Ptr</div><div class="ttdoc">Reference counting pointer.</div><div class="ttdef"><b>Definition</b> <a href="Rose_2BinaryAnalysis_2BasicTypes_8h_source.html#l00109">Rose/BinaryAnalysis/BasicTypes.h:109</a></div></div>
+<div class="ttc" id="anamespaceRose_1_1BinaryAnalysis_1_1SymbolicExpression_html_a357a1787c84ab11ac04ffa566345e57c"><div class="ttname"><a href="namespaceRose_1_1BinaryAnalysis_1_1SymbolicExpression.html#a357a1787c84ab11ac04ffa566345e57c">Rose::BinaryAnalysis::SymbolicExpression::Ptr</a></div><div class="ttdeci">Sawyer::SharedPointer&lt; Node &gt; Ptr</div><div class="ttdoc">Reference counting pointer.</div><div class="ttdef"><b>Definition</b> <a href="Rose_2BinaryAnalysis_2BasicTypes_8h_source.html#l00114">Rose/BinaryAnalysis/BasicTypes.h:114</a></div></div>
+<div class="ttc" id="anamespaceRose_1_1Source_1_1AST_1_1IO_html_aa5b283207c5309acc9e4116683dcf307"><div class="ttname"><a href="namespaceRose_1_1Source_1_1AST_1_1IO.html#aa5b283207c5309acc9e4116683dcf307">Rose::Source::AST::IO::load</a></div><div class="ttdeci">ROSE_DLL_API void load(SgProject *project, std::list&lt; std::string &gt; const &amp;filepaths)</div><div class="ttdoc">Load ASTs that have been saved to files.</div></div>
 <div class="ttc" id="anamespaceRose_html"><div class="ttname"><a href="namespaceRose.html">Rose</a></div><div class="ttdoc">The ROSE library.</div><div class="ttdef"><b>Definition</b> <a href="BinaryTutorial_8dox_source.html#l00003">BinaryTutorial.dox:3</a></div></div>
 <div class="ttc" id="anamespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Disassembler_1_1Mips_1_1Decoder_html_a71cec98f7972bd8cd607558bcea2ffb2"><div class="ttname"><a href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Disassembler_1_1Mips_1_1Decoder.html#a71cec98f7972bd8cd607558bcea2ffb2">stringify::Rose::BinaryAnalysis::Disassembler::Mips::Decoder::Architecture</a></div><div class="ttdeci">const char * Architecture(int64_t)</div><div class="ttdoc">Convert Rose::BinaryAnalysis::Disassembler::Mips::Decoder::Architecture enum constant to a string.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Oct 2 2024 00:08:23 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon Jan 19 2026 17:23:54 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

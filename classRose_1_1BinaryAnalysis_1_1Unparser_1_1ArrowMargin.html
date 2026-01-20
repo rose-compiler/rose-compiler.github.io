@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.141</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
    </div>
   </td>
  </tr>
@@ -55,112 +55,106 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Rose::BinaryAnalysis::Unparser::ArrowMargin Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Description</h2>
 <div class="textblock"><p><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1State.html" title="State for unparsing.">State</a> associated with printing arrows in the margin. </p>
+<p>Arrows are represented by directed edges in an "arrow graph", and the vertices of that graph represent the endpoints of the arrows. Each arrow must have a unique ID (<code>size_t</code>) as should each endpoint. Multiple arrows may have the same endpoint, but any particular arrow should not have the same endpoint as both its source and target (since drawing such an arrow is not always possible, e.g., with ASCII text). Arrow IDs for arrows that correspond to CFG edges are just the CFG edge IDs.</p>
+<p>Each basic block is optionally prefixed by one line per incoming edge, and optionally suffixed by one line per outgoing edge, depending on the unparser settings. When edge lines are present, the arrows originate and/or terminate at these lines, otherwise they use the first or last instruction of the basic block.</p>
+<p>Arrow endpoint IDs are one of two things, depending on whether the endpoint would be a line describing a CFG edge, or a line corresponding to a CFG vertex (a basic block). In both cases there are two possible endpoint locations that need to have unique IDs for a total of four types, but based on the settings we only ever use two of these types.</p>
+<ul>
+<li>arrow source endpoint is the last line of a basic block; its ID is twice the CFG vertex ID plus one. </li>
+<li>arrow source endpoint is the CFG edge source line; its ID is twice the CFG edge ID. </li>
+<li>arrow target endpoint is the first line of a basic block; its ID is twice the CFG vertex ID. </li>
+<li>arrow target endpoint is the CFG edge target line; its ID is twice the CFG edge ID plus one.</li>
+</ul>
+<p>These endpoint IDs are obtained from the EdgeArrow::toSourceEndpoint and related functions. </p>
 
-<p class="definition">Definition at line <a class="el" href="Unparser_2Base_8h_source.html#l00048">48</a> of file <a class="el" href="Unparser_2Base_8h_source.html">Unparser/Base.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Unparser_2Base_8h_source.html#l00069">69</a> of file <a class="el" href="Unparser_2Base_8h_source.html">Unparser/Base.h</a>.</p>
 </div>
 <p><code>#include &lt;<a class="el" href="Unparser_2Base_8h_source.html">Rose/BinaryAnalysis/Unparser/Base.h</a>&gt;</code></p>
-<div class="dynheader">
-Collaboration diagram for Rose::BinaryAnalysis::Unparser::ArrowMargin:</div>
-<div class="dyncontent">
-<div class="center"><img src="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin__coll__graph.png" border="0" usemap="#aRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin_coll__map" alt="Collaboration graph"/></div>
-<map name="aRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin_coll__map" id="aRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin_coll__map">
-<area shape="rect" title="State associated with printing arrows in the margin." alt="" coords="329,63,493,103"/>
-<area shape="rect" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html" title="Analysis to generate arrows from one basic block to another." alt="" coords="27,5,189,45"/>
-<area shape="poly" title=" " alt="" coords="204,41,329,64,328,70,203,46"/>
-<area shape="rect" href="classRose_1_1BitFlags.html" title=" " alt="" coords="25,70,191,95"/>
-<area shape="poly" title=" " alt="" coords="204,80,329,80,329,85,204,85"/>
-<area shape="rect" href="classSawyer_1_1Optional.html" title=" " alt="" coords="5,120,211,160"/>
-<area shape="poly" title=" " alt="" coords="223,115,328,96,329,101,224,121"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a35fb04d9ae3322494dfff269e18dded9" id="r_a35fb04d9ae3322494dfff269e18dded9"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a35fb04d9ae3322494dfff269e18dded9">Flags</a> { <br />
-&#160;&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a35fb04d9ae3322494dfff269e18dded9a8ee5a3c3d5044573e8a1ef77930f97fd">POINTABLE_ENTITY_START</a> = 0x00000001
-, <br />
-&#160;&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a35fb04d9ae3322494dfff269e18dded9ab2e08e00a16c365822e983e1b5d374d7">POINTABLE_ENTITY_END</a> = 0x00000002
-, <br />
-&#160;&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a35fb04d9ae3322494dfff269e18dded9a373999cb80c1cef80eb2d2b09213db44">POINTABLE_ENTITY_INSIDE</a> = 0x00000004
-, <br />
-&#160;&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a35fb04d9ae3322494dfff269e18dded9aea0bcb6fe54a1e38b387e637b047319b">ALWAYS_RENDER</a> = 0x00000008
-<br />
- }</td></tr>
-<tr class="memdesc:a35fb04d9ae3322494dfff269e18dded9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flags controlling the finer aspects of margin arrows.  <a href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a35fb04d9ae3322494dfff269e18dded9">More...</a><br /></td></tr>
-<tr class="separator:a35fb04d9ae3322494dfff269e18dded9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin_1_1CfgEndpoint.html">CfgEndpoint</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a2701eacfca05852c2c250f7125ba9775" id="r_a2701eacfca05852c2c250f7125ba9775"><td class="memItemLeft" align="right" valign="top"><a id="a2701eacfca05852c2c250f7125ba9775" name="a2701eacfca05852c2c250f7125ba9775"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ArrowMargin</b> (const <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html">ArrowMargin</a> &amp;)=delete</td></tr>
+<tr class="separator:a2701eacfca05852c2c250f7125ba9775"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3ef7664be940ea08cde42828ea80ce3" id="r_ae3ef7664be940ea08cde42828ea80ce3"><td class="memItemLeft" align="right" valign="top"><a id="ae3ef7664be940ea08cde42828ea80ce3" name="ae3ef7664be940ea08cde42828ea80ce3"></a>
+<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html">ArrowMargin</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html">ArrowMargin</a> &amp;)=delete</td></tr>
+<tr class="separator:ae3ef7664be940ea08cde42828ea80ce3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a063dbd839c24c3296a8bd93421406019" id="r_a063dbd839c24c3296a8bd93421406019"><td class="memItemLeft" align="right" valign="top"><a id="a063dbd839c24c3296a8bd93421406019" name="a063dbd839c24c3296a8bd93421406019"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ArrowMargin</b> (CfgEndpoint::Type srcEndpointType, CfgEndpoint::Type dstEndpointType)</td></tr>
+<tr class="separator:a063dbd839c24c3296a8bd93421406019"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb0afee09af29624be2d7a2f48f9a5b7" id="r_adb0afee09af29624be2d7a2f48f9a5b7"><td class="memItemLeft" align="right" valign="top"><a id="adb0afee09af29624be2d7a2f48f9a5b7" name="adb0afee09af29624be2d7a2f48f9a5b7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>arrowStyle</b> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a9e301fa9338566c47202d6c5690f9c7b">EdgeArrows::ArrowStylePreset</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a1845182ea16f0cb07ef48ec661881543">EdgeArrows::ArrowSide</a>)</td></tr>
+<tr class="memdesc:adb0afee09af29624be2d7a2f48f9a5b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set arrow style. <br /></td></tr>
+<tr class="separator:adb0afee09af29624be2d7a2f48f9a5b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54039b5a2a55b9393761a72dd7bf62b8" id="r_a54039b5a2a55b9393761a72dd7bf62b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a54039b5a2a55b9393761a72dd7bf62b8">reset</a> ()</td></tr>
-<tr class="memdesc:a54039b5a2a55b9393761a72dd7bf62b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the marging arrow state.  <br /></td></tr>
+<tr class="memdesc:a54039b5a2a55b9393761a72dd7bf62b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the margin arrow state.  <br /></td></tr>
 <tr class="separator:a54039b5a2a55b9393761a72dd7bf62b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a630976e24ed3886cb1671aeaf69c468a" id="r_a630976e24ed3886cb1671aeaf69c468a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a630976e24ed3886cb1671aeaf69c468a">render</a> (<a class="el" href="classSawyer_1_1Optional.html">Sawyer::Optional</a>&lt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">EdgeArrows::VertexId</a> &gt; currentEntity)</td></tr>
-<tr class="memdesc:a630976e24ed3886cb1671aeaf69c468a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the string to print in the margin.  <br /></td></tr>
-<tr class="separator:a630976e24ed3886cb1671aeaf69c468a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:adbed85fac1883baf96dc7b0de240db39" id="r_adbed85fac1883baf96dc7b0de240db39"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html">EdgeArrows</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#adbed85fac1883baf96dc7b0de240db39">arrows</a></td></tr>
-<tr class="memdesc:adbed85fac1883baf96dc7b0de240db39"><td class="mdescLeft">&#160;</td><td class="mdescRight">The arrows to be displayed.  <br /></td></tr>
-<tr class="separator:adbed85fac1883baf96dc7b0de240db39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff26d8c1667204c12906b75951a5415f" id="r_aff26d8c1667204c12906b75951a5415f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRose_1_1BitFlags.html">BitFlags</a>&lt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a35fb04d9ae3322494dfff269e18dded9">Flags</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#aff26d8c1667204c12906b75951a5415f">flags</a></td></tr>
-<tr class="memdesc:aff26d8c1667204c12906b75951a5415f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flags that hold and/or control the output state.  <br /></td></tr>
-<tr class="separator:aff26d8c1667204c12906b75951a5415f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0d12b4f7aa97cbc6fb8c7b0971764b1" id="r_ad0d12b4f7aa97cbc6fb8c7b0971764b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSawyer_1_1Optional.html">Sawyer::Optional</a>&lt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">EdgeArrows::VertexId</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#ad0d12b4f7aa97cbc6fb8c7b0971764b1">latestEntity</a></td></tr>
-<tr class="memdesc:ad0d12b4f7aa97cbc6fb8c7b0971764b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest pointable entity that was encountered in the output.  <br /></td></tr>
-<tr class="separator:ad0d12b4f7aa97cbc6fb8c7b0971764b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2331696b74b32b81884f73af94727cc1" id="r_a2331696b74b32b81884f73af94727cc1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a2331696b74b32b81884f73af94727cc1">maybeInsertArrow</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EdgeArrows::EndpointId</a> src, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EdgeArrows::EndpointId</a> tgt, size_t arrowId)</td></tr>
+<tr class="memdesc:a2331696b74b32b81884f73af94727cc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert an arrow into the graph if it isn't already there.  <br /></td></tr>
+<tr class="separator:a2331696b74b32b81884f73af94727cc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21d05d0206147928e88c3a12f339e6c5" id="r_a21d05d0206147928e88c3a12f339e6c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a21d05d0206147928e88c3a12f339e6c5">maybeInsertEndpoint</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EdgeArrows::EndpointId</a>)</td></tr>
+<tr class="memdesc:a21d05d0206147928e88c3a12f339e6c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert an arrow endpoint into the ordered list of endpoints.  <br /></td></tr>
+<tr class="separator:a21d05d0206147928e88c3a12f339e6c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a583d4bd5de9bdb9b2cb036e836b9c8df" id="r_a583d4bd5de9bdb9b2cb036e836b9c8df"><td class="memItemLeft" align="right" valign="top"><a id="a583d4bd5de9bdb9b2cb036e836b9c8df" name="a583d4bd5de9bdb9b2cb036e836b9c8df"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>haveEndpointId</b> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EdgeArrows::EndpointId</a>) const</td></tr>
+<tr class="memdesc:a583d4bd5de9bdb9b2cb036e836b9c8df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test whether we have an endpoint ID. <br /></td></tr>
+<tr class="separator:a583d4bd5de9bdb9b2cb036e836b9c8df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a424442bf46a3abff2120b08213f06d18" id="r_a424442bf46a3abff2120b08213f06d18"><td class="memItemLeft" align="right" valign="top"><a id="a424442bf46a3abff2120b08213f06d18" name="a424442bf46a3abff2120b08213f06d18"></a>
+CfgEndpoint::End&#160;</td><td class="memItemRight" valign="bottom"><b>whichEnd</b> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EdgeArrows::EndpointId</a>) const</td></tr>
+<tr class="memdesc:a424442bf46a3abff2120b08213f06d18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test whether an endpoint is the source or target of an arrow. <br /></td></tr>
+<tr class="separator:a424442bf46a3abff2120b08213f06d18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15ea1034a0831b78c2a32288b09869d8" id="r_a15ea1034a0831b78c2a32288b09869d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a15ea1034a0831b78c2a32288b09869d8">computeLayout</a> ()</td></tr>
+<tr class="memdesc:a15ea1034a0831b78c2a32288b09869d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute where arrows go in the margins.  <br /></td></tr>
+<tr class="separator:a15ea1034a0831b78c2a32288b09869d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3e061269af14b1ffcba1bff0a2a7313" id="r_aa3e061269af14b1ffcba1bff0a2a7313"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#aa3e061269af14b1ffcba1bff0a2a7313">render</a> ()</td></tr>
+<tr class="memdesc:aa3e061269af14b1ffcba1bff0a2a7313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructively render the arrows for a line of output.  <br /></td></tr>
+<tr class="separator:aa3e061269af14b1ffcba1bff0a2a7313"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85b64fff29bf3414f2ce161a4ffaf79f" id="r_a85b64fff29bf3414f2ce161a4ffaf79f"><td class="memItemLeft" align="right" valign="top"><a id="a85b64fff29bf3414f2ce161a4ffaf79f" name="a85b64fff29bf3414f2ce161a4ffaf79f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>debug</b> (std::ostream &amp;, const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a461d763e33e7cf0364b64e0af0c267a0">Partitioner2::PartitionerConstPtr</a> &amp;) const</td></tr>
+<tr class="memdesc:a85b64fff29bf3414f2ce161a4ffaf79f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show some debugging information. <br /></td></tr>
+<tr class="separator:a85b64fff29bf3414f2ce161a4ffaf79f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:aabe746c5e3f12afd34a8dde685d3eccd" id="r_aabe746c5e3f12afd34a8dde685d3eccd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin_1_1CfgEndpoint.html">CfgEndpoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#aabe746c5e3f12afd34a8dde685d3eccd">makeCfgEndpoint</a> (CfgEndpoint::End, const Partitioner2::ControlFlowGraph::Edge &amp;)</td></tr>
+<tr class="memdesc:aabe746c5e3f12afd34a8dde685d3eccd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an arrow endpoint.  <br /></td></tr>
+<tr class="separator:aabe746c5e3f12afd34a8dde685d3eccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0c4000d0c5f2a7b15b938bc5ae24342" id="r_aa0c4000d0c5f2a7b15b938bc5ae24342"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EdgeArrows::EndpointId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#aa0c4000d0c5f2a7b15b938bc5ae24342">getEndpoint</a> (CfgEndpoint::End, const Partitioner2::ControlFlowGraph::Edge &amp;)</td></tr>
+<tr class="memdesc:aa0c4000d0c5f2a7b15b938bc5ae24342"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an arrow endpoint.  <br /></td></tr>
+<tr class="separator:aa0c4000d0c5f2a7b15b938bc5ae24342"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:ae0420c28749081139f76343562cd971a" id="r_ae0420c28749081139f76343562cd971a"><td class="memItemLeft" align="right" valign="top"><a id="ae0420c28749081139f76343562cd971a" name="ae0420c28749081139f76343562cd971a"></a>
+<a class="el" href="classSawyer_1_1Optional.html">Sawyer::Optional</a>&lt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EdgeArrows::EndpointId</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>findEndpoint</b> (CfgEndpoint::End, const Partitioner2::ControlFlowGraph::Edge &amp;) const</td></tr>
+<tr class="memdesc:ae0420c28749081139f76343562cd971a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test whether we have an endpoint ID for a particular line of output given some info about what's on that line. <br /></td></tr>
+<tr class="separator:ae0420c28749081139f76343562cd971a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac35dcb41b78c68e6330bde0e04c4d006" id="r_ac35dcb41b78c68e6330bde0e04c4d006"><td class="memItemLeft" align="right" valign="top"><a id="ac35dcb41b78c68e6330bde0e04c4d006" name="ac35dcb41b78c68e6330bde0e04c4d006"></a>
+<a class="el" href="classSawyer_1_1Optional.html">Sawyer::Optional</a>&lt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EdgeArrows::EndpointId</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>findEndpoint</b> (CfgEndpoint::End, const Partitioner2::ControlFlowGraph::Vertex &amp;) const</td></tr>
+<tr class="memdesc:ac35dcb41b78c68e6330bde0e04c4d006"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test whether we have an endpoint ID for a particular line of output given some info about what's on that line. <br /></td></tr>
+<tr class="separator:ac35dcb41b78c68e6330bde0e04c4d006"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a675d1b85dfb2dc25f99d39f078415ab4" id="r_a675d1b85dfb2dc25f99d39f078415ab4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a675d1b85dfb2dc25f99d39f078415ab4">atPossibleEndpoint</a> (CfgEndpoint::End, const Partitioner2::ControlFlowGraph::Edge &amp;)</td></tr>
+<tr class="memdesc:a675d1b85dfb2dc25f99d39f078415ab4"><td class="mdescLeft">&#160;</td><td class="mdescRight">While generating output, indicate what line we're at.  <br /></td></tr>
+<tr class="separator:a675d1b85dfb2dc25f99d39f078415ab4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a956cb3aab9f4885b8a85cae845280c2b" id="r_a956cb3aab9f4885b8a85cae845280c2b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a956cb3aab9f4885b8a85cae845280c2b">atPossibleEndpoint</a> (CfgEndpoint::End, const Partitioner2::ControlFlowGraph::Vertex &amp;)</td></tr>
+<tr class="memdesc:a956cb3aab9f4885b8a85cae845280c2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">While generating output, indicate what line we're at.  <br /></td></tr>
+<tr class="separator:a956cb3aab9f4885b8a85cae845280c2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a35fb04d9ae3322494dfff269e18dded9" name="a35fb04d9ae3322494dfff269e18dded9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35fb04d9ae3322494dfff269e18dded9">&#9670;&#160;</a></span>Flags</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a35fb04d9ae3322494dfff269e18dded9">Rose::BinaryAnalysis::Unparser::ArrowMargin::Flags</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Flags controlling the finer aspects of margin arrows. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a35fb04d9ae3322494dfff269e18dded9a8ee5a3c3d5044573e8a1ef77930f97fd" name="a35fb04d9ae3322494dfff269e18dded9a8ee5a3c3d5044573e8a1ef77930f97fd"></a>POINTABLE_ENTITY_START&#160;</td><td class="fielddoc"><p>Set this flag when you want the emitLinePrefix function to treat the next possible line as the start of a pointable entity. </p>
-<p>The actual start is delayed until an appropriate state is reached. When the entity does finally start, the emitLinePrefix function will clear this flag and set the corresponding EMIT flag instead. The start of a pointable entity serves as the line to which arrows point. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a35fb04d9ae3322494dfff269e18dded9ab2e08e00a16c365822e983e1b5d374d7" name="a35fb04d9ae3322494dfff269e18dded9ab2e08e00a16c365822e983e1b5d374d7"></a>POINTABLE_ENTITY_END&#160;</td><td class="fielddoc"><p>Set this flag when you want the emitLinePrefix function to treat the next line as the end of a pointable entity. </p>
-<p>The end of an entity is from whence arrows emanate. The emitLinePrefix will clear this flag at the next opportunity. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a35fb04d9ae3322494dfff269e18dded9a373999cb80c1cef80eb2d2b09213db44" name="a35fb04d9ae3322494dfff269e18dded9a373999cb80c1cef80eb2d2b09213db44"></a>POINTABLE_ENTITY_INSIDE&#160;</td><td class="fielddoc"><p>This flag is modified automatically by the emitLinePrefix function. </p>
-<p>There is no need to adjust it. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a35fb04d9ae3322494dfff269e18dded9aea0bcb6fe54a1e38b387e637b047319b" name="a35fb04d9ae3322494dfff269e18dded9aea0bcb6fe54a1e38b387e637b047319b"></a>ALWAYS_RENDER&#160;</td><td class="fielddoc"><p>If set, then emit the prefix area even if we seem to be generating output that the unparser would otherwise consider to be before or after the set of arrows. </p>
-<p>This flag is not adjusted by the renderer. </p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="Unparser_2Base_8h_source.html#l00051">51</a> of file <a class="el" href="Unparser_2Base_8h_source.html">Unparser/Base.h</a>.</p>
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a54039b5a2a55b9393761a72dd7bf62b8" name="a54039b5a2a55b9393761a72dd7bf62b8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a54039b5a2a55b9393761a72dd7bf62b8">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Rose::BinaryAnalysis::Unparser::ArrowMargin::reset </td>
@@ -169,24 +163,217 @@ Public Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Reset the marging arrow state. </p>
+<p>Reset the margin arrow state. </p>
 <p>This should be called near the end of emitting a function, probably just before emitting the function epilogue. </p>
 
-<p class="definition">Definition at line <a class="el" href="Unparser_2Base_8h_source.html#l00078">78</a> of file <a class="el" href="Unparser_2Base_8h_source.html">Unparser/Base.h</a>.</p>
+</div>
+</div>
+<a id="aabe746c5e3f12afd34a8dde685d3eccd" name="aabe746c5e3f12afd34a8dde685d3eccd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabe746c5e3f12afd34a8dde685d3eccd">&#9670;&#160;</a></span>makeCfgEndpoint()</h2>
 
-<p class="reference">References <a class="el" href="Unparser_2Base_8h_source.html#l00071">arrows</a>, <a class="el" href="Unparser_2Base_8h_source.html#l00072">flags</a>, <a class="el" href="Unparser_2Base_8h_source.html#l00073">latestEntity</a>, and <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#ad21e5786dbdec8750ce742bc188e05b9">Rose::BinaryAnalysis::Unparser::EdgeArrows::reset()</a>.</p>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin_1_1CfgEndpoint.html">CfgEndpoint</a> Rose::BinaryAnalysis::Unparser::ArrowMargin::makeCfgEndpoint </td>
+          <td>(</td>
+          <td class="paramtype">CfgEndpoint::End&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Partitioner2::ControlFlowGraph::Edge &amp;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get an arrow endpoint. </p>
+<p>Given a CFG edge, return an arrow endpoint ID. Arrow endpoint IDs are unique. </p>
 
 </div>
 </div>
-<a id="a630976e24ed3886cb1671aeaf69c468a" name="a630976e24ed3886cb1671aeaf69c468a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a630976e24ed3886cb1671aeaf69c468a">&#9670;&#160;</a></span>render()</h2>
+<a id="aa0c4000d0c5f2a7b15b938bc5ae24342" name="aa0c4000d0c5f2a7b15b938bc5ae24342"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0c4000d0c5f2a7b15b938bc5ae24342">&#9670;&#160;</a></span>getEndpoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EdgeArrows::EndpointId</a> Rose::BinaryAnalysis::Unparser::ArrowMargin::getEndpoint </td>
+          <td>(</td>
+          <td class="paramtype">CfgEndpoint::End&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Partitioner2::ControlFlowGraph::Edge &amp;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get an arrow endpoint. </p>
+<p>Given a CFG edge, return an arrow endpoint ID. Arrow endpoint IDs are unique. </p>
+
+</div>
+</div>
+<a id="a2331696b74b32b81884f73af94727cc1" name="a2331696b74b32b81884f73af94727cc1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2331696b74b32b81884f73af94727cc1">&#9670;&#160;</a></span>maybeInsertArrow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Rose::BinaryAnalysis::Unparser::ArrowMargin::maybeInsertArrow </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EdgeArrows::EndpointId</a>&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EdgeArrows::EndpointId</a>&#160;</td>
+          <td class="paramname"><em>tgt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>arrowId</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Insert an arrow into the graph if it isn't already there. </p>
+<p>The arrow ID should be the same as the CFG edge ID that it represents. </p>
+
+</div>
+</div>
+<a id="a21d05d0206147928e88c3a12f339e6c5" name="a21d05d0206147928e88c3a12f339e6c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21d05d0206147928e88c3a12f339e6c5">&#9670;&#160;</a></span>maybeInsertEndpoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Rose::BinaryAnalysis::Unparser::ArrowMargin::maybeInsertEndpoint </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EdgeArrows::EndpointId</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Insert an arrow endpoint into the ordered list of endpoints. </p>
+<p>Endpoints should be inserted in the same order they're emitted to the output. It is not necessary to insert endpoints before inserting the arrows to which they're attached. </p>
+
+</div>
+</div>
+<a id="a15ea1034a0831b78c2a32288b09869d8" name="a15ea1034a0831b78c2a32288b09869d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15ea1034a0831b78c2a32288b09869d8">&#9670;&#160;</a></span>computeLayout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Rose::BinaryAnalysis::Unparser::ArrowMargin::computeLayout </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute where arrows go in the margins. </p>
+<p>Before calling this, you must have inserted some arrows and endpoints. </p>
+
+</div>
+</div>
+<a id="a675d1b85dfb2dc25f99d39f078415ab4" name="a675d1b85dfb2dc25f99d39f078415ab4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a675d1b85dfb2dc25f99d39f078415ab4">&#9670;&#160;</a></span>atPossibleEndpoint() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Rose::BinaryAnalysis::Unparser::ArrowMargin::atPossibleEndpoint </td>
+          <td>(</td>
+          <td class="paramtype">CfgEndpoint::End&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Partitioner2::ControlFlowGraph::Edge &amp;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>While generating output, indicate what line we're at. </p>
+<p>The line could be one that describes an endpoint of a CFG edge, or it could be an instruction at the beginning or end of a CFG vertex (basic block). </p>
+
+</div>
+</div>
+<a id="a956cb3aab9f4885b8a85cae845280c2b" name="a956cb3aab9f4885b8a85cae845280c2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a956cb3aab9f4885b8a85cae845280c2b">&#9670;&#160;</a></span>atPossibleEndpoint() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Rose::BinaryAnalysis::Unparser::ArrowMargin::atPossibleEndpoint </td>
+          <td>(</td>
+          <td class="paramtype">CfgEndpoint::End&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Partitioner2::ControlFlowGraph::Vertex &amp;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>While generating output, indicate what line we're at. </p>
+<p>The line could be one that describes an endpoint of a CFG edge, or it could be an instruction at the beginning or end of a CFG vertex (basic block). </p>
+
+</div>
+</div>
+<a id="aa3e061269af14b1ffcba1bff0a2a7313" name="aa3e061269af14b1ffcba1bff0a2a7313"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3e061269af14b1ffcba1bff0a2a7313">&#9670;&#160;</a></span>render()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -194,76 +381,14 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="memname">std::string Rose::BinaryAnalysis::Unparser::ArrowMargin::render </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSawyer_1_1Optional.html">Sawyer::Optional</a>&lt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">EdgeArrows::VertexId</a> &gt;&#160;</td>
-          <td class="paramname"><em>currentEntity</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Generate the string to print in the margin. </p>
-<p>The <code>currentEntity</code> values are the vertex IDs used to initialize the <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#adbed85fac1883baf96dc7b0de240db39">arrows</a> method of this object. For control flow graphs, that's usually the entry address of a basic block. However, the unparser doesn't really care what kind of entities are being pointed at by the arrows. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="adbed85fac1883baf96dc7b0de240db39" name="adbed85fac1883baf96dc7b0de240db39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbed85fac1883baf96dc7b0de240db39">&#9670;&#160;</a></span>arrows</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html">EdgeArrows</a> Rose::BinaryAnalysis::Unparser::ArrowMargin::arrows</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The arrows to be displayed. </p>
-
-<p class="definition">Definition at line <a class="el" href="Unparser_2Base_8h_source.html#l00071">71</a> of file <a class="el" href="Unparser_2Base_8h_source.html">Unparser/Base.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="Unparser_2Base_8h_source.html#l00078">reset()</a>.</p>
-
-</div>
-</div>
-<a id="aff26d8c1667204c12906b75951a5415f" name="aff26d8c1667204c12906b75951a5415f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff26d8c1667204c12906b75951a5415f">&#9670;&#160;</a></span>flags</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classRose_1_1BitFlags.html">BitFlags</a>&lt;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a35fb04d9ae3322494dfff269e18dded9">Flags</a>&gt; Rose::BinaryAnalysis::Unparser::ArrowMargin::flags</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Flags that hold and/or control the output state. </p>
-
-<p class="definition">Definition at line <a class="el" href="Unparser_2Base_8h_source.html#l00072">72</a> of file <a class="el" href="Unparser_2Base_8h_source.html">Unparser/Base.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="Unparser_2Base_8h_source.html#l00078">reset()</a>.</p>
-
-</div>
-</div>
-<a id="ad0d12b4f7aa97cbc6fb8c7b0971764b1" name="ad0d12b4f7aa97cbc6fb8c7b0971764b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0d12b4f7aa97cbc6fb8c7b0971764b1">&#9670;&#160;</a></span>latestEntity</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classSawyer_1_1Optional.html">Sawyer::Optional</a>&lt;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">EdgeArrows::VertexId</a>&gt; Rose::BinaryAnalysis::Unparser::ArrowMargin::latestEntity</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Latest pointable entity that was encountered in the output. </p>
-
-<p class="definition">Definition at line <a class="el" href="Unparser_2Base_8h_source.html#l00073">73</a> of file <a class="el" href="Unparser_2Base_8h_source.html">Unparser/Base.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="Unparser_2Base_8h_source.html#l00078">reset()</a>.</p>
+<p>Destructively render the arrows for a line of output. </p>
+<p>If we're at an arrow endpoint in the output (see <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1ArrowMargin.html#a675d1b85dfb2dc25f99d39f078415ab4">atPossibleEndpoint</a>) then calling this function advances beyond that line of output. </p>
 
 </div>
 </div>
@@ -273,7 +398,7 @@ Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Oct 2 2024 00:09:11 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon Jan 19 2026 17:24:50 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.141</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
    </div>
   </td>
  </tr>
@@ -67,13 +67,13 @@ $(function() {
 <a name="details" id="details"></a><h2 class="groupheader">Description</h2>
 <div class="textblock"><p>Hash interface. </p>
 <p>This class defines the API for hash functions. A hash function takes an arbitrary size message as input and returns a fixed size digest. The subclasses implement specific hash functions, the digests of which are different sizes. For instance, a SHA1 digest is always 20 bytes, and a SHA512 digest is always 64 bytes.</p>
-<p>The digest can be computed incrementally by inserting the message in parts using various <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a1d6559294e3ea5c10115a78b6f9a43b5">insert</a> functions. Once the message has been fully inserted, the digest can be obtained with the <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa476aa76341ab9768dbb27a23638d927">digest</a> function. The <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa476aa76341ab9768dbb27a23638d927">digest</a> can be retrieved repeatedly, but no additional message parts can be added once a digest is retrieved (doing so will result in an <a class="el" href="classRose_1_1Combinatorics_1_1Hasher_1_1Exception.html">Exception</a> being thrown). However, the hasher can be reset to an initial state by calling <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa1c54c468e0c46ebc38667a626dace97">clear</a>, after which a new message can be inserted. Subclasses that return hashes that are 8 bytes or narrower sometimes have an additional method that returns the digest as an unsigned integer (but the <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa476aa76341ab9768dbb27a23638d927">digest</a> method must always be present).</p>
+<p>The digest can be computed incrementally by inserting the message in parts using various <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a23d005327e30917f77b5ef2821dfa790">insert</a> functions. Once the message has been fully inserted, the digest can be obtained with the <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa476aa76341ab9768dbb27a23638d927">digest</a> function. The <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa476aa76341ab9768dbb27a23638d927">digest</a> can be retrieved repeatedly, but no additional message parts can be added once a digest is retrieved (doing so will result in an <a class="el" href="classRose_1_1Combinatorics_1_1Hasher_1_1Exception.html">Exception</a> being thrown). However, the hasher can be reset to an initial state by calling <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa1c54c468e0c46ebc38667a626dace97">clear</a>, after which a new message can be inserted. Subclasses that return hashes that are 8 bytes or narrower sometimes have an additional method that returns the digest as an unsigned integer (but the <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa476aa76341ab9768dbb27a23638d927">digest</a> method must always be present).</p>
 <p><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html" title="Hash interface.">Hasher</a> objects are copyable. The new hasher starts out in the same state as the original hasher, but then they can diverge from one another. For instance, if you have a multi-part message and want an intermediate hash, the easiest way to do that is to insert some message parts into a hasher, then make a copy to obtain its digest, then continue inserting message parts into the original hasher (the copy cannot accept more parts since we called its <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa476aa76341ab9768dbb27a23638d927">digest</a> method). Obtaining intermediate hashes this way is usually faster than re-hashing.</p>
 <p>The API contains a few functions for printing hashes. There's a <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a4fcf0893086af7115537f8c99a4b5074">toString</a> function that can return the digest as a hexadecimal string and a static version that that converts a given digest to a string. Also, using a hasher in an <code>std::ostream</code> output operator is the same as obtaining the hasher's digest, formatting it, and sending the string to the stream. All these functions (except the static <code>toString</code>) call <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa476aa76341ab9768dbb27a23638d927">digest</a> under the covers, thus finalizing the hasher.</p>
 <p>New hash functions can be created very easily by subclassing <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html" title="Hash interface.">Hasher</a> and defining an <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#af6c1b5c1d3de7cc64968ee2a47582b79">append</a> method. Often, this is all that's necessary. Other commonly overridden functions are the constructor, <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa1c54c468e0c46ebc38667a626dace97">clear</a>, and <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa476aa76341ab9768dbb27a23638d927">digest</a>. The subclasses generally have names beginning with the string "Hasher" so they can be found easily in alphabetical class listings. For instance, see the classes and typedefs in the <a class="el" href="namespaceRose_1_1Combinatorics.html">Rose::Combinatorics</a> namespace.</p>
 <p>If a hasher uses an external library (like libgcrypt) then it should be designed in such a way that the code that uses the hash compiles, but throws an exception. The <a class="el" href="classRose_1_1Combinatorics_1_1Hasher_1_1Exception.html">Exception</a> class is intended for this purpose, as well as all other situations where hashing fails. </p>
 
-<p class="definition">Definition at line <a class="el" href="Combinatorics_8h_source.html#l00174">174</a> of file <a class="el" href="Combinatorics_8h_source.html">Combinatorics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Combinatorics_8h_source.html#l00181">181</a> of file <a class="el" href="Combinatorics_8h_source.html">Combinatorics.h</a>.</p>
 </div>
 <p><code>#include &lt;<a class="el" href="Combinatorics_8h_source.html">roseSupport/Combinatorics.h</a>&gt;</code></p>
 <div class="dynheader">
@@ -107,13 +107,13 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exceptions for hashing.  <a href="classRose_1_1Combinatorics_1_1Hasher_1_1Exception.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher_1_1HasherFactory.html">HasherFactory</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher_1_1HasherFactory.html" title="HasherFactory is a singleton that creates and returns Hashers by name.">HasherFactory</a> is a singleton that creates and returns Hashers by name.  <a href="classRose_1_1Combinatorics_1_1Hasher_1_1HasherFactory.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A singleton that creates and returns Hashers by name.  <a href="classRose_1_1Combinatorics_1_1Hasher_1_1HasherFactory.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher_1_1HasherMaker.html">HasherMaker</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Templated to create any <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html" title="Hash interface.">Hasher</a> and register it with <a class="el" href="classRose_1_1Combinatorics_1_1Hasher_1_1HasherFactory.html">HasherFactory</a>.  <a href="classRose_1_1Combinatorics_1_1Hasher_1_1HasherMaker.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher_1_1IHasherMaker.html">IHasherMaker</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common subclass all the classes that construct Hashers (for the <a class="el" href="classRose_1_1Combinatorics_1_1Hasher_1_1HasherFactory.html" title="HasherFactory is a singleton that creates and returns Hashers by name.">HasherFactory</a>)  <a href="classRose_1_1Combinatorics_1_1Hasher_1_1IHasherMaker.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common subclass all the classes that construct Hashers.  <a href="classRose_1_1Combinatorics_1_1Hasher_1_1IHasherMaker.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
@@ -136,32 +136,38 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a434d6e3b246624b18779ad0bbfe059e8" id="r_a434d6e3b246624b18779ad0bbfe059e8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a434d6e3b246624b18779ad0bbfe059e8">toString</a> ()</td></tr>
 <tr class="memdesc:a434d6e3b246624b18779ad0bbfe059e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">String representation of the digest.  <br /></td></tr>
 <tr class="separator:a434d6e3b246624b18779ad0bbfe059e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf17b31a75d0b1cfef50e2b15bcb22e8" id="r_abf17b31a75d0b1cfef50e2b15bcb22e8"><td class="memItemLeft" align="right" valign="top"><a id="abf17b31a75d0b1cfef50e2b15bcb22e8" name="abf17b31a75d0b1cfef50e2b15bcb22e8"></a>
+uint64_t&#160;</td><td class="memItemRight" valign="bottom"><b>make64Bits</b> ()</td></tr>
+<tr class="separator:abf17b31a75d0b1cfef50e2b15bcb22e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40c7217db7e9abcf8248b9df9e85381b" id="r_a40c7217db7e9abcf8248b9df9e85381b"><td class="memItemLeft" align="right" valign="top"><a id="a40c7217db7e9abcf8248b9df9e85381b" name="a40c7217db7e9abcf8248b9df9e85381b"></a>
+uint64_t&#160;</td><td class="memItemRight" valign="bottom"><b>make64Bits</b> (const <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a484cd4261138ad3202351553a72ac248">Digest</a> &amp;)</td></tr>
+<tr class="separator:a40c7217db7e9abcf8248b9df9e85381b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5fb8cad9531f52ea90bd87a248ea95c" id="r_ab5fb8cad9531f52ea90bd87a248ea95c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#ab5fb8cad9531f52ea90bd87a248ea95c">print</a> (std::ostream &amp;)</td></tr>
 <tr class="memdesc:ab5fb8cad9531f52ea90bd87a248ea95c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a hash to a stream.  <br /></td></tr>
 <tr class="separator:ab5fb8cad9531f52ea90bd87a248ea95c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:a1d6559294e3ea5c10115a78b6f9a43b5" id="r_a1d6559294e3ea5c10115a78b6f9a43b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a1d6559294e3ea5c10115a78b6f9a43b5">insert</a> (const std::string &amp;x)</td></tr>
-<tr class="memdesc:a1d6559294e3ea5c10115a78b6f9a43b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert data into the digest.  <br /></td></tr>
-<tr class="separator:a1d6559294e3ea5c10115a78b6f9a43b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a230aa28dbb592bac9bd83654fe041d4b" id="r_a230aa28dbb592bac9bd83654fe041d4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a230aa28dbb592bac9bd83654fe041d4b">insert</a> (uint64_t x)</td></tr>
-<tr class="memdesc:a230aa28dbb592bac9bd83654fe041d4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert data into the digest.  <br /></td></tr>
-<tr class="separator:a230aa28dbb592bac9bd83654fe041d4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae73fa652919844e7f797909e126bbe3a" id="r_ae73fa652919844e7f797909e126bbe3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#ae73fa652919844e7f797909e126bbe3a">insert</a> (const uint8_t *x, size_t size)</td></tr>
-<tr class="memdesc:ae73fa652919844e7f797909e126bbe3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert data into the digest.  <br /></td></tr>
-<tr class="separator:ae73fa652919844e7f797909e126bbe3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d615eab652e56a34e74d71fb830252b" id="r_a4d615eab652e56a34e74d71fb830252b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a4d615eab652e56a34e74d71fb830252b">insert</a> (const std::vector&lt; uint8_t &gt; &amp;v)</td></tr>
-<tr class="memdesc:a4d615eab652e56a34e74d71fb830252b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert data into the digest.  <br /></td></tr>
-<tr class="separator:a4d615eab652e56a34e74d71fb830252b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf9ad1d9784b38af7a8c98a0ce0c5ad9" id="r_adf9ad1d9784b38af7a8c98a0ce0c5ad9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#adf9ad1d9784b38af7a8c98a0ce0c5ad9">insert</a> (std::istream &amp;stream)</td></tr>
-<tr class="memdesc:adf9ad1d9784b38af7a8c98a0ce0c5ad9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert data into the digest.  <br /></td></tr>
-<tr class="separator:adf9ad1d9784b38af7a8c98a0ce0c5ad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23d005327e30917f77b5ef2821dfa790" id="r_a23d005327e30917f77b5ef2821dfa790"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a23d005327e30917f77b5ef2821dfa790">insert</a> (const std::string &amp;)</td></tr>
+<tr class="memdesc:a23d005327e30917f77b5ef2821dfa790"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert data into the digest.  <br /></td></tr>
+<tr class="separator:a23d005327e30917f77b5ef2821dfa790"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4de3b36e604c2227c068cb6a4176dd4f" id="r_a4de3b36e604c2227c068cb6a4176dd4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a4de3b36e604c2227c068cb6a4176dd4f">insert</a> (uint64_t)</td></tr>
+<tr class="memdesc:a4de3b36e604c2227c068cb6a4176dd4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert data into the digest.  <br /></td></tr>
+<tr class="separator:a4de3b36e604c2227c068cb6a4176dd4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab02fd7f04f920bb5a9780e38219781c4" id="r_ab02fd7f04f920bb5a9780e38219781c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#ab02fd7f04f920bb5a9780e38219781c4">insert</a> (const uint8_t *bytes, size_t nBytes)</td></tr>
+<tr class="memdesc:ab02fd7f04f920bb5a9780e38219781c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert data into the digest.  <br /></td></tr>
+<tr class="separator:ab02fd7f04f920bb5a9780e38219781c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4f4b3cb9ce784ee342361ff722eeb11" id="r_ae4f4b3cb9ce784ee342361ff722eeb11"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#ae4f4b3cb9ce784ee342361ff722eeb11">insert</a> (const std::vector&lt; uint8_t &gt; &amp;)</td></tr>
+<tr class="memdesc:ae4f4b3cb9ce784ee342361ff722eeb11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert data into the digest.  <br /></td></tr>
+<tr class="separator:ae4f4b3cb9ce784ee342361ff722eeb11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9850a727f4cd4b8d9f641a6e35613dfb" id="r_a9850a727f4cd4b8d9f641a6e35613dfb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a9850a727f4cd4b8d9f641a6e35613dfb">insert</a> (std::istream &amp;)</td></tr>
+<tr class="memdesc:a9850a727f4cd4b8d9f641a6e35613dfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert data into the digest.  <br /></td></tr>
+<tr class="separator:a9850a727f4cd4b8d9f641a6e35613dfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:abf17b31a75d0b1cfef50e2b15bcb22e8" id="r_abf17b31a75d0b1cfef50e2b15bcb22e8"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#abf17b31a75d0b1cfef50e2b15bcb22e8">make64Bits</a> ()</td></tr>
-<tr class="memdesc:abf17b31a75d0b1cfef50e2b15bcb22e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the hash as a 64 bit int.  <br /></td></tr>
-<tr class="separator:abf17b31a75d0b1cfef50e2b15bcb22e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40c7217db7e9abcf8248b9df9e85381b" id="r_a40c7217db7e9abcf8248b9df9e85381b"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a40c7217db7e9abcf8248b9df9e85381b">make64Bits</a> (const <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a484cd4261138ad3202351553a72ac248">Digest</a> &amp;)</td></tr>
-<tr class="memdesc:a40c7217db7e9abcf8248b9df9e85381b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the hash as a 64 bit int.  <br /></td></tr>
-<tr class="separator:a40c7217db7e9abcf8248b9df9e85381b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7e5066668bf0f091ac606725eb81f9c" id="r_af7e5066668bf0f091ac606725eb81f9c"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#af7e5066668bf0f091ac606725eb81f9c">toU64</a> ()</td></tr>
+<tr class="memdesc:af7e5066668bf0f091ac606725eb81f9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the hash as a 64 bit int.  <br /></td></tr>
+<tr class="separator:af7e5066668bf0f091ac606725eb81f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a972834532478a7a54ffeb52d8a7b65ca" id="r_a972834532478a7a54ffeb52d8a7b65ca"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a972834532478a7a54ffeb52d8a7b65ca">toU64</a> (const <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a484cd4261138ad3202351553a72ac248">Digest</a> &amp;)</td></tr>
+<tr class="memdesc:a972834532478a7a54ffeb52d8a7b65ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the hash as a 64 bit int.  <br /></td></tr>
+<tr class="separator:a972834532478a7a54ffeb52d8a7b65ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -191,7 +197,7 @@ Protected Attributes</h2></td></tr>
 <p>The digest of the input message. </p>
 <p>Since different hash functions have different sized digests, the digest is represented most generically as a vector of bytes. </p>
 
-<p class="definition">Definition at line <a class="el" href="Combinatorics_8h_source.html#l00180">180</a> of file <a class="el" href="Combinatorics_8h_source.html">Combinatorics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Combinatorics_8h_source.html#l00187">187</a> of file <a class="el" href="Combinatorics_8h_source.html">Combinatorics.h</a>.</p>
 
 </div>
 </div>
@@ -219,7 +225,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Combinatorics_8h_source.html#l00194">194</a> of file <a class="el" href="Combinatorics_8h_source.html">Combinatorics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Combinatorics_8h_source.html#l00201">201</a> of file <a class="el" href="Combinatorics_8h_source.html">Combinatorics.h</a>.</p>
 
 </div>
 </div>
@@ -242,7 +248,7 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -251,9 +257,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classRose_1_1Combinatorics_1_1HasherGcrypt.html#a445a47b55f60f69e141c2bcc2e2b5156">Rose::Combinatorics::HasherGcrypt&lt; hashAlgorithmId &gt;</a>, and <a class="el" href="classRose_1_1Combinatorics_1_1HasherSha256Builtin.html#a84769a6b7e2852d68feef5d6cfb0061c">Rose::Combinatorics::HasherSha256Builtin</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="Combinatorics_8h_source.html#l00197">197</a> of file <a class="el" href="Combinatorics_8h_source.html">Combinatorics.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="Combinatorics_8h_source.html#l00407">Rose::Combinatorics::HasherGcrypt&lt; hashAlgorithmId &gt;::clear()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Combinatorics_8h_source.html#l00390">Rose::Combinatorics::HasherGcrypt&lt; hashAlgorithmId &gt;::clear()</a>.</p>
 
 </div>
 </div>
@@ -275,7 +279,7 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -285,96 +289,71 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classRose_1_1Combinatorics_1_1HasherGcrypt.html#a92d928f80f71a1490c38245d642b34ea">Rose::Combinatorics::HasherGcrypt&lt; hashAlgorithmId &gt;</a>, <a class="el" href="classRose_1_1Combinatorics_1_1HasherFnv.html#a5368fff0debd66ccda5f20d555bbe85c">Rose::Combinatorics::HasherFnv</a>, and <a class="el" href="classRose_1_1Combinatorics_1_1HasherSha256Builtin.html#abb2653603d6d99e553c7aaaca8308ad9">Rose::Combinatorics::HasherSha256Builtin</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="Combinatorics_8h_source.html#l00203">203</a> of file <a class="el" href="Combinatorics_8h_source.html">Combinatorics.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="Combinatorics_8h_source.html#l00414">Rose::Combinatorics::HasherGcrypt&lt; hashAlgorithmId &gt;::digest()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Combinatorics_8h_source.html#l00397">Rose::Combinatorics::HasherGcrypt&lt; hashAlgorithmId &gt;::digest()</a>.</p>
 
 </div>
 </div>
-<a id="a1d6559294e3ea5c10115a78b6f9a43b5" name="a1d6559294e3ea5c10115a78b6f9a43b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d6559294e3ea5c10115a78b6f9a43b5">&#9670;&#160;</a></span>insert() <span class="overload">[1/5]</span></h2>
+<a id="a23d005327e30917f77b5ef2821dfa790" name="a23d005327e30917f77b5ef2821dfa790"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23d005327e30917f77b5ef2821dfa790">&#9670;&#160;</a></span>insert() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Rose::Combinatorics::Hasher::insert </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Insert data into the digest. </p>
 <p>This method inserts data into a digest. Data can only be inserted if the user has not called <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa476aa76341ab9768dbb27a23638d927">digest</a> yet. </p>
 
-<p class="definition">Definition at line <a class="el" href="Combinatorics_8h_source.html#l00210">210</a> of file <a class="el" href="Combinatorics_8h_source.html">Combinatorics.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l05964">SageInterface::addMangledNameToCache()</a>, and <a class="el" href="NullSemantics_8h_source.html#l00111">Rose::BinaryAnalysis::InstructionSemantics::NullSemantics::SValue::hash()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l05965">SageInterface::addMangledNameToCache()</a>.</p>
 
 </div>
 </div>
-<a id="a230aa28dbb592bac9bd83654fe041d4b" name="a230aa28dbb592bac9bd83654fe041d4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a230aa28dbb592bac9bd83654fe041d4b">&#9670;&#160;</a></span>insert() <span class="overload">[2/5]</span></h2>
+<a id="a4de3b36e604c2227c068cb6a4176dd4f" name="a4de3b36e604c2227c068cb6a4176dd4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4de3b36e604c2227c068cb6a4176dd4f">&#9670;&#160;</a></span>insert() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Rose::Combinatorics::Hasher::insert </td>
           <td>(</td>
           <td class="paramtype">uint64_t&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Insert data into the digest. </p>
 <p>This method inserts data into a digest. Data can only be inserted if the user has not called <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa476aa76341ab9768dbb27a23638d927">digest</a> yet. </p>
 
-<p class="definition">Definition at line <a class="el" href="Combinatorics_8h_source.html#l00211">211</a> of file <a class="el" href="Combinatorics_8h_source.html">Combinatorics.h</a>.</p>
-
 </div>
 </div>
-<a id="ae73fa652919844e7f797909e126bbe3a" name="ae73fa652919844e7f797909e126bbe3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae73fa652919844e7f797909e126bbe3a">&#9670;&#160;</a></span>insert() <span class="overload">[3/5]</span></h2>
+<a id="ab02fd7f04f920bb5a9780e38219781c4" name="ab02fd7f04f920bb5a9780e38219781c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab02fd7f04f920bb5a9780e38219781c4">&#9670;&#160;</a></span>insert() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Rose::Combinatorics::Hasher::insert </td>
           <td>(</td>
           <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
+          <td class="paramname"><em>bytes</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
+          <td class="paramname"><em>nBytes</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -382,79 +361,52 @@ Protected Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Insert data into the digest. </p>
 <p>This method inserts data into a digest. Data can only be inserted if the user has not called <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa476aa76341ab9768dbb27a23638d927">digest</a> yet. </p>
 
-<p class="definition">Definition at line <a class="el" href="Combinatorics_8h_source.html#l00212">212</a> of file <a class="el" href="Combinatorics_8h_source.html">Combinatorics.h</a>.</p>
-
 </div>
 </div>
-<a id="a4d615eab652e56a34e74d71fb830252b" name="a4d615eab652e56a34e74d71fb830252b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d615eab652e56a34e74d71fb830252b">&#9670;&#160;</a></span>insert() <span class="overload">[4/5]</span></h2>
+<a id="ae4f4b3cb9ce784ee342361ff722eeb11" name="ae4f4b3cb9ce784ee342361ff722eeb11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4f4b3cb9ce784ee342361ff722eeb11">&#9670;&#160;</a></span>insert() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Rose::Combinatorics::Hasher::insert </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; uint8_t &gt; &amp;&#160;</td>
-          <td class="paramname"><em>v</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Insert data into the digest. </p>
 <p>This method inserts data into a digest. Data can only be inserted if the user has not called <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa476aa76341ab9768dbb27a23638d927">digest</a> yet. </p>
 
-<p class="definition">Definition at line <a class="el" href="Combinatorics_8h_source.html#l00213">213</a> of file <a class="el" href="Combinatorics_8h_source.html">Combinatorics.h</a>.</p>
-
 </div>
 </div>
-<a id="adf9ad1d9784b38af7a8c98a0ce0c5ad9" name="adf9ad1d9784b38af7a8c98a0ce0c5ad9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf9ad1d9784b38af7a8c98a0ce0c5ad9">&#9670;&#160;</a></span>insert() <span class="overload">[5/5]</span></h2>
+<a id="a9850a727f4cd4b8d9f641a6e35613dfb" name="a9850a727f4cd4b8d9f641a6e35613dfb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9850a727f4cd4b8d9f641a6e35613dfb">&#9670;&#160;</a></span>insert() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Rose::Combinatorics::Hasher::insert </td>
           <td>(</td>
           <td class="paramtype">std::istream &amp;&#160;</td>
-          <td class="paramname"><em>stream</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Insert data into the digest. </p>
 <p>This method inserts data into a digest. Data can only be inserted if the user has not called <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa476aa76341ab9768dbb27a23638d927">digest</a> yet. </p>
-
-<p class="definition">Definition at line <a class="el" href="Combinatorics_8h_source.html#l00214">214</a> of file <a class="el" href="Combinatorics_8h_source.html">Combinatorics.h</a>.</p>
 
 </div>
 </div>
@@ -515,18 +467,18 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>String representation of the digest. </p>
-<p>This works by first calling <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa476aa76341ab9768dbb27a23638d927">digest</a>, which finalizes the hasher and thus later calls to <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a1d6559294e3ea5c10115a78b6f9a43b5">insert</a> will not be permitted unless the hasher is first reset. </p>
+<p>This works by first calling <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#aa476aa76341ab9768dbb27a23638d927">digest</a>, which finalizes the hasher and thus later calls to <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a23d005327e30917f77b5ef2821dfa790">insert</a> will not be permitted unless the hasher is first reset. </p>
 
 </div>
 </div>
-<a id="abf17b31a75d0b1cfef50e2b15bcb22e8" name="abf17b31a75d0b1cfef50e2b15bcb22e8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf17b31a75d0b1cfef50e2b15bcb22e8">&#9670;&#160;</a></span>make64Bits() <span class="overload">[1/2]</span></h2>
+<a id="af7e5066668bf0f091ac606725eb81f9c" name="af7e5066668bf0f091ac606725eb81f9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7e5066668bf0f091ac606725eb81f9c">&#9670;&#160;</a></span>toU64() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint64_t Rose::Combinatorics::Hasher::make64Bits </td>
+          <td class="memname">uint64_t Rose::Combinatorics::Hasher::toU64 </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -535,20 +487,20 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the hash as a 64 bit int. </p>
-<p>The return value is computed by a sequence of shift and xor operations across all bytes of the digest. If the digest is eight or fewer bytes, then this degenerates to the uint64_t interpretation of the big-endian digest </p>
+<p>The return value is computed by a sequence of shift and xor operations across all bytes of the digest. If the digest is eight or fewer bytes, then this degenerates to the uint64_t interpretation of the big-endian digest. </p>
 
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l05964">SageInterface::addMangledNameToCache()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l05965">SageInterface::addMangledNameToCache()</a>.</p>
 
 </div>
 </div>
-<a id="a40c7217db7e9abcf8248b9df9e85381b" name="a40c7217db7e9abcf8248b9df9e85381b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40c7217db7e9abcf8248b9df9e85381b">&#9670;&#160;</a></span>make64Bits() <span class="overload">[2/2]</span></h2>
+<a id="a972834532478a7a54ffeb52d8a7b65ca" name="a972834532478a7a54ffeb52d8a7b65ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a972834532478a7a54ffeb52d8a7b65ca">&#9670;&#160;</a></span>toU64() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint64_t Rose::Combinatorics::Hasher::make64Bits </td>
+          <td class="memname">uint64_t Rose::Combinatorics::Hasher::toU64 </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classRose_1_1Combinatorics_1_1Hasher.html#a484cd4261138ad3202351553a72ac248">Digest</a> &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -558,7 +510,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the hash as a 64 bit int. </p>
-<p>The return value is computed by a sequence of shift and xor operations across all bytes of the digest. If the digest is eight or fewer bytes, then this degenerates to the uint64_t interpretation of the big-endian digest </p>
+<p>The return value is computed by a sequence of shift and xor operations across all bytes of the digest. If the digest is eight or fewer bytes, then this degenerates to the uint64_t interpretation of the big-endian digest. </p>
 
 </div>
 </div>
@@ -604,7 +556,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Combinatorics_8h_source.html#l00191">191</a> of file <a class="el" href="Combinatorics_8h_source.html">Combinatorics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Combinatorics_8h_source.html#l00198">198</a> of file <a class="el" href="Combinatorics_8h_source.html">Combinatorics.h</a>.</p>
 
 </div>
 </div>
@@ -614,7 +566,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Oct 2 2024 00:09:11 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon Jan 19 2026 17:24:51 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.141</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
    </div>
   </td>
  </tr>
@@ -91,78 +91,73 @@ The graph must support the BGL adjacency_list graph API with the following featu
   &lt;li&gt;the boost::vertex_name property is a SgAsmBlock pointer.&lt;/li&gt;
 &lt;/ul&gt;
 
-The wikipedia entry for "Control Flow Graph" [1] has many useful definitions. The BGL documentation is located at the
-http://www.boost.org web site.
-
-Control flow graphs can be calculated over any subtree of the AST rooted below a SgAsmInterpretation.  It doesn't make
-sense to compute inter-interpretation CFGs since the OS only ever loads one interpretation at a time (instructions from
-two different interpretations might share the same virtual address). Usually one creates CFGs that span a single
-function or a whole interpretation.  The vertex and edge filtes can restrict which vertices and edges are considered by
-the various methods of this class.  For instance, to create a global CFG that has no inter-function edges
-one could do the following (see also, Rose::BinaryAnalysis::FunctionCall):
-
-@code 
-// Create a filter that rejects all inter-function edges
-struct NoCallEdges: public ControlFlow::EdgeFilter {
-    bool operator()(ControlFlow *analyzer, SgAsmNode *src, SgAsmNode *dst) {
-        SgAsmFunction *src_func = SageInterface::getEnclosingNode&lt;SgAsmFunction&gt;(src);
-        SgAsmFunction *dst_func = SageInterface::getEnclosingNode&lt;SgAsmFunction&gt;(dst);
-        return dst_func != src_func;
-    }
-} edge_filter;
-
-// Create the control flow analyzer and set its edge filter.
-ControlFlow analyzer;
-analyzer.set_edge_filter(&amp;edge_filter);
-
-// Generate a block-based CFG over an entire interpretation. It will include
-// all basic blocks, but only intra-function edges.
-typedef ControlFlow::BlockGraph CFG_B;
-SgAsmInterpretation *interp = ...;
-CFG_B cfg1 = analyzer.build_block_cfg_from_ast&lt;CFG_B&gt;(interp);
-
-// Generate an instruction-based CFG over an entire interpretation. It will
-// include all instructions, but only intra-function edges.
-typedef ControlFlow::InsnGraph CFG_I;
-CFG_I cfg2 = analyzer.build_insn_cfg_from_ast&lt;CFG_I&gt;(interp);
-@endcode
-
-Another way to exclude vertices and/or edges from a graph is to first build a complete graph and then do a filtered
-copy to obtain a second graph with only the desired vertices and edges.
-
-@code 
-// Build a complete CFG graph using a default control flow analyzer.
-CFG_I cfg3 = ControlFlow().build_insn_cfg_from_ast&lt;CFG_I&gt;(interp);
-
-// Using the same analyzer as the previous example, one that
-// filters out all but the function call edges, create a call
-// graph.
-CFG_I cfg4 = analyzer.copy(cfg3);
-@endcode
-
-See also, Rose::BinaryAnalysis::FunctionCall, which computes a function call graph whose vertices are functions rather
-than the basic blocks or instructions used in a CFG.
-
-Since binary control flow graphs follow the BGL API they can be easily printed as GraphViz graphs using
-boost::write_graphviz().  If you want something other than vertex descriptors in the graphs, you could use a
-PropertyWriter class, like this one, which labels the vertices with the basic block address.  Ideally, one would use a
-class template, but we keep this example simple:
-
-@code 
-// Label the graphviz vertices with basic block addresses.
-// Boost requires this to be declared at file scope.
-struct GraphvizVertexWriter {
-    const Rose::BinaryAnalysis::ControlFlow::Graph &amp;cfg;
-    GraphvizVertexWriter(Rose::BinaryAnalysis::ControlFlow::Graph &amp;cfg): cfg(cfg) {}
-    typedef boost::graph_traits&lt;Rose::BinaryAnalysis::ControlFlow::Graph&gt;::vertex_descriptor Vertex;
-    void operator()(std::ostream &amp;output, const Vertex &amp;v) {
-        SgAsmBlock *block = get_ast_node(cfg, v);
-        output &lt;&lt;"[ label="" &lt;&lt;StringUtility::addrToString(block-&gt;get_address()) &lt;&lt;"" ]"; } };</p>
-<p>// Write the graph boost::write_graphviz(std::cout, cfg, GraphvizVertexWriter(cfg)); </p>
-<p>We also define a similar write_graphviz method within this class that differs from the Boost implementation in two ways. First, the GraphViz file that it produces has the vertices organized into clusters based on the function in which they appear. Second, the vertex and edge property writers are passed as const references to avoid unnecessary copying.</p>
+The wikipedia entry for "Control Flow Graph" [1] has many useful definitions. The BGL documentation is located at the <a href="http://www.boost.org">http://www.boost.org</a> web site.</p>
+<p>Control flow graphs can be calculated over any subtree of the <a class="el" href="namespaceRose_1_1AST.html" title="Collection of functionalities performing global operations on the AST.">AST</a> rooted below a <a class="el" href="classSgAsmInterpretation.html" title="Represents an interpretation of a binary container.">SgAsmInterpretation</a>. It doesn't make sense to compute inter-interpretation CFGs since the OS only ever loads one interpretation at a time (instructions from two different interpretations might share the same virtual address). Usually one creates CFGs that span a single function or a whole interpretation. The vertex and edge filtes can restrict which vertices and edges are considered by the various methods of this class. For instance, to create a global CFG that has no inter-function edges one could do the following (see also, <a class="el" href="classRose_1_1BinaryAnalysis_1_1FunctionCall.html" title="Binary function call analysis.">Rose::BinaryAnalysis::FunctionCall</a>):</p>
+<div class="fragment"><div class="line"><span class="comment">// Create a filter that rejects all inter-function edges</span></div>
+<div class="line"><span class="keyword">struct </span>NoCallEdges: <span class="keyword">public</span> <a class="code hl_class" href="classRose_1_1BinaryAnalysis_1_1ControlFlow_1_1EdgeFilter.html">ControlFlow::EdgeFilter</a> {</div>
+<div class="line">    <span class="keywordtype">bool</span> operator()(<a class="code hl_class" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html">ControlFlow</a> *analyzer, <a class="code hl_class" href="classSgAsmNode.html">SgAsmNode</a> *src, <a class="code hl_class" href="classSgAsmNode.html">SgAsmNode</a> *dst) {</div>
+<div class="line">        <a class="code hl_class" href="classSgAsmFunction.html">SgAsmFunction</a> *src_func = SageInterface::getEnclosingNode&lt;SgAsmFunction&gt;(src);</div>
+<div class="line">        <a class="code hl_class" href="classSgAsmFunction.html">SgAsmFunction</a> *dst_func = SageInterface::getEnclosingNode&lt;SgAsmFunction&gt;(dst);</div>
+<div class="line">        <span class="keywordflow">return</span> dst_func != src_func;</div>
+<div class="line">    }</div>
+<div class="line">} edge_filter;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Create the control flow analyzer and set its edge filter.</span></div>
+<div class="line">ControlFlow analyzer;</div>
+<div class="line">analyzer.set_edge_filter(&amp;edge_filter);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Generate a block-based CFG over an entire interpretation. It will include</span></div>
+<div class="line"><span class="comment">// all basic blocks, but only intra-function edges.</span></div>
+<div class="line"><span class="keyword">typedef</span> <a class="code hl_typedef" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#aa983e4fa7e4a7f1bfa20758d0502ff1d">ControlFlow::BlockGraph</a> CFG_B;</div>
+<div class="line"><a class="code hl_class" href="classSgAsmInterpretation.html">SgAsmInterpretation</a> *interp = ...;</div>
+<div class="line">CFG_B cfg1 = analyzer.build_block_cfg_from_ast&lt;CFG_B&gt;(interp);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Generate an instruction-based CFG over an entire interpretation. It will</span></div>
+<div class="line"><span class="comment">// include all instructions, but only intra-function edges.</span></div>
+<div class="line"><span class="keyword">typedef</span> <a class="code hl_typedef" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a7aa0228a0cf3e8a8b5214ab57c37157d">ControlFlow::InsnGraph</a> CFG_I;</div>
+<div class="line">CFG_I cfg2 = analyzer.build_insn_cfg_from_ast&lt;CFG_I&gt;(interp);</div>
+<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1ControlFlow_1_1EdgeFilter_html"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1ControlFlow_1_1EdgeFilter.html">Rose::BinaryAnalysis::ControlFlow::EdgeFilter</a></div><div class="ttdoc">Filter for edges.</div><div class="ttdef"><b>Definition</b> <a href="ControlFlow_8h_source.html#l00213">ControlFlow.h:213</a></div></div>
+<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1ControlFlow_html"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html">Rose::BinaryAnalysis::ControlFlow</a></div><div class="ttdoc">Binary control flow analysis.</div><div class="ttdef"><b>Definition</b> <a href="ControlFlow_8h_source.html#l00136">ControlFlow.h:136</a></div></div>
+<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1ControlFlow_html_a7aa0228a0cf3e8a8b5214ab57c37157d"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a7aa0228a0cf3e8a8b5214ab57c37157d">Rose::BinaryAnalysis::ControlFlow::InsnGraph</a></div><div class="ttdeci">boost::adjacency_list&lt; boost::setS, boost::vecS, boost::bidirectionalS, boost::property&lt; boost::vertex_name_t, SgAsmInstruction * &gt; &gt; InsnGraph</div><div class="ttdoc">Default instruction-based control flow graph.</div><div class="ttdef"><b>Definition</b> <a href="ControlFlow_8h_source.html#l00187">ControlFlow.h:187</a></div></div>
+<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1ControlFlow_html_aa983e4fa7e4a7f1bfa20758d0502ff1d"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#aa983e4fa7e4a7f1bfa20758d0502ff1d">Rose::BinaryAnalysis::ControlFlow::BlockGraph</a></div><div class="ttdeci">boost::adjacency_list&lt; boost::setS, boost::vecS, boost::bidirectionalS, boost::property&lt; boost::vertex_name_t, SgAsmBlock * &gt; &gt; BlockGraph</div><div class="ttdoc">Default basic block control flow graph type.</div><div class="ttdef"><b>Definition</b> <a href="ControlFlow_8h_source.html#l00164">ControlFlow.h:164</a></div></div>
+<div class="ttc" id="aclassSgAsmFunction_html"><div class="ttname"><a href="classSgAsmFunction.html">SgAsmFunction</a></div><div class="ttdoc">Represents a synthesized function.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l16977">binaryInstruction.C:16977</a></div></div>
+<div class="ttc" id="aclassSgAsmInterpretation_html"><div class="ttname"><a href="classSgAsmInterpretation.html">SgAsmInterpretation</a></div><div class="ttdoc">Represents an interpretation of a binary container.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l14987">binaryInstruction.C:14987</a></div></div>
+<div class="ttc" id="aclassSgAsmNode_html"><div class="ttname"><a href="classSgAsmNode.html">SgAsmNode</a></div><div class="ttdoc">Base class for all binary analysis IR nodes.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l45538">binaryInstruction.C:45538</a></div></div>
+</div><!-- fragment --><p>Another way to exclude vertices and/or edges from a graph is to first build a complete graph and then do a filtered copy to obtain a second graph with only the desired vertices and edges.</p>
+<div class="fragment"><div class="line"><span class="comment">// Build a complete CFG graph using a default control flow analyzer.</span></div>
+<div class="line">CFG_I cfg3 = <a class="code hl_class" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html">ControlFlow</a>().<a class="code hl_function" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a128f35c7506ae6e53ae9554ee5c01fda">build_insn_cfg_from_ast</a>&lt;CFG_I&gt;(interp);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Using the same analyzer as the previous example, one that</span></div>
+<div class="line"><span class="comment">// filters out all but the function call edges, create a call</span></div>
+<div class="line"><span class="comment">// graph.</span></div>
+<div class="line">CFG_I cfg4 = analyzer.copy(cfg3);</div>
+<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1ControlFlow_html_a128f35c7506ae6e53ae9554ee5c01fda"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a128f35c7506ae6e53ae9554ee5c01fda">Rose::BinaryAnalysis::ControlFlow::build_insn_cfg_from_ast</a></div><div class="ttdeci">ControlFlowGraph build_insn_cfg_from_ast(SgNode *root)</div><div class="ttdoc">Builds a control flow graph for part of an AST.</div><div class="ttdef"><b>Definition</b> <a href="ControlFlow_8h_source.html#l00998">ControlFlow.h:998</a></div></div>
+</div><!-- fragment --><p>See also, <a class="el" href="classRose_1_1BinaryAnalysis_1_1FunctionCall.html" title="Binary function call analysis.">Rose::BinaryAnalysis::FunctionCall</a>, which computes a function call graph whose vertices are functions rather than the basic blocks or instructions used in a CFG.</p>
+<p>Since binary control flow graphs follow the BGL API they can be easily printed as GraphViz graphs using boost::write_graphviz(). If you want something other than vertex descriptors in the graphs, you could use a PropertyWriter class, like this one, which labels the vertices with the basic block address. Ideally, one would use a class template, but we keep this example simple:</p>
+<div class="fragment"><div class="line"><span class="comment">// Label the graphviz vertices with basic block addresses.</span></div>
+<div class="line"><span class="comment">// Boost requires this to be declared at file scope.</span></div>
+<div class="line"><span class="keyword">struct </span>GraphvizVertexWriter {</div>
+<div class="line">    <span class="keyword">const</span> <a class="code hl_typedef" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#acf06837ba4e61a78fce3704d367643d3">Rose::BinaryAnalysis::ControlFlow::Graph</a> &amp;cfg;</div>
+<div class="line">    GraphvizVertexWriter(<a class="code hl_typedef" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#acf06837ba4e61a78fce3704d367643d3">Rose::BinaryAnalysis::ControlFlow::Graph</a> &amp;cfg): cfg(cfg) {}</div>
+<div class="line">    <span class="keyword">typedef</span> boost::graph_traits&lt;Rose::BinaryAnalysis::ControlFlow::Graph&gt;::vertex_descriptor <a class="code hl_struct" href="structVertex.html">Vertex</a>;</div>
+<div class="line">    <span class="keywordtype">void</span> operator()(std::ostream &amp;output, <span class="keyword">const</span> <a class="code hl_struct" href="structVertex.html">Vertex</a> &amp;v) {</div>
+<div class="line">        <a class="code hl_class" href="classSgAsmBlock.html">SgAsmBlock</a> *block = <a class="code hl_function" href="namespaceRose_1_1BinaryAnalysis.html#a58a80b77dad05a78cdc8dd211cb5e844">get_ast_node</a>(cfg, v);</div>
+<div class="line">        <span class="comment">// double quotes represented as &amp;quote; on the next line in order to work around Doxygen 1.9.8 bug</span></div>
+<div class="line">        output &lt;&lt;&amp;quote;[ label=\&amp;quote;&amp;quote; &lt;&lt;StringUtility::addrToString(block-&gt;<a class="code hl_function" href="classSgAsmStatement.html#a1f154e9d85e92d50a2edfdbbbec9d51f">get_address</a>()) &lt;&lt;&amp;quote;\&amp;quote; ]&amp;quote;</div>
+<div class="line">    }</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Write the graph</span></div>
+<div class="line">boost::write_graphviz(std::cout, cfg, GraphvizVertexWriter(cfg));</div>
+<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1ControlFlow_html_acf06837ba4e61a78fce3704d367643d3"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#acf06837ba4e61a78fce3704d367643d3">Rose::BinaryAnalysis::ControlFlow::Graph</a></div><div class="ttdeci">BlockGraph Graph</div><div class="ttdoc">Default control flow graph.</div><div class="ttdef"><b>Definition</b> <a href="ControlFlow_8h_source.html#l00191">ControlFlow.h:191</a></div></div>
+<div class="ttc" id="aclassSgAsmBlock_html"><div class="ttname"><a href="classSgAsmBlock.html">SgAsmBlock</a></div><div class="ttdoc">Instruction basic block.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l41915">binaryInstruction.C:41915</a></div></div>
+<div class="ttc" id="aclassSgAsmStatement_html_a1f154e9d85e92d50a2edfdbbbec9d51f"><div class="ttname"><a href="classSgAsmStatement.html#a1f154e9d85e92d50a2edfdbbbec9d51f">SgAsmStatement::get_address</a></div><div class="ttdeci">Rose::BinaryAnalysis::Address const &amp; get_address() const</div><div class="ttdoc">Property: Starting virtual address.</div></div>
+<div class="ttc" id="anamespaceRose_1_1BinaryAnalysis_html_a58a80b77dad05a78cdc8dd211cb5e844"><div class="ttname"><a href="namespaceRose_1_1BinaryAnalysis.html#a58a80b77dad05a78cdc8dd211cb5e844">Rose::BinaryAnalysis::get_ast_node</a></div><div class="ttdeci">Sawyer::Container::Graph&lt; V, E &gt;::VertexValue get_ast_node(const Sawyer::Container::Graph&lt; V, E &gt; &amp;cfg, size_t vertexId)</div><div class="ttdoc">Return the AST node associated with a vertex.</div><div class="ttdef"><b>Definition</b> <a href="ControlFlow_8h_source.html#l00557">ControlFlow.h:557</a></div></div>
+<div class="ttc" id="astructVertex_html"><div class="ttname"><a href="structVertex.html">Vertex</a></div><div class="ttdef"><b>Definition</b> <a href="SgGraphTemplate_8h_source.html#l00007">SgGraphTemplate.h:7</a></div></div>
+</div><!-- fragment --><p>We also define a similar write_graphviz method within this class that differs from the Boost implementation in two ways. First, the GraphViz file that it produces has the vertices organized into clusters based on the function in which they appear. Second, the vertex and edge property writers are passed as const references to avoid unnecessary copying.</p>
 <p>[1] <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Control_flow_graph">https://secure.wikimedia.org/wikipedia/en/wiki/Control_flow_graph</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00135">135</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00136">136</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 </div>
 <p><code>#include &lt;<a class="el" href="ControlFlow_8h_source.html">Rose/BinaryAnalysis/ControlFlow.h</a>&gt;</code></p>
 <div class="dynheader">
@@ -341,9 +336,8 @@ Protected Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="keyword">typedef</span> boost::graph_traits&lt;BlockGraph&gt;::vertex_descriptor <a class="code hl_struct" href="structVertex.html">Vertex</a>;</div>
 <div class="line"><span class="keyword">typedef</span> boost::graph_traits&lt;BlockGraph&gt;::edge_descriptor <a class="code hl_struct" href="structEdge.html">Edge</a>;</div>
 <div class="ttc" id="astructEdge_html"><div class="ttname"><a href="structEdge.html">Edge</a></div><div class="ttdef"><b>Definition</b> <a href="SgGraphTemplate_8h_source.html#l00012">SgGraphTemplate.h:12</a></div></div>
-<div class="ttc" id="astructVertex_html"><div class="ttname"><a href="structVertex.html">Vertex</a></div><div class="ttdef"><b>Definition</b> <a href="SgGraphTemplate_8h_source.html#l00007">SgGraphTemplate.h:7</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00163">163</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00164">164</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
 </div>
 </div>
@@ -365,7 +359,7 @@ Protected Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="keyword">typedef</span> boost::graph_traits&lt;InsnGraph&gt;::vertex_descriptor <a class="code hl_struct" href="structVertex.html">Vertex</a>;</div>
 <div class="line"><span class="keyword">typedef</span> boost::graph_traits&lt;InsnGraph&gt;::edge_descriptor <a class="code hl_struct" href="structEdge.html">Edge</a>;</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00186">186</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00187">187</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
 </div>
 </div>
@@ -384,7 +378,7 @@ Protected Attributes</h2></td></tr>
 <p>Default control flow graph. </p>
 <p>The original <a class="el" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html" title="Binary control flow analysis.">Rose::BinaryAnalysis::ControlFlow</a> API defined only "Graph", which was a basic-block control flow graph. We continue to define that type for backward compatibility. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00190">190</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00191">191</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
 </div>
 </div>
@@ -412,7 +406,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00137">137</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00138">138</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
 </div>
 </div>
@@ -444,7 +438,7 @@ Protected Attributes</h2></td></tr>
 <p>Manipulate the vertex filter. </p>
 <p>When building a control flow graph, the vertex filter is invoked on each vertex which is about to be added. If the filter returns false then that block is not added to the graph. A null filter accepts all vertices. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00224">224</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00225">225</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
 </div>
 </div>
@@ -474,7 +468,7 @@ Protected Attributes</h2></td></tr>
 <p>Manipulate the vertex filter. </p>
 <p>When building a control flow graph, the vertex filter is invoked on each vertex which is about to be added. If the filter returns false then that block is not added to the graph. A null filter accepts all vertices. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00225">225</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00226">226</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
 </div>
 </div>
@@ -505,9 +499,9 @@ Protected Attributes</h2></td></tr>
 <p>Manipulate the edge filter. </p>
 <p>When building a control flow graph, the edge filter is invoked for each edge which is about to be added to the graph. If the filter returns false then that edge is not added to the graph. A null filter accepts all edges. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00234">234</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00235">235</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00698">build_cg_from_ast()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00699">build_cg_from_ast()</a>.</p>
 
 </div>
 </div>
@@ -537,9 +531,9 @@ Protected Attributes</h2></td></tr>
 <p>Manipulate the edge filter. </p>
 <p>When building a control flow graph, the edge filter is invoked for each edge which is about to be added to the graph. If the filter returns false then that edge is not added to the graph. A null filter accepts all edges. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00235">235</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00236">236</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00698">build_cg_from_ast()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00699">build_cg_from_ast()</a>.</p>
 
 </div>
 </div>
@@ -580,9 +574,9 @@ Protected Attributes</h2></td></tr>
 <p>Determines if a vertex is filtered out. </p>
 <p>Returns true if the vertex would be filtered out by being rejected by the current vertex filter. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00243">243</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00244">244</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00600">apply_to_ast()</a>, <a class="el" href="ControlFlow_8h_source.html#l00631">cache_vertex_descriptors()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00732">copy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00601">apply_to_ast()</a>, <a class="el" href="ControlFlow_8h_source.html#l00632">cache_vertex_descriptors()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00733">copy()</a>.</p>
 
 </div>
 </div>
@@ -613,11 +607,11 @@ Protected Attributes</h2></td></tr>
 <p>Determines if a vertex is filtered out. </p>
 <p>Returns true if the vertex would be filtered out by being rejected by the current vertex filter. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00244">244</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00245">245</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00244">is_vertex_filtered()</a>.</p>
+<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00245">is_vertex_filtered()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00244">is_vertex_filtered()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00245">is_vertex_filtered()</a>.</p>
 
 </div>
 </div>
@@ -664,9 +658,9 @@ Protected Attributes</h2></td></tr>
 <p>Determines if an edge is filtered out. </p>
 <p>Returns true if the edge would be filtered out by being rejected by the current edge filter. The <code>src</code> and <code>dst</code> are the source and destination vertex nodes, either basic blocks or instructions depending on the graph type. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00253">253</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00254">254</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00600">apply_to_ast()</a>, <a class="el" href="ControlFlow_8h_source.html#l00654">build_block_cfg_from_ast()</a>, <a class="el" href="ControlFlow_8h_source.html#l00732">copy()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00256">is_edge_filtered()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00601">apply_to_ast()</a>, <a class="el" href="ControlFlow_8h_source.html#l00655">build_block_cfg_from_ast()</a>, <a class="el" href="ControlFlow_8h_source.html#l00733">copy()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00257">is_edge_filtered()</a>.</p>
 
 </div>
 </div>
@@ -707,9 +701,9 @@ Protected Attributes</h2></td></tr>
 <p>Determines if an edge is filtered out. </p>
 <p>Returns true if the edge would be filtered out by being rejected by the current edge filter. The <code>src</code> and <code>dst</code> are the source and destination vertex nodes, either basic blocks or instructions depending on the graph type. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00256">256</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00257">257</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00253">is_edge_filtered()</a>.</p>
+<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00254">is_edge_filtered()</a>.</p>
 
 </div>
 </div>
@@ -758,9 +752,9 @@ template&lt;class ControlFlowGraph &gt; </div>
 <p>Not all instruction-based graphs can be written back to the <a class="el" href="namespaceRose_1_1AST.html" title="Collection of functionalities performing global operations on the AST.">AST</a> because the implied basic block structure of the graph might not match the explicit basic block structure in the <a class="el" href="namespaceRose_1_1AST.html" title="Collection of functionalities performing global operations on the AST.">AST</a>. Perhaps a future version will allow the <a class="el" href="namespaceRose_1_1AST.html" title="Collection of functionalities performing global operations on the AST.">AST</a> to be restructured by this operation.</p>
 <p>At this time [2011-05-19] the successor_complete property of each affected block is set to true, but this may change in the future. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00600">600</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00601">601</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="classSgAsmStatement.html#ac0959f1b0d967f7aff9032c2a4e2ab92">SgAsmStatement::get_address()</a>, <a class="el" href="ControlFlow_8h_source.html#l00556">Rose::BinaryAnalysis::get_ast_node()</a>, <a class="el" href="classSgAsmBlock.html#a31ca54ec6ee0dfff832a935fe08e3d80">SgAsmBlock::get_successors()</a>, <a class="el" href="ControlFlow_8h_source.html#l00253">is_edge_filtered()</a>, <a class="el" href="ControlFlow_8h_source.html#l00243">is_vertex_filtered()</a>, and <a class="el" href="classSgAsmBlock.html#a36093d36e7cf41bf6422a575a2249a67">SgAsmBlock::set_successorsComplete()</a>.</p>
+<p class="reference">References <a class="el" href="classSgAsmStatement.html#a1f154e9d85e92d50a2edfdbbbec9d51f">SgAsmStatement::get_address()</a>, <a class="el" href="ControlFlow_8h_source.html#l00557">Rose::BinaryAnalysis::get_ast_node()</a>, <a class="el" href="classSgAsmBlock.html#a31ca54ec6ee0dfff832a935fe08e3d80">SgAsmBlock::get_successors()</a>, <a class="el" href="ControlFlow_8h_source.html#l00254">is_edge_filtered()</a>, <a class="el" href="ControlFlow_8h_source.html#l00244">is_vertex_filtered()</a>, and <a class="el" href="classSgAsmBlock.html#a36093d36e7cf41bf6422a575a2249a67">SgAsmBlock::set_successorsComplete()</a>.</p>
 
 </div>
 </div>
@@ -787,9 +781,9 @@ template&lt;class ControlFlowGraph &gt; </div>
 <p>The vertex descriptors are available via SgAsmBlock::get_cached_vertex(). Other graph types (e.g., dominance graphs) might also use the same cache line. The cached vertex is stored as a size_t, which is the same underlying type for CFG vertices.</p>
 <p>The current vertex filter determines which blocks are modified. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00631">631</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00632">632</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00556">Rose::BinaryAnalysis::get_ast_node()</a>, <a class="el" href="ControlFlow_8h_source.html#l00243">is_vertex_filtered()</a>, and <a class="el" href="classSgAsmBlock.html#a17e7dbc727dc8e4ec706cc6f35a9f2d4">SgAsmBlock::set_cachedVertex()</a>.</p>
+<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00557">Rose::BinaryAnalysis::get_ast_node()</a>, <a class="el" href="ControlFlow_8h_source.html#l00244">is_vertex_filtered()</a>, and <a class="el" href="classSgAsmBlock.html#a17e7dbc727dc8e4ec706cc6f35a9f2d4">SgAsmBlock::set_cachedVertex()</a>.</p>
 
 </div>
 </div>
@@ -825,11 +819,11 @@ Successors that are not known. Some basic blocks, such as function return blocks
 </ul>
 <p>The <a class="el" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a9328c747abd4d9a9054cca11a6634296" title="Builds a control flow graph for part of an AST.">build_block_cfg_from_ast()</a> builds a CFG whose vertices are basic blocks, while the <a class="el" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a128f35c7506ae6e53ae9554ee5c01fda" title="Builds a control flow graph for part of an AST.">build_insn_cfg_from_ast()</a> builds a CFG whose vertices are instructions. Furthermore, the instruction-based CFG makes some adjustments to function call and function return nodes by invoking <a class="el" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a04a62412e4cfe198490e6340db8da17e" title="Fix up a CFG by changing function call and return edges.">fixup_fcall_fret()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00988">988</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00989">989</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00988">build_block_cfg_from_ast()</a>.</p>
+<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00989">build_block_cfg_from_ast()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00988">build_block_cfg_from_ast()</a>, <a class="el" href="ControlFlow_8h_source.html#l00698">build_cg_from_ast()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00687">build_insn_cfg_from_ast()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00989">build_block_cfg_from_ast()</a>, <a class="el" href="ControlFlow_8h_source.html#l00699">build_cg_from_ast()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00688">build_insn_cfg_from_ast()</a>.</p>
 
 </div>
 </div>
@@ -875,9 +869,9 @@ Successors that are not known. Some basic blocks, such as function return blocks
 </ul>
 <p>The <a class="el" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a9328c747abd4d9a9054cca11a6634296" title="Builds a control flow graph for part of an AST.">build_block_cfg_from_ast()</a> builds a CFG whose vertices are basic blocks, while the <a class="el" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a128f35c7506ae6e53ae9554ee5c01fda" title="Builds a control flow graph for part of an AST.">build_insn_cfg_from_ast()</a> builds a CFG whose vertices are instructions. Furthermore, the instruction-based CFG makes some adjustments to function call and function return nodes by invoking <a class="el" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a04a62412e4cfe198490e6340db8da17e" title="Fix up a CFG by changing function call and return edges.">fixup_fcall_fret()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00654">654</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00655">655</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00556">Rose::BinaryAnalysis::get_ast_node()</a>, <a class="el" href="classSgAsmBlock.html#a31ca54ec6ee0dfff832a935fe08e3d80">SgAsmBlock::get_successors()</a>, <a class="el" href="util_2Map_8h_source.html#l00078">Map&lt; Key, T, Compare, Alloc &gt;::get_value_or()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00253">is_edge_filtered()</a>.</p>
+<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00557">Rose::BinaryAnalysis::get_ast_node()</a>, <a class="el" href="classSgAsmBlock.html#a31ca54ec6ee0dfff832a935fe08e3d80">SgAsmBlock::get_successors()</a>, <a class="el" href="util_2Map_8h_source.html#l00083">Map&lt; Key, T, Compare, Alloc &gt;::get_value_or()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00254">is_edge_filtered()</a>.</p>
 
 </div>
 </div>
@@ -913,11 +907,11 @@ Successors that are not known. Some basic blocks, such as function return blocks
 </ul>
 <p>The <a class="el" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a9328c747abd4d9a9054cca11a6634296" title="Builds a control flow graph for part of an AST.">build_block_cfg_from_ast()</a> builds a CFG whose vertices are basic blocks, while the <a class="el" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a128f35c7506ae6e53ae9554ee5c01fda" title="Builds a control flow graph for part of an AST.">build_insn_cfg_from_ast()</a> builds a CFG whose vertices are instructions. Furthermore, the instruction-based CFG makes some adjustments to function call and function return nodes by invoking <a class="el" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a04a62412e4cfe198490e6340db8da17e" title="Fix up a CFG by changing function call and return edges.">fixup_fcall_fret()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00997">997</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00998">998</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00997">build_insn_cfg_from_ast()</a>.</p>
+<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00998">build_insn_cfg_from_ast()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00997">build_insn_cfg_from_ast()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00998">build_insn_cfg_from_ast()</a>.</p>
 
 </div>
 </div>
@@ -963,9 +957,9 @@ Successors that are not known. Some basic blocks, such as function return blocks
 </ul>
 <p>The <a class="el" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a9328c747abd4d9a9054cca11a6634296" title="Builds a control flow graph for part of an AST.">build_block_cfg_from_ast()</a> builds a CFG whose vertices are basic blocks, while the <a class="el" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a128f35c7506ae6e53ae9554ee5c01fda" title="Builds a control flow graph for part of an AST.">build_insn_cfg_from_ast()</a> builds a CFG whose vertices are instructions. Furthermore, the instruction-based CFG makes some adjustments to function call and function return nodes by invoking <a class="el" href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a04a62412e4cfe198490e6340db8da17e" title="Fix up a CFG by changing function call and return edges.">fixup_fcall_fret()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00687">687</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00688">688</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00988">build_block_cfg_from_ast()</a>, <a class="el" href="ControlFlow_8h_source.html#l00771">explode_blocks()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00827">fixup_fcall_fret()</a>.</p>
+<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00989">build_block_cfg_from_ast()</a>, <a class="el" href="ControlFlow_8h_source.html#l00772">explode_blocks()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00828">fixup_fcall_fret()</a>.</p>
 
 </div>
 </div>
@@ -999,11 +993,11 @@ template&lt;class BlockCFG , class InsnCFG &gt; </div>
 
 <p>Create an instruction control flow graph from a basic block control flow graph. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00771">771</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00772">772</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00556">Rose::BinaryAnalysis::get_ast_node()</a>, <a class="el" href="util_2Map_8h_source.html#l00061">Map&lt; Key, T, Compare, Alloc &gt;::get_one()</a>, <a class="el" href="classSgAsmBlock.html#a98c49f1b7720d5b0faf6170c55755fed">SgAsmBlock::get_statementList()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00567">Rose::BinaryAnalysis::put_ast_node()</a>.</p>
+<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00557">Rose::BinaryAnalysis::get_ast_node()</a>, <a class="el" href="util_2Map_8h_source.html#l00066">Map&lt; Key, T, Compare, Alloc &gt;::get_one()</a>, <a class="el" href="classSgAsmBlock.html#a98c49f1b7720d5b0faf6170c55755fed">SgAsmBlock::get_statementList()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00568">Rose::BinaryAnalysis::put_ast_node()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00687">build_insn_cfg_from_ast()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00688">build_insn_cfg_from_ast()</a>.</p>
 
 </div>
 </div>
@@ -1038,11 +1032,11 @@ template&lt;class InsnCFG &gt; </div>
 <p>Fix up a CFG by changing function call and return edges. </p>
 <p>The <a class="el" href="namespaceRose_1_1AST.html" title="Collection of functionalities performing global operations on the AST.">AST</a> does not store function return edges (which this method adds), and the <a class="el" href="namespaceRose_1_1AST.html" title="Collection of functionalities performing global operations on the AST.">AST</a> stores a fall-through edge for function call nodes for callees that may return (which this method removes). </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00827">827</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00828">828</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="WorkLists_8h_source.html#l00072">WorkList&lt; T, Compare &gt;::empty()</a>, <a class="el" href="classSgAsmStatement.html#ac0959f1b0d967f7aff9032c2a4e2ab92">SgAsmStatement::get_address()</a>, <a class="el" href="ControlFlow_8h_source.html#l00556">Rose::BinaryAnalysis::get_ast_node()</a>, <a class="el" href="classSgAsmFunction.html#a18b23b19d6538da747ea71ecd94262ae">SgAsmFunction::get_entryVa()</a>, <a class="el" href="util_2Map_8h_source.html#l00061">Map&lt; Key, T, Compare, Alloc &gt;::get_one()</a>, <a class="el" href="util_2Map_8h_source.html#l00078">Map&lt; Key, T, Compare, Alloc &gt;::get_value_or()</a>, <a class="el" href="classSgAsmBlock.html#a1ee31fd033fd6dbacfe12a2e865499ee">SgAsmBlock::isFunctionCall()</a>, <a class="el" href="WorkLists_8h_source.html#l00202">WorkList&lt; T, Compare &gt;::push()</a>, and <a class="el" href="WorkLists_8h_source.html#l00236">WorkList&lt; T, Compare &gt;::shift()</a>.</p>
+<p class="reference">References <a class="el" href="WorkLists_8h_source.html#l00072">WorkList&lt; T, Compare &gt;::empty()</a>, <a class="el" href="classSgAsmStatement.html#a1f154e9d85e92d50a2edfdbbbec9d51f">SgAsmStatement::get_address()</a>, <a class="el" href="ControlFlow_8h_source.html#l00557">Rose::BinaryAnalysis::get_ast_node()</a>, <a class="el" href="classSgAsmFunction.html#ad3413324df5972548765cae26d3b31fa">SgAsmFunction::get_entryVa()</a>, <a class="el" href="util_2Map_8h_source.html#l00066">Map&lt; Key, T, Compare, Alloc &gt;::get_one()</a>, <a class="el" href="util_2Map_8h_source.html#l00083">Map&lt; Key, T, Compare, Alloc &gt;::get_value_or()</a>, <a class="el" href="classSgAsmBlock.html#ae5e093949532dd9e486ee88917f63ccb">SgAsmBlock::isFunctionCall()</a>, <a class="el" href="WorkLists_8h_source.html#l00202">WorkList&lt; T, Compare &gt;::push()</a>, and <a class="el" href="WorkLists_8h_source.html#l00236">WorkList&lt; T, Compare &gt;::shift()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00687">build_insn_cfg_from_ast()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00688">build_insn_cfg_from_ast()</a>.</p>
 
 </div>
 </div>
@@ -1068,11 +1062,11 @@ template&lt;class ControlFlowGraph &gt; </div>
 <p>This differs from a true <a class="el" href="classRose_1_1BinaryAnalysis_1_1FunctionCall.html#accf1caa8493b25dce524e99c107e5998" title="The default function call graph type.">FunctionCall::Graph</a> in that the vertices of the returned graph point to basic blocks, while the vertices of a <a class="el" href="classRose_1_1BinaryAnalysis_1_1FunctionCall.html#accf1caa8493b25dce524e99c107e5998" title="The default function call graph type.">FunctionCall::Graph</a> point to functions (<a class="el" href="classSgAsmFunction.html" title="Represents a synthesized function.">SgAsmFunction</a> nodes).</p>
 <p>The graph is built by applying an edge filter (in addition to the edge filter that might be set by the user) that only accepts edges whose target is a function entry block. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l01006">1006</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l01007">1007</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l01006">build_cg_from_ast()</a>.</p>
+<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l01007">build_cg_from_ast()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l01006">build_cg_from_ast()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l01007">build_cg_from_ast()</a>.</p>
 
 </div>
 </div>
@@ -1108,9 +1102,9 @@ template&lt;class ControlFlowGraph &gt; </div>
 <p>This differs from a true <a class="el" href="classRose_1_1BinaryAnalysis_1_1FunctionCall.html#accf1caa8493b25dce524e99c107e5998" title="The default function call graph type.">FunctionCall::Graph</a> in that the vertices of the returned graph point to basic blocks, while the vertices of a <a class="el" href="classRose_1_1BinaryAnalysis_1_1FunctionCall.html#accf1caa8493b25dce524e99c107e5998" title="The default function call graph type.">FunctionCall::Graph</a> point to functions (<a class="el" href="classSgAsmFunction.html" title="Represents a synthesized function.">SgAsmFunction</a> nodes).</p>
 <p>The graph is built by applying an edge filter (in addition to the edge filter that might be set by the user) that only accepts edges whose target is a function entry block. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00698">698</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00699">699</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00988">build_block_cfg_from_ast()</a>, <a class="el" href="ControlFlow_8h_source.html#l00235">get_edge_filter()</a>, <a class="el" href="classSgAsmFunction.html#a85374a810087387df27743e02e84705c">SgAsmFunction::get_entryBlock()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00234">set_edge_filter()</a>.</p>
+<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00989">build_block_cfg_from_ast()</a>, <a class="el" href="ControlFlow_8h_source.html#l00236">get_edge_filter()</a>, <a class="el" href="classSgAsmFunction.html#a85374a810087387df27743e02e84705c">SgAsmFunction::get_entryBlock()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00235">set_edge_filter()</a>.</p>
 
 </div>
 </div>
@@ -1136,11 +1130,11 @@ template&lt;class ControlFlowGraph &gt; </div>
 <p>Copies a graph while applying the current source and destination vertex and edge filters. If all vertices are selected by the vertex filter, then the desintation graph's vertex descriptors will correspond to the same vertices in the source graph (i.e., vertex V in the source will be the same basic block as vertex V in the destination).</p>
 <p>If an edge is unfiltered but one of its vertices is filtered, then the edge will not be included in the result. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00762">762</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00763">763</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00762">copy()</a>.</p>
+<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00763">copy()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00762">copy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00763">copy()</a>.</p>
 
 </div>
 </div>
@@ -1176,9 +1170,9 @@ template&lt;class ControlFlowGraph &gt; </div>
 <p>Copies a graph while applying the current source and destination vertex and edge filters. If all vertices are selected by the vertex filter, then the desintation graph's vertex descriptors will correspond to the same vertices in the source graph (i.e., vertex V in the source will be the same basic block as vertex V in the destination).</p>
 <p>If an edge is unfiltered but one of its vertices is filtered, then the edge will not be included in the result. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00732">732</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00733">733</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00556">Rose::BinaryAnalysis::get_ast_node()</a>, <a class="el" href="ControlFlow_8h_source.html#l00253">is_edge_filtered()</a>, <a class="el" href="ControlFlow_8h_source.html#l00243">is_vertex_filtered()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00567">Rose::BinaryAnalysis::put_ast_node()</a>.</p>
+<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l00557">Rose::BinaryAnalysis::get_ast_node()</a>, <a class="el" href="ControlFlow_8h_source.html#l00254">is_edge_filtered()</a>, <a class="el" href="ControlFlow_8h_source.html#l00244">is_vertex_filtered()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00568">Rose::BinaryAnalysis::put_ast_node()</a>.</p>
 
 </div>
 </div>
@@ -1225,11 +1219,11 @@ template&lt;typename CFG , class VertexPropertyWriter , class EdgePropertyWriter
 <p>Write a CFG to a graphviz file, creating a cluster subgraph for each function. </p>
 <p>Write a control flow graph to a graphviz file, creating a cluster subgraph for each function. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l01016">1016</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l01017">1017</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="namespaceRose_1_1StringUtility.html#a1601608fa2856aa31397370b8b5923c4">Rose::StringUtility::addrToString()</a>, <a class="el" href="ControlFlow_8h_source.html#l00556">Rose::BinaryAnalysis::get_ast_node()</a>, <a class="el" href="classSgAsmFunction.html#a18b23b19d6538da747ea71ecd94262ae">SgAsmFunction::get_entryVa()</a>, and <a class="el" href="classSgAsmFunction.html#acec5301595ccfbb00e17bc188e245733">SgAsmFunction::get_name()</a>.</p>
+<p class="reference">References <a class="el" href="namespaceRose_1_1StringUtility.html#a1601608fa2856aa31397370b8b5923c4">Rose::StringUtility::addrToString()</a>, <a class="el" href="ControlFlow_8h_source.html#l00557">Rose::BinaryAnalysis::get_ast_node()</a>, <a class="el" href="classSgAsmFunction.html#ad3413324df5972548765cae26d3b31fa">SgAsmFunction::get_entryVa()</a>, and <a class="el" href="classSgAsmFunction.html#acec5301595ccfbb00e17bc188e245733">SgAsmFunction::get_name()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00428">write_graphviz()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00433">write_graphviz()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ControlFlow_8h_source.html#l00429">write_graphviz()</a>, and <a class="el" href="ControlFlow_8h_source.html#l00434">write_graphviz()</a>.</p>
 
 </div>
 </div>
@@ -1272,9 +1266,9 @@ template&lt;typename CFG &gt; </div>
 <p>Write a CFG to a graphviz file, creating a cluster subgraph for each function. </p>
 <p>Write a control flow graph to a graphviz file, creating a cluster subgraph for each function. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00428">428</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00429">429</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l01016">write_graphviz()</a>.</p>
+<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l01017">write_graphviz()</a>.</p>
 
 </div>
 </div>
@@ -1323,9 +1317,9 @@ template&lt;typename CFG , class VertexPropertyWriter &gt; </div>
 <p>Write a CFG to a graphviz file, creating a cluster subgraph for each function. </p>
 <p>Write a control flow graph to a graphviz file, creating a cluster subgraph for each function. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00433">433</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00434">434</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l01016">write_graphviz()</a>.</p>
+<p class="reference">References <a class="el" href="ControlFlow_8h_source.html#l01017">write_graphviz()</a>.</p>
 
 </div>
 </div>
@@ -1382,10 +1376,9 @@ template&lt;class ControlFlowGraph &gt; </div>
 <div class="line">            changed = <span class="keyword">true</span>;</div>
 <div class="line">    }</div>
 <div class="line">} <span class="keywordflow">while</span> (changed);</div>
-<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1ControlFlow_html"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html">Rose::BinaryAnalysis::ControlFlow</a></div><div class="ttdoc">Binary control flow analysis.</div><div class="ttdef"><b>Definition</b> <a href="ControlFlow_8h_source.html#l00135">ControlFlow.h:135</a></div></div>
-<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1ControlFlow_html_a30b7c7406565d0543fd663d5eca03d15"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a30b7c7406565d0543fd663d5eca03d15">Rose::BinaryAnalysis::ControlFlow::flow_order</a></div><div class="ttdeci">std::vector&lt; typename boost::graph_traits&lt; ControlFlowGraph &gt;::vertex_descriptor &gt; flow_order(const ControlFlowGraph &amp;, typename boost::graph_traits&lt; ControlFlowGraph &gt;::vertex_descriptor start, std::vector&lt; size_t &gt; *reverse_order=NULL)</div><div class="ttdoc">Orders nodes by depth first search reverse post order.</div><div class="ttdef"><b>Definition</b> <a href="ControlFlow_8h_source.html#l00955">ControlFlow.h:955</a></div></div>
+<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1ControlFlow_html_a30b7c7406565d0543fd663d5eca03d15"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1ControlFlow.html#a30b7c7406565d0543fd663d5eca03d15">Rose::BinaryAnalysis::ControlFlow::flow_order</a></div><div class="ttdeci">std::vector&lt; typename boost::graph_traits&lt; ControlFlowGraph &gt;::vertex_descriptor &gt; flow_order(const ControlFlowGraph &amp;, typename boost::graph_traits&lt; ControlFlowGraph &gt;::vertex_descriptor start, std::vector&lt; size_t &gt; *reverse_order=NULL)</div><div class="ttdoc">Orders nodes by depth first search reverse post order.</div><div class="ttdef"><b>Definition</b> <a href="ControlFlow_8h_source.html#l00956">ControlFlow.h:956</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00955">955</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00956">956</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
 </div>
 </div>
@@ -1421,7 +1414,7 @@ template&lt;class ControlFlowGraph &gt; </div>
 <p>More specifically, this method traverses the control flow graph (CFG) beginning at the specified node and returns a list (in depth first search order) of all vertices which are in the connected subgraph and which do not have any known successors, but at least one unknown successor.</p>
 <p>Currently works only for basic block CFGs. </p>
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00976">976</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00977">977</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
 </div>
 </div>
@@ -1446,7 +1439,7 @@ template&lt;class ControlFlowGraph &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00262">262</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00263">263</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
 </div>
 </div>
@@ -1470,7 +1463,7 @@ template&lt;class ControlFlowGraph &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00263">263</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ControlFlow_8h_source.html#l00264">264</a> of file <a class="el" href="ControlFlow_8h_source.html">ControlFlow.h</a>.</p>
 
 </div>
 </div>
@@ -1480,7 +1473,7 @@ template&lt;class ControlFlowGraph &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Oct 2 2024 00:09:08 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon Jan 19 2026 17:24:47 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.141</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
    </div>
   </td>
  </tr>
@@ -58,15 +58,18 @@ $(function() {
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Rose::BinaryAnalysis::Unparser::EdgeArrows Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Description</h2>
-<div class="textblock"><p><a class="el" href="classAnalysis.html">Analysis</a> to generate arrows from one basic block to another. </p>
-<p>Oftentimes there's a desire to print arrows from one basic block to another to represent control flow, dependencies, other other analysis results. This class is meant to be a general-purpose way to compute the start end end of arrows using a variety of layouts. The layout that's currently implemented assumes a line-oriented output where each basic block occupies at least two lines. The first line of the basic block is for edges going into the block (where the block is the target of an edge), and the last line is for edges leaving the block. </p>
+<div class="textblock"><p>Renders textual margin arrows. </p>
+<p>This class is responsible for calculating the layout of textual arrows in a left or right margin of assembly output, and then later rendering those arrows.</p>
+<p>The implementation is general in that it doesn't know what purpose the arrows serve&ndash;it only knows that an arrow has two endpoints called herein the "source" and "target". However, it assumes that an arrow spans lines of output and its main body is therefore rendered as a vertical lines, although its two endpoints might have horizontal components.</p>
+<p>This API has a few high-level layout functions for situations that are common in the ROSE library, and these are written in terms of a more general layout function. At the more general level, the desired arrows are represented by a graph whose vertices represent the end points and whose edges represent the desired arrows connecting the endpoints. Arrows may share endpoints in this descriptive graph. Each endpoint has a unique ID number. </p>
 
-<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00030">30</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00038">38</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
 </div>
 <p><code>#include &lt;<a class="el" href="EdgeArrows_8h_source.html">Rose/BinaryAnalysis/Unparser/EdgeArrows.h</a>&gt;</code></p>
 <table class="memberdecls">
@@ -110,32 +113,48 @@ Public Types</h2></td></tr>
 &#160;&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a1845182ea16f0cb07ef48ec661881543a242f03763adfe3790ab23d6c9d2d2856">RIGHT</a>
 <br />
  }</td></tr>
-<tr class="memdesc:a1845182ea16f0cb07ef48ec661881543"><td class="mdescLeft">&#160;</td><td class="mdescRight">On which side of the listing do the errors appear.  <a href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a1845182ea16f0cb07ef48ec661881543">More...</a><br /></td></tr>
+<tr class="memdesc:a1845182ea16f0cb07ef48ec661881543"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies on which side of the output the arrows appear.  <a href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a1845182ea16f0cb07ef48ec661881543">More...</a><br /></td></tr>
 <tr class="separator:a1845182ea16f0cb07ef48ec661881543"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fb9c48cb4ca39f33f31125e3825aabf" id="r_a7fb9c48cb4ca39f33f31125e3825aabf"><td class="memItemLeft" align="right" valign="top">typedef rose_addr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a></td></tr>
-<tr class="memdesc:a7fb9c48cb4ca39f33f31125e3825aabf"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structVertex.html">Vertex</a> identification numbers.  <br /></td></tr>
-<tr class="separator:a7fb9c48cb4ca39f33f31125e3825aabf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a188d8b1fdfb0cf3e4b746e03921bafd1" id="r_a188d8b1fdfb0cf3e4b746e03921bafd1"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classSawyer_1_1Container_1_1Graph.html">Sawyer::Container::Graph</a>&lt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a>, <a class="el" href="classSawyer_1_1Nothing.html">Sawyer::Nothing</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a188d8b1fdfb0cf3e4b746e03921bafd1">Graph</a></td></tr>
-<tr class="memdesc:a188d8b1fdfb0cf3e4b746e03921bafd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Graph relating vertices by their edges with vertex index.  <br /></td></tr>
-<tr class="separator:a188d8b1fdfb0cf3e4b746e03921bafd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7719cbe2657509dce826c2db4260fef8" id="r_a7719cbe2657509dce826c2db4260fef8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a> = size_t</td></tr>
+<tr class="memdesc:a7719cbe2657509dce826c2db4260fef8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Endpoint identification number.  <br /></td></tr>
+<tr class="separator:a7719cbe2657509dce826c2db4260fef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7a1078b93588cd7e16a453ec264971a" id="r_af7a1078b93588cd7e16a453ec264971a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#af7a1078b93588cd7e16a453ec264971a">ArrowId</a> = size_t</td></tr>
+<tr class="memdesc:af7a1078b93588cd7e16a453ec264971a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arrow identification number.  <br /></td></tr>
+<tr class="separator:af7a1078b93588cd7e16a453ec264971a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a955fed42bf1a129d4c3b24d1bf42492f" id="r_a955fed42bf1a129d4c3b24d1bf42492f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a955fed42bf1a129d4c3b24d1bf42492f">Graph</a> = <a class="el" href="classSawyer_1_1Container_1_1Graph.html">Sawyer::Container::Graph</a>&lt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#af7a1078b93588cd7e16a453ec264971a">ArrowId</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#af7a1078b93588cd7e16a453ec264971a">ArrowId</a> &gt;</td></tr>
+<tr class="memdesc:a955fed42bf1a129d4c3b24d1bf42492f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Graph relating endpoints.  <br /></td></tr>
+<tr class="separator:a955fed42bf1a129d4c3b24d1bf42492f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a174e749e2d5a858ec04a98552fcfa7b8" id="r_a174e749e2d5a858ec04a98552fcfa7b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a174e749e2d5a858ec04a98552fcfa7b8">computeLayout</a> (const <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a188d8b1fdfb0cf3e4b746e03921bafd1">Graph</a> &amp;, const std::vector&lt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a> &gt; &amp;order=std::vector&lt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a> &gt;())</td></tr>
-<tr class="memdesc:a174e749e2d5a858ec04a98552fcfa7b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Analyze connectivity in order to assign arrow locations.  <br /></td></tr>
-<tr class="separator:a174e749e2d5a858ec04a98552fcfa7b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84e0c41f3d5351c2224732faeb5d00e4" id="r_a84e0c41f3d5351c2224732faeb5d00e4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a84e0c41f3d5351c2224732faeb5d00e4">columnIsRendered</a> (size_t columnIdx) const</td></tr>
+<tr class="memdesc:a84e0c41f3d5351c2224732faeb5d00e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predicate: Whether the specified arrow column is rendered.  <br /></td></tr>
+<tr class="separator:a84e0c41f3d5351c2224732faeb5d00e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a316ba50ca16f0f21bb0e7e230e60a7eb" id="r_a316ba50ca16f0f21bb0e7e230e60a7eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a316ba50ca16f0f21bb0e7e230e60a7eb">computeLayout</a> (const <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a955fed42bf1a129d4c3b24d1bf42492f">Graph</a> &amp;, const std::vector&lt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a> &gt; &amp;order)</td></tr>
+<tr class="memdesc:a316ba50ca16f0f21bb0e7e230e60a7eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Analyze connectivity in order to assign arrow locations.  <br /></td></tr>
+<tr class="separator:a316ba50ca16f0f21bb0e7e230e60a7eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba1f63be57349d116099fb0af42f6688" id="r_aba1f63be57349d116099fb0af42f6688"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#aba1f63be57349d116099fb0af42f6688">computeCfgBlockLayout</a> (const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a461d763e33e7cf0364b64e0af0c267a0">Partitioner2::PartitionerConstPtr</a> &amp;, const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a80531f2b8cbb5250b1a0813b4abb3584">Partitioner2::FunctionPtr</a> &amp;)</td></tr>
 <tr class="memdesc:aba1f63be57349d116099fb0af42f6688"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute arrow layout for a control flow graph for a function.  <br /></td></tr>
 <tr class="separator:aba1f63be57349d116099fb0af42f6688"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18c86449ca64c48c99d42db131c4cc85" id="r_a18c86449ca64c48c99d42db131c4cc85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a18c86449ca64c48c99d42db131c4cc85">computeCfgEdgeLayout</a> (const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a461d763e33e7cf0364b64e0af0c267a0">Partitioner2::PartitionerConstPtr</a> &amp;, const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a80531f2b8cbb5250b1a0813b4abb3584">Partitioner2::FunctionPtr</a> &amp;)</td></tr>
 <tr class="memdesc:a18c86449ca64c48c99d42db131c4cc85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute arrow layout for a control flow graph for a function.  <br /></td></tr>
 <tr class="separator:a18c86449ca64c48c99d42db131c4cc85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a956ea7c4bea3e69107256ea3e2ea15fc" id="r_a956ea7c4bea3e69107256ea3e2ea15fc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a956ea7c4bea3e69107256ea3e2ea15fc">exists</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>) const</td></tr>
+<tr class="memdesc:a956ea7c4bea3e69107256ea3e2ea15fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests whether endpoint ID is known.  <br /></td></tr>
+<tr class="separator:a956ea7c4bea3e69107256ea3e2ea15fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f6029506c1f78fb3493e2139b3bd4a6" id="r_a0f6029506c1f78fb3493e2139b3bd4a6"><td class="memItemLeft" align="right" valign="top"><a id="a0f6029506c1f78fb3493e2139b3bd4a6" name="a0f6029506c1f78fb3493e2139b3bd4a6"></a>
+<a class="el" href="classSawyer_1_1Optional.html">Sawyer::Optional</a>&lt; Arrow &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>findArrow</b> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#af7a1078b93588cd7e16a453ec264971a">ArrowId</a>) const</td></tr>
+<tr class="memdesc:a0f6029506c1f78fb3493e2139b3bd4a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the arrow information for the specified edge. <br /></td></tr>
+<tr class="separator:a0f6029506c1f78fb3493e2139b3bd4a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad21e5786dbdec8750ce742bc188e05b9" id="r_ad21e5786dbdec8750ce742bc188e05b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#ad21e5786dbdec8750ce742bc188e05b9">reset</a> ()</td></tr>
 <tr class="memdesc:ad21e5786dbdec8750ce742bc188e05b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the analysis.  <br /></td></tr>
 <tr class="separator:ad21e5786dbdec8750ce742bc188e05b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada5221f177cc1ed3aaff209734d580db" id="r_ada5221f177cc1ed3aaff209734d580db"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#ada5221f177cc1ed3aaff209734d580db">nArrowColumns</a> () const</td></tr>
 <tr class="memdesc:ada5221f177cc1ed3aaff209734d580db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of arrow columns.  <br /></td></tr>
 <tr class="separator:ada5221f177cc1ed3aaff209734d580db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e4c8719ba34303a68d61b87d8f5fbc2" id="r_a6e4c8719ba34303a68d61b87d8f5fbc2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a6e4c8719ba34303a68d61b87d8f5fbc2">nRenderColumns</a> () const</td></tr>
+<tr class="memdesc:a6e4c8719ba34303a68d61b87d8f5fbc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of columns to render.  <br /></td></tr>
+<tr class="separator:a6e4c8719ba34303a68d61b87d8f5fbc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a704244487395e08f6420f28cfc5d518f" id="r_a704244487395e08f6420f28cfc5d518f"><td class="memItemLeft" align="right" valign="top"><a id="a704244487395e08f6420f28cfc5d518f" name="a704244487395e08f6420f28cfc5d518f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>arrowStyle</b> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a9e301fa9338566c47202d6c5690f9c7b">ArrowStylePreset</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a1845182ea16f0cb07ef48ec661881543">ArrowSide</a>)</td></tr>
 <tr class="memdesc:a704244487395e08f6420f28cfc5d518f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the arrow style to a preset value. <br /></td></tr>
@@ -143,20 +162,23 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>arrowStyle</b> (<a cl
 <tr class="memitem:af895dfe13654fc9d55eeb1fe9ebb6511" id="r_af895dfe13654fc9d55eeb1fe9ebb6511"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#af895dfe13654fc9d55eeb1fe9ebb6511">renderBlank</a> () const</td></tr>
 <tr class="memdesc:af895dfe13654fc9d55eeb1fe9ebb6511"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a field of blank characters for all the columns.  <br /></td></tr>
 <tr class="separator:af895dfe13654fc9d55eeb1fe9ebb6511"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03e3419b5b9487c5acaa580a5e9187d1" id="r_a03e3419b5b9487c5acaa580a5e9187d1"><td class="memItemLeft" align="right" valign="top"><a id="a03e3419b5b9487c5acaa580a5e9187d1" name="a03e3419b5b9487c5acaa580a5e9187d1"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#aa84618fb52c7d60f0d867bfddc5f80a6">OutputPart</a>) const</td></tr>
-<tr class="memdesc:a03e3419b5b9487c5acaa580a5e9187d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render arrow columsn for a vertex. <br /></td></tr>
-<tr class="separator:a03e3419b5b9487c5acaa580a5e9187d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84dc34484262e5f3912a6d424d998b8d" id="r_a84dc34484262e5f3912a6d424d998b8d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a84dc34484262e5f3912a6d424d998b8d">nSources</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a>) const</td></tr>
-<tr class="memdesc:a84dc34484262e5f3912a6d424d998b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of arrows that emanate from the given vertex.  <br /></td></tr>
-<tr class="separator:a84dc34484262e5f3912a6d424d998b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ba916acb41d61adc2c6c0ec1b09faba" id="r_a9ba916acb41d61adc2c6c0ec1b09faba"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a9ba916acb41d61adc2c6c0ec1b09faba">nTargets</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a>) const</td></tr>
-<tr class="memdesc:a9ba916acb41d61adc2c6c0ec1b09faba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of arrows that point to the given vertex.  <br /></td></tr>
-<tr class="separator:a9ba916acb41d61adc2c6c0ec1b09faba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae326412a5bf45ff57b0095ee3d5ff00" id="r_aae326412a5bf45ff57b0095ee3d5ff00"><td class="memItemLeft" align="right" valign="top"><a id="aae326412a5bf45ff57b0095ee3d5ff00" name="aae326412a5bf45ff57b0095ee3d5ff00"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>debug</b> (std::ostream &amp;) const</td></tr>
-<tr class="memdesc:aae326412a5bf45ff57b0095ee3d5ff00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print implementation-defined debugging information. <br /></td></tr>
-<tr class="separator:aae326412a5bf45ff57b0095ee3d5ff00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbb8b72ecdaabd56b865888961763c19" id="r_afbb8b72ecdaabd56b865888961763c19"><td class="memItemLeft" align="right" valign="top"><a id="afbb8b72ecdaabd56b865888961763c19" name="afbb8b72ecdaabd56b865888961763c19"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#aa84618fb52c7d60f0d867bfddc5f80a6">OutputPart</a>) const</td></tr>
+<tr class="memdesc:afbb8b72ecdaabd56b865888961763c19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render arrow columns for an endpoint. <br /></td></tr>
+<tr class="separator:afbb8b72ecdaabd56b865888961763c19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2782ae913e6af4eb3996147e8b926cb" id="r_ac2782ae913e6af4eb3996147e8b926cb"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#ac2782ae913e6af4eb3996147e8b926cb">nSources</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>) const</td></tr>
+<tr class="memdesc:ac2782ae913e6af4eb3996147e8b926cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of arrows that emanate from the given endpoint.  <br /></td></tr>
+<tr class="separator:ac2782ae913e6af4eb3996147e8b926cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a657e75b84db33dc8ebe35c9ec39087e7" id="r_a657e75b84db33dc8ebe35c9ec39087e7"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a657e75b84db33dc8ebe35c9ec39087e7">nTargets</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>) const</td></tr>
+<tr class="memdesc:a657e75b84db33dc8ebe35c9ec39087e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of arrows that point to the given endpoint.  <br /></td></tr>
+<tr class="separator:a657e75b84db33dc8ebe35c9ec39087e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a2cfd58593b93ccaf7c5a8d13a9095edf" id="r_a2cfd58593b93ccaf7c5a8d13a9095edf"><td class="memItemLeft" align="right" valign="top">std::pair&lt; size_t, size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a2cfd58593b93ccaf7c5a8d13a9095edf">minMaxRenderColumns</a> () const</td></tr>
+<tr class="memdesc:a2cfd58593b93ccaf7c5a8d13a9095edf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property: Minimum and maximum number of columns to render.  <br /></td></tr>
+<tr class="separator:a2cfd58593b93ccaf7c5a8d13a9095edf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af23b87684714412d8cc6eae903788bc4" id="r_af23b87684714412d8cc6eae903788bc4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#af23b87684714412d8cc6eae903788bc4">minMaxRenderColumns</a> (size_t minColumns, size_t maxColumns)</td></tr>
+<tr class="memdesc:af23b87684714412d8cc6eae903788bc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property: Minimum and maximum number of columns to render.  <br /></td></tr>
+<tr class="separator:af23b87684714412d8cc6eae903788bc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a660699cc3174f050613204703ef367a2" id="r_a660699cc3174f050613204703ef367a2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows_1_1ArrowStyle.html">ArrowStyle</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a660699cc3174f050613204703ef367a2">arrowStyle</a> () const</td></tr>
 <tr class="memdesc:a660699cc3174f050613204703ef367a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property: Information about how to render an arrow.  <br /></td></tr>
@@ -164,16 +186,50 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>debug</b> (std::ostre
 <tr class="memitem:ac2af86990b2e9c595c5cb0a5f243601a" id="r_ac2af86990b2e9c595c5cb0a5f243601a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#ac2af86990b2e9c595c5cb0a5f243601a">arrowStyle</a> (const <a class="el" href="structRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows_1_1ArrowStyle.html">ArrowStyle</a> &amp;t)</td></tr>
 <tr class="memdesc:ac2af86990b2e9c595c5cb0a5f243601a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property: Information about how to render an arrow.  <br /></td></tr>
 <tr class="separator:ac2af86990b2e9c595c5cb0a5f243601a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:aae326412a5bf45ff57b0095ee3d5ff00" id="r_aae326412a5bf45ff57b0095ee3d5ff00"><td class="memItemLeft" align="right" valign="top"><a id="aae326412a5bf45ff57b0095ee3d5ff00" name="aae326412a5bf45ff57b0095ee3d5ff00"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>debug</b> (std::ostream &amp;) const</td></tr>
+<tr class="memdesc:aae326412a5bf45ff57b0095ee3d5ff00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print implementation-defined debugging information. <br /></td></tr>
+<tr class="separator:aae326412a5bf45ff57b0095ee3d5ff00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bc4f64060e49718ac53b3159c82006f" id="r_a8bc4f64060e49718ac53b3159c82006f"><td class="memItemLeft" align="right" valign="top"><a id="a8bc4f64060e49718ac53b3159c82006f" name="a8bc4f64060e49718ac53b3159c82006f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>debugGraph</b> (std::ostream &amp;, const <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a955fed42bf1a129d4c3b24d1bf42492f">Graph</a> &amp;) const</td></tr>
+<tr class="memdesc:a8bc4f64060e49718ac53b3159c82006f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print implementation-defined debugging information. <br /></td></tr>
+<tr class="separator:a8bc4f64060e49718ac53b3159c82006f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92ee15bd17222dc941942d12bfeb01d7" id="r_a92ee15bd17222dc941942d12bfeb01d7"><td class="memItemLeft" align="right" valign="top"><a id="a92ee15bd17222dc941942d12bfeb01d7" name="a92ee15bd17222dc941942d12bfeb01d7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>debugLines</b> (std::ostream &amp;, const std::vector&lt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a> &gt; &amp;) const</td></tr>
+<tr class="memdesc:a92ee15bd17222dc941942d12bfeb01d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print implementation-defined debugging information. <br /></td></tr>
+<tr class="separator:a92ee15bd17222dc941942d12bfeb01d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a43fc5330e954a5d5a6009bb09ec7c88f" id="r_a43fc5330e954a5d5a6009bb09ec7c88f"><td class="memItemLeft" align="right" valign="top"><a id="a43fc5330e954a5d5a6009bb09ec7c88f" name="a43fc5330e954a5d5a6009bb09ec7c88f"></a>
+static <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>&#160;</td><td class="memItemRight" valign="bottom"><b>edgeToSourceEndpoint</b> (size_t edgeId)</td></tr>
+<tr class="separator:a43fc5330e954a5d5a6009bb09ec7c88f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd14803ed3e719b8aa951b3af635e10f" id="r_abd14803ed3e719b8aa951b3af635e10f"><td class="memItemLeft" align="right" valign="top"><a id="abd14803ed3e719b8aa951b3af635e10f" name="abd14803ed3e719b8aa951b3af635e10f"></a>
+static <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>&#160;</td><td class="memItemRight" valign="bottom"><b>edgeToTargetEndpoint</b> (size_t edgeId)</td></tr>
+<tr class="separator:abd14803ed3e719b8aa951b3af635e10f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e1177176dd623ab610a90bcd6ff2b55" id="r_a8e1177176dd623ab610a90bcd6ff2b55"><td class="memItemLeft" align="right" valign="top"><a id="a8e1177176dd623ab610a90bcd6ff2b55" name="a8e1177176dd623ab610a90bcd6ff2b55"></a>
+static size_t&#160;</td><td class="memItemRight" valign="bottom"><b>edgeFromEndpoint</b> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>)</td></tr>
+<tr class="separator:a8e1177176dd623ab610a90bcd6ff2b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:a8594f4885d71e94d170ca8cf023345dc" id="r_a8594f4885d71e94d170ca8cf023345dc"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a8594f4885d71e94d170ca8cf023345dc">cfgEdgeSourceEndpoint</a> (size_t edgeId)</td></tr>
-<tr class="memdesc:a8594f4885d71e94d170ca8cf023345dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Endpoint ID for CFG edge arrows.  <br /></td></tr>
-<tr class="separator:a8594f4885d71e94d170ca8cf023345dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8572d2ef1a42d260c42de5beca7ef8dd" id="r_a8572d2ef1a42d260c42de5beca7ef8dd"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a8572d2ef1a42d260c42de5beca7ef8dd">cfgEdgeTargetEndpoint</a> (size_t edgeId)</td></tr>
-<tr class="memdesc:a8572d2ef1a42d260c42de5beca7ef8dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Endpoint ID for CFG edge arrows.  <br /></td></tr>
-<tr class="separator:a8572d2ef1a42d260c42de5beca7ef8dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5db7bc9ca0e14e74d624feb5a674efa4" id="r_a5db7bc9ca0e14e74d624feb5a674efa4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a5db7bc9ca0e14e74d624feb5a674efa4">toSourceEndpoint</a> (size_t cfgEdgeOrVertexId)</td></tr>
+<tr class="memdesc:a5db7bc9ca0e14e74d624feb5a674efa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arrow endpoint IDs related to edge or vertex IDs.  <br /></td></tr>
+<tr class="separator:a5db7bc9ca0e14e74d624feb5a674efa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b1d9a2c24881920c8bf02c011ea4fd3" id="r_a2b1d9a2c24881920c8bf02c011ea4fd3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a2b1d9a2c24881920c8bf02c011ea4fd3">toTargetEndpoint</a> (size_t cfgEdgeOrVertexId)</td></tr>
+<tr class="memdesc:a2b1d9a2c24881920c8bf02c011ea4fd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arrow endpoint IDs related to edge or vertex IDs.  <br /></td></tr>
+<tr class="separator:a2b1d9a2c24881920c8bf02c011ea4fd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2338a4855e9c4a91b97c4ae6e2e10b44" id="r_a2338a4855e9c4a91b97c4ae6e2e10b44"><td class="memItemLeft" align="right" valign="top">static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a2338a4855e9c4a91b97c4ae6e2e10b44">fromEndpoint</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>)</td></tr>
+<tr class="memdesc:a2338a4855e9c4a91b97c4ae6e2e10b44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arrow endpoint IDs related to edge or vertex IDs.  <br /></td></tr>
+<tr class="separator:a2338a4855e9c4a91b97c4ae6e2e10b44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a003f20a9ac2d83cfb3168f4556994d06" id="r_a003f20a9ac2d83cfb3168f4556994d06"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a003f20a9ac2d83cfb3168f4556994d06">isSourceEndpoint</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>)</td></tr>
+<tr class="memdesc:a003f20a9ac2d83cfb3168f4556994d06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arrow endpoint IDs related to edge or vertex IDs.  <br /></td></tr>
+<tr class="separator:a003f20a9ac2d83cfb3168f4556994d06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10cfcaf7409067fc42744922a3397599" id="r_a10cfcaf7409067fc42744922a3397599"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a10cfcaf7409067fc42744922a3397599">isTargetEndpoint</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>)</td></tr>
+<tr class="memdesc:a10cfcaf7409067fc42744922a3397599"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arrow endpoint IDs related to edge or vertex IDs.  <br /></td></tr>
+<tr class="separator:a10cfcaf7409067fc42744922a3397599"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73419fcf67d53c94f0d14a1905458697" id="r_a73419fcf67d53c94f0d14a1905458697"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a73419fcf67d53c94f0d14a1905458697">otherEndpoint</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>)</td></tr>
+<tr class="memdesc:a73419fcf67d53c94f0d14a1905458697"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arrow endpoint IDs related to edge or vertex IDs.  <br /></td></tr>
+<tr class="separator:a73419fcf67d53c94f0d14a1905458697"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a85d32e554d5d4745ff507954fb9aeaea" id="r_a85d32e554d5d4745ff507954fb9aeaea"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows_1_1ArrowStyle.html">ArrowStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a85d32e554d5d4745ff507954fb9aeaea">unicodeL1</a> ()</td></tr>
 <tr class="memdesc:a85d32e554d5d4745ff507954fb9aeaea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arrow rendering styles.  <br /></td></tr>
@@ -213,39 +269,60 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:aa1e11cbac4d6f6b89ce914c396ffc122"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a7fb9c48cb4ca39f33f31125e3825aabf" name="a7fb9c48cb4ca39f33f31125e3825aabf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fb9c48cb4ca39f33f31125e3825aabf">&#9670;&#160;</a></span>VertexId</h2>
+<a id="a7719cbe2657509dce826c2db4260fef8" name="a7719cbe2657509dce826c2db4260fef8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7719cbe2657509dce826c2db4260fef8">&#9670;&#160;</a></span>EndpointId</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef rose_addr_t <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">Rose::BinaryAnalysis::Unparser::EdgeArrows::VertexId</a></td>
+          <td class="memname">using <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">Rose::BinaryAnalysis::Unparser::EdgeArrows::EndpointId</a> =  size_t</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="structVertex.html">Vertex</a> identification numbers. </p>
+<p>Endpoint identification number. </p>
+<p>These serve a user-specified purpose to identify the things to/from which arrows point. For instance, they might be the identification numbers for basic blocks in a control flow graph, or they might be identification numbers for lines describing CFG edge sources and targets. </p>
 
-<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00041">41</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00059">59</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
 
 </div>
 </div>
-<a id="a188d8b1fdfb0cf3e4b746e03921bafd1" name="a188d8b1fdfb0cf3e4b746e03921bafd1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a188d8b1fdfb0cf3e4b746e03921bafd1">&#9670;&#160;</a></span>Graph</h2>
+<a id="af7a1078b93588cd7e16a453ec264971a" name="af7a1078b93588cd7e16a453ec264971a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7a1078b93588cd7e16a453ec264971a">&#9670;&#160;</a></span>ArrowId</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="classSawyer_1_1Container_1_1Graph.html">Sawyer::Container::Graph</a>&lt;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a>, <a class="el" href="classSawyer_1_1Nothing.html">Sawyer::Nothing</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a>&gt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a188d8b1fdfb0cf3e4b746e03921bafd1">Rose::BinaryAnalysis::Unparser::EdgeArrows::Graph</a></td>
+          <td class="memname">using <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#af7a1078b93588cd7e16a453ec264971a">Rose::BinaryAnalysis::Unparser::EdgeArrows::ArrowId</a> =  size_t</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Graph relating vertices by their edges with vertex index. </p>
+<p>Arrow identification number. </p>
+<p>This is a user-specified arrow identification number. Most users will probably arrange for arrow IDs to be the same as the ID numbers for edges in a control flow graph. </p>
 
-<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00044">44</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00065">65</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
+
+</div>
+</div>
+<a id="a955fed42bf1a129d4c3b24d1bf42492f" name="a955fed42bf1a129d4c3b24d1bf42492f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a955fed42bf1a129d4c3b24d1bf42492f">&#9670;&#160;</a></span>Graph</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a955fed42bf1a129d4c3b24d1bf42492f">Rose::BinaryAnalysis::Unparser::EdgeArrows::Graph</a> =  <a class="el" href="classSawyer_1_1Container_1_1Graph.html">Sawyer::Container::Graph</a>&lt;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#af7a1078b93588cd7e16a453ec264971a">ArrowId</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#af7a1078b93588cd7e16a453ec264971a">ArrowId</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Graph relating endpoints. </p>
+<p>The vertices of this graph represent the endpoints of the arrows. The arrows themselves are represented by the directed edges in this graph. An edge from endpoint A to endpoint B means that there should be an arrow that originates from endpoint A and points to endpoint B in the output. </p>
+
+<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00072">72</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
 
 </div>
 </div>
@@ -263,18 +340,19 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Parts of the output. </p>
+<p>Arrows are rendered one line at a time, although it is simpler to think of the output in terms of the things to which the arrows point (e.g., the basic blocks in a control flow graph). Each pointee is assumed to have zero or more lines describing arrow targets (e.g., describing from whence CFG execution flow comes), followed by zero or more non-endpoint lines (e.g., the instructions themselves), followed by zero or more lines describing arrow sources (e.g., describing to where execution flow goes next). Pointees might be separated from one another in the output by zero or more other lines. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa84618fb52c7d60f0d867bfddc5f80a6a663e0c532c22d1ed7671749c1fae5b12" name="aa84618fb52c7d60f0d867bfddc5f80a6a663e0c532c22d1ed7671749c1fae5b12"></a>FIRST_LINE&#160;</td><td class="fielddoc"><p>First line of a vertex when printed. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa84618fb52c7d60f0d867bfddc5f80a6a663e0c532c22d1ed7671749c1fae5b12" name="aa84618fb52c7d60f0d867bfddc5f80a6a663e0c532c22d1ed7671749c1fae5b12"></a>FIRST_LINE&#160;</td><td class="fielddoc"><p>An arrow target line. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="aa84618fb52c7d60f0d867bfddc5f80a6a89fcda93fe2118cc0c03910f555c321e" name="aa84618fb52c7d60f0d867bfddc5f80a6a89fcda93fe2118cc0c03910f555c321e"></a>LAST_LINE&#160;</td><td class="fielddoc"><p>Last line of a vertex when printed. </p>
+<tr><td class="fieldname"><a id="aa84618fb52c7d60f0d867bfddc5f80a6a89fcda93fe2118cc0c03910f555c321e" name="aa84618fb52c7d60f0d867bfddc5f80a6a89fcda93fe2118cc0c03910f555c321e"></a>LAST_LINE&#160;</td><td class="fielddoc"><p>An arrow source line. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="aa84618fb52c7d60f0d867bfddc5f80a6a505f64e1c69d3944ac46abd5f99d5a8b" name="aa84618fb52c7d60f0d867bfddc5f80a6a505f64e1c69d3944ac46abd5f99d5a8b"></a>MIDDLE_LINE&#160;</td><td class="fielddoc"><p>Lines in the middle of a printed vertex. </p>
+<tr><td class="fieldname"><a id="aa84618fb52c7d60f0d867bfddc5f80a6a505f64e1c69d3944ac46abd5f99d5a8b" name="aa84618fb52c7d60f0d867bfddc5f80a6a505f64e1c69d3944ac46abd5f99d5a8b"></a>MIDDLE_LINE&#160;</td><td class="fielddoc"><p>Non-arrow lines between target and source lines for a pointee. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="aa84618fb52c7d60f0d867bfddc5f80a6a8e8c050436dedc4c2bc5ce02a15a11fc" name="aa84618fb52c7d60f0d867bfddc5f80a6a8e8c050436dedc4c2bc5ce02a15a11fc"></a>INTER_LINE&#160;</td><td class="fielddoc"><p>Lines output between vertices. </p>
+<tr><td class="fieldname"><a id="aa84618fb52c7d60f0d867bfddc5f80a6a8e8c050436dedc4c2bc5ce02a15a11fc" name="aa84618fb52c7d60f0d867bfddc5f80a6a8e8c050436dedc4c2bc5ce02a15a11fc"></a>INTER_LINE&#160;</td><td class="fielddoc"><p>Lines between sources of this pointee and targets of next pointee. </p>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00033">33</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00047">47</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
 
 </div>
 </div>
@@ -308,7 +386,7 @@ Static Public Member Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00061">61</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00091">91</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
 
 </div>
 </div>
@@ -324,15 +402,15 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>On which side of the listing do the errors appear. </p>
+<p>Specifies on which side of the output the arrows appear. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1845182ea16f0cb07ef48ec661881543a9876f7817d330a09e59a0e439bda0b16" name="a1845182ea16f0cb07ef48ec661881543a9876f7817d330a09e59a0e439bda0b16"></a>LEFT&#160;</td><td class="fielddoc"><p>Arrows appear left of the listing and point to the right. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1845182ea16f0cb07ef48ec661881543a9876f7817d330a09e59a0e439bda0b16" name="a1845182ea16f0cb07ef48ec661881543a9876f7817d330a09e59a0e439bda0b16"></a>LEFT&#160;</td><td class="fielddoc"><p>Arrows appear left of the main output and point to the right. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a1845182ea16f0cb07ef48ec661881543a242f03763adfe3790ab23d6c9d2d2856" name="a1845182ea16f0cb07ef48ec661881543a242f03763adfe3790ab23d6c9d2d2856"></a>RIGHT&#160;</td><td class="fielddoc"><p>Arrows appear right of the listing and point to the left. </p>
+<tr><td class="fieldname"><a id="a1845182ea16f0cb07ef48ec661881543a242f03763adfe3790ab23d6c9d2d2856" name="a1845182ea16f0cb07ef48ec661881543a242f03763adfe3790ab23d6c9d2d2856"></a>RIGHT&#160;</td><td class="fielddoc"><p>Arrows appear right of the main output and point to the left. </p>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00070">70</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00100">100</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
 
 </div>
 </div>
@@ -360,13 +438,87 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00113">113</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00154">154</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a174e749e2d5a858ec04a98552fcfa7b8" name="a174e749e2d5a858ec04a98552fcfa7b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a174e749e2d5a858ec04a98552fcfa7b8">&#9670;&#160;</a></span>computeLayout()</h2>
+<a id="a2cfd58593b93ccaf7c5a8d13a9095edf" name="a2cfd58593b93ccaf7c5a8d13a9095edf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cfd58593b93ccaf7c5a8d13a9095edf">&#9670;&#160;</a></span>minMaxRenderColumns() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; size_t, size_t &gt; Rose::BinaryAnalysis::Unparser::EdgeArrows::minMaxRenderColumns </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Property: Minimum and maximum number of columns to render. </p>
+<p>The render columns will emit at least the specified minumum number of arrow columns, but not more than the maximum. If there are fewer columns than the minimum, then extra empty columns are rendered; if there are more than the maximum number of columns then some columns are not rendered.</p>
+<p>The minimum must be less than or equal to the maximum. </p>
+
+</div>
+</div>
+<a id="af23b87684714412d8cc6eae903788bc4" name="af23b87684714412d8cc6eae903788bc4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af23b87684714412d8cc6eae903788bc4">&#9670;&#160;</a></span>minMaxRenderColumns() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Rose::BinaryAnalysis::Unparser::EdgeArrows::minMaxRenderColumns </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>minColumns</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>maxColumns</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Property: Minimum and maximum number of columns to render. </p>
+<p>The render columns will emit at least the specified minumum number of arrow columns, but not more than the maximum. If there are fewer columns than the minimum, then extra empty columns are rendered; if there are more than the maximum number of columns then some columns are not rendered.</p>
+<p>The minimum must be less than or equal to the maximum. </p>
+
+</div>
+</div>
+<a id="a84e0c41f3d5351c2224732faeb5d00e4" name="a84e0c41f3d5351c2224732faeb5d00e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84e0c41f3d5351c2224732faeb5d00e4">&#9670;&#160;</a></span>columnIsRendered()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Rose::BinaryAnalysis::Unparser::EdgeArrows::columnIsRendered </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>columnIdx</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Predicate: Whether the specified arrow column is rendered. </p>
+<p>Arrows belong to logical columns, and the renderer can be set to show a minimum and maximum number of columns. This predicate returns true if the specified logical column would be shown. Columns are printed in different orders depending on whether they appear left or right of the things to which they point, and this predicate takes that into account. </p>
+
+</div>
+</div>
+<a id="a316ba50ca16f0f21bb0e7e230e60a7eb" name="a316ba50ca16f0f21bb0e7e230e60a7eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a316ba50ca16f0f21bb0e7e230e60a7eb">&#9670;&#160;</a></span>computeLayout()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -374,14 +526,14 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void Rose::BinaryAnalysis::Unparser::EdgeArrows::computeLayout </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a188d8b1fdfb0cf3e4b746e03921bafd1">Graph</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a955fed42bf1a129d4c3b24d1bf42492f">Graph</a> &amp;&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>order</em> = <code>std::vector&lt;&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a>&#160;&gt;()</code>&#160;</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>order</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -392,7 +544,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Analyze connectivity in order to assign arrow locations. </p>
-<p>Analyzes the connectivity of the vertices specified in the <code>graph</code>, and the optional vertex <code>order</code> in order to calculate the locations of the margin arrows. The vertices of the graph are assumed to be output in the order listed in the <code>order</code> argument. Any vertices that are present in the <code>graph</code> but not in the <code>order</code> specification are sorted by ID and then appended to the <code>order</code>.</p>
+<p>Analyzes the connectivity of the endpoints specified in the <code>graph</code>, and the optional endpoint <code>order</code> to calculate the locations of the margin arrows. The endpoints in the graph are assumed to be output in the order listed in the <code>order</code> argument. Any endpoints that are present in the <code>graph</code> but not in the <code>order</code> specification are sorted by <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a> and then appended to the <code>order</code>.</p>
 <p>This does not clear previous layout information, and so it can be used to append to previous output. To discard previous layout information first, call <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#ad21e5786dbdec8750ce742bc188e05b9">reset</a>. </p>
 
 </div>
@@ -424,7 +576,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Compute arrow layout for a control flow graph for a function. </p>
-<p>This produces arrows for intra-function CFG edges such that the arrows' sources and targets are basic blocks. That is, in the unparser output, arrows will point to the first instruction of a basic block and emanate from the last instruction. This method assumes that the unparser emits a function's basic blocks in order of their starting address.</p>
+<p>This produces arrows for intra-function CFG edges such that the arrows' sources and targets are basic blocks. That is, in the output, arrows will point to the first instruction of a basic block and emanate from the last instruction. This method assumes that the unparser emits a function's basic blocks in order of their starting address.</p>
 <p>See also, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a18c86449ca64c48c99d42db131c4cc85">computeCfgEdgeLayout</a> </p>
 
 </div>
@@ -461,8 +613,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a8594f4885d71e94d170ca8cf023345dc" name="a8594f4885d71e94d170ca8cf023345dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8594f4885d71e94d170ca8cf023345dc">&#9670;&#160;</a></span>cfgEdgeSourceEndpoint()</h2>
+<a id="a5db7bc9ca0e14e74d624feb5a674efa4" name="a5db7bc9ca0e14e74d624feb5a674efa4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5db7bc9ca0e14e74d624feb5a674efa4">&#9670;&#160;</a></span>toSourceEndpoint()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -471,10 +623,10 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a> Rose::BinaryAnalysis::Unparser::EdgeArrows::cfgEdgeSourceEndpoint </td>
+          <td class="memname">static <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a> Rose::BinaryAnalysis::Unparser::EdgeArrows::toSourceEndpoint </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>edgeId</em></td><td>)</td>
+          <td class="paramname"><em>cfgEdgeOrVertexId</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -485,13 +637,14 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Endpoint ID for CFG edge arrows. </p>
-<p>Returns the endpoint ID for the specified CFG edge. These are the IDs that correspond to those used by <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a18c86449ca64c48c99d42db131c4cc85">computeCfgEdgeLayout</a>. The edge must be a valid edge, not an end iterator. </p>
+<p>Arrow endpoint IDs related to edge or vertex IDs. </p>
+<p>These functions generate arrow endpoint IDs (<code>EndpointId</code>) from non-arrow IDs (<code>size_t</code>) and vice versa. They're purely here for convenience&ndash;you can number your endpoints however you like as long as unique endpoints have unique IDs.</p>
+<p>The <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a18c86449ca64c48c99d42db131c4cc85">computeCfgEdgeLayout</a> uses the numbering scheme implemented by these functions. </p>
 
 </div>
 </div>
-<a id="a8572d2ef1a42d260c42de5beca7ef8dd" name="a8572d2ef1a42d260c42de5beca7ef8dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8572d2ef1a42d260c42de5beca7ef8dd">&#9670;&#160;</a></span>cfgEdgeTargetEndpoint()</h2>
+<a id="a2b1d9a2c24881920c8bf02c011ea4fd3" name="a2b1d9a2c24881920c8bf02c011ea4fd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b1d9a2c24881920c8bf02c011ea4fd3">&#9670;&#160;</a></span>toTargetEndpoint()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -500,10 +653,10 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a> Rose::BinaryAnalysis::Unparser::EdgeArrows::cfgEdgeTargetEndpoint </td>
+          <td class="memname">static <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a> Rose::BinaryAnalysis::Unparser::EdgeArrows::toTargetEndpoint </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>edgeId</em></td><td>)</td>
+          <td class="paramname"><em>cfgEdgeOrVertexId</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -514,8 +667,150 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Endpoint ID for CFG edge arrows. </p>
-<p>Returns the endpoint ID for the specified CFG edge. These are the IDs that correspond to those used by <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a18c86449ca64c48c99d42db131c4cc85">computeCfgEdgeLayout</a>. The edge must be a valid edge, not an end iterator. </p>
+<p>Arrow endpoint IDs related to edge or vertex IDs. </p>
+<p>These functions generate arrow endpoint IDs (<code>EndpointId</code>) from non-arrow IDs (<code>size_t</code>) and vice versa. They're purely here for convenience&ndash;you can number your endpoints however you like as long as unique endpoints have unique IDs.</p>
+<p>The <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a18c86449ca64c48c99d42db131c4cc85">computeCfgEdgeLayout</a> uses the numbering scheme implemented by these functions. </p>
+
+</div>
+</div>
+<a id="a2338a4855e9c4a91b97c4ae6e2e10b44" name="a2338a4855e9c4a91b97c4ae6e2e10b44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2338a4855e9c4a91b97c4ae6e2e10b44">&#9670;&#160;</a></span>fromEndpoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static size_t Rose::BinaryAnalysis::Unparser::EdgeArrows::fromEndpoint </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Arrow endpoint IDs related to edge or vertex IDs. </p>
+<p>These functions generate arrow endpoint IDs (<code>EndpointId</code>) from non-arrow IDs (<code>size_t</code>) and vice versa. They're purely here for convenience&ndash;you can number your endpoints however you like as long as unique endpoints have unique IDs.</p>
+<p>The <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a18c86449ca64c48c99d42db131c4cc85">computeCfgEdgeLayout</a> uses the numbering scheme implemented by these functions. </p>
+
+</div>
+</div>
+<a id="a003f20a9ac2d83cfb3168f4556994d06" name="a003f20a9ac2d83cfb3168f4556994d06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a003f20a9ac2d83cfb3168f4556994d06">&#9670;&#160;</a></span>isSourceEndpoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Rose::BinaryAnalysis::Unparser::EdgeArrows::isSourceEndpoint </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Arrow endpoint IDs related to edge or vertex IDs. </p>
+<p>These functions generate arrow endpoint IDs (<code>EndpointId</code>) from non-arrow IDs (<code>size_t</code>) and vice versa. They're purely here for convenience&ndash;you can number your endpoints however you like as long as unique endpoints have unique IDs.</p>
+<p>The <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a18c86449ca64c48c99d42db131c4cc85">computeCfgEdgeLayout</a> uses the numbering scheme implemented by these functions. </p>
+
+</div>
+</div>
+<a id="a10cfcaf7409067fc42744922a3397599" name="a10cfcaf7409067fc42744922a3397599"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10cfcaf7409067fc42744922a3397599">&#9670;&#160;</a></span>isTargetEndpoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Rose::BinaryAnalysis::Unparser::EdgeArrows::isTargetEndpoint </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Arrow endpoint IDs related to edge or vertex IDs. </p>
+<p>These functions generate arrow endpoint IDs (<code>EndpointId</code>) from non-arrow IDs (<code>size_t</code>) and vice versa. They're purely here for convenience&ndash;you can number your endpoints however you like as long as unique endpoints have unique IDs.</p>
+<p>The <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a18c86449ca64c48c99d42db131c4cc85">computeCfgEdgeLayout</a> uses the numbering scheme implemented by these functions. </p>
+
+</div>
+</div>
+<a id="a73419fcf67d53c94f0d14a1905458697" name="a73419fcf67d53c94f0d14a1905458697"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73419fcf67d53c94f0d14a1905458697">&#9670;&#160;</a></span>otherEndpoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a> Rose::BinaryAnalysis::Unparser::EdgeArrows::otherEndpoint </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Arrow endpoint IDs related to edge or vertex IDs. </p>
+<p>These functions generate arrow endpoint IDs (<code>EndpointId</code>) from non-arrow IDs (<code>size_t</code>) and vice versa. They're purely here for convenience&ndash;you can number your endpoints however you like as long as unique endpoints have unique IDs.</p>
+<p>The <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a18c86449ca64c48c99d42db131c4cc85">computeCfgEdgeLayout</a> uses the numbering scheme implemented by these functions. </p>
+
+</div>
+</div>
+<a id="a956ea7c4bea3e69107256ea3e2ea15fc" name="a956ea7c4bea3e69107256ea3e2ea15fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a956ea7c4bea3e69107256ea3e2ea15fc">&#9670;&#160;</a></span>exists()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Rose::BinaryAnalysis::Unparser::EdgeArrows::exists </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Tests whether endpoint ID is known. </p>
+<p>Returns true if the specified endpoint is part of the edge arrow information, false if the ID is unknown. </p>
 
 </div>
 </div>
@@ -537,8 +832,6 @@ Static Public Member Functions</h2></td></tr>
 <p>Reset the analysis. </p>
 <p>This clears previous layout information but not rendering information. I.e., the arrows are all erased, but the arrow style and other properties are not affected. </p>
 
-<p class="reference">Referenced by <a class="el" href="Unparser_2Base_8h_source.html#l00078">Rose::BinaryAnalysis::Unparser::ArrowMargin::reset()</a>.</p>
-
 </div>
 </div>
 <a id="ada5221f177cc1ed3aaff209734d580db" name="ada5221f177cc1ed3aaff209734d580db"></a>
@@ -557,8 +850,28 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Number of arrow columns. </p>
-<p>This is the number of columns needed for the arrows measured in terms of arrows.</p>
+<p>This is the number of logical columns needed for the arrows. An arrow occupies a single logical column, but depending on the arrow style, the rendered arrow might occupy multiple physical columns of output. The return value is not limited by the <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a2cfd58593b93ccaf7c5a8d13a9095edf">minMaxRenderColumns</a> property.</p>
 <p>If you want the number of columns of characters (rather than arrows) you should multiply the return value of this function by <code>arrowStyle.charactersPerColumn</code>. </p>
+
+</div>
+</div>
+<a id="a6e4c8719ba34303a68d61b87d8f5fbc2" name="a6e4c8719ba34303a68d61b87d8f5fbc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e4c8719ba34303a68d61b87d8f5fbc2">&#9670;&#160;</a></span>nRenderColumns()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t Rose::BinaryAnalysis::Unparser::EdgeArrows::nRenderColumns </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Number of columns to render. </p>
+<p>This is the number of logical arrow columns actually rendered. The return value is a function of <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#ada5221f177cc1ed3aaff209734d580db">nArrowColumns</a> and <a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a2cfd58593b93ccaf7c5a8d13a9095edf">minMaxRenderColumns</a>. Each logical column may refer to multiple physical columns depending on the arrow style. </p>
 
 </div>
 </div>
@@ -587,7 +900,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Property: Information about how to render an arrow. </p>
 
-<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00176">176</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00264">264</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
 
 </div>
 </div>
@@ -617,7 +930,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Property: Information about how to render an arrow. </p>
 
-<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00177">177</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="EdgeArrows_8h_source.html#l00265">265</a> of file <a class="el" href="EdgeArrows_8h_source.html">EdgeArrows.h</a>.</p>
 
 </div>
 </div>
@@ -1002,8 +1315,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a84dc34484262e5f3912a6d424d998b8d" name="a84dc34484262e5f3912a6d424d998b8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84dc34484262e5f3912a6d424d998b8d">&#9670;&#160;</a></span>nSources()</h2>
+<a id="ac2782ae913e6af4eb3996147e8b926cb" name="ac2782ae913e6af4eb3996147e8b926cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2782ae913e6af4eb3996147e8b926cb">&#9670;&#160;</a></span>nSources()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1011,20 +1324,20 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">size_t Rose::BinaryAnalysis::Unparser::EdgeArrows::nSources </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Number of arrows that emanate from the given vertex. </p>
-<p>Normally you'd use the original graph to answer this question, but sometimes that graph is long gone. In those cases, you can use this slower function to find the number of arrows that originate from the specified vertex. </p>
+<p>Number of arrows that emanate from the given endpoint. </p>
+<p>Normally you'd use the original graph to answer this question, but sometimes that graph is long gone. In those cases, you can use this slower function to find the number of arrows that originate from the specified endpoint. </p>
 
 </div>
 </div>
-<a id="a9ba916acb41d61adc2c6c0ec1b09faba" name="a9ba916acb41d61adc2c6c0ec1b09faba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ba916acb41d61adc2c6c0ec1b09faba">&#9670;&#160;</a></span>nTargets()</h2>
+<a id="a657e75b84db33dc8ebe35c9ec39087e7" name="a657e75b84db33dc8ebe35c9ec39087e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a657e75b84db33dc8ebe35c9ec39087e7">&#9670;&#160;</a></span>nTargets()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1032,15 +1345,15 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">size_t Rose::BinaryAnalysis::Unparser::EdgeArrows::nTargets </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7fb9c48cb4ca39f33f31125e3825aabf">VertexId</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Unparser_1_1EdgeArrows.html#a7719cbe2657509dce826c2db4260fef8">EndpointId</a>&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Number of arrows that point to the given vertex. </p>
-<p>Normally you'd use the original graph to answer this question, but sometimes that graph is long gone. In those cases, you can use this slower function to find the number of arrows that point to the specified vertex. </p>
+<p>Number of arrows that point to the given endpoint. </p>
+<p>Normally you'd use the original graph to answer this question, but sometimes that graph is long gone. In those cases, you can use this slower function to find the number of arrows that point to the specified endpoint. </p>
 
 </div>
 </div>
@@ -1050,7 +1363,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Oct 2 2024 00:09:11 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon Jan 19 2026 17:24:50 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.141</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
    </div>
   </td>
  </tr>
@@ -64,17 +64,18 @@ $(function() {
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Description</h2>
 <div class="textblock"><p>Abstract location. </p>
-<p>An abstract location represents either a register name or memory address. Registers are represented by <a class="el" href="classRose_1_1BinaryAnalysis_1_1RegisterDescriptor.html" title="Describes (part of) a physical CPU register.">RegisterDescriptor</a> and addresses are represented by semantic values (subclasses of BaseSemantics::SValue).</p>
+<p>An abstract location represents either a register name or memory address. Addresses can be absolute or relative to the contents of a base register. Registers are represented by <a class="el" href="classRose_1_1BinaryAnalysis_1_1RegisterDescriptor.html" title="Describes (part of) a physical CPU register.">RegisterDescriptor</a> and addresses are represented by semantic values (subclasses of BaseSemantics::SValue).</p>
 <p>For instance, to represent abstract locations where memory addresses have symbolic values, one uses:</p>
 <div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespaceRose_1_1BinaryAnalysis.html">Rose::BinaryAnalysis</a>;</div>
 <div class="line"><a class="code hl_class" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html">AbstractLocation</a> aloc1(REG_EAX); <span class="comment">// REG_EAX is a RegisterDescriptor</span></div>
 <div class="line"><a class="code hl_class" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html">AbstractLocation</a> aloc2(addr); <span class="comment">// addr is an SValuePtr for the symbolic semantics domain</span></div>
-<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1AbstractLocation_html"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html">Rose::BinaryAnalysis::AbstractLocation</a></div><div class="ttdoc">Abstract location.</div><div class="ttdef"><b>Definition</b> <a href="AbstractLocation_8h_source.html#l00032">AbstractLocation.h:32</a></div></div>
+<div class="line"><a class="code hl_class" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html">AbstractLocation</a> aloc3(REG_SP, offset); <span class="comment">// addr is an SValuePtr offset from the contents of the stack pointer register</span></div>
+<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1AbstractLocation_html"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html">Rose::BinaryAnalysis::AbstractLocation</a></div><div class="ttdoc">Abstract location.</div><div class="ttdef"><b>Definition</b> <a href="AbstractLocation_8h_source.html#l00034">AbstractLocation.h:34</a></div></div>
 <div class="ttc" id="anamespaceRose_1_1BinaryAnalysis_html"><div class="ttname"><a href="namespaceRose_1_1BinaryAnalysis.html">Rose::BinaryAnalysis</a></div><div class="ttdoc">Binary analysis.</div><div class="ttdef"><b>Definition</b> <a href="BinaryTutorial_8dox_source.html#l00004">BinaryTutorial.dox:4</a></div></div>
 </div><!-- fragment --><p>Abstract locations are immutable objects.</p>
 <p>See also, <a class="el" href="classRose_1_1BinaryAnalysis_1_1ConcreteLocation.html">ConcreteLocation</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="AbstractLocation_8h_source.html#l00032">32</a> of file <a class="el" href="AbstractLocation_8h_source.html">AbstractLocation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AbstractLocation_8h_source.html#l00034">34</a> of file <a class="el" href="AbstractLocation_8h_source.html">AbstractLocation.h</a>.</p>
 </div>
 <p><code>#include &lt;<a class="el" href="AbstractLocation_8h_source.html">Rose/BinaryAnalysis/AbstractLocation.h</a>&gt;</code></p>
 <div class="dynheader">
@@ -118,11 +119,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a63805882126df4e7b489b776ae3387f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator. <br /></td></tr>
 <tr class="separator:a63805882126df4e7b489b776ae3387f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c1495feb45ba1a1b9d10bdcb25ce05a" id="r_a2c1495feb45ba1a1b9d10bdcb25ce05a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#a2c1495feb45ba1a1b9d10bdcb25ce05a">AbstractLocation</a> (const <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#aa177db2769cae056e0261d8f04d268e0">Address</a> &amp;, size_t <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#a9940167a24d0076e4e6f61b220b14dc2">nBytes</a>=0)</td></tr>
-<tr class="memdesc:a2c1495feb45ba1a1b9d10bdcb25ce05a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memory referent.  <br /></td></tr>
+<tr class="memdesc:a2c1495feb45ba1a1b9d10bdcb25ce05a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Absolute memory referent.  <br /></td></tr>
 <tr class="separator:a2c1495feb45ba1a1b9d10bdcb25ce05a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af913b22c50b0aaf22fbfa09f6146be38" id="r_af913b22c50b0aaf22fbfa09f6146be38"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#af913b22c50b0aaf22fbfa09f6146be38">isValid</a> () const override</td></tr>
 <tr class="memdesc:af913b22c50b0aaf22fbfa09f6146be38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test whether this object is valid.  <br /></td></tr>
 <tr class="separator:af913b22c50b0aaf22fbfa09f6146be38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afea3ddd8e4092df6458572f70f52cb54" id="r_afea3ddd8e4092df6458572f70f52cb54"><td class="memItemLeft" align="right" valign="top">virtual uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#afea3ddd8e4092df6458572f70f52cb54">hash</a> () const override</td></tr>
+<tr class="memdesc:afea3ddd8e4092df6458572f70f52cb54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a 64-bit hash of this object.  <br /></td></tr>
+<tr class="separator:afea3ddd8e4092df6458572f70f52cb54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9382261731904254853ad44680f7150" id="r_aa9382261731904254853ad44680f7150"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#aa9382261731904254853ad44680f7150">toString</a> () const override</td></tr>
 <tr class="memdesc:aa9382261731904254853ad44680f7150"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert location to string.  <br /></td></tr>
 <tr class="separator:aa9382261731904254853ad44680f7150"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,12 +156,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a89643e545e9c235df7e8b520e2f20f0c" id="r_a89643e545e9c235df7e8b520e2f20f0c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#a89643e545e9c235df7e8b520e2f20f0c">isAddress</a> () const</td></tr>
 <tr class="memdesc:a89643e545e9c235df7e8b520e2f20f0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks memory reference.  <br /></td></tr>
 <tr class="separator:a89643e545e9c235df7e8b520e2f20f0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3909044a29ee1cbaa0af291c539a7a76" id="r_a3909044a29ee1cbaa0af291c539a7a76"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#a3909044a29ee1cbaa0af291c539a7a76">isAbsoluteAddress</a> () const</td></tr>
+<tr class="memdesc:a3909044a29ee1cbaa0af291c539a7a76"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if this is an absolute memory location.  <br /></td></tr>
+<tr class="separator:a3909044a29ee1cbaa0af291c539a7a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7788414260e5f8c9af425cf91ff142a7" id="r_a7788414260e5f8c9af425cf91ff142a7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#a7788414260e5f8c9af425cf91ff142a7">isRelativeAddress</a> () const</td></tr>
+<tr class="memdesc:a7788414260e5f8c9af425cf91ff142a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if this is a register-relative memory location.  <br /></td></tr>
+<tr class="separator:a7788414260e5f8c9af425cf91ff142a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9f8d16a316eddd094b66fd5b27ea7b1" id="r_ac9f8d16a316eddd094b66fd5b27ea7b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceRose_1_1BinaryAnalysis.html#ae8ae9a4f7ce2eb38a3ad2ef899a86124">RegisterDictionaryPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#ac9f8d16a316eddd094b66fd5b27ea7b1">registerDictionary</a> () const</td></tr>
+<tr class="memdesc:ac9f8d16a316eddd094b66fd5b27ea7b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property: Register dictionary.  <br /></td></tr>
+<tr class="separator:ac9f8d16a316eddd094b66fd5b27ea7b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd197ace13c0ac5eeb3924b689790261" id="r_acd197ace13c0ac5eeb3924b689790261"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRose_1_1BinaryAnalysis_1_1RegisterDescriptor.html">RegisterDescriptor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#acd197ace13c0ac5eeb3924b689790261">getRegister</a> () const</td></tr>
 <tr class="memdesc:acd197ace13c0ac5eeb3924b689790261"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns register.  <br /></td></tr>
 <tr class="separator:acd197ace13c0ac5eeb3924b689790261"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b185600f3ac24e3f8786ca03eadfd4d" id="r_a8b185600f3ac24e3f8786ca03eadfd4d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#aa177db2769cae056e0261d8f04d268e0">Address</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#a8b185600f3ac24e3f8786ca03eadfd4d">getAddress</a> () const</td></tr>
-<tr class="memdesc:a8b185600f3ac24e3f8786ca03eadfd4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns memory address.  <br /></td></tr>
+<tr class="memdesc:a8b185600f3ac24e3f8786ca03eadfd4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns memory absolute address.  <br /></td></tr>
 <tr class="separator:a8b185600f3ac24e3f8786ca03eadfd4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace1e1b6d19e0a5a59e328bf24d3f83e1" id="r_ace1e1b6d19e0a5a59e328bf24d3f83e1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#aa177db2769cae056e0261d8f04d268e0">Address</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#ace1e1b6d19e0a5a59e328bf24d3f83e1">getOffset</a> () const</td></tr>
+<tr class="memdesc:ace1e1b6d19e0a5a59e328bf24d3f83e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the memory offset.  <br /></td></tr>
+<tr class="separator:ace1e1b6d19e0a5a59e328bf24d3f83e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9940167a24d0076e4e6f61b220b14dc2" id="r_a9940167a24d0076e4e6f61b220b14dc2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#a9940167a24d0076e4e6f61b220b14dc2">nBytes</a> () const</td></tr>
 <tr class="memdesc:a9940167a24d0076e4e6f61b220b14dc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns size of memory location in bytes.  <br /></td></tr>
 <tr class="separator:a9940167a24d0076e4e6f61b220b14dc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -174,6 +190,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae5cd588074ad36087a60deca947311a7" id="r_ae5cd588074ad36087a60deca947311a7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#ae5cd588074ad36087a60deca947311a7">AbstractLocation</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1RegisterDescriptor.html">RegisterDescriptor</a>, const <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#ae8ae9a4f7ce2eb38a3ad2ef899a86124">RegisterDictionaryPtr</a> &amp;regdict)</td></tr>
 <tr class="memdesc:ae5cd588074ad36087a60deca947311a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register referent.  <br /></td></tr>
 <tr class="separator:ae5cd588074ad36087a60deca947311a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a78ad075600b954d81c34ce636a2eac95" id="r_a78ad075600b954d81c34ce636a2eac95"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#a78ad075600b954d81c34ce636a2eac95">AbstractLocation</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1RegisterDescriptor.html">RegisterDescriptor</a> base, const <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#aa177db2769cae056e0261d8f04d268e0">Address</a> &amp;offset, size_t <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#a9940167a24d0076e4e6f61b220b14dc2">nBytes</a>=0)</td></tr>
+<tr class="memdesc:a78ad075600b954d81c34ce636a2eac95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Relative memory referent.  <br /></td></tr>
+<tr class="separator:a78ad075600b954d81c34ce636a2eac95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebbad4a9e5cb356049531f20f1cc7c4b" id="r_aebbad4a9e5cb356049531f20f1cc7c4b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#aebbad4a9e5cb356049531f20f1cc7c4b">AbstractLocation</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1RegisterDescriptor.html">RegisterDescriptor</a> base, const <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#ae8ae9a4f7ce2eb38a3ad2ef899a86124">RegisterDictionaryPtr</a> &amp;, const <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#aa177db2769cae056e0261d8f04d268e0">Address</a> &amp;offset, size_t <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#a9940167a24d0076e4e6f61b220b14dc2">nBytes</a>=0)</td></tr>
+<tr class="memdesc:aebbad4a9e5cb356049531f20f1cc7c4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Relative memory referent.  <br /></td></tr>
+<tr class="separator:aebbad4a9e5cb356049531f20f1cc7c4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a846d78f9cb26b0675e5835f2188cd7a2" id="r_a846d78f9cb26b0675e5835f2188cd7a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#a846d78f9cb26b0675e5835f2188cd7a2">print</a> (std::ostream &amp;out, const <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#ae8ae9a4f7ce2eb38a3ad2ef899a86124">RegisterDictionaryPtr</a> &amp;regdict) const</td></tr>
 <tr class="memdesc:a846d78f9cb26b0675e5835f2188cd7a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print an abstract location.  <br /></td></tr>
@@ -223,13 +246,13 @@ static <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html"
 
 <p>Type of memory address. </p>
 
-<p class="definition">Definition at line <a class="el" href="AbstractLocation_8h_source.html#l00034">34</a> of file <a class="el" href="AbstractLocation_8h_source.html">AbstractLocation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AbstractLocation_8h_source.html#l00036">36</a> of file <a class="el" href="AbstractLocation_8h_source.html">AbstractLocation.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2f8b78269b71a7d48f6f1d021bdbb84d" name="a2f8b78269b71a7d48f6f1d021bdbb84d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f8b78269b71a7d48f6f1d021bdbb84d">&#9670;&#160;</a></span>AbstractLocation() <span class="overload">[1/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f8b78269b71a7d48f6f1d021bdbb84d">&#9670;&#160;</a></span>AbstractLocation() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -244,12 +267,12 @@ static <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html"
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Constructs an abstract location that does not refer to any location. The <a class="el" href="classRose_1_1Location.html#a3a5afe20213403ffc24efdda9d5c9cfe">isEmpty</a> method will return true for such objects. </p>
+<p>Constructs an abstract location that does not refer to any location. The <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#af913b22c50b0aaf22fbfa09f6146be38">isValid</a> method will return false for such objects. </p>
 
 </div>
 </div>
 <a id="afe24a4c3d656c065a3bd2854c852a5a7" name="afe24a4c3d656c065a3bd2854c852a5a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe24a4c3d656c065a3bd2854c852a5a7">&#9670;&#160;</a></span>AbstractLocation() <span class="overload">[2/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afe24a4c3d656c065a3bd2854c852a5a7">&#9670;&#160;</a></span>AbstractLocation() <span class="overload">[2/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -273,12 +296,12 @@ static <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html"
 </div><div class="memdoc">
 
 <p>Register referent. </p>
-<p>Constructs an abstract location that refers to a register. </p>
+<p>Constructs an abstract location that refers to a register. The register dictionary (if supplied) is only used when converting this object to a string. </p>
 
 </div>
 </div>
 <a id="ae5cd588074ad36087a60deca947311a7" name="ae5cd588074ad36087a60deca947311a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5cd588074ad36087a60deca947311a7">&#9670;&#160;</a></span>AbstractLocation() <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5cd588074ad36087a60deca947311a7">&#9670;&#160;</a></span>AbstractLocation() <span class="overload">[3/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -312,12 +335,12 @@ static <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html"
 </div><div class="memdoc">
 
 <p>Register referent. </p>
-<p>Constructs an abstract location that refers to a register. </p>
+<p>Constructs an abstract location that refers to a register. The register dictionary (if supplied) is only used when converting this object to a string. </p>
 
 </div>
 </div>
 <a id="a2c1495feb45ba1a1b9d10bdcb25ce05a" name="a2c1495feb45ba1a1b9d10bdcb25ce05a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c1495feb45ba1a1b9d10bdcb25ce05a">&#9670;&#160;</a></span>AbstractLocation() <span class="overload">[4/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c1495feb45ba1a1b9d10bdcb25ce05a">&#9670;&#160;</a></span>AbstractLocation() <span class="overload">[4/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -350,8 +373,88 @@ static <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html"
 </table>
 </div><div class="memdoc">
 
-<p>Memory referent. </p>
-<p>Constructs an abstract location that refers to a memory location. </p>
+<p>Absolute memory referent. </p>
+<p>Constructs an abstract location that refers to a memory location. The location is the direct memory address, not relative to any base address. The <code>nBytes</code> argument is the size of the value stored at that location. </p>
+
+</div>
+</div>
+<a id="a78ad075600b954d81c34ce636a2eac95" name="a78ad075600b954d81c34ce636a2eac95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78ad075600b954d81c34ce636a2eac95">&#9670;&#160;</a></span>AbstractLocation() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Rose::BinaryAnalysis::AbstractLocation::AbstractLocation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1RegisterDescriptor.html">RegisterDescriptor</a>&#160;</td>
+          <td class="paramname"><em>base</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#aa177db2769cae056e0261d8f04d268e0">Address</a> &amp;&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nBytes</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Relative memory referent. </p>
+<p>Constructs an abstract location that refers to a memory location. The location is an offset from the contents of some register such as the stack pointer. The <code>nBytes</code> argument is the size of the value stored at that location. The register dictionary (if supplied) is only used when converting this object to a string. </p>
+
+</div>
+</div>
+<a id="aebbad4a9e5cb356049531f20f1cc7c4b" name="aebbad4a9e5cb356049531f20f1cc7c4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebbad4a9e5cb356049531f20f1cc7c4b">&#9670;&#160;</a></span>AbstractLocation() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Rose::BinaryAnalysis::AbstractLocation::AbstractLocation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1RegisterDescriptor.html">RegisterDescriptor</a>&#160;</td>
+          <td class="paramname"><em>base</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#ae8ae9a4f7ce2eb38a3ad2ef899a86124">RegisterDictionaryPtr</a> &amp;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#aa177db2769cae056e0261d8f04d268e0">Address</a> &amp;&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nBytes</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Relative memory referent. </p>
+<p>Constructs an abstract location that refers to a memory location. The location is an offset from the contents of some register such as the stack pointer. The <code>nBytes</code> argument is the size of the value stored at that location. The register dictionary (if supplied) is only used when converting this object to a string. </p>
 
 </div>
 </div>
@@ -382,6 +485,35 @@ static <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html"
 <p>Test whether this object is valid. </p>
 
 <p>Implements <a class="el" href="classRose_1_1Location.html#a368f993efa170f736c8b587129a1625c">Rose::Location</a>.</p>
+
+</div>
+</div>
+<a id="afea3ddd8e4092df6458572f70f52cb54" name="afea3ddd8e4092df6458572f70f52cb54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afea3ddd8e4092df6458572f70f52cb54">&#9670;&#160;</a></span>hash()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual uint64_t Rose::BinaryAnalysis::AbstractLocation::hash </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute a 64-bit hash of this object. </p>
+
+<p>Implements <a class="el" href="classRose_1_1Location.html#ac656149d4a3b55cec09b489c4800592a">Rose::Location</a>.</p>
 
 </div>
 </div>
@@ -660,7 +792,7 @@ static <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html"
 </div><div class="memdoc">
 
 <p>Checks register reference. </p>
-<p>Returns true if and only if this abstract location refers to a register. It is impossible for an abstract location to refer to both a register and memory. </p>
+<p>Returns true if and only if this abstract location refers to a register. It is impossible for an abstract location to refer to both a register and memory; specifically, this returns false for register-relative memory locations. </p>
 
 </div>
 </div>
@@ -680,7 +812,67 @@ static <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html"
 </div><div class="memdoc">
 
 <p>Checks memory reference. </p>
-<p>Returns true if and only if this abstract location refers to memory. It is impossible for an abstract location to refer to both a register and memory </p>
+<p>Returns true if and only if this abstract location refers to memory, either absolute or register-relative. It is impossible for an abstract location to refer to both a register and memory; specifically, this returns false for register locations. </p>
+
+</div>
+</div>
+<a id="a3909044a29ee1cbaa0af291c539a7a76" name="a3909044a29ee1cbaa0af291c539a7a76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3909044a29ee1cbaa0af291c539a7a76">&#9670;&#160;</a></span>isAbsoluteAddress()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Rose::BinaryAnalysis::AbstractLocation::isAbsoluteAddress </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>True if this is an absolute memory location. </p>
+<p>An absolute memory location has a memory address but no base register. This predicate implies <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#a89643e545e9c235df7e8b520e2f20f0c">isAddress</a>. </p>
+
+</div>
+</div>
+<a id="a7788414260e5f8c9af425cf91ff142a7" name="a7788414260e5f8c9af425cf91ff142a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7788414260e5f8c9af425cf91ff142a7">&#9670;&#160;</a></span>isRelativeAddress()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Rose::BinaryAnalysis::AbstractLocation::isRelativeAddress </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>True if this is a register-relative memory location. </p>
+<p>A register-relative memory location consists of a register (the base register) and an address, but the address is relative to the contents of the base register. For example, if the base register is the stack pointer and the address is the constant 8, then the absolute address is formed by adding 8 to the contents of the base register. </p>
+
+</div>
+</div>
+<a id="ac9f8d16a316eddd094b66fd5b27ea7b1" name="ac9f8d16a316eddd094b66fd5b27ea7b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9f8d16a316eddd094b66fd5b27ea7b1">&#9670;&#160;</a></span>registerDictionary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceRose_1_1BinaryAnalysis.html#ae8ae9a4f7ce2eb38a3ad2ef899a86124">RegisterDictionaryPtr</a> Rose::BinaryAnalysis::AbstractLocation::registerDictionary </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Property: Register dictionary. </p>
+<p>This is a read-only property that's initialized by the constructor. </p>
 
 </div>
 </div>
@@ -700,7 +892,7 @@ static <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html"
 </div><div class="memdoc">
 
 <p>Returns register. </p>
-<p>Returns the register to which this abstract location refers. When called for an abstract location for which <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#a22cd2c01cc8fdfc28f806ed88ad993f3">isRegister</a> returns false, the return value is an invalid register descriptor (i.e., one for which RegisterDescriptor::is_valid returns false. </p>
+<p>Returns the register to which this abstract location refers. This returns a valid register descriptor for register locations and for register-relative memory locations. </p>
 
 </div>
 </div>
@@ -719,8 +911,28 @@ static <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html"
       </table>
 </div><div class="memdoc">
 
-<p>Returns memory address. </p>
-<p>Returns the memory address to which this abstract location refers. When called for an abstract location for which <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#a89643e545e9c235df7e8b520e2f20f0c">isAddress</a> returns false, the return value is a null pointer. </p>
+<p>Returns memory absolute address. </p>
+<p>Returns the memory address to which this abstract location refers. When called for an abstract location for which <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#a3909044a29ee1cbaa0af291c539a7a76">isAbsoluteAddress</a> returns false, the return value is a null pointer. </p>
+
+</div>
+</div>
+<a id="ace1e1b6d19e0a5a59e328bf24d3f83e1" name="ace1e1b6d19e0a5a59e328bf24d3f83e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace1e1b6d19e0a5a59e328bf24d3f83e1">&#9670;&#160;</a></span>getOffset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#aa177db2769cae056e0261d8f04d268e0">Address</a> Rose::BinaryAnalysis::AbstractLocation::getOffset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the memory offset. </p>
+<p>Returns the offset from the base register to which this abstract location refers. When called for an abstract location for which <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html#a7788414260e5f8c9af425cf91ff142a7">isRelativeAddress</a> returns false, the return value is a null pointer. </p>
 
 </div>
 </div>
@@ -771,7 +983,7 @@ static <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html"
 </div><div class="memdoc">
 
 <p>True if two abstract locations could be aliases. </p>
-<p>Two abstract locations are aliases if they refer to the exact same register or memory address. By this definition, the AX and EAX registers in x86 are not aliases because they do not refer to the exact same register (one is 16 bits and the other is 32 bits, although the low-order 16 bits are aliases). Likewise, memory addresses are assumed to refer to 8 bit values and two memory addresses are aliases only when they are equal.</p>
+<p>Two abstract locations are aliases if they refer to the exact same register or memory address. By this definition, the AX and EAX registers in x86 are not aliases because they do not refer to the exact same register (one is 16 bits and the other is 32 bits, although the low-order 16 bits are aliases). Likewise, memory addresses are assumed to refer to 8 bit values and two memory addresses are aliases only when they might be equal.</p>
 <p>Since memory addresses may be symbolic, this function uses an SMT solver to return true if and only if equality of two addresses is satisfiable. </p>
 
 </div>
@@ -913,7 +1125,7 @@ static <a class="el" href="classRose_1_1BinaryAnalysis_1_1AbstractLocation.html"
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Oct 2 2024 00:09:08 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon Jan 19 2026 17:24:47 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

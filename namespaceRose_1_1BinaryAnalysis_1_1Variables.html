@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.141</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
    </div>
   </td>
  </tr>
@@ -57,21 +57,51 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">Rose::BinaryAnalysis::Variables Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Description</h2>
-<div class="textblock"><p>Facilities for detecting variables in binaries. </p>
+<div class="textblock"><p>Finding and describing source-level variables. </p>
+<p>This namespace contains facilities for finding source-level variables in binaries and describing those variables. For instance, it can analyze a function and detect stack locations that are likely to represent variables that appear in the source language from which the binary was compiled.</p>
+<p>Binaries generally don't represent source-level variables in a straightforward manner. Some things to watch out for are:</p>
+<ul>
+<li>The compiler can elide a source-level variable if it determines that it's not necessary in the binary. I.e., the compiler can completely optimize away a variable that is written to but never read. In GDB one often sees the string "&lt;optimized out&gt;" in this kind of situation.</li>
+</ul>
+<ul>
+<li>The compiler can give the same address to two or more source-level variables if one or more of them is read without being initialized. This is undefined behavior (UB) in C and C++ and the compiler is free to do anything it wants in these situations.</li>
+</ul>
+<ul>
+<li>The compiler might not allocate stack storage for a local variable. E.g., if enough general purpose registers are available the compiler might use a register to store the local variable.</li>
+</ul>
+<ul>
+<li>The scope of the local variable in the source language does not generally match the lifetime of the storage location for that variable in the binary. For instance, the compiler might decide that the same storage location can be used for two or more variables with non-overlapping lifetimes. The binary analysis sees this as a single variable.</li>
+</ul>
+<ul>
+<li><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html" title="Finding and describing source-level variables.">Variables</a> that the compiler might initially store in registers (such as function arguments) are often spilled to the stack in order to make those registers available for other purposes within the function.</li>
+</ul>
+<ul>
+<li>A source-level variable might exist at more than one location in the binary. A common situation is when the compiler decides to move the variable from a stack location into a register for part of the function and then optionally moves it back to the stack.</li>
+</ul>
+<ul>
+<li>Writes to a stack location that are not followed by reads can be elided, in which case the analysis would indicate that there was no subsequent write.</li>
+</ul>
+<ul>
+<li>Many other caveats. </li>
+</ul>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1BaseVariable.html">BaseVariable</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describes a local or global variable.  <a href="classRose_1_1BinaryAnalysis_1_1Variables_1_1BaseVariable.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class describing a source-level variable.  <a href="classRose_1_1BinaryAnalysis_1_1Variables_1_1BaseVariable.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1GlobalVariable.html">GlobalVariable</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of a global variable.  <a href="classRose_1_1BinaryAnalysis_1_1Variables_1_1GlobalVariable.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1InstructionAccess.html">InstructionAccess</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Information about how an instruction accesses a variable.  <a href="classRose_1_1BinaryAnalysis_1_1Variables_1_1InstructionAccess.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1StackFrame.html">StackFrame</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Information about a stack frame.  <a href="classRose_1_1BinaryAnalysis_1_1Variables_1_1StackFrame.html#details">More...</a><br /></td></tr>
@@ -85,33 +115,51 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ac49414c26c4ddc61dd89fc4e1ad450b6" id="r_ac49414c26c4ddc61dd89fc4e1ad450b6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#ac49414c26c4ddc61dd89fc4e1ad450b6">VariableFinderPtr</a> = <a class="el" href="classSawyer_1_1SharedPointer.html">Sawyer::SharedPointer</a>&lt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1VariableFinder.html">VariableFinder</a> &gt;</td></tr>
-<tr class="memdesc:ac49414c26c4ddc61dd89fc4e1ad450b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference counting pointer.  <br /></td></tr>
-<tr class="separator:ac49414c26c4ddc61dd89fc4e1ad450b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a043acd2ddb11929d56fb7161435121d2" id="r_a043acd2ddb11929d56fb7161435121d2"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classSawyer_1_1Container_1_1Set.html">Sawyer::Container::Set</a>&lt; rose_addr_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a043acd2ddb11929d56fb7161435121d2">AddressSet</a></td></tr>
-<tr class="memdesc:a043acd2ddb11929d56fb7161435121d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set of addresses.  <br /></td></tr>
-<tr class="separator:a043acd2ddb11929d56fb7161435121d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79a7a5dadae6082061c4e186250fe5dc" id="r_a79a7a5dadae6082061c4e186250fe5dc"><td class="memItemLeft" align="right" valign="top">typedef std::map&lt; int64_t, <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a043acd2ddb11929d56fb7161435121d2">AddressSet</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a79a7a5dadae6082061c4e186250fe5dc">OffsetToAddresses</a></td></tr>
-<tr class="memdesc:a79a7a5dadae6082061c4e186250fe5dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mapping from stack offsets to address sets.  <br /></td></tr>
-<tr class="separator:a79a7a5dadae6082061c4e186250fe5dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24611814a9787faff90fdb41997ed2cd" id="r_a24611814a9787faff90fdb41997ed2cd"><td class="memItemLeft" align="right" valign="top">typedef std::map&lt; rose_addr_t, <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a043acd2ddb11929d56fb7161435121d2">AddressSet</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a24611814a9787faff90fdb41997ed2cd">AddressToAddresses</a></td></tr>
-<tr class="memdesc:a24611814a9787faff90fdb41997ed2cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mapping from addresses to address sets.  <br /></td></tr>
-<tr class="separator:a24611814a9787faff90fdb41997ed2cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9324189e85a42737fcf4cfa11b646dc" id="r_ad9324189e85a42737fcf4cfa11b646dc"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classSawyer_1_1Container_1_1Interval.html">Sawyer::Container::Interval</a>&lt; int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#ad9324189e85a42737fcf4cfa11b646dc">OffsetInterval</a></td></tr>
-<tr class="memdesc:ad9324189e85a42737fcf4cfa11b646dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interval of signed offsets.  <br /></td></tr>
-<tr class="separator:ad9324189e85a42737fcf4cfa11b646dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a499dc9e215a3f65f878818f14d5cf252" id="r_a499dc9e215a3f65f878818f14d5cf252"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a499dc9e215a3f65f878818f14d5cf252">StackVariables</a> = <a class="el" href="classSawyer_1_1Container_1_1IntervalMap.html">Sawyer::Container::IntervalMap</a>&lt; <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#ad9324189e85a42737fcf4cfa11b646dc">OffsetInterval</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1StackVariable.html">StackVariable</a> &gt;</td></tr>
-<tr class="memdesc:a499dc9e215a3f65f878818f14d5cf252"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collection of local variables organized by frame offsets.  <br /></td></tr>
+<tr class="memitem:a9d8b8ec37837f342ee2494a2453f50d6" id="r_a9d8b8ec37837f342ee2494a2453f50d6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a9d8b8ec37837f342ee2494a2453f50d6">OffsetToAddress</a> = std::map&lt; int64_t, <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#a3cd2d3478c0e767ed68aba17a5e81f18">AddressSet</a> &gt;</td></tr>
+<tr class="memdesc:a9d8b8ec37837f342ee2494a2453f50d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mapping from stack offsets to address sets.  <br /></td></tr>
+<tr class="separator:a9d8b8ec37837f342ee2494a2453f50d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04233d207f043d849a04c404b3756372" id="r_a04233d207f043d849a04c404b3756372"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a04233d207f043d849a04c404b3756372">AddressToAddresses</a> = std::map&lt; <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#a96dea8c577b1f630cffa84eee5cb03db">Address</a>, <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#a3cd2d3478c0e767ed68aba17a5e81f18">AddressSet</a> &gt;</td></tr>
+<tr class="memdesc:a04233d207f043d849a04c404b3756372"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mapping from addresses to address sets.  <br /></td></tr>
+<tr class="separator:a04233d207f043d849a04c404b3756372"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39ee35b4536deedce3de229ca561b786" id="r_a39ee35b4536deedce3de229ca561b786"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a39ee35b4536deedce3de229ca561b786">OffsetInterval</a> = <a class="el" href="classSawyer_1_1Container_1_1Interval.html">Sawyer::Container::Interval</a>&lt; int64_t &gt;</td></tr>
+<tr class="memdesc:a39ee35b4536deedce3de229ca561b786"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interval of signed offsets.  <br /></td></tr>
+<tr class="separator:a39ee35b4536deedce3de229ca561b786"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9e665d3a87b343a8781f378b94a4aa2" id="r_ac9e665d3a87b343a8781f378b94a4aa2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#ac9e665d3a87b343a8781f378b94a4aa2">AccessFlags</a> = <a class="el" href="classSawyer_1_1BitFlags.html">Sawyer::BitFlags</a>&lt; <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a63c39a826722d54fb0953ca81004e47e">Access</a>, uint64_t &gt;</td></tr>
+<tr class="memdesc:ac9e665d3a87b343a8781f378b94a4aa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether a variable is read and/or written by an instruction.  <br /></td></tr>
+<tr class="separator:ac9e665d3a87b343a8781f378b94a4aa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e0754bae2404a8cd7fe27ad1a5072a9" id="r_a8e0754bae2404a8cd7fe27ad1a5072a9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a8e0754bae2404a8cd7fe27ad1a5072a9">GlobalVariables</a> = <a class="el" href="classSawyer_1_1Container_1_1IntervalMap.html">Sawyer::Container::IntervalMap</a>&lt; <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#aa3ce7a7c9a79d236c3de26532f25bbf5">AddressInterval</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1GlobalVariable.html">GlobalVariable</a> &gt;</td></tr>
+<tr class="memdesc:a8e0754bae2404a8cd7fe27ad1a5072a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps virtual addresses to global variables.  <br /></td></tr>
+<tr class="separator:a8e0754bae2404a8cd7fe27ad1a5072a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a499dc9e215a3f65f878818f14d5cf252" id="r_a499dc9e215a3f65f878818f14d5cf252"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a499dc9e215a3f65f878818f14d5cf252">StackVariables</a> = <a class="el" href="classSawyer_1_1Container_1_1IntervalMap.html">Sawyer::Container::IntervalMap</a>&lt; <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a39ee35b4536deedce3de229ca561b786">OffsetInterval</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1StackVariable.html">StackVariable</a> &gt;</td></tr>
+<tr class="memdesc:a499dc9e215a3f65f878818f14d5cf252"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collection of local variables organized by stack offsets.  <br /></td></tr>
 <tr class="separator:a499dc9e215a3f65f878818f14d5cf252"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a701286bb9c1d8a76612cc46c9df9e112" id="r_a701286bb9c1d8a76612cc46c9df9e112"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classSawyer_1_1Container_1_1IntervalMap.html">Sawyer::Container::IntervalMap</a>&lt; <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#aa3ce7a7c9a79d236c3de26532f25bbf5">AddressInterval</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1GlobalVariable.html">GlobalVariable</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a701286bb9c1d8a76612cc46c9df9e112">GlobalVariables</a></td></tr>
-<tr class="memdesc:a701286bb9c1d8a76612cc46c9df9e112"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps virtual addresses to global variables.  <br /></td></tr>
-<tr class="separator:a701286bb9c1d8a76612cc46c9df9e112"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a1cb5f9370d704904c0e05c5c3008569c" id="r_a1cb5f9370d704904c0e05c5c3008569c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a1cb5f9370d704904c0e05c5c3008569c">VariableFinderPtr</a> = std::shared_ptr&lt; <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1VariableFinder.html">VariableFinder</a> &gt;</td></tr>
+<tr class="memdesc:a1cb5f9370d704904c0e05c5c3008569c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared ownership pointer to <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1VariableFinder.html">VariableFinder</a>.  <br /></td></tr>
+<tr class="separator:a1cb5f9370d704904c0e05c5c3008569c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a818e43365c6b2e1965a5999f682aba" id="r_a1a818e43365c6b2e1965a5999f682aba"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a1a818e43365c6b2e1965a5999f682aba">VariableFinderConstPtr</a> = std::shared_ptr&lt; const <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1VariableFinder.html">VariableFinder</a> &gt;</td></tr>
+<tr class="memdesc:a1a818e43365c6b2e1965a5999f682aba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared ownership pointer to <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1VariableFinder.html">VariableFinder</a>.  <br /></td></tr>
+<tr class="separator:a1a818e43365c6b2e1965a5999f682aba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a63c39a826722d54fb0953ca81004e47e" id="r_a63c39a826722d54fb0953ca81004e47e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a63c39a826722d54fb0953ca81004e47e">Access</a> { <br />
+&#160;&#160;<a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a63c39a826722d54fb0953ca81004e47ea3466fab4975481651940ed328aa990e4">READ</a> = 0x0001
+, <br />
+&#160;&#160;<a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a63c39a826722d54fb0953ca81004e47ead4b9e47f65b6e79b010582f15785867e">WRITE</a> = 0x0002
+<br />
+ }</td></tr>
+<tr class="memdesc:a63c39a826722d54fb0953ca81004e47e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether a variable is read or written.  <a href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a63c39a826722d54fb0953ca81004e47e">More...</a><br /></td></tr>
+<tr class="separator:a63c39a826722d54fb0953ca81004e47e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a1551ddfd3fba38e806e43512731e190a" id="r_a1551ddfd3fba38e806e43512731e190a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a1551ddfd3fba38e806e43512731e190a">initDiagnostics</a> ()</td></tr>
 <tr class="memdesc:a1551ddfd3fba38e806e43512731e190a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize diagnostic output.  <br /></td></tr>
 <tr class="separator:a1551ddfd3fba38e806e43512731e190a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad94f205227255726e7056de302e70f10" id="r_ad94f205227255726e7056de302e70f10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#ad94f205227255726e7056de302e70f10">initNamespace</a> ()</td></tr>
+<tr class="memdesc:ad94f205227255726e7056de302e70f10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the namespace.  <br /></td></tr>
+<tr class="separator:ad94f205227255726e7056de302e70f10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a586e7515cbaead521a35de36a666cc00" id="r_a586e7515cbaead521a35de36a666cc00"><td class="memItemLeft" align="right" valign="top"><a id="a586e7515cbaead521a35de36a666cc00" name="a586e7515cbaead521a35de36a666cc00"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>offsetStr</b> (int64_t offset)</td></tr>
 <tr class="memdesc:a586e7515cbaead521a35de36a666cc00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Format a stack offset as a string. <br /></td></tr>
@@ -120,114 +168,163 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>offsetStr</b> 
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>sizeStr</b> (uint64_t size)</td></tr>
 <tr class="memdesc:abc556f8524aa1165aa842d7272428a91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Format size as a string. <br /></td></tr>
 <tr class="separator:abc556f8524aa1165aa842d7272428a91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa4141f87aae3efd3bfbcec1e09e5a76" id="r_aaa4141f87aae3efd3bfbcec1e09e5a76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#aaa4141f87aae3efd3bfbcec1e09e5a76">erase</a> (<a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a8e0754bae2404a8cd7fe27ad1a5072a9">GlobalVariables</a> &amp;, const <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#aa3ce7a7c9a79d236c3de26532f25bbf5">AddressInterval</a> &amp;toErase)</td></tr>
+<tr class="memdesc:aaa4141f87aae3efd3bfbcec1e09e5a76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Erase some global variables.  <br /></td></tr>
+<tr class="separator:aaa4141f87aae3efd3bfbcec1e09e5a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89b9c1b3687e02b6539c5a7c725bb6e3" id="r_a89b9c1b3687e02b6539c5a7c725bb6e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a89b9c1b3687e02b6539c5a7c725bb6e3">print</a> (const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a8e0754bae2404a8cd7fe27ad1a5072a9">GlobalVariables</a> &amp;, const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a461d763e33e7cf0364b64e0af0c267a0">Partitioner2::PartitionerConstPtr</a> &amp;, std::ostream &amp;out, const std::string &amp;prefix=&quot;&quot;)</td></tr>
+<tr class="memdesc:a89b9c1b3687e02b6539c5a7c725bb6e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print info about multiple global variables.  <br /></td></tr>
+<tr class="separator:a89b9c1b3687e02b6539c5a7c725bb6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6457889f06d3212ed88226be8ec9d1c" id="r_ad6457889f06d3212ed88226be8ec9d1c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceRose_1_1BinaryAnalysis.html#aa3ce7a7c9a79d236c3de26532f25bbf5">AddressInterval</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#ad6457889f06d3212ed88226be8ec9d1c">isInconsistent</a> (const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a8e0754bae2404a8cd7fe27ad1a5072a9">GlobalVariables</a> &amp;, <a class="el" href="classSawyer_1_1Message_1_1Stream.html">Sawyer::Message::Stream</a> &amp;)</td></tr>
+<tr class="memdesc:ad6457889f06d3212ed88226be8ec9d1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check that the map is consistent.  <br /></td></tr>
+<tr class="separator:ad6457889f06d3212ed88226be8ec9d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00fe9ab587ee55ef145543c85f49f311" id="r_a00fe9ab587ee55ef145543c85f49f311"><td class="memItemLeft" align="right" valign="top"><a id="a00fe9ab587ee55ef145543c85f49f311" name="a00fe9ab587ee55ef145543c85f49f311"></a>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;, const <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1InstructionAccess.html">InstructionAccess</a> &amp;)</td></tr>
+<tr class="separator:a00fe9ab587ee55ef145543c85f49f311"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a87ac41dafbbc2d8c3a0628b8d52c85" id="r_a7a87ac41dafbbc2d8c3a0628b8d52c85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a7a87ac41dafbbc2d8c3a0628b8d52c85">print</a> (const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a499dc9e215a3f65f878818f14d5cf252">StackVariables</a> &amp;, const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a461d763e33e7cf0364b64e0af0c267a0">Partitioner2::PartitionerConstPtr</a> &amp;, std::ostream &amp;out, const std::string &amp;prefix=&quot;&quot;)</td></tr>
 <tr class="memdesc:a7a87ac41dafbbc2d8c3a0628b8d52c85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print info about multiple local variables.  <br /></td></tr>
 <tr class="separator:a7a87ac41dafbbc2d8c3a0628b8d52c85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa4141f87aae3efd3bfbcec1e09e5a76" id="r_aaa4141f87aae3efd3bfbcec1e09e5a76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#aaa4141f87aae3efd3bfbcec1e09e5a76">erase</a> (<a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a701286bb9c1d8a76612cc46c9df9e112">GlobalVariables</a> &amp;, const <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#aa3ce7a7c9a79d236c3de26532f25bbf5">AddressInterval</a> &amp;toErase)</td></tr>
-<tr class="memdesc:aaa4141f87aae3efd3bfbcec1e09e5a76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Erase some global variables.  <br /></td></tr>
-<tr class="separator:aaa4141f87aae3efd3bfbcec1e09e5a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89b9c1b3687e02b6539c5a7c725bb6e3" id="r_a89b9c1b3687e02b6539c5a7c725bb6e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a89b9c1b3687e02b6539c5a7c725bb6e3">print</a> (const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a701286bb9c1d8a76612cc46c9df9e112">GlobalVariables</a> &amp;, const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a461d763e33e7cf0364b64e0af0c267a0">Partitioner2::PartitionerConstPtr</a> &amp;, std::ostream &amp;out, const std::string &amp;prefix=&quot;&quot;)</td></tr>
-<tr class="memdesc:a89b9c1b3687e02b6539c5a7c725bb6e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print info about multiple global variables.  <br /></td></tr>
-<tr class="separator:a89b9c1b3687e02b6539c5a7c725bb6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6457889f06d3212ed88226be8ec9d1c" id="r_ad6457889f06d3212ed88226be8ec9d1c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceRose_1_1BinaryAnalysis.html#aa3ce7a7c9a79d236c3de26532f25bbf5">AddressInterval</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#ad6457889f06d3212ed88226be8ec9d1c">isInconsistent</a> (const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a701286bb9c1d8a76612cc46c9df9e112">GlobalVariables</a> &amp;, <a class="el" href="classSawyer_1_1Message_1_1Stream.html">Sawyer::Message::Stream</a> &amp;)</td></tr>
-<tr class="memdesc:ad6457889f06d3212ed88226be8ec9d1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check that the map is consistent.  <br /></td></tr>
-<tr class="separator:ad6457889f06d3212ed88226be8ec9d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:aacec10e260c687b0ea9123db6a5e5c58" id="r_aacec10e260c687b0ea9123db6a5e5c58"><td class="memItemLeft" align="right" valign="top"><a id="aacec10e260c687b0ea9123db6a5e5c58" name="aacec10e260c687b0ea9123db6a5e5c58"></a>
 <a class="el" href="classSawyer_1_1Message_1_1Facility.html">Sawyer::Message::Facility</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mlog</b></td></tr>
-<tr class="memdesc:aacec10e260c687b0ea9123db6a5e5c58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Diagnostic facility. <br /></td></tr>
+<tr class="memdesc:aacec10e260c687b0ea9123db6a5e5c58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Diagnostic facility for variables. <br /></td></tr>
 <tr class="separator:aacec10e260c687b0ea9123db6a5e5c58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8aee4bf85f22b541dbec3b44397249c" id="r_af8aee4bf85f22b541dbec3b44397249c"><td class="memItemLeft" align="right" valign="top"><a id="af8aee4bf85f22b541dbec3b44397249c" name="af8aee4bf85f22b541dbec3b44397249c"></a>
+<a class="el" href="namespaceSawyer_1_1Attribute.html#ac2390b0d8b09f1b75e5d452e2dc90e68">Sawyer::Attribute::Id</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ATTR_FRAME_SIZE</b></td></tr>
+<tr class="separator:af8aee4bf85f22b541dbec3b44397249c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65d0510e942100dba2fc3e84436c1735" id="r_a65d0510e942100dba2fc3e84436c1735"><td class="memItemLeft" align="right" valign="top"><a id="a65d0510e942100dba2fc3e84436c1735" name="a65d0510e942100dba2fc3e84436c1735"></a>
+<a class="el" href="namespaceSawyer_1_1Attribute.html#ac2390b0d8b09f1b75e5d452e2dc90e68">Sawyer::Attribute::Id</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ATTR_LOCAL_VARS</b></td></tr>
+<tr class="separator:a65d0510e942100dba2fc3e84436c1735"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fee9574974edf7db2a033322f7cd7b0" id="r_a5fee9574974edf7db2a033322f7cd7b0"><td class="memItemLeft" align="right" valign="top"><a id="a5fee9574974edf7db2a033322f7cd7b0" name="a5fee9574974edf7db2a033322f7cd7b0"></a>
+<a class="el" href="namespaceSawyer_1_1Attribute.html#ac2390b0d8b09f1b75e5d452e2dc90e68">Sawyer::Attribute::Id</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ATTR_GLOBAL_VARS</b></td></tr>
+<tr class="separator:a5fee9574974edf7db2a033322f7cd7b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="ac49414c26c4ddc61dd89fc4e1ad450b6" name="ac49414c26c4ddc61dd89fc4e1ad450b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac49414c26c4ddc61dd89fc4e1ad450b6">&#9670;&#160;</a></span>VariableFinderPtr</h2>
+<a id="a1cb5f9370d704904c0e05c5c3008569c" name="a1cb5f9370d704904c0e05c5c3008569c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cb5f9370d704904c0e05c5c3008569c">&#9670;&#160;</a></span>VariableFinderPtr</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#ac49414c26c4ddc61dd89fc4e1ad450b6">Rose::BinaryAnalysis::Variables::VariableFinderPtr</a> = typedef <a class="el" href="classSawyer_1_1SharedPointer.html">Sawyer::SharedPointer</a>&lt;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1VariableFinder.html">VariableFinder</a>&gt;</td>
+          <td class="memname">using <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a1cb5f9370d704904c0e05c5c3008569c">Rose::BinaryAnalysis::Variables::VariableFinderPtr</a> = typedef std::shared_ptr&lt;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1VariableFinder.html">VariableFinder</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Reference counting pointer. </p>
+<p>Shared ownership pointer to <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1VariableFinder.html">VariableFinder</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="Rose_2BinaryAnalysis_2BasicTypes_8h_source.html#l00122">122</a> of file <a class="el" href="Rose_2BinaryAnalysis_2BasicTypes_8h_source.html">Rose/BinaryAnalysis/BasicTypes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Rose_2BinaryAnalysis_2Variables_2BasicTypes_8h_source.html#l00033">33</a> of file <a class="el" href="Rose_2BinaryAnalysis_2Variables_2BasicTypes_8h_source.html">Rose/BinaryAnalysis/Variables/BasicTypes.h</a>.</p>
 
 </div>
 </div>
-<a id="a043acd2ddb11929d56fb7161435121d2" name="a043acd2ddb11929d56fb7161435121d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a043acd2ddb11929d56fb7161435121d2">&#9670;&#160;</a></span>AddressSet</h2>
+<a id="a1a818e43365c6b2e1965a5999f682aba" name="a1a818e43365c6b2e1965a5999f682aba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a818e43365c6b2e1965a5999f682aba">&#9670;&#160;</a></span>VariableFinderConstPtr</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="classSawyer_1_1Container_1_1Set.html">Sawyer::Container::Set</a>&lt;rose_addr_t&gt; <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a043acd2ddb11929d56fb7161435121d2">Rose::BinaryAnalysis::Variables::AddressSet</a></td>
+          <td class="memname">using <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a1a818e43365c6b2e1965a5999f682aba">Rose::BinaryAnalysis::Variables::VariableFinderConstPtr</a> = typedef std::shared_ptr&lt;const <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1VariableFinder.html">VariableFinder</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set of addresses. </p>
+<p>Shared ownership pointer to <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1VariableFinder.html">VariableFinder</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="Variables_8h_source.html#l00037">37</a> of file <a class="el" href="Variables_8h_source.html">Variables.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Rose_2BinaryAnalysis_2Variables_2BasicTypes_8h_source.html#l00034">34</a> of file <a class="el" href="Rose_2BinaryAnalysis_2Variables_2BasicTypes_8h_source.html">Rose/BinaryAnalysis/Variables/BasicTypes.h</a>.</p>
 
 </div>
 </div>
-<a id="a79a7a5dadae6082061c4e186250fe5dc" name="a79a7a5dadae6082061c4e186250fe5dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79a7a5dadae6082061c4e186250fe5dc">&#9670;&#160;</a></span>OffsetToAddresses</h2>
+<a id="a9d8b8ec37837f342ee2494a2453f50d6" name="a9d8b8ec37837f342ee2494a2453f50d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d8b8ec37837f342ee2494a2453f50d6">&#9670;&#160;</a></span>OffsetToAddress</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::map&lt;int64_t , <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a043acd2ddb11929d56fb7161435121d2">AddressSet</a>&gt; <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a79a7a5dadae6082061c4e186250fe5dc">Rose::BinaryAnalysis::Variables::OffsetToAddresses</a></td>
+          <td class="memname">using <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a9d8b8ec37837f342ee2494a2453f50d6">Rose::BinaryAnalysis::Variables::OffsetToAddress</a> = typedef std::map&lt;int64_t , <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#a3cd2d3478c0e767ed68aba17a5e81f18">AddressSet</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Mapping from stack offsets to address sets. </p>
 
-<p class="definition">Definition at line <a class="el" href="Variables_8h_source.html#l00040">40</a> of file <a class="el" href="Variables_8h_source.html">Variables.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Rose_2BinaryAnalysis_2Variables_2BasicTypes_8h_source.html#l00038">38</a> of file <a class="el" href="Rose_2BinaryAnalysis_2Variables_2BasicTypes_8h_source.html">Rose/BinaryAnalysis/Variables/BasicTypes.h</a>.</p>
 
 </div>
 </div>
-<a id="a24611814a9787faff90fdb41997ed2cd" name="a24611814a9787faff90fdb41997ed2cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24611814a9787faff90fdb41997ed2cd">&#9670;&#160;</a></span>AddressToAddresses</h2>
+<a id="a04233d207f043d849a04c404b3756372" name="a04233d207f043d849a04c404b3756372"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04233d207f043d849a04c404b3756372">&#9670;&#160;</a></span>AddressToAddresses</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::map&lt;rose_addr_t , <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a043acd2ddb11929d56fb7161435121d2">AddressSet</a> &gt; <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a24611814a9787faff90fdb41997ed2cd">Rose::BinaryAnalysis::Variables::AddressToAddresses</a></td>
+          <td class="memname">using <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a04233d207f043d849a04c404b3756372">Rose::BinaryAnalysis::Variables::AddressToAddresses</a> = typedef std::map&lt;<a class="el" href="namespaceRose_1_1BinaryAnalysis.html#a96dea8c577b1f630cffa84eee5cb03db">Address</a>, <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#a3cd2d3478c0e767ed68aba17a5e81f18">AddressSet</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Mapping from addresses to address sets. </p>
 
-<p class="definition">Definition at line <a class="el" href="Variables_8h_source.html#l00043">43</a> of file <a class="el" href="Variables_8h_source.html">Variables.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Rose_2BinaryAnalysis_2Variables_2BasicTypes_8h_source.html#l00041">41</a> of file <a class="el" href="Rose_2BinaryAnalysis_2Variables_2BasicTypes_8h_source.html">Rose/BinaryAnalysis/Variables/BasicTypes.h</a>.</p>
 
 </div>
 </div>
-<a id="ad9324189e85a42737fcf4cfa11b646dc" name="ad9324189e85a42737fcf4cfa11b646dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9324189e85a42737fcf4cfa11b646dc">&#9670;&#160;</a></span>OffsetInterval</h2>
+<a id="a39ee35b4536deedce3de229ca561b786" name="a39ee35b4536deedce3de229ca561b786"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39ee35b4536deedce3de229ca561b786">&#9670;&#160;</a></span>OffsetInterval</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="classSawyer_1_1Container_1_1Interval.html">Sawyer::Container::Interval</a>&lt;int64_t&gt; <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#ad9324189e85a42737fcf4cfa11b646dc">Rose::BinaryAnalysis::Variables::OffsetInterval</a></td>
+          <td class="memname">using <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a39ee35b4536deedce3de229ca561b786">Rose::BinaryAnalysis::Variables::OffsetInterval</a> = typedef <a class="el" href="classSawyer_1_1Container_1_1Interval.html">Sawyer::Container::Interval</a>&lt;int64_t&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Interval of signed offsets. </p>
 
-<p class="definition">Definition at line <a class="el" href="Variables_8h_source.html#l00046">46</a> of file <a class="el" href="Variables_8h_source.html">Variables.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Rose_2BinaryAnalysis_2Variables_2BasicTypes_8h_source.html#l00044">44</a> of file <a class="el" href="Rose_2BinaryAnalysis_2Variables_2BasicTypes_8h_source.html">Rose/BinaryAnalysis/Variables/BasicTypes.h</a>.</p>
+
+</div>
+</div>
+<a id="ac9e665d3a87b343a8781f378b94a4aa2" name="ac9e665d3a87b343a8781f378b94a4aa2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9e665d3a87b343a8781f378b94a4aa2">&#9670;&#160;</a></span>AccessFlags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#ac9e665d3a87b343a8781f378b94a4aa2">Rose::BinaryAnalysis::Variables::AccessFlags</a> = typedef <a class="el" href="classSawyer_1_1BitFlags.html">Sawyer::BitFlags</a>&lt;<a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a63c39a826722d54fb0953ca81004e47e">Access</a>, uint64_t&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether a variable is read and/or written by an instruction. </p>
+
+<p class="definition">Definition at line <a class="el" href="Rose_2BinaryAnalysis_2Variables_2BasicTypes_8h_source.html#l00053">53</a> of file <a class="el" href="Rose_2BinaryAnalysis_2Variables_2BasicTypes_8h_source.html">Rose/BinaryAnalysis/Variables/BasicTypes.h</a>.</p>
+
+</div>
+</div>
+<a id="a8e0754bae2404a8cd7fe27ad1a5072a9" name="a8e0754bae2404a8cd7fe27ad1a5072a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e0754bae2404a8cd7fe27ad1a5072a9">&#9670;&#160;</a></span>GlobalVariables</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a8e0754bae2404a8cd7fe27ad1a5072a9">Rose::BinaryAnalysis::Variables::GlobalVariables</a> = typedef <a class="el" href="classSawyer_1_1Container_1_1IntervalMap.html">Sawyer::Container::IntervalMap</a>&lt;<a class="el" href="namespaceRose_1_1BinaryAnalysis.html#aa3ce7a7c9a79d236c3de26532f25bbf5">AddressInterval</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1GlobalVariable.html">GlobalVariable</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Maps virtual addresses to global variables. </p>
+<p>The global variable will be represented in the map at all addresses that the global variable could occupy. E.g., if global variable "g1" starts at 0x4000 and can be up to 1k 4-byte integers, then a record will exist in the map at all addresses from 0x4000 (inclusive) to 0x4100 (exclusive). </p>
+
+<p class="definition">Definition at line <a class="el" href="GlobalVariable_8h_source.html#l00105">105</a> of file <a class="el" href="GlobalVariable_8h_source.html">GlobalVariable.h</a>.</p>
 
 </div>
 </div>
@@ -238,33 +335,49 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a499dc9e215a3f65f878818f14d5cf252">Rose::BinaryAnalysis::Variables::StackVariables</a> = typedef <a class="el" href="classSawyer_1_1Container_1_1IntervalMap.html">Sawyer::Container::IntervalMap</a>&lt;<a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#ad9324189e85a42737fcf4cfa11b646dc">OffsetInterval</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1StackVariable.html">StackVariable</a>&gt;</td>
+          <td class="memname">using <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a499dc9e215a3f65f878818f14d5cf252">Rose::BinaryAnalysis::Variables::StackVariables</a> = typedef <a class="el" href="classSawyer_1_1Container_1_1IntervalMap.html">Sawyer::Container::IntervalMap</a>&lt;<a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a39ee35b4536deedce3de229ca561b786">OffsetInterval</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1StackVariable.html">StackVariable</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Collection of local variables organized by frame offsets. </p>
+<p>Collection of local variables organized by stack offsets. </p>
 
-<p class="definition">Definition at line <a class="el" href="Variables_8h_source.html#l00289">289</a> of file <a class="el" href="Variables_8h_source.html">Variables.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="StackVariable_8h_source.html#l00167">167</a> of file <a class="el" href="StackVariable_8h_source.html">StackVariable.h</a>.</p>
 
 </div>
 </div>
-<a id="a701286bb9c1d8a76612cc46c9df9e112" name="a701286bb9c1d8a76612cc46c9df9e112"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a701286bb9c1d8a76612cc46c9df9e112">&#9670;&#160;</a></span>GlobalVariables</h2>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a63c39a826722d54fb0953ca81004e47e" name="a63c39a826722d54fb0953ca81004e47e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63c39a826722d54fb0953ca81004e47e">&#9670;&#160;</a></span>Access</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="classSawyer_1_1Container_1_1IntervalMap.html">Sawyer::Container::IntervalMap</a>&lt;<a class="el" href="namespaceRose_1_1BinaryAnalysis.html#aa3ce7a7c9a79d236c3de26532f25bbf5">AddressInterval</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Variables_1_1GlobalVariable.html">GlobalVariable</a>&gt; <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a701286bb9c1d8a76612cc46c9df9e112">Rose::BinaryAnalysis::Variables::GlobalVariables</a></td>
+          <td class="memname">enum class <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a63c39a826722d54fb0953ca81004e47e">Rose::BinaryAnalysis::Variables::Access</a></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Maps virtual addresses to global variables. </p>
-<p>The global variable will be represented in the map at all addresses that the global variable could occupy. E.g., if global variable "g1" starts at 0x4000 and can be up to 1k 4-byte integers, then a record will exist in the map at all addresses from 0x4000 (inclusive) to 0x4100 (exclusive). </p>
+<p>Whether a variable is read or written. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a63c39a826722d54fb0953ca81004e47ea3466fab4975481651940ed328aa990e4" name="a63c39a826722d54fb0953ca81004e47ea3466fab4975481651940ed328aa990e4"></a>READ&#160;</td><td class="fielddoc"><p>Variable is read. </p>
+<p><br  />
+ </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a63c39a826722d54fb0953ca81004e47ead4b9e47f65b6e79b010582f15785867e" name="a63c39a826722d54fb0953ca81004e47ead4b9e47f65b6e79b010582f15785867e"></a>WRITE&#160;</td><td class="fielddoc"><p>Variable is written. </p>
+</td></tr>
+</table>
 
-<p class="definition">Definition at line <a class="el" href="Variables_8h_source.html#l00389">389</a> of file <a class="el" href="Variables_8h_source.html">Variables.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Rose_2BinaryAnalysis_2Variables_2BasicTypes_8h_source.html#l00047">47</a> of file <a class="el" href="Rose_2BinaryAnalysis_2Variables_2BasicTypes_8h_source.html">Rose/BinaryAnalysis/Variables/BasicTypes.h</a>.</p>
 
 </div>
 </div>
@@ -289,46 +402,23 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a7a87ac41dafbbc2d8c3a0628b8d52c85" name="a7a87ac41dafbbc2d8c3a0628b8d52c85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a87ac41dafbbc2d8c3a0628b8d52c85">&#9670;&#160;</a></span>print() <span class="overload">[1/2]</span></h2>
+<a id="ad94f205227255726e7056de302e70f10" name="ad94f205227255726e7056de302e70f10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad94f205227255726e7056de302e70f10">&#9670;&#160;</a></span>initNamespace()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Rose::BinaryAnalysis::Variables::print </td>
+          <td class="memname">void Rose::BinaryAnalysis::Variables::initNamespace </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a499dc9e215a3f65f878818f14d5cf252">StackVariables</a> &amp;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a461d763e33e7cf0364b64e0af0c267a0">Partitioner2::PartitionerConstPtr</a> &amp;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>out</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>prefix</em> = <code>&quot;&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Print info about multiple local variables. </p>
-<p>This output includes such things as the function to which they belong and the defining instructions. The output is multi-line, intended for debugging. </p>
+<p>Initialize the namespace. </p>
+<p>This is called automatically when ROSE is initialized. </p>
 
 </div>
 </div>
@@ -341,7 +431,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void Rose::BinaryAnalysis::Variables::erase </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a701286bb9c1d8a76612cc46c9df9e112">GlobalVariables</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a8e0754bae2404a8cd7fe27ad1a5072a9">GlobalVariables</a> &amp;&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -364,7 +454,7 @@ Variables</h2></td></tr>
 </div>
 </div>
 <a id="a89b9c1b3687e02b6539c5a7c725bb6e3" name="a89b9c1b3687e02b6539c5a7c725bb6e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89b9c1b3687e02b6539c5a7c725bb6e3">&#9670;&#160;</a></span>print() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a89b9c1b3687e02b6539c5a7c725bb6e3">&#9670;&#160;</a></span>print() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -372,7 +462,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void Rose::BinaryAnalysis::Variables::print </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a701286bb9c1d8a76612cc46c9df9e112">GlobalVariables</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a8e0754bae2404a8cd7fe27ad1a5072a9">GlobalVariables</a> &amp;&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -415,7 +505,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="namespaceRose_1_1BinaryAnalysis.html#aa3ce7a7c9a79d236c3de26532f25bbf5">AddressInterval</a> Rose::BinaryAnalysis::Variables::isInconsistent </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a701286bb9c1d8a76612cc46c9df9e112">GlobalVariables</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a8e0754bae2404a8cd7fe27ad1a5072a9">GlobalVariables</a> &amp;&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -438,10 +528,53 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a7a87ac41dafbbc2d8c3a0628b8d52c85" name="a7a87ac41dafbbc2d8c3a0628b8d52c85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a87ac41dafbbc2d8c3a0628b8d52c85">&#9670;&#160;</a></span>print() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Rose::BinaryAnalysis::Variables::print </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Variables.html#a499dc9e215a3f65f878818f14d5cf252">StackVariables</a> &amp;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a461d763e33e7cf0364b64e0af0c267a0">Partitioner2::PartitionerConstPtr</a> &amp;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>prefix</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Print info about multiple local variables. </p>
+<p>This output includes such things as the function to which they belong and the defining instructions. The output is multi-line, intended for debugging. </p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Oct 2 2024 00:09:11 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon Jan 19 2026 17:24:50 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>
