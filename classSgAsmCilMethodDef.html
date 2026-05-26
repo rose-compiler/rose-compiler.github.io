@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 </div><!-- top -->
 <div class="header">
   <div class="summary">
@@ -61,7 +80,7 @@ $(function() {
 <a name="details" id="details"></a><h2 class="groupheader">Description</h2>
 <div class="textblock"><p>CIL MethodDef node (II.22.26). </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35114">35114</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35305">35305</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 </div><div class="dynheader">
 Inheritance diagram for SgAsmCilMethodDef:</div>
 <div class="dyncontent">
@@ -85,39 +104,91 @@ Collaboration diagram for SgAsmCilMethodDef:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:af9600f29fc96b9174387f0b77ee5a912" id="r_af9600f29fc96b9174387f0b77ee5a912"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">: BodyState { <br />
-&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#af9600f29fc96b9174387f0b77ee5a912a61acb41a2bc11384eabb882c943d776c">BDY_NOT_AVAILABLE</a> = 3
+<tr class="memitem:a58c27fe71d11b65ca496a22ee2360ec5" id="r_a58c27fe71d11b65ca496a22ee2360ec5"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">: BodyState { <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a58c27fe71d11b65ca496a22ee2360ec5a61acb41a2bc11384eabb882c943d776c">BDY_NOT_AVAILABLE</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#af9600f29fc96b9174387f0b77ee5a912a2bfb7e9190c1c0b1622fc04e93cd8114">BDY_FULLY_DECODED</a> = 2
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a58c27fe71d11b65ca496a22ee2360ec5a2bfb7e9190c1c0b1622fc04e93cd8114">BDY_FULLY_DECODED</a> = 2
 , <br />
-&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#af9600f29fc96b9174387f0b77ee5a912acc2b32c8eeb6b3aa2fa7129933589050">BDY_RUNTIME_SUPPORTED</a> = 1
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a58c27fe71d11b65ca496a22ee2360ec5acc2b32c8eeb6b3aa2fa7129933589050">BDY_RUNTIME_SUPPORTED</a> = 1
 , <br />
-&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#af9600f29fc96b9174387f0b77ee5a912abbd9483aad4afa8944c6135b026ca94c">BDY_NOT_PROCESSED</a> = 0
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a58c27fe71d11b65ca496a22ee2360ec5abbd9483aad4afa8944c6135b026ca94c">BDY_NOT_PROCESSED</a> = 0
 , <br />
-&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#af9600f29fc96b9174387f0b77ee5a912abea339d6f3ec65224c6e0a2ce67f3b39">BDY_INVALID_HEADER_BYTE</a> = -1
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a58c27fe71d11b65ca496a22ee2360ec5abea339d6f3ec65224c6e0a2ce67f3b39">BDY_INVALID_HEADER_BYTE</a> = -1
 , <br />
-&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#af9600f29fc96b9174387f0b77ee5a912a3855f0f82c514939e752aec12c1d7697">BDY_INVALID_HEADER_KIND</a> = -2
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a58c27fe71d11b65ca496a22ee2360ec5a3855f0f82c514939e752aec12c1d7697">BDY_INVALID_HEADER_KIND</a> = -2
 , <br />
-&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#af9600f29fc96b9174387f0b77ee5a912a0ee607fec5e21616d3f2fd89dcc6f573">BDY_INVALID_HEADER_ALIGN</a> = -3
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a58c27fe71d11b65ca496a22ee2360ec5a0ee607fec5e21616d3f2fd89dcc6f573">BDY_INVALID_HEADER_ALIGN</a> = -3
 , <br />
-&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#af9600f29fc96b9174387f0b77ee5a912ad9f83b6215951d6f09cb7e065df5efe4">BDY_INVALID_CODE_LENGTH</a> = -4
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a58c27fe71d11b65ca496a22ee2360ec5ad9f83b6215951d6f09cb7e065df5efe4">BDY_INVALID_CODE_LENGTH</a> = -4
 , <br />
-&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#af9600f29fc96b9174387f0b77ee5a912a35febd112c8895e3521a922acd3554d9">BDY_INVALID_INSTRUCTION_LENGTH</a> = -5
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a58c27fe71d11b65ca496a22ee2360ec5a35febd112c8895e3521a922acd3554d9">BDY_INVALID_INSTRUCTION_LENGTH</a> = -5
 , <br />
-&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#af9600f29fc96b9174387f0b77ee5a912a634eca78251e47a7645056de4ed60afe">BDY_INVALID_INSTRUCTION</a> = -6
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a58c27fe71d11b65ca496a22ee2360ec5a634eca78251e47a7645056de4ed60afe">BDY_INVALID_INSTRUCTION</a> = -6
 , <br />
-&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#af9600f29fc96b9174387f0b77ee5a912a0b53b27e497b4e497387da361b88bc84">BDY_INVALID_SECTION_ALIGN</a> = -7
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a58c27fe71d11b65ca496a22ee2360ec5a0b53b27e497b4e497387da361b88bc84">BDY_INVALID_SECTION_ALIGN</a> = -7
 , <br />
-&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#af9600f29fc96b9174387f0b77ee5a912af2c8dffed67ea3987ae4a3f2f4dec1e9">BDY_INVALID_SECTION_HEADER</a> = -8
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a58c27fe71d11b65ca496a22ee2360ec5af2c8dffed67ea3987ae4a3f2f4dec1e9">BDY_INVALID_SECTION_HEADER</a> = -8
 , <br />
-&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#af9600f29fc96b9174387f0b77ee5a912a4537b2360875681ac50c0396a914faa6">BDY_INVALID_CLAUSE_KIND</a> = -9
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a58c27fe71d11b65ca496a22ee2360ec5a4537b2360875681ac50c0396a914faa6">BDY_INVALID_CLAUSE_KIND</a> = -9
 , <br />
-&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#af9600f29fc96b9174387f0b77ee5a912aaa4194892cd78dae46ab09f84d984eb7">BDY_INVALID_CLAUSE_LENGTH</a> = -10
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a58c27fe71d11b65ca496a22ee2360ec5aaa4194892cd78dae46ab09f84d984eb7">BDY_INVALID_CLAUSE_LENGTH</a> = -10
 <br />
  }</td></tr>
-<tr class="separator:af9600f29fc96b9174387f0b77ee5a912"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a58c27fe71d11b65ca496a22ee2360ec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bc70a507ff53aa1c2e0bc6af7bb6211" id="r_a5bc70a507ff53aa1c2e0bc6af7bb6211"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">: MethodFlags { <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a5c01c8354787b15e3c87e85225fa2cc5">FLG_MEMBERACCESS_MASK</a> = 0x0007
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a3a4e0ede45ebf2040944cfa1a81f0b2f">FLG_COMPILER_CONTROLLED</a> = 0x0000
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a365907418e141d93e9a671f423f2e6a0">FLG_PRIVATE</a> = 0x0001
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a2f2b6c9669f22934c5d7203b960625f0">FLG_FAM_AND_ASSEM</a> = 0x0002
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a6c0bed3c141657005445794f360e7de1">FLG_ASSEM</a> = 0x0003
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a016bc65a63e46ab69976d4e31ae2142e">FLG_FAMILY</a> = 0x0004
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a911fd2ecea9320e7e5a97f06e47ea39c">FLG_FAM_OR_ASSEM</a> = 0x0005
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a9df33c2ddaf39fcb4efdbc286349b1e7">FLG_PUBLIC</a> = 0x0006
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a3001e08cd82a3e41fa6c5f7d3b7521d7">FLG_STATIC</a> = 0x0010
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a837e733bf0fd39d3b10fdb3757198d19">FLG_FINAL</a> = 0x0020
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a5cc99633746d0297e304e821d72d2f80">FLG_VIRTUAL</a> = 0x0040
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211ad0190427afee611079a667aef1a3eca6">FLG_HIDEBYSIG</a> = 0x0080
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a6871945e3766194d166a65ce361690d8">FLG_VTABLE_LAYOUT_MASK</a> = 0x0100
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211ae970c5e74a1dcdecfdfa8a85cc7ce22d">FLG_REUSE_SLOT</a> = 0x0000
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211aad5b2d1426154e7bb508a59ad8c446fb">FLG_NEW_SLOT</a> = 0x0100
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a9e9d75a5e7bc4f1a70723ba0a6089971">FLG_STRICT</a> = 0x0200
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211ad707b17a80906e8c6cc5a8339758d4fa">FLG_ABSTRACT</a> = 0x0400
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a8b0b927bfae890aa7c384ba2fe5396ba">FLG_SPECIAL_NAME</a> = 0x0800
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211ae717034197f55672f468419b9217c8e2">FLG_P_INVOKE_IMPL</a> = 0x2000
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a2edab1c3a6e312e62c2a7bb952815884">FLG_UNMANAGED_EXPORT</a> = 0x0008
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a15096289de048a5e80492eada4881d5a">FLG_RT_SPECIAL_NAME</a> = 0x1000
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a8463fc23a5f453a4f3f17ec214e5ce1c">FLG_HAS_SECURITY</a> = 0x4000
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilMethodDef.html#a5bc70a507ff53aa1c2e0bc6af7bb6211a551982961282817b6c95084cbdc844e7">FLG_REQUIRE_SEC_OBJECT</a> = 0x8000
+<br />
+ }</td></tr>
+<tr class="separator:a5bc70a507ff53aa1c2e0bc6af7bb6211"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecb8d70920362feee4d934683e2a661b" id="r_aecb8d70920362feee4d934683e2a661b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSgAsmCilMethodDef.html#aecb8d70920362feee4d934683e2a661b">BodyState</a> = int</td></tr>
 <tr class="separator:aecb8d70920362feee4d934683e2a661b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae516da8f87652837ba816197731a7d03" id="r_ae516da8f87652837ba816197731a7d03"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSgAsmCilMethodDef.html#ae516da8f87652837ba816197731a7d03">MethodFlags</a> = std::uint16_t</td></tr>
+<tr class="memdesc:ae516da8f87652837ba816197731a7d03"><td class="mdescLeft">&#160;</td><td class="mdescRight">MethodAttribute Flags (II.23.1.10)  <br /></td></tr>
+<tr class="separator:ae516da8f87652837ba816197731a7d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classSgNode"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSgNode')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSgNode.html">SgNode</a></td></tr>
 <tr class="memitem:a55d8b091c53268f6ce031fe0d04d0cb0 inherit pub_types_classSgNode" id="r_a55d8b091c53268f6ce031fe0d04d0cb0"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>static_variant</b> = V_SgNode
  }</td></tr>
@@ -1021,13 +1092,31 @@ static VariantT&#160;</td><td class="memItemRight" valign="bottom"><b>variantFro
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35224">35224</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35415">35415</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+
+</div>
+</div>
+<a id="ae516da8f87652837ba816197731a7d03" name="ae516da8f87652837ba816197731a7d03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae516da8f87652837ba816197731a7d03">&#9670;&#160;</a></span>MethodFlags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classSgAsmCilMethodDef.html#ae516da8f87652837ba816197731a7d03">SgAsmCilMethodDef::MethodFlags</a> =  std::uint16_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MethodAttribute Flags (II.23.1.10) </p>
+
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35440">35440</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="af9600f29fc96b9174387f0b77ee5a912" name="af9600f29fc96b9174387f0b77ee5a912"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af9600f29fc96b9174387f0b77ee5a912">&#9670;&#160;</a></span>anonymous enum</h2>
+<a id="a58c27fe71d11b65ca496a22ee2360ec5" name="a58c27fe71d11b65ca496a22ee2360ec5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58c27fe71d11b65ca496a22ee2360ec5">&#9670;&#160;</a></span>anonymous enum</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1038,37 +1127,101 @@ static VariantT&#160;</td><td class="memItemRight" valign="bottom"><b>variantFro
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af9600f29fc96b9174387f0b77ee5a912a61acb41a2bc11384eabb882c943d776c" name="af9600f29fc96b9174387f0b77ee5a912a61acb41a2bc11384eabb882c943d776c"></a>BDY_NOT_AVAILABLE&#160;</td><td class="fielddoc"><p>RVA is 0 -&gt; body is null. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a58c27fe71d11b65ca496a22ee2360ec5a61acb41a2bc11384eabb882c943d776c" name="a58c27fe71d11b65ca496a22ee2360ec5a61acb41a2bc11384eabb882c943d776c"></a>BDY_NOT_AVAILABLE&#160;</td><td class="fielddoc"><p>RVA is 0 -&gt; body is null. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af9600f29fc96b9174387f0b77ee5a912a2bfb7e9190c1c0b1622fc04e93cd8114" name="af9600f29fc96b9174387f0b77ee5a912a2bfb7e9190c1c0b1622fc04e93cd8114"></a>BDY_FULLY_DECODED&#160;</td><td class="fielddoc"><p>decoded successfully </p>
+<tr><td class="fieldname"><a id="a58c27fe71d11b65ca496a22ee2360ec5a2bfb7e9190c1c0b1622fc04e93cd8114" name="a58c27fe71d11b65ca496a22ee2360ec5a2bfb7e9190c1c0b1622fc04e93cd8114"></a>BDY_FULLY_DECODED&#160;</td><td class="fielddoc"><p>decoded successfully </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af9600f29fc96b9174387f0b77ee5a912acc2b32c8eeb6b3aa2fa7129933589050" name="af9600f29fc96b9174387f0b77ee5a912acc2b32c8eeb6b3aa2fa7129933589050"></a>BDY_RUNTIME_SUPPORTED&#160;</td><td class="fielddoc"><p>body is runtime supported (looking for specimen) </p>
+<tr><td class="fieldname"><a id="a58c27fe71d11b65ca496a22ee2360ec5acc2b32c8eeb6b3aa2fa7129933589050" name="a58c27fe71d11b65ca496a22ee2360ec5acc2b32c8eeb6b3aa2fa7129933589050"></a>BDY_RUNTIME_SUPPORTED&#160;</td><td class="fielddoc"><p>body is runtime supported (looking for specimen) </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af9600f29fc96b9174387f0b77ee5a912abbd9483aad4afa8944c6135b026ca94c" name="af9600f29fc96b9174387f0b77ee5a912abbd9483aad4afa8944c6135b026ca94c"></a>BDY_NOT_PROCESSED&#160;</td><td class="fielddoc"><p>method has not been processed </p>
+<tr><td class="fieldname"><a id="a58c27fe71d11b65ca496a22ee2360ec5abbd9483aad4afa8944c6135b026ca94c" name="a58c27fe71d11b65ca496a22ee2360ec5abbd9483aad4afa8944c6135b026ca94c"></a>BDY_NOT_PROCESSED&#160;</td><td class="fielddoc"><p>method has not been processed </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af9600f29fc96b9174387f0b77ee5a912abea339d6f3ec65224c6e0a2ce67f3b39" name="af9600f29fc96b9174387f0b77ee5a912abea339d6f3ec65224c6e0a2ce67f3b39"></a>BDY_INVALID_HEADER_BYTE&#160;</td><td class="fielddoc"><p>method header leading byte cannot be read </p>
+<tr><td class="fieldname"><a id="a58c27fe71d11b65ca496a22ee2360ec5abea339d6f3ec65224c6e0a2ce67f3b39" name="a58c27fe71d11b65ca496a22ee2360ec5abea339d6f3ec65224c6e0a2ce67f3b39"></a>BDY_INVALID_HEADER_BYTE&#160;</td><td class="fielddoc"><p>method header leading byte cannot be read </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af9600f29fc96b9174387f0b77ee5a912a3855f0f82c514939e752aec12c1d7697" name="af9600f29fc96b9174387f0b77ee5a912a3855f0f82c514939e752aec12c1d7697"></a>BDY_INVALID_HEADER_KIND&#160;</td><td class="fielddoc"><p>method header kind is neither tiny nor fat </p>
+<tr><td class="fieldname"><a id="a58c27fe71d11b65ca496a22ee2360ec5a3855f0f82c514939e752aec12c1d7697" name="a58c27fe71d11b65ca496a22ee2360ec5a3855f0f82c514939e752aec12c1d7697"></a>BDY_INVALID_HEADER_KIND&#160;</td><td class="fielddoc"><p>method header kind is neither tiny nor fat </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af9600f29fc96b9174387f0b77ee5a912a0ee607fec5e21616d3f2fd89dcc6f573" name="af9600f29fc96b9174387f0b77ee5a912a0ee607fec5e21616d3f2fd89dcc6f573"></a>BDY_INVALID_HEADER_ALIGN&#160;</td><td class="fielddoc"><p>fat header is improperly aligned </p>
+<tr><td class="fieldname"><a id="a58c27fe71d11b65ca496a22ee2360ec5a0ee607fec5e21616d3f2fd89dcc6f573" name="a58c27fe71d11b65ca496a22ee2360ec5a0ee607fec5e21616d3f2fd89dcc6f573"></a>BDY_INVALID_HEADER_ALIGN&#160;</td><td class="fielddoc"><p>fat header is improperly aligned </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af9600f29fc96b9174387f0b77ee5a912ad9f83b6215951d6f09cb7e065df5efe4" name="af9600f29fc96b9174387f0b77ee5a912ad9f83b6215951d6f09cb7e065df5efe4"></a>BDY_INVALID_CODE_LENGTH&#160;</td><td class="fielddoc"><p>could not read all bytes as specified by header </p>
+<tr><td class="fieldname"><a id="a58c27fe71d11b65ca496a22ee2360ec5ad9f83b6215951d6f09cb7e065df5efe4" name="a58c27fe71d11b65ca496a22ee2360ec5ad9f83b6215951d6f09cb7e065df5efe4"></a>BDY_INVALID_CODE_LENGTH&#160;</td><td class="fielddoc"><p>could not read all bytes as specified by header </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af9600f29fc96b9174387f0b77ee5a912a35febd112c8895e3521a922acd3554d9" name="af9600f29fc96b9174387f0b77ee5a912a35febd112c8895e3521a922acd3554d9"></a>BDY_INVALID_INSTRUCTION_LENGTH&#160;</td><td class="fielddoc"><p>decoding instructions exceeded body length </p>
+<tr><td class="fieldname"><a id="a58c27fe71d11b65ca496a22ee2360ec5a35febd112c8895e3521a922acd3554d9" name="a58c27fe71d11b65ca496a22ee2360ec5a35febd112c8895e3521a922acd3554d9"></a>BDY_INVALID_INSTRUCTION_LENGTH&#160;</td><td class="fielddoc"><p>decoding instructions exceeded body length </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af9600f29fc96b9174387f0b77ee5a912a634eca78251e47a7645056de4ed60afe" name="af9600f29fc96b9174387f0b77ee5a912a634eca78251e47a7645056de4ed60afe"></a>BDY_INVALID_INSTRUCTION&#160;</td><td class="fielddoc"><p>encountered unknown instruction </p>
+<tr><td class="fieldname"><a id="a58c27fe71d11b65ca496a22ee2360ec5a634eca78251e47a7645056de4ed60afe" name="a58c27fe71d11b65ca496a22ee2360ec5a634eca78251e47a7645056de4ed60afe"></a>BDY_INVALID_INSTRUCTION&#160;</td><td class="fielddoc"><p>encountered unknown instruction </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af9600f29fc96b9174387f0b77ee5a912a0b53b27e497b4e497387da361b88bc84" name="af9600f29fc96b9174387f0b77ee5a912a0b53b27e497b4e497387da361b88bc84"></a>BDY_INVALID_SECTION_ALIGN&#160;</td><td class="fielddoc"><p>extra sections are misaligned </p>
+<tr><td class="fieldname"><a id="a58c27fe71d11b65ca496a22ee2360ec5a0b53b27e497b4e497387da361b88bc84" name="a58c27fe71d11b65ca496a22ee2360ec5a0b53b27e497b4e497387da361b88bc84"></a>BDY_INVALID_SECTION_ALIGN&#160;</td><td class="fielddoc"><p>extra sections are misaligned </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af9600f29fc96b9174387f0b77ee5a912af2c8dffed67ea3987ae4a3f2f4dec1e9" name="af9600f29fc96b9174387f0b77ee5a912af2c8dffed67ea3987ae4a3f2f4dec1e9"></a>BDY_INVALID_SECTION_HEADER&#160;</td><td class="fielddoc"><p>extra section could not be read completely or is inconsistent </p>
+<tr><td class="fieldname"><a id="a58c27fe71d11b65ca496a22ee2360ec5af2c8dffed67ea3987ae4a3f2f4dec1e9" name="a58c27fe71d11b65ca496a22ee2360ec5af2c8dffed67ea3987ae4a3f2f4dec1e9"></a>BDY_INVALID_SECTION_HEADER&#160;</td><td class="fielddoc"><p>extra section could not be read completely or is inconsistent </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af9600f29fc96b9174387f0b77ee5a912a4537b2360875681ac50c0396a914faa6" name="af9600f29fc96b9174387f0b77ee5a912a4537b2360875681ac50c0396a914faa6"></a>BDY_INVALID_CLAUSE_KIND&#160;</td><td class="fielddoc"><p>clauses section length and kind do not match </p>
+<tr><td class="fieldname"><a id="a58c27fe71d11b65ca496a22ee2360ec5a4537b2360875681ac50c0396a914faa6" name="a58c27fe71d11b65ca496a22ee2360ec5a4537b2360875681ac50c0396a914faa6"></a>BDY_INVALID_CLAUSE_KIND&#160;</td><td class="fielddoc"><p>clauses section length and kind do not match </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af9600f29fc96b9174387f0b77ee5a912aaa4194892cd78dae46ab09f84d984eb7" name="af9600f29fc96b9174387f0b77ee5a912aaa4194892cd78dae46ab09f84d984eb7"></a>BDY_INVALID_CLAUSE_LENGTH&#160;</td><td class="fielddoc"><p>clause could not be read completely </p>
+<tr><td class="fieldname"><a id="a58c27fe71d11b65ca496a22ee2360ec5aaa4194892cd78dae46ab09f84d984eb7" name="a58c27fe71d11b65ca496a22ee2360ec5aaa4194892cd78dae46ab09f84d984eb7"></a>BDY_INVALID_CLAUSE_LENGTH&#160;</td><td class="fielddoc"><p>clause could not be read completely </p>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35226">35226</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35417">35417</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+
+</div>
+</div>
+<a id="a5bc70a507ff53aa1c2e0bc6af7bb6211" name="a5bc70a507ff53aa1c2e0bc6af7bb6211"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bc70a507ff53aa1c2e0bc6af7bb6211">&#9670;&#160;</a></span>anonymous enum</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum : <a class="el" href="classSgAsmCilMethodDef.html#ae516da8f87652837ba816197731a7d03">MethodFlags</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a5c01c8354787b15e3c87e85225fa2cc5" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a5c01c8354787b15e3c87e85225fa2cc5"></a>FLG_MEMBERACCESS_MASK&#160;</td><td class="fielddoc"><p>These 3 bits contain one of the following values: </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a3a4e0ede45ebf2040944cfa1a81f0b2f" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a3a4e0ede45ebf2040944cfa1a81f0b2f"></a>FLG_COMPILER_CONTROLLED&#160;</td><td class="fielddoc"><p>Member not referenceable. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a365907418e141d93e9a671f423f2e6a0" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a365907418e141d93e9a671f423f2e6a0"></a>FLG_PRIVATE&#160;</td><td class="fielddoc"><p>Accessible only by the parent type. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a2f2b6c9669f22934c5d7203b960625f0" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a2f2b6c9669f22934c5d7203b960625f0"></a>FLG_FAM_AND_ASSEM&#160;</td><td class="fielddoc"><p>Accessible by sub-types only in this Assembly. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a6c0bed3c141657005445794f360e7de1" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a6c0bed3c141657005445794f360e7de1"></a>FLG_ASSEM&#160;</td><td class="fielddoc"><p>Accessibly by anyone in the Assembly. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a016bc65a63e46ab69976d4e31ae2142e" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a016bc65a63e46ab69976d4e31ae2142e"></a>FLG_FAMILY&#160;</td><td class="fielddoc"><p>Accessible only by type and sub-types. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a911fd2ecea9320e7e5a97f06e47ea39c" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a911fd2ecea9320e7e5a97f06e47ea39c"></a>FLG_FAM_OR_ASSEM&#160;</td><td class="fielddoc"><p>Accessibly by sub-types anywhere, plus anyone in assembly. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a9df33c2ddaf39fcb4efdbc286349b1e7" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a9df33c2ddaf39fcb4efdbc286349b1e7"></a>FLG_PUBLIC&#160;</td><td class="fielddoc"><p>Accessibly by anyone who has visibility to this scope. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a3001e08cd82a3e41fa6c5f7d3b7521d7" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a3001e08cd82a3e41fa6c5f7d3b7521d7"></a>FLG_STATIC&#160;</td><td class="fielddoc"><p>Defined on type, else per instance. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a837e733bf0fd39d3b10fdb3757198d19" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a837e733bf0fd39d3b10fdb3757198d19"></a>FLG_FINAL&#160;</td><td class="fielddoc"><p>Method cannot be overridden. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a5cc99633746d0297e304e821d72d2f80" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a5cc99633746d0297e304e821d72d2f80"></a>FLG_VIRTUAL&#160;</td><td class="fielddoc"><p>Method is virtual. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211ad0190427afee611079a667aef1a3eca6" name="a5bc70a507ff53aa1c2e0bc6af7bb6211ad0190427afee611079a667aef1a3eca6"></a>FLG_HIDEBYSIG&#160;</td><td class="fielddoc"><p>Method hides by name+sig, else just by name. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a6871945e3766194d166a65ce361690d8" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a6871945e3766194d166a65ce361690d8"></a>FLG_VTABLE_LAYOUT_MASK&#160;</td><td class="fielddoc"><p>Use this mask to retrieve vtable attributes. This bit contains one of the following values: </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211ae970c5e74a1dcdecfdfa8a85cc7ce22d" name="a5bc70a507ff53aa1c2e0bc6af7bb6211ae970c5e74a1dcdecfdfa8a85cc7ce22d"></a>FLG_REUSE_SLOT&#160;</td><td class="fielddoc"><p>Method reuses existing slot in vtable. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211aad5b2d1426154e7bb508a59ad8c446fb" name="a5bc70a507ff53aa1c2e0bc6af7bb6211aad5b2d1426154e7bb508a59ad8c446fb"></a>FLG_NEW_SLOT&#160;</td><td class="fielddoc"><p>Method always gets a new slot in the vtable. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a9e9d75a5e7bc4f1a70723ba0a6089971" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a9e9d75a5e7bc4f1a70723ba0a6089971"></a>FLG_STRICT&#160;</td><td class="fielddoc"><p>Method can only be overriden if also accessible. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211ad707b17a80906e8c6cc5a8339758d4fa" name="a5bc70a507ff53aa1c2e0bc6af7bb6211ad707b17a80906e8c6cc5a8339758d4fa"></a>FLG_ABSTRACT&#160;</td><td class="fielddoc"><p>Method does not provide an implementation. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a8b0b927bfae890aa7c384ba2fe5396ba" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a8b0b927bfae890aa7c384ba2fe5396ba"></a>FLG_SPECIAL_NAME&#160;</td><td class="fielddoc"><p>Method is special. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211ae717034197f55672f468419b9217c8e2" name="a5bc70a507ff53aa1c2e0bc6af7bb6211ae717034197f55672f468419b9217c8e2"></a>FLG_P_INVOKE_IMPL&#160;</td><td class="fielddoc"><p>Implementation is forwarded through PInvoke. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a2edab1c3a6e312e62c2a7bb952815884" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a2edab1c3a6e312e62c2a7bb952815884"></a>FLG_UNMANAGED_EXPORT&#160;</td><td class="fielddoc"><p>Reserved: shall be zero for conforming implementations. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a15096289de048a5e80492eada4881d5a" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a15096289de048a5e80492eada4881d5a"></a>FLG_RT_SPECIAL_NAME&#160;</td><td class="fielddoc"><p>CLI provides special behavior, depending upon the name of the method. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a8463fc23a5f453a4f3f17ec214e5ce1c" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a8463fc23a5f453a4f3f17ec214e5ce1c"></a>FLG_HAS_SECURITY&#160;</td><td class="fielddoc"><p>Method has security associate with it. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5bc70a507ff53aa1c2e0bc6af7bb6211a551982961282817b6c95084cbdc844e7" name="a5bc70a507ff53aa1c2e0bc6af7bb6211a551982961282817b6c95084cbdc844e7"></a>FLG_REQUIRE_SEC_OBJECT&#160;</td><td class="fielddoc"><p>Method calls another method containing security code. </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35442">35442</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -1639,7 +1792,7 @@ static VariantT&#160;</td><td class="memItemRight" valign="bottom"><b>variantFro
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:17 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:23 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="namespaceRose.html">Rose</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis.html">BinaryAnalysis</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics.html">InstructionSemantics</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics.html">SymbolicSemantics</a></li><li class="navelem"><a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html">RiscOperators</a></li>  </ul>
@@ -75,7 +94,7 @@ $(function() {
 <div class="line">}</div>
 <div class="ttc" id="aclassSawyer_1_1SharedPointer_html"><div class="ttname"><a href="classSawyer_1_1SharedPointer.html">Sawyer::SharedPointer&lt; SValue &gt;</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00740">740</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00750">750</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 </div>
 <p><code>#include &lt;<a class="el" href="SymbolicSemantics_8h_source.html">Rose/BinaryAnalysis/InstructionSemantics/SymbolicSemantics.h</a>&gt;</code></p>
 <div class="dynheader">
@@ -263,6 +282,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a986cd04ad143a3253d4b41a3ff406fe4" id="r_a986cd04ad143a3253d4b41a3ff406fe4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html#a986cd04ad143a3253d4b41a3ff406fe4">writeMemory</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1RegisterDescriptor.html">RegisterDescriptor</a> segreg, const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">BaseSemantics::SValuePtr</a> &amp;addr, const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">BaseSemantics::SValuePtr</a> &amp;data, const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">BaseSemantics::SValuePtr</a> &amp;cond) override</td></tr>
 <tr class="memdesc:a986cd04ad143a3253d4b41a3ff406fe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a value to memory.  <br /></td></tr>
 <tr class="separator:a986cd04ad143a3253d4b41a3ff406fe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae81ffba9483d3c355a30caec23cd8f44" id="r_ae81ffba9483d3c355a30caec23cd8f44"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">BaseSemantics::SValuePtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html#ae81ffba9483d3c355a30caec23cd8f44">readLocal</a> (uint8_t index) override</td></tr>
+<tr class="memdesc:ae81ffba9483d3c355a30caec23cd8f44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a value from the local variable table in the current frame.  <br /></td></tr>
+<tr class="separator:ae81ffba9483d3c355a30caec23cd8f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a627a4b716a696d0d319733c6ba444fe3" id="r_a627a4b716a696d0d319733c6ba444fe3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html#a627a4b716a696d0d319733c6ba444fe3">writeLocal</a> (uint8_t index, const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">BaseSemantics::SValuePtr</a> &amp;value) override</td></tr>
+<tr class="separator:a627a4b716a696d0d319733c6ba444fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3ce3aa694e4f6a44c786d5ccb219d34" id="r_aa3ce3aa694e4f6a44c786d5ccb219d34"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">BaseSemantics::SValuePtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html#aa3ce3aa694e4f6a44c786d5ccb219d34">popOperand</a> () override</td></tr>
+<tr class="memdesc:aa3ce3aa694e4f6a44c786d5ccb219d34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pops a value from the Frame Operand Stack.  <br /></td></tr>
+<tr class="separator:aa3ce3aa694e4f6a44c786d5ccb219d34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9edccfd8b8da3912492516cd5aba68c4" id="r_a9edccfd8b8da3912492516cd5aba68c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html#a9edccfd8b8da3912492516cd5aba68c4">pushOperand</a> (const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">BaseSemantics::SValuePtr</a> &amp;value) override</td></tr>
+<tr class="memdesc:a9edccfd8b8da3912492516cd5aba68c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes a value to the Frame Operand Stack.  <br /></td></tr>
+<tr class="separator:a9edccfd8b8da3912492516cd5aba68c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8afdddae6f19b26d13a6d1182fd6e206" id="r_a8afdddae6f19b26d13a6d1182fd6e206"><td class="memItemLeft" align="right" valign="top"><a id="a8afdddae6f19b26d13a6d1182fd6e206" name="a8afdddae6f19b26d13a6d1182fd6e206"></a>
 <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">BaseSemantics::SValuePtr</a>&#160;</td><td class="memItemRight" valign="bottom"><b>readOrPeekMemory</b> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1RegisterDescriptor.html">RegisterDescriptor</a> segreg, const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">BaseSemantics::SValuePtr</a> &amp;addr, const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">BaseSemantics::SValuePtr</a> &amp;dflt, AllowSideEffects::Flag)</td></tr>
 <tr class="separator:a8afdddae6f19b26d13a6d1182fd6e206"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -629,7 +659,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Base type. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00743">743</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00753">753</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -647,7 +677,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Shared-ownership pointer. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00746">746</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00756">756</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -981,7 +1011,7 @@ Protected Attributes</h2></td></tr>
 <li><code>TRACK_ALL_DEFINERS:</code> The new values will have a default-constructed definers-set unioned with the address of the current instruciton (if there is one), and the addresses of the definers-sets of the operands. Certain operations are able to simplify these sets. For example, an exclusive-or whose two operands are equal will return a zero result whose only definer is the current instruction. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00858">858</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00868">868</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1020,7 +1050,7 @@ Protected Attributes</h2></td></tr>
 <li><code>TRACK_ALL_DEFINERS:</code> The new values will have a default-constructed definers-set unioned with the address of the current instruciton (if there is one), and the addresses of the definers-sets of the operands. Certain operations are able to simplify these sets. For example, an exclusive-or whose two operands are equal will return a zero result whose only definer is the current instruction. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00859">859</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00869">869</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1060,7 +1090,7 @@ Protected Attributes</h2></td></tr>
 <li><code>TRACK_ALL_WRITERS:</code> Each write operation inserts the instruction address into the set of addresses stored for the affected memory cell without removing any addresses that are already associated with that cell. While this works well for analysis over a small region of code (like a single function), it might cause the writer sets to become very large when the same memory state is used over large regions (like a whole program). </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00880">880</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00890">890</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1099,7 +1129,7 @@ Protected Attributes</h2></td></tr>
 <li><code>TRACK_ALL_WRITERS:</code> Each write operation inserts the instruction address into the set of addresses stored for the affected memory cell without removing any addresses that are already associated with that cell. While this works well for analysis over a small region of code (like a single function), it might cause the writer sets to become very large when the same memory state is used over large regions (like a whole program). </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00881">881</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00891">891</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1139,7 +1169,7 @@ Protected Attributes</h2></td></tr>
 <li><code>TRACK_ALL_WRITERS:</code> Each write operation inserts the instruction address into the set of addresses stored for the affected register (or register part) without removing any addresses that are already associated with that register. While this works well for analysis over a small region of code (like a single function), it might cause the writer sets to become very large when the same register state is used over large regions (like a whole program). </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00905">905</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00915">915</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1178,7 +1208,7 @@ Protected Attributes</h2></td></tr>
 <li><code>TRACK_ALL_WRITERS:</code> Each write operation inserts the instruction address into the set of addresses stored for the affected register (or register part) without removing any addresses that are already associated with that register. While this works well for analysis over a small region of code (like a single function), it might cause the writer sets to become very large when the same register state is used over large regions (like a whole program). </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00906">906</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00916">916</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1206,7 +1236,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00910">910</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00920">920</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1237,7 +1267,7 @@ Protected Attributes</h2></td></tr>
 <p>Property: Maximum size of expressions. </p>
 <p>Symbolic expressions can get very large very quickly. This property controls how large a symbolic expression can grow before it's substituted with a new variable. The default, zero, means to never limit the size of expressions. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00918">918</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00928">928</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1267,7 +1297,7 @@ Protected Attributes</h2></td></tr>
 <p>Property: Maximum size of expressions. </p>
 <p>Symbolic expressions can get very large very quickly. This property controls how large a symbolic expression can grow before it's substituted with a new variable. The default, zero, means to never limit the size of expressions. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00919">919</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00929">929</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1297,7 +1327,7 @@ Protected Attributes</h2></td></tr>
 <p>Property: Number of symbolic expressions trimmed. </p>
 <p>Each time the trim threshold causes an expression to be replaced by a new variable, this property is incremented. The counter starts at zero when this object is created, but can be adjusted (usually back to zero) by the user. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00928">928</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00938">938</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1328,7 +1358,7 @@ Protected Attributes</h2></td></tr>
 <p>Property: Number of symbolic expressions trimmed. </p>
 <p>Each time the trim threshold causes an expression to be replaced by a new variable, this property is incremented. The counter starts at zero when this object is created, but can be adjusted (usually back to zero) by the user. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00929">929</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00939">939</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1358,7 +1388,7 @@ Protected Attributes</h2></td></tr>
 <p>Property: Reinterpret data as unsigned integers when reading from memory or registers. </p>
 <p>If this property is set, then a call to <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html#a97934f7c0beb06c1f54c9c8ad2cdbd92">reinterpret</a> is used to convert the return value to an unsigned integer if necessary. This property should normally be enabled because many of the older parts of ROSE assume that memory only contains integers. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00939">939</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00949">949</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1389,7 +1419,7 @@ Protected Attributes</h2></td></tr>
 <p>Property: Reinterpret data as unsigned integers when reading from memory or registers. </p>
 <p>If this property is set, then a call to <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html#a97934f7c0beb06c1f54c9c8ad2cdbd92">reinterpret</a> is used to convert the return value to an unsigned integer if necessary. This property should normally be enabled because many of the older parts of ROSE assume that memory only contains integers. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00940">940</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00950">950</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1419,7 +1449,7 @@ Protected Attributes</h2></td></tr>
 <p>Property: Reinterpret data as unsigned integers when reading from memory or registers. </p>
 <p>If this property is set, then a call to <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html#a97934f7c0beb06c1f54c9c8ad2cdbd92">reinterpret</a> is used to convert the return value to an unsigned integer if necessary. This property should normally be enabled because many of the older parts of ROSE assume that memory only contains integers. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00941">941</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00951">951</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1450,7 +1480,7 @@ Protected Attributes</h2></td></tr>
 <p>Property: Reinterpret data as unsigned integers when reading from memory or registers. </p>
 <p>If this property is set, then a call to <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html#a97934f7c0beb06c1f54c9c8ad2cdbd92">reinterpret</a> is used to convert the return value to an unsigned integer if necessary. This property should normally be enabled because many of the older parts of ROSE assume that memory only contains integers. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00942">942</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00952">952</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1528,7 +1558,7 @@ Protected Attributes</h2></td></tr>
 <div class="line">operators-&gt;substitute(original_esp, rhs);</div>
 <div class="line">std::cerr &lt;&lt;<span class="stringliteral">&quot;Substituted state:\n&quot;</span> &lt;&lt;*operators;</div>
 <div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1SValue_html_a3661074f3a14587441b1b76a19d4db7e"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1SValue.html#a3661074f3a14587441b1b76a19d4db7e">Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::SValue::promote</a></div><div class="ttdeci">static SValuePtr promote(const BaseSemantics::SValuePtr &amp;)</div><div class="ttdoc">Promote a base value to a SymbolicSemantics value.</div></div>
-<div class="ttc" id="anamespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_html_ae3899d47205079ff24dcfba3210bd5cd"><div class="ttname"><a href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics.html#ae3899d47205079ff24dcfba3210bd5cd">Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::RiscOperatorsPtr</a></div><div class="ttdeci">boost::shared_ptr&lt; class RiscOperators &gt; RiscOperatorsPtr</div><div class="ttdoc">Shared-ownership pointer to symbolic RISC operations.</div><div class="ttdef"><b>Definition</b> <a href="SymbolicSemantics_8h_source.html#l00719">SymbolicSemantics.h:719</a></div></div>
+<div class="ttc" id="anamespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_html_ae3899d47205079ff24dcfba3210bd5cd"><div class="ttname"><a href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics.html#ae3899d47205079ff24dcfba3210bd5cd">Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::RiscOperatorsPtr</a></div><div class="ttdeci">boost::shared_ptr&lt; class RiscOperators &gt; RiscOperatorsPtr</div><div class="ttdoc">Shared-ownership pointer to symbolic RISC operations.</div><div class="ttdef"><b>Definition</b> <a href="SymbolicSemantics_8h_source.html#l00729">SymbolicSemantics.h:729</a></div></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -3151,6 +3181,139 @@ values must be eight bits". However, the <a class="el" href="classRose_1_1Binary
 
 </div>
 </div>
+<a id="ae81ffba9483d3c355a30caec23cd8f44" name="ae81ffba9483d3c355a30caec23cd8f44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae81ffba9483d3c355a30caec23cd8f44">&#9670;&#160;</a></span>readLocal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">BaseSemantics::SValuePtr</a> Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::RiscOperators::readLocal </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reads a value from the local variable table in the current frame. </p>
+<p>This method but subclasses are welcome to override this behavior at any level.</p>
+<p>A register state will typically implement storage for hardware registers, but higher layers (the State, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html" title="Defines RISC operators for the SymbolicSemantics domain.">RiscOperators</a>, Dispatcher, ...) should not be concerned about the size of the register they're trying to read. For example, a register state for a 32-bit x86 architecture will likely have a storage location for the 32-bit EAX register, but it should be possible to ask <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html#a4c03a2675bcda79e4ec993ba855cbbc4">readRegister</a> to return the value of AX (the low-order 16-bits). In order to accomplish this, some level of the readRegister delegations needs to invoke <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html#ade8b02e89fd8bfa3cb157afb0a8403d5">extract</a> to obtain the low 16 bits. The <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html" title="Defines RISC operators for the SymbolicSemantics domain.">RiscOperators</a> object is passed along the delegation path for this purpose. The inverse <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html#ad70967d385ba9527a9daed1ab4e6b205">concat</a> operation will be needed at some level when we ask <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html#a4c03a2675bcda79e4ec993ba855cbbc4">readRegister</a> to return a value that comes from multiple storage locations in the register state (such as can happen if an x86 register state holds individual status flags and we ask for the 32-bit EFLAGS register).</p>
+<p>If the variable state can distinguish between a variable that has never been accessed and a variable that has only been read, then the <code>dflt</code> value is stored into the variable the first time it's read. This ensures that reading the variable a second time with no intervening write will return the same value as the first read. If a <code>dflt</code> is not provided then one is constructed by invoking <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1RiscOperators.html#a69066ea4dfa212235366d12c7d6fa74a">undefined_</a>.</p>
+<p>There needs to be a certain level of cooperation between the <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html" title="Defines RISC operators for the SymbolicSemantics domain.">RiscOperators</a>, State, and frame state classes to decide which layer should invoke the <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html#ade8b02e89fd8bfa3cb157afb0a8403d5">extract</a> or <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1RiscOperators.html#ad70967d385ba9527a9daed1ab4e6b205">concat</a> (or whatever other RISC operations might be necessary). </p>
+
+<p>Reimplemented from <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1RiscOperators.html#a9883c22f9f421ab0fc02fb6ca15e3800">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::RiscOperators</a>.</p>
+
+</div>
+</div>
+<a id="a627a4b716a696d0d319733c6ba444fe3" name="a627a4b716a696d0d319733c6ba444fe3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a627a4b716a696d0d319733c6ba444fe3">&#9670;&#160;</a></span>writeLocal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::RiscOperators::writeLocal </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">BaseSemantics::SValuePtr</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1RiscOperators.html">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::RiscOperators</a>.</p>
+
+</div>
+</div>
+<a id="aa3ce3aa694e4f6a44c786d5ccb219d34" name="aa3ce3aa694e4f6a44c786d5ccb219d34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3ce3aa694e4f6a44c786d5ccb219d34">&#9670;&#160;</a></span>popOperand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">BaseSemantics::SValuePtr</a> Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::RiscOperators::popOperand </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pops a value from the Frame Operand Stack. </p>
+<p>The base implementation simply delegates to the current semantic State, which probably delegates to a frame state, but subclasses are welcome to override this behavior at any level. </p>
+
+<p>Reimplemented from <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1RiscOperators.html#ab4f5d45265b01850c68fa76d2f6b865e">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::RiscOperators</a>.</p>
+
+</div>
+</div>
+<a id="a9edccfd8b8da3912492516cd5aba68c4" name="a9edccfd8b8da3912492516cd5aba68c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9edccfd8b8da3912492516cd5aba68c4">&#9670;&#160;</a></span>pushOperand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::RiscOperators::pushOperand </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">BaseSemantics::SValuePtr</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pushes a value to the Frame Operand Stack. </p>
+<p>The base implementation simply delegates to the current semantic State, which probably delegates to a frame state, but subclasses are welcome to override this behavior at any level. </p>
+
+<p>Reimplemented from <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1RiscOperators.html#a22ea64bd8c307b0953eb85604e3e960a">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::RiscOperators</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a74a5f153cba9a2d2e09e80a77a372f48" name="a74a5f153cba9a2d2e09e80a77a372f48"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a74a5f153cba9a2d2e09e80a77a372f48">&#9670;&#160;</a></span>omit_cur_insn</h2>
@@ -3172,7 +3335,7 @@ values must be eight bits". However, the <a class="el" href="classRose_1_1Binary
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00749">749</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00759">759</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -3196,7 +3359,7 @@ values must be eight bits". However, the <a class="el" href="classRose_1_1Binary
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00750">750</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00760">760</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -3220,7 +3383,7 @@ values must be eight bits". However, the <a class="el" href="classRose_1_1Binary
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00751">751</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00761">761</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -3244,7 +3407,7 @@ values must be eight bits". However, the <a class="el" href="classRose_1_1Binary
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00752">752</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00762">762</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -3268,7 +3431,7 @@ values must be eight bits". However, the <a class="el" href="classRose_1_1Binary
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00753">753</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00763">763</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -3292,7 +3455,7 @@ values must be eight bits". However, the <a class="el" href="classRose_1_1Binary
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00754">754</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00764">764</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -3316,7 +3479,7 @@ values must be eight bits". However, the <a class="el" href="classRose_1_1Binary
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00755">755</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00765">765</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -3340,7 +3503,7 @@ values must be eight bits". However, the <a class="el" href="classRose_1_1Binary
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00756">756</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00766">766</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -3350,7 +3513,7 @@ values must be eight bits". However, the <a class="el" href="classRose_1_1Binary
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:49 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:56 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,10 +40,8 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
@@ -53,6 +51,27 @@ $(function() {
 $(document).ready(function() { init_codefold(0); });
 /* @license-end */
 </script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_9e62d0ec1b5e35066c963e582c20357f.html">Rose</a></li><li class="navelem"><a class="el" href="dir_b6b36e208517412b6f28695766cc080b.html">BinaryAnalysis</a></li><li class="navelem"><a class="el" href="dir_faea5416284dc6c9be33f261d3703691.html">Debugger</a></li>  </ul>
@@ -125,7 +144,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    };</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keyword">enum class</span> <a class="code hl_function" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Debugger_1_1Gdb_1_1Response_1_1ResultRecord.html#afb3fb07bfe2777ff4286ae610d0f08e0">ResultClass</a> { DONE, RUNNING, CONNECTED, <a class="code hl_enumvalue" href="namespaceSawyer_1_1Message.html#abfb4d3240797db3a74bbf691f708a1c9a85ccc0760cef2470d0c119884610d394">ERROR</a>, EXIT, <a class="code hl_enumvalue" href="namespaceRose_1_1BinaryAnalysis_1_1CallingConvention.html#aad5ead8d3159ae269bf3a14c3afd29a0a1c04cc3823d476c3017238679a0fdf52">UNSPECIFIED</a> };</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keyword">enum class</span> <a class="code hl_function" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Debugger_1_1Gdb_1_1Response_1_1ResultRecord.html#afb3fb07bfe2777ff4286ae610d0f08e0">ResultClass</a> { DONE, RUNNING, CONNECTED, ERROR, EXIT, <a class="code hl_enumvalue" href="namespaceRose_1_1BinaryAnalysis_1_1CallingConvention.html#aad5ead8d3159ae269bf3a14c3afd29a0a1c04cc3823d476c3017238679a0fdf52">UNSPECIFIED</a> };</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keyword">enum class</span> <a class="code hl_function" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Debugger_1_1GdbResponse.html#a9e3909451643af51378664238b3b7d53">AsyncClass</a> {</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        STOPPED,</div>
@@ -207,13 +226,12 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="anamespaceRosebud_html_a0fc193a4c4bdd59a294aea2bef445635"><div class="ttname"><a href="namespaceRosebud.html#a0fc193a4c4bdd59a294aea2bef445635">Rosebud::TokenStream</a></div><div class="ttdeci">Sawyer::Language::Clexer::TokenStream TokenStream</div><div class="ttdoc">A stream of tokens from the input file.</div><div class="ttdef"><b>Definition</b> <a href="Rosebud_2BasicTypes_8h_source.html#l00469">Rosebud/BasicTypes.h:469</a></div></div>
 <div class="ttc" id="anamespaceRosebud_html_af5fc4624140c6c98f251e155167099b7"><div class="ttname"><a href="namespaceRosebud.html#af5fc4624140c6c98f251e155167099b7">Rosebud::Token</a></div><div class="ttdeci">Sawyer::Language::Clexer::Token Token</div><div class="ttdoc">A token parsed from the input file.</div><div class="ttdef"><b>Definition</b> <a href="Rosebud_2BasicTypes_8h_source.html#l00466">Rosebud/BasicTypes.h:466</a></div></div>
 <div class="ttc" id="anamespaceSawyer_1_1CommandLine_1_1Boost_html_ade21d3da6239786bdb65bcb4022b8ac2"><div class="ttname"><a href="namespaceSawyer_1_1CommandLine_1_1Boost.html#ade21d3da6239786bdb65bcb4022b8ac2">Sawyer::CommandLine::Boost::notify</a></div><div class="ttdeci">void notify(variables_map &amp;)</div><div class="ttdoc">Transfer map to C++ variables.</div></div>
-<div class="ttc" id="anamespaceSawyer_1_1Message_html_abfb4d3240797db3a74bbf691f708a1c9a85ccc0760cef2470d0c119884610d394"><div class="ttname"><a href="namespaceSawyer_1_1Message.html#abfb4d3240797db3a74bbf691f708a1c9a85ccc0760cef2470d0c119884610d394">Sawyer::Message::ERROR</a></div><div class="ttdeci">@ ERROR</div><div class="ttdoc">Error messages that indicate an abnormal situation from which the program was able to at least partia...</div><div class="ttdef"><b>Definition</b> <a href="Message_8h_source.html#l00331">Message.h:330</a></div></div>
 <div class="ttc" id="anamespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Debugger_1_1GdbResponse_html_a9e3909451643af51378664238b3b7d53"><div class="ttname"><a href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Debugger_1_1GdbResponse.html#a9e3909451643af51378664238b3b7d53">stringify::Rose::BinaryAnalysis::Debugger::GdbResponse::AsyncClass</a></div><div class="ttdeci">const char * AsyncClass(int64_t)</div><div class="ttdoc">Convert Rose::BinaryAnalysis::Debugger::GdbResponse::AsyncClass enum constant to a string.</div></div>
 <div class="ttc" id="anamespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Debugger_1_1Gdb_1_1Response_1_1ResultRecord_html_afb3fb07bfe2777ff4286ae610d0f08e0"><div class="ttname"><a href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Debugger_1_1Gdb_1_1Response_1_1ResultRecord.html#afb3fb07bfe2777ff4286ae610d0f08e0">stringify::Rose::BinaryAnalysis::Debugger::Gdb::Response::ResultRecord::ResultClass</a></div><div class="ttdeci">const char * ResultClass(int64_t)</div><div class="ttdoc">Convert Rose::BinaryAnalysis::Debugger::Gdb::Response::ResultRecord::ResultClass enum constant to a s...</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:23:54 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:00 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

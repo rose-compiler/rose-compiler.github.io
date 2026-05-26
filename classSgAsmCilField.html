@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,17 +40,37 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classSgAsmCilField-members.html">List of all members</a>  </div>
@@ -60,7 +80,7 @@ $(function() {
 <a name="details" id="details"></a><h2 class="groupheader">Description</h2>
 <div class="textblock"><p>CIL Field node (II.22.15). </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l38612">38612</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l38834">38834</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 </div><div class="dynheader">
 Inheritance diagram for SgAsmCilField:</div>
 <div class="dyncontent">
@@ -82,6 +102,59 @@ Collaboration diagram for SgAsmCilField:</div>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:aedb1885b47818c0520eaa3af6fb0206d" id="r_aedb1885b47818c0520eaa3af6fb0206d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">: FieldFlags { <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206daa1e39a049a34fc932819ef448724576a">FLG_FIELD_ACCESS_MASK</a> = 0x0007
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206da295e60f10f12a6517df43f22d90cf1f9">FLG_COMPILER_CONTROLLED</a> = 0x0000
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206da89db197a540319163cb0f40eb8afbb26">FLG_PRIVATE</a> = 0x0001
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206da6b33c0bba314786d90f520af50b6fe57">FLG_FAMANDASSEM</a> = 0x0002
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206da61e7fc66f7103f0733eb72d414dc4c26">FLG_ASSEMBLY</a> = 0x0003
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206dae72677aefed7867af0ae4f20654b1f47">FLG_FAMILY</a> = 0x0004
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206da54f83fd8b8fda853c727388ac794e5a3">FLG_FAMORASSEM</a> = 0x0005
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206da49005af1e0bbf8aa1ab36664f7e92724">FLG_PUBLIC</a> = 0x0006
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206da74e5961c05b9d53a622c7fda7a21bffb">FLG_STATIC</a> = 0x0010
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206dad0b1eb0cf4edd446ad6fc217e4f155bf">FLG_INIT_ONLY</a> = 0x0020
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206dad68b86acf4337d35f7bfaa17392a5b1c">FLG_LITERAL</a> = 0x0040
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206dae05231bee9c429b81d897022c8115d34">FLG_NOT_SERIALIZED</a> = 0x0080
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206dab88339ce9d7da679f1a0ce113f425550">FLG_SPECIAL_NAME</a> = 0x0200
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206da94c996719c28e81798a05daa6c285e6e">FLG_PINVOKE_IMPL</a> = 0x2000
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206da07c5b2b18765ab95b4aa49f2c739adb9">FLG_RT_SPECIAL_NAME</a> = 0x0400
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206da47263eed2ff4e0cb7051842462656f2f">FLG_HAS_FIELD_MARSHAL</a> = 0x1000
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206da60046720bfa4e04162dbb3bb83afa671">FLG_HAS_DEFAULT</a> = 0x8000
+, <br />
+&#160;&#160;<a class="el" href="classSgAsmCilField.html#aedb1885b47818c0520eaa3af6fb0206da7f8b6cd9bace9ea35a49baa73a88951c">FLG_HAS_FIELD_RVA</a> = 0x0100
+<br />
+ }</td></tr>
+<tr class="separator:aedb1885b47818c0520eaa3af6fb0206d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af133d5021638dab8d495ea10ef087bfa" id="r_af133d5021638dab8d495ea10ef087bfa"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSgAsmCilField.html#af133d5021638dab8d495ea10ef087bfa">FieldFlags</a> = std::uint16_t</td></tr>
+<tr class="separator:af133d5021638dab8d495ea10ef087bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classSgNode"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSgNode')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSgNode.html">SgNode</a></td></tr>
+<tr class="memitem:a55d8b091c53268f6ce031fe0d04d0cb0 inherit pub_types_classSgNode" id="r_a55d8b091c53268f6ce031fe0d04d0cb0"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>static_variant</b> = V_SgNode
+ }</td></tr>
+<tr class="memdesc:a55d8b091c53268f6ce031fe0d04d0cb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">static variant value  <a href="classSgNode.html#a55d8b091c53268f6ce031fe0d04d0cb0">More...</a><br /></td></tr>
+<tr class="separator:a55d8b091c53268f6ce031fe0d04d0cb0 inherit pub_types_classSgNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ff0a97c1e2e4be50978caab3afadd01 inherit pub_types_classSgNode" id="r_a9ff0a97c1e2e4be50978caab3afadd01"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>static_variant</b> = V_SgNode
+ }</td></tr>
+<tr class="memdesc:a9ff0a97c1e2e4be50978caab3afadd01"><td class="mdescLeft">&#160;</td><td class="mdescRight">static variant value  <a href="classSgNode.html#a9ff0a97c1e2e4be50978caab3afadd01">More...</a><br /></td></tr>
+<tr class="separator:a9ff0a97c1e2e4be50978caab3afadd01 inherit pub_types_classSgNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa6e0676431872426db60c620c74a381b" id="r_aa6e0676431872426db60c620c74a381b"><td class="memItemLeft" align="right" valign="top"><a id="aa6e0676431872426db60c620c74a381b" name="aa6e0676431872426db60c620c74a381b"></a>
@@ -631,15 +704,6 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classSgNode"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSgNode')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSgNode.html">SgNode</a></td></tr>
-<tr class="memitem:a55d8b091c53268f6ce031fe0d04d0cb0 inherit pub_types_classSgNode" id="r_a55d8b091c53268f6ce031fe0d04d0cb0"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>static_variant</b> = V_SgNode
- }</td></tr>
-<tr class="memdesc:a55d8b091c53268f6ce031fe0d04d0cb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">static variant value  <a href="classSgNode.html#a55d8b091c53268f6ce031fe0d04d0cb0">More...</a><br /></td></tr>
-<tr class="separator:a55d8b091c53268f6ce031fe0d04d0cb0 inherit pub_types_classSgNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ff0a97c1e2e4be50978caab3afadd01 inherit pub_types_classSgNode" id="r_a9ff0a97c1e2e4be50978caab3afadd01"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>static_variant</b> = V_SgNode
- }</td></tr>
-<tr class="memdesc:a9ff0a97c1e2e4be50978caab3afadd01"><td class="mdescLeft">&#160;</td><td class="mdescRight">static variant value  <a href="classSgNode.html#a9ff0a97c1e2e4be50978caab3afadd01">More...</a><br /></td></tr>
-<tr class="separator:a9ff0a97c1e2e4be50978caab3afadd01 inherit pub_types_classSgNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classSgNode"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSgNode')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSgNode.html">SgNode</a></td></tr>
 <tr class="memitem:ae72130a2186bf786ed11bc3779525a30 inherit pub_static_methods_classSgNode" id="r_ae72130a2186bf786ed11bc3779525a30"><td class="memItemLeft" align="right" valign="top">
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>deleteMemoryPool</b> ()</td></tr>
@@ -898,6 +962,78 @@ static VariantT&#160;</td><td class="memItemRight" valign="bottom"><b>variantFro
 <tr class="memitem:a21445c0463dacde6c20a2a2a9ab813d0 inherit pro_static_attribs_classSgNode" id="r_a21445c0463dacde6c20a2a2a9ab813d0"><td class="memItemLeft" align="right" valign="top">static std::map&lt; <a class="el" href="classSgNode.html">SgNode</a> *, std::unordered_map&lt; <a class="el" href="classSgNode.html">SgNode</a> *, std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSgNode.html#a21445c0463dacde6c20a2a2a9ab813d0">p_globalQualifiedNameMapForMapsOfTypes</a></td></tr>
 <tr class="separator:a21445c0463dacde6c20a2a2a9ab813d0 inherit pro_static_attribs_classSgNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="af133d5021638dab8d495ea10ef087bfa" name="af133d5021638dab8d495ea10ef087bfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af133d5021638dab8d495ea10ef087bfa">&#9670;&#160;</a></span>FieldFlags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using SgAsmCilField::FieldFlags =  std::uint16_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l38874">38874</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="aedb1885b47818c0520eaa3af6fb0206d" name="aedb1885b47818c0520eaa3af6fb0206d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedb1885b47818c0520eaa3af6fb0206d">&#9670;&#160;</a></span>anonymous enum</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum : FieldFlags</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206daa1e39a049a34fc932819ef448724576a" name="aedb1885b47818c0520eaa3af6fb0206daa1e39a049a34fc932819ef448724576a"></a>FLG_FIELD_ACCESS_MASK&#160;</td><td class="fielddoc"><p>These 3 bits contain one of the following values: </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206da295e60f10f12a6517df43f22d90cf1f9" name="aedb1885b47818c0520eaa3af6fb0206da295e60f10f12a6517df43f22d90cf1f9"></a>FLG_COMPILER_CONTROLLED&#160;</td><td class="fielddoc"><p>Member not referenceable. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206da89db197a540319163cb0f40eb8afbb26" name="aedb1885b47818c0520eaa3af6fb0206da89db197a540319163cb0f40eb8afbb26"></a>FLG_PRIVATE&#160;</td><td class="fielddoc"><p>Accessible only by the parent type. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206da6b33c0bba314786d90f520af50b6fe57" name="aedb1885b47818c0520eaa3af6fb0206da6b33c0bba314786d90f520af50b6fe57"></a>FLG_FAMANDASSEM&#160;</td><td class="fielddoc"><p>Accessible by sub-types only in this Assembly. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206da61e7fc66f7103f0733eb72d414dc4c26" name="aedb1885b47818c0520eaa3af6fb0206da61e7fc66f7103f0733eb72d414dc4c26"></a>FLG_ASSEMBLY&#160;</td><td class="fielddoc"><p>Accessibly by anyone in the Assembly. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206dae72677aefed7867af0ae4f20654b1f47" name="aedb1885b47818c0520eaa3af6fb0206dae72677aefed7867af0ae4f20654b1f47"></a>FLG_FAMILY&#160;</td><td class="fielddoc"><p>Accessible only by type and sub-types. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206da54f83fd8b8fda853c727388ac794e5a3" name="aedb1885b47818c0520eaa3af6fb0206da54f83fd8b8fda853c727388ac794e5a3"></a>FLG_FAMORASSEM&#160;</td><td class="fielddoc"><p>Accessibly by sub-types anywhere, plus anyone in assembly. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206da49005af1e0bbf8aa1ab36664f7e92724" name="aedb1885b47818c0520eaa3af6fb0206da49005af1e0bbf8aa1ab36664f7e92724"></a>FLG_PUBLIC&#160;</td><td class="fielddoc"><p>Accessibly by anyone who has visibility to this scope field contract attributes. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206da74e5961c05b9d53a622c7fda7a21bffb" name="aedb1885b47818c0520eaa3af6fb0206da74e5961c05b9d53a622c7fda7a21bffb"></a>FLG_STATIC&#160;</td><td class="fielddoc"><p>Defined on type, else per instance. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206dad0b1eb0cf4edd446ad6fc217e4f155bf" name="aedb1885b47818c0520eaa3af6fb0206dad0b1eb0cf4edd446ad6fc217e4f155bf"></a>FLG_INIT_ONLY&#160;</td><td class="fielddoc"><p>Field can only be initialized, not written to after init. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206dad68b86acf4337d35f7bfaa17392a5b1c" name="aedb1885b47818c0520eaa3af6fb0206dad68b86acf4337d35f7bfaa17392a5b1c"></a>FLG_LITERAL&#160;</td><td class="fielddoc"><p>Value is compile time constant. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206dae05231bee9c429b81d897022c8115d34" name="aedb1885b47818c0520eaa3af6fb0206dae05231bee9c429b81d897022c8115d34"></a>FLG_NOT_SERIALIZED&#160;</td><td class="fielddoc"><p>Reserved (to indicate this field should not be serialized when type is remoted) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206dab88339ce9d7da679f1a0ce113f425550" name="aedb1885b47818c0520eaa3af6fb0206dab88339ce9d7da679f1a0ce113f425550"></a>FLG_SPECIAL_NAME&#160;</td><td class="fielddoc"><p>Field is special. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206da94c996719c28e81798a05daa6c285e6e" name="aedb1885b47818c0520eaa3af6fb0206da94c996719c28e81798a05daa6c285e6e"></a>FLG_PINVOKE_IMPL&#160;</td><td class="fielddoc"><p>Implementation is forwarded through PInvoke. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206da07c5b2b18765ab95b4aa49f2c739adb9" name="aedb1885b47818c0520eaa3af6fb0206da07c5b2b18765ab95b4aa49f2c739adb9"></a>FLG_RT_SPECIAL_NAME&#160;</td><td class="fielddoc"><p>CLI provides 'special' behavior, depending upon the name of the field. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206da47263eed2ff4e0cb7051842462656f2f" name="aedb1885b47818c0520eaa3af6fb0206da47263eed2ff4e0cb7051842462656f2f"></a>FLG_HAS_FIELD_MARSHAL&#160;</td><td class="fielddoc"><p>Field has marshalling information. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206da60046720bfa4e04162dbb3bb83afa671" name="aedb1885b47818c0520eaa3af6fb0206da60046720bfa4e04162dbb3bb83afa671"></a>FLG_HAS_DEFAULT&#160;</td><td class="fielddoc"><p>Field has default. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aedb1885b47818c0520eaa3af6fb0206da7f8b6cd9bace9ea35a49baa73a88951c" name="aedb1885b47818c0520eaa3af6fb0206da7f8b6cd9bace9ea35a49baa73a88951c"></a>FLG_HAS_FIELD_RVA&#160;</td><td class="fielddoc"><p>Field has RVA. </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l38876">38876</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a76a242bc524af8bc9ac649903ebea8c8" name="a76a242bc524af8bc9ac649903ebea8c8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a76a242bc524af8bc9ac649903ebea8c8">&#9670;&#160;</a></span>get_Flags()</h2>
@@ -1056,7 +1192,7 @@ static VariantT&#160;</td><td class="memItemRight" valign="bottom"><b>variantFro
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:16 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:22 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

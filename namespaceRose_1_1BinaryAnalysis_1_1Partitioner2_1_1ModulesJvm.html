@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="namespaceRose.html">Rose</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis.html">BinaryAnalysis</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html">Partitioner2</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2_1_1ModulesJvm.html">ModulesJvm</a></li>  </ul>
@@ -180,6 +199,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a1b215b43fbbdd0b3bd9ce92a4060e685" id="r_a1b215b43fbbdd0b3bd9ce92a4060e685"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2_1_1ModulesJvm.html#a1b215b43fbbdd0b3bd9ce92a4060e685">isJavaJarFile</a> (const boost::filesystem::path &amp;)</td></tr>
 <tr class="memdesc:a1b215b43fbbdd0b3bd9ce92a4060e685"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if named file exists and is a Java jar file.  <br /></td></tr>
 <tr class="separator:a1b215b43fbbdd0b3bd9ce92a4060e685"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a124d8cfbcd8f920ab7c0e63aaab33d7b" id="r_a124d8cfbcd8f920ab7c0e63aaab33d7b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2_1_1ModulesJvm.html#a124d8cfbcd8f920ab7c0e63aaab33d7b">isJavaWarFile</a> (const boost::filesystem::path &amp;)</td></tr>
+<tr class="memdesc:a124d8cfbcd8f920ab7c0e63aaab33d7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if named file exists and is a Java war file.  <br /></td></tr>
+<tr class="separator:a124d8cfbcd8f920ab7c0e63aaab33d7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4214fdffd168bb9c472f1b073f28a6f" id="r_aa4214fdffd168bb9c472f1b073f28a6f"><td class="memItemLeft" align="right" valign="top">boost::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2_1_1ModulesJvm.html#aa4214fdffd168bb9c472f1b073f28a6f">pathToClassFile</a> (const std::string &amp;fqcn, const std::vector&lt; std::string &gt; &amp;cp)</td></tr>
 <tr class="memdesc:aa4214fdffd168bb9c472f1b073f28a6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searchs the classpath setting for the path to a fully qualified class name.  <br /></td></tr>
 <tr class="separator:aa4214fdffd168bb9c472f1b073f28a6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -249,7 +271,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>warn</b> (const std::
 </div><div class="memdoc">
 
 <p>True if named file exists and is a Java class file. </p>
-<p>Class files usually have names with a ".class" extension, although this function actually tries to open the file and parse the file header to make that determination. </p>
+<p>Class files have a file name with a ".class" extension </p>
 
 <p class="reference">References <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2_1_1ModulesJvm.html#a507140f9e4bc6675fe6c3ad79251d6f8">isJavaClassFile()</a>.</p>
 
@@ -282,11 +304,44 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>warn</b> (const std::
 </div><div class="memdoc">
 
 <p>True if named file exists and is a Java jar file. </p>
-<p>Jar files usually have names with a ".jar" extension, although this function actually tries to open the file and parse the file header to make that determination. </p>
+<p>Jar files have a file name with a ".jar" extension </p>
 
 <p class="reference">References <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2_1_1ModulesJvm.html#a1b215b43fbbdd0b3bd9ce92a4060e685">isJavaJarFile()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2_1_1ModulesJvm.html#a1b215b43fbbdd0b3bd9ce92a4060e685">isJavaJarFile()</a>.</p>
+
+</div>
+</div>
+<a id="a124d8cfbcd8f920ab7c0e63aaab33d7b" name="a124d8cfbcd8f920ab7c0e63aaab33d7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a124d8cfbcd8f920ab7c0e63aaab33d7b">&#9670;&#160;</a></span>isJavaWarFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Rose::BinaryAnalysis::Partitioner2::ModulesJvm::isJavaWarFile </td>
+          <td>(</td>
+          <td class="paramtype">const boost::filesystem::path &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>True if named file exists and is a Java war file. </p>
+<p>War files have a file name with a ".war" extension </p>
+
+<p class="reference">References <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2_1_1ModulesJvm.html#a124d8cfbcd8f920ab7c0e63aaab33d7b">isJavaWarFile()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2_1_1ModulesJvm.html#a124d8cfbcd8f920ab7c0e63aaab33d7b">isJavaWarFile()</a>.</p>
 
 </div>
 </div>
@@ -396,7 +451,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>warn</b> (const std::
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:50 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:56 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

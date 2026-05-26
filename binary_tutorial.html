@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 </div><!-- top -->
 <div><div class="header">
   <div class="headertitle"><div class="title">Binary analysis tutorial</div></div>
@@ -218,7 +237,7 @@ Generating a binary function call graph in GraphViz format.</h1>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> parser.<a class="code hl_function" href="classSawyer_1_1CommandLine_1_1Parser.html#a150a5ad8e88776f5ba73df0a6b76a9d9">with</a>(tool).<a class="code hl_function" href="classSawyer_1_1CommandLine_1_1Parser.html#acadfcac830d7855ae15b39ef9ce1aebb">parse</a>(argc, argv).<a class="code hl_function" href="classSawyer_1_1CommandLine_1_1ParserResult.html#a193dc3b5dc738f0db4b69842ca56ba8b">apply</a>().<a class="code hl_function" href="classSawyer_1_1CommandLine_1_1ParserResult.html#adbdafd6227ba5292448acf7792adfe90">unreachedArgs</a>();</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Engine_html"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Engine.html">Rose::BinaryAnalysis::Partitioner2::Engine</a></div><div class="ttdoc">Base class for engines driving the partitioner.</div><div class="ttdef"><b>Definition</b> <a href="Partitioner2_2Engine_8h_source.html#l00156">Partitioner2/Engine.h:156</a></div></div>
+<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Engine_html"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Engine.html">Rose::BinaryAnalysis::Partitioner2::Engine</a></div><div class="ttdoc">Base class for engines driving the partitioner.</div><div class="ttdef"><b>Definition</b> <a href="Partitioner2_2Engine_8h_source.html#l00155">Partitioner2/Engine.h:155</a></div></div>
 <div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Engine_html_a15ec299a2c212759c27c10d848f65172"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Engine.html#a15ec299a2c212759c27c10d848f65172">Rose::BinaryAnalysis::Partitioner2::Engine::commandLineParser</a></div><div class="ttdeci">virtual Sawyer::CommandLine::Parser commandLineParser(const std::string &amp;purpose, const std::string &amp;description)</div><div class="ttdoc">Creates a command-line parser.</div></div>
 <div class="ttc" id="aclassSawyer_1_1CommandLine_1_1ParserResult_html_a193dc3b5dc738f0db4b69842ca56ba8b"><div class="ttname"><a href="classSawyer_1_1CommandLine_1_1ParserResult.html#a193dc3b5dc738f0db4b69842ca56ba8b">Sawyer::CommandLine::ParserResult::apply</a></div><div class="ttdeci">const ParserResult &amp; apply() const</div><div class="ttdoc">Saves parsed values in switch-specified locations.</div></div>
 <div class="ttc" id="aclassSawyer_1_1CommandLine_1_1ParserResult_html_adbdafd6227ba5292448acf7792adfe90"><div class="ttname"><a href="classSawyer_1_1CommandLine_1_1ParserResult.html#adbdafd6227ba5292448acf7792adfe90">Sawyer::CommandLine::ParserResult::unreachedArgs</a></div><div class="ttdeci">std::vector&lt; std::string &gt; unreachedArgs() const</div><div class="ttdoc">Returns program arguments that were not reached during parsing.</div></div>
@@ -355,13 +374,13 @@ Finding static strings in a binary specimen</h1>
 <div class="line">    finder.<a class="code hl_function" href="classRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder.html#a8a28c7b811290c16ce1d99a74df088c2">settings</a>().<a class="code hl_variable" href="structRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder_1_1Settings.html#ac82a28477036f2d40551bb206cf65974">maxLength</a> = 8192; <span class="comment">// no strings longer than 8k characters</span></div>
 <div class="line">    finder.<a class="code hl_function" href="classRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder.html#a4217b529abba1568dc5901817af6141a">insertCommonEncoders</a>(sex);   <span class="comment">// match common encodings of strings</span></div>
 <div class="line">    finder.<a class="code hl_function" href="classRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder.html#aa36677cf2ed744556875f86db8b69781">find</a>(map-&gt;<a class="code hl_function" href="classSawyer_1_1Container_1_1AddressMap.html#a82d01f0d9ff8007d7b88039153c2d52d">require</a>(MemoryMap::READABLE).prohibit(MemoryMap::WRITABLE));</div>
-<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder_html"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder.html">Rose::BinaryAnalysis::Strings::StringFinder</a></div><div class="ttdoc">Analysis to find encoded strings.</div><div class="ttdef"><b>Definition</b> <a href="String_8h_source.html#l00806">String.h:806</a></div></div>
+<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder_html"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder.html">Rose::BinaryAnalysis::Strings::StringFinder</a></div><div class="ttdoc">Analysis to find encoded strings.</div><div class="ttdef"><b>Definition</b> <a href="String_8h_source.html#l01023">String.h:1023</a></div></div>
 <div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder_html_a4217b529abba1568dc5901817af6141a"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder.html#a4217b529abba1568dc5901817af6141a">Rose::BinaryAnalysis::Strings::StringFinder::insertCommonEncoders</a></div><div class="ttdeci">StringFinder &amp; insertCommonEncoders(ByteOrder::Endianness)</div><div class="ttdoc">Inserts common encodings.</div></div>
-<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder_html_a8a28c7b811290c16ce1d99a74df088c2"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder.html#a8a28c7b811290c16ce1d99a74df088c2">Rose::BinaryAnalysis::Strings::StringFinder::settings</a></div><div class="ttdeci">const Settings &amp; settings() const</div><div class="ttdoc">Property: Analysis settings often set from a command-line.</div><div class="ttdef"><b>Definition</b> <a href="String_8h_source.html#l00866">String.h:866</a></div></div>
+<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder_html_a8a28c7b811290c16ce1d99a74df088c2"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder.html#a8a28c7b811290c16ce1d99a74df088c2">Rose::BinaryAnalysis::Strings::StringFinder::settings</a></div><div class="ttdeci">const Settings &amp; settings() const</div><div class="ttdoc">Property: Analysis settings often set from a command-line.</div><div class="ttdef"><b>Definition</b> <a href="String_8h_source.html#l01086">String.h:1086</a></div></div>
 <div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder_html_aa36677cf2ed744556875f86db8b69781"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder.html#aa36677cf2ed744556875f86db8b69781">Rose::BinaryAnalysis::Strings::StringFinder::find</a></div><div class="ttdeci">StringFinder &amp; find(const MemoryMap::ConstConstraints &amp;, Sawyer::Container::MatchFlags flags=0)</div><div class="ttdoc">Finds strings by searching memory.</div></div>
 <div class="ttc" id="aclassSawyer_1_1Container_1_1AddressMap_html_a82d01f0d9ff8007d7b88039153c2d52d"><div class="ttname"><a href="classSawyer_1_1Container_1_1AddressMap.html#a82d01f0d9ff8007d7b88039153c2d52d">Sawyer::Container::AddressMap::require</a></div><div class="ttdeci">AddressMapConstraints&lt; const AddressMap &gt; require(unsigned x) const</div><div class="ttdoc">Constraint: required access bits.</div><div class="ttdef"><b>Definition</b> <a href="AddressMap_8h_source.html#l01074">AddressMap.h:1074</a></div></div>
-<div class="ttc" id="astructRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder_1_1Settings_html_ac82a28477036f2d40551bb206cf65974"><div class="ttname"><a href="structRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder_1_1Settings.html#ac82a28477036f2d40551bb206cf65974">Rose::BinaryAnalysis::Strings::StringFinder::Settings::maxLength</a></div><div class="ttdeci">size_t maxLength</div><div class="ttdoc">Maximum length of matched strings.</div><div class="ttdef"><b>Definition</b> <a href="String_8h_source.html#l00822">String.h:822</a></div></div>
-<div class="ttc" id="astructRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder_1_1Settings_html_aedb4cb3310988307164c9f58a3a6e171"><div class="ttname"><a href="structRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder_1_1Settings.html#aedb4cb3310988307164c9f58a3a6e171">Rose::BinaryAnalysis::Strings::StringFinder::Settings::minLength</a></div><div class="ttdeci">size_t minLength</div><div class="ttdoc">Minimum length of matched strings.</div><div class="ttdef"><b>Definition</b> <a href="String_8h_source.html#l00816">String.h:816</a></div></div>
+<div class="ttc" id="astructRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder_1_1Settings_html_ac82a28477036f2d40551bb206cf65974"><div class="ttname"><a href="structRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder_1_1Settings.html#ac82a28477036f2d40551bb206cf65974">Rose::BinaryAnalysis::Strings::StringFinder::Settings::maxLength</a></div><div class="ttdeci">size_t maxLength</div><div class="ttdoc">Maximum length of matched strings.</div><div class="ttdef"><b>Definition</b> <a href="String_8h_source.html#l01039">String.h:1039</a></div></div>
+<div class="ttc" id="astructRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder_1_1Settings_html_aedb4cb3310988307164c9f58a3a6e171"><div class="ttname"><a href="structRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder_1_1Settings.html#aedb4cb3310988307164c9f58a3a6e171">Rose::BinaryAnalysis::Strings::StringFinder::Settings::minLength</a></div><div class="ttdeci">size_t minLength</div><div class="ttdoc">Minimum length of matched strings.</div><div class="ttdef"><b>Definition</b> <a href="String_8h_source.html#l01033">String.h:1033</a></div></div>
 </div><!-- fragment --><p>Here we perform the string searching. Most binary analysis algorithms are packaged into a class. The idea is that one instantiates the analyzer, configures it, calls some method to perform the analysis (here it's <a class="el" href="classRose_1_1BinaryAnalysis_1_1Strings_1_1StringFinder.html#aa36677cf2ed744556875f86db8b69781">find</a>), and then queries the results.</p>
 <p>The <a class="el" href="classSawyer_1_1Container_1_1AddressMap.html#a82d01f0d9ff8007d7b88039153c2d52d">MemoryMap::require</a> and <a class="el" href="classSawyer_1_1Container_1_1AddressMap.html#a45d2f15072209b954e3c055bcacc2e4f">MemoryMap::prohibit</a> methods are a form of filtering. They're filtering the memory map so that the string analyzer only sees memory that's readable but not writable.</p>
 <div class="fragment"><div class="line">    <span class="comment">// Output, or just do &quot;std::cout &lt;&lt;finder&quot; if you&#39;re not picky.</span></div>
@@ -370,7 +389,7 @@ Finding static strings in a binary specimen</h1>
 <div class="line">        std::cout &lt;&lt;<span class="stringliteral">&quot;encoding: &quot;</span> &lt;&lt;<span class="keywordtype">string</span>.encoder()-&gt;name() &lt;&lt;<span class="stringliteral">&quot;\n&quot;</span>;</div>
 <div class="line">        std::cout &lt;&lt;<span class="stringliteral">&quot;narrow value: \&quot;&quot;</span> &lt;&lt;<a class="code hl_function" href="namespaceRose_1_1StringUtility.html#a3aed317913b7f65d80a2c76c5c019c8b">StringUtility::cEscape</a>(<span class="keywordtype">string</span>.narrow()) &lt;&lt;<span class="stringliteral">&quot;\&quot;\n&quot;</span>;</div>
 <div class="line">    }</div>
-<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1Strings_1_1EncodedString_html"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1Strings_1_1EncodedString.html">Rose::BinaryAnalysis::Strings::EncodedString</a></div><div class="ttdoc">An encoder plus interval.</div><div class="ttdef"><b>Definition</b> <a href="String_8h_source.html#l00757">String.h:757</a></div></div>
+<div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1Strings_1_1EncodedString_html"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1Strings_1_1EncodedString.html">Rose::BinaryAnalysis::Strings::EncodedString</a></div><div class="ttdoc">An encoder plus interval.</div><div class="ttdef"><b>Definition</b> <a href="String_8h_source.html#l00974">String.h:974</a></div></div>
 </div><!-- fragment --><p>Generating the output is a matter of iterating over the strings that were found and printing some information. Most analyzer objects also know how to print themselves although those defaults are not always suitable for a polished tool.</p>
 <p>Here's the entire program:</p>
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
@@ -557,7 +576,7 @@ Next steps</h1>
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:11 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:17 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

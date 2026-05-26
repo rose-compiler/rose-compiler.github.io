@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,10 +40,8 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
@@ -53,6 +51,27 @@ $(function() {
 $(document).ready(function() { init_codefold(0); });
 /* @license-end */
 </script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_8509b06bafa958d2011203a730bf5778.html">frontend</a></li><li class="navelem"><a class="el" href="dir_01d256553a57eab573128ced8c11ea22.html">Disassemblers</a></li>  </ul>
@@ -191,16 +210,16 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1Assembler_html_af0245ab410d021384b44e736b0e5a91d"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1Assembler.html#af0245ab410d021384b44e736b0e5a91d">Rose::BinaryAnalysis::Assembler::set_debug</a></div><div class="ttdeci">void set_debug(FILE *f)</div><div class="ttdoc">Sends assembler diagnostics to the specified output stream.</div><div class="ttdef"><b>Definition</b> <a href="Assembler_8h_source.html#l00138">Assembler.h:138</a></div></div>
 <div class="ttc" id="aclassRose_1_1BinaryAnalysis_1_1Assembler_html_aff1a4b6f4032bbf4ab41ab2481f4759e"><div class="ttname"><a href="classRose_1_1BinaryAnalysis_1_1Assembler.html#aff1a4b6f4032bbf4ab41ab2481f4759e">Rose::BinaryAnalysis::Assembler::get_encoding_type</a></div><div class="ttdeci">EncodingType get_encoding_type() const</div><div class="ttdoc">Returns the encoding type employed by this assembler.</div><div class="ttdef"><b>Definition</b> <a href="Assembler_8h_source.html#l00133">Assembler.h:133</a></div></div>
 <div class="ttc" id="aclassRose_1_1Exception_html"><div class="ttname"><a href="classRose_1_1Exception.html">Rose::Exception</a></div><div class="ttdoc">Base class for all ROSE exceptions.</div><div class="ttdef"><b>Definition</b> <a href="Rose_2Exception_8h_source.html#l00010">Rose/Exception.h:10</a></div></div>
-<div class="ttc" id="aclassSgAsmBlock_html"><div class="ttname"><a href="classSgAsmBlock.html">SgAsmBlock</a></div><div class="ttdoc">Instruction basic block.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l41915">binaryInstruction.C:41915</a></div></div>
-<div class="ttc" id="aclassSgAsmGenericHeader_html"><div class="ttname"><a href="classSgAsmGenericHeader.html">SgAsmGenericHeader</a></div><div class="ttdoc">Base class for container file headers.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l29564">binaryInstruction.C:29564</a></div></div>
-<div class="ttc" id="aclassSgAsmInstruction_html"><div class="ttname"><a href="classSgAsmInstruction.html">SgAsmInstruction</a></div><div class="ttdoc">Base class for machine instructions.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l44628">binaryInstruction.C:44628</a></div></div>
+<div class="ttc" id="aclassSgAsmBlock_html"><div class="ttname"><a href="classSgAsmBlock.html">SgAsmBlock</a></div><div class="ttdoc">Instruction basic block.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l42163">binaryInstruction.C:42163</a></div></div>
+<div class="ttc" id="aclassSgAsmGenericHeader_html"><div class="ttname"><a href="classSgAsmGenericHeader.html">SgAsmGenericHeader</a></div><div class="ttdoc">Base class for container file headers.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l29703">binaryInstruction.C:29703</a></div></div>
+<div class="ttc" id="aclassSgAsmInstruction_html"><div class="ttname"><a href="classSgAsmInstruction.html">SgAsmInstruction</a></div><div class="ttdoc">Base class for machine instructions.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l44876">binaryInstruction.C:44876</a></div></div>
 <div class="ttc" id="aclassSgAsmInterpretation_html"><div class="ttname"><a href="classSgAsmInterpretation.html">SgAsmInterpretation</a></div><div class="ttdoc">Represents an interpretation of a binary container.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l14987">binaryInstruction.C:14987</a></div></div>
 <div class="ttc" id="anamespaceRose_1_1BinaryAnalysis_html_a96dea8c577b1f630cffa84eee5cb03db"><div class="ttname"><a href="namespaceRose_1_1BinaryAnalysis.html#a96dea8c577b1f630cffa84eee5cb03db">Rose::BinaryAnalysis::Address</a></div><div class="ttdeci">std::uint64_t Address</div><div class="ttdoc">Address.</div><div class="ttdef"><b>Definition</b> <a href="Address_8h_source.html#l00011">Address.h:11</a></div></div>
 <div class="ttc" id="anamespaceRose_html"><div class="ttname"><a href="namespaceRose.html">Rose</a></div><div class="ttdoc">The ROSE library.</div><div class="ttdef"><b>Definition</b> <a href="BinaryTutorial_8dox_source.html#l00003">BinaryTutorial.dox:3</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:23:12 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:10:17 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

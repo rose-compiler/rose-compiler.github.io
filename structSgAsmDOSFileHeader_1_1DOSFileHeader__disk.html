@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="classSgAsmDOSFileHeader.html">SgAsmDOSFileHeader</a></li><li class="navelem"><a class="el" href="structSgAsmDOSFileHeader_1_1DOSFileHeader__disk.html">DOSFileHeader_disk</a></li>  </ul>
@@ -63,7 +82,7 @@ $(function() {
 <a name="details" id="details"></a><h2 class="groupheader">Description</h2>
 <div class="textblock"><p>On-disk format of DOS file header. </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29258">29258</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29397">29397</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -128,7 +147,7 @@ Public Attributes</h2></td></tr>
 
 <p>0x00 "MZ" </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29259">29259</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29398">29398</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -146,7 +165,7 @@ Public Attributes</h2></td></tr>
 
 <p>0x02 bytes used on last page of file (1 page == 512 bytes); zero implies if last page is full. </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29260">29260</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29399">29399</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -165,7 +184,7 @@ Public Attributes</h2></td></tr>
 <p>0x04 number of pages (inc. </p>
 <p>last possibly partial page) in file. </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29262">29262</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29401">29401</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -183,7 +202,7 @@ Public Attributes</h2></td></tr>
 
 <p>0x06 number of relocation entries stored after this header. </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29263">29263</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29402">29402</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -202,7 +221,7 @@ Public Attributes</h2></td></tr>
 <p>0x08 header size in paragraphs (16-byte blocks) inc. </p>
 <p>relocations. </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29264">29264</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29403">29403</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -220,7 +239,7 @@ Public Attributes</h2></td></tr>
 
 <p>0x0a number of extra paragraphs needed, similar to BSS in Unix. </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29265">29265</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29404">29404</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -238,7 +257,7 @@ Public Attributes</h2></td></tr>
 
 <p>0x0c max paragraphs to allocate for BSS. </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29266">29266</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29405">29405</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -256,7 +275,7 @@ Public Attributes</h2></td></tr>
 
 <p>0x0e initial value of SS register relative to program load segment. </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29267">29267</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29406">29406</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -274,7 +293,7 @@ Public Attributes</h2></td></tr>
 
 <p>0x10 initial value for SP register. </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29268">29268</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29407">29407</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -292,7 +311,7 @@ Public Attributes</h2></td></tr>
 
 <p>0x12 checksum; 16-bit sum of all words in file should be zero (usually not filled in). </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29269">29269</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29408">29408</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -310,7 +329,7 @@ Public Attributes</h2></td></tr>
 
 <p>0x14 initial value for IP register. </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29271">29271</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29410">29410</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -328,7 +347,7 @@ Public Attributes</h2></td></tr>
 
 <p>0x16 initial value for CS register relative to program load segment. </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29272">29272</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29411">29411</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -346,7 +365,7 @@ Public Attributes</h2></td></tr>
 
 <p>0x18 file address of relocation table. </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29273">29273</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29412">29412</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -364,7 +383,7 @@ Public Attributes</h2></td></tr>
 
 <p>0x1a overlay number (zero indicates main program). </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29274">29274</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29413">29413</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -382,7 +401,7 @@ Public Attributes</h2></td></tr>
 
 <p>0x1c unknown purpose. </p>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29275">29275</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l29414">29414</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -392,7 +411,7 @@ Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:17 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:24 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

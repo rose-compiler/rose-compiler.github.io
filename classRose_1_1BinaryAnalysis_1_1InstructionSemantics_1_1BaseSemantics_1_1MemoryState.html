@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="namespaceRose.html">Rose</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis.html">BinaryAnalysis</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics.html">InstructionSemantics</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html">BaseSemantics</a></li><li class="navelem"><a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState.html">MemoryState</a></li>  </ul>
@@ -75,17 +94,19 @@ Inheritance diagram for Rose::BinaryAnalysis::InstructionSemantics::BaseSemantic
 <div class="dyncontent">
 <div class="center"><img src="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState__inherit__graph.png" border="0" usemap="#aRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState_inherit__map" alt="Inheritance graph"/></div>
 <map name="aRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState_inherit__map" id="aRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState_inherit__map">
-<area shape="rect" title="Represents all memory in the state." alt="" coords="268,124,476,179"/>
-<area shape="rect" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellState.html" title="Cell&#45;based memory state." alt="" coords="524,5,755,60"/>
-<area shape="poly" title=" " alt="" coords="430,115,523,69,552,58,553,63,525,74,432,120"/>
-<area shape="rect" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SymbolicMemory.html" title="Purely symbolic memory state." alt="" coords="524,84,755,139"/>
-<area shape="poly" title=" " alt="" coords="489,131,524,126,524,131,490,136"/>
-<area shape="rect" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1ConcreteSemantics_1_1MemoryState.html" title="Byte&#45;addressable memory." alt="" coords="524,163,755,217"/>
-<area shape="poly" title=" " alt="" coords="490,166,524,171,524,176,489,171"/>
-<area shape="rect" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1NullSemantics_1_1MemoryState.html" title="Null memory." alt="" coords="539,241,740,296"/>
-<area shape="poly" title=" " alt="" coords="433,183,525,228,553,239,552,244,523,232,431,188"/>
-<area shape="rect" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1AddressSpace.html" title="Base class for address spaces." alt="" coords="5,124,220,179"/>
-<area shape="poly" title=" " alt="" coords="233,149,268,149,268,154,233,154"/>
+<area shape="rect" title="Represents all memory in the state." alt="" coords="268,163,476,217"/>
+<area shape="rect" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1FrameState.html" title="Purely symbolic memory state." alt="" coords="540,5,739,60"/>
+<area shape="poly" title=" " alt="" coords="409,151,461,109,523,69,547,58,549,62,525,74,464,113,413,156"/>
+<area shape="rect" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellState.html" title="Cell&#45;based memory state." alt="" coords="524,84,755,139"/>
+<area shape="poly" title=" " alt="" coords="477,156,545,136,547,141,479,161"/>
+<area shape="rect" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SymbolicMemory.html" title="Purely symbolic memory state." alt="" coords="524,163,755,217"/>
+<area shape="poly" title=" " alt="" coords="489,187,524,187,524,193,489,193"/>
+<area shape="rect" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1ConcreteSemantics_1_1MemoryState.html" title="Byte&#45;addressable memory." alt="" coords="524,241,755,296"/>
+<area shape="poly" title=" " alt="" coords="479,219,547,239,545,244,477,224"/>
+<area shape="rect" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1NullSemantics_1_1MemoryState.html" title="Null memory." alt="" coords="539,320,740,375"/>
+<area shape="poly" title=" " alt="" coords="413,224,464,267,525,306,549,318,547,322,523,311,461,271,409,229"/>
+<area shape="rect" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1AddressSpace.html" title="Base class for address spaces." alt="" coords="5,163,220,217"/>
+<area shape="poly" title=" " alt="" coords="233,187,268,187,268,193,233,193"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -135,6 +156,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a85f6a228a48f3b3e1c4ea4e9c5e95bb9" id="r_a85f6a228a48f3b3e1c4ea4e9c5e95bb9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState.html#a85f6a228a48f3b3e1c4ea4e9c5e95bb9">writeMemory</a> (const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">SValuePtr</a> &amp;addr, const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">SValuePtr</a> &amp;value, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1RiscOperators.html">RiscOperators</a> *addrOps, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1RiscOperators.html">RiscOperators</a> *valOps)=0</td></tr>
 <tr class="memdesc:a85f6a228a48f3b3e1c4ea4e9c5e95bb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a value to memory.  <br /></td></tr>
 <tr class="separator:a85f6a228a48f3b3e1c4ea4e9c5e95bb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace3da3aada6783d78b8d2f919fea808a" id="r_ace3da3aada6783d78b8d2f919fea808a"><td class="memItemLeft" align="right" valign="top"><a id="ace3da3aada6783d78b8d2f919fea808a" name="ace3da3aada6783d78b8d2f919fea808a"></a>
+virtual <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">SValuePtr</a>&#160;</td><td class="memItemRight" valign="bottom"><b>readLocal</b> (uint8_t index)</td></tr>
+<tr class="separator:ace3da3aada6783d78b8d2f919fea808a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89719032190301302a46b2bc71c48519" id="r_a89719032190301302a46b2bc71c48519"><td class="memItemLeft" align="right" valign="top"><a id="a89719032190301302a46b2bc71c48519" name="a89719032190301302a46b2bc71c48519"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>writeLocal</b> (uint8_t index, const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">SValuePtr</a> &amp;value)</td></tr>
+<tr class="separator:a89719032190301302a46b2bc71c48519"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0d03b57d6cdd41ab629bc48f66a2c8d" id="r_aa0d03b57d6cdd41ab629bc48f66a2c8d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState.html#aa0d03b57d6cdd41ab629bc48f66a2c8d">pushOperand</a> (const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">SValuePtr</a> &amp;value)</td></tr>
+<tr class="memdesc:aa0d03b57d6cdd41ab629bc48f66a2c8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push an operand value to a frame.  <br /></td></tr>
+<tr class="separator:aa0d03b57d6cdd41ab629bc48f66a2c8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45e6791e8e9f40759bfe14337419ce50" id="r_a45e6791e8e9f40759bfe14337419ce50"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">SValuePtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState.html#a45e6791e8e9f40759bfe14337419ce50">popOperand</a> ()</td></tr>
+<tr class="memdesc:a45e6791e8e9f40759bfe14337419ce50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pop an operand value from a frame.  <br /></td></tr>
+<tr class="separator:a45e6791e8e9f40759bfe14337419ce50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a862484d725b1866f53f79f821869909c" id="r_a862484d725b1866f53f79f821869909c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#a093ec60edf7a66377a0c1aeeb0177f5e">MergerPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState.html#a862484d725b1866f53f79f821869909c">merger</a> () const</td></tr>
 <tr class="memdesc:a862484d725b1866f53f79f821869909c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property: <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1Merger.html" title="Controls state merge operations.">Merger</a>.  <br /></td></tr>
@@ -217,6 +250,9 @@ static <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemanti
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:afdc2f50ff4b44b7dc88063803fd86f83" id="r_afdc2f50ff4b44b7dc88063803fd86f83"><td class="memItemLeft" align="right" valign="top"><a id="afdc2f50ff4b44b7dc88063803fd86f83" name="afdc2f50ff4b44b7dc88063803fd86f83"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MemoryState</b> (<a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ad1f02235b260939ebc30e563ebd07b27">Purpose</a>, const std::string &amp;<a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1AddressSpace.html#a04f92b7b690316628fd6d464f11049c0">name</a>, const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">SValuePtr</a> &amp;valProtoval)</td></tr>
+<tr class="separator:afdc2f50ff4b44b7dc88063803fd86f83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae31e09c55df46c89f52c06fdc6d96832" id="r_ae31e09c55df46c89f52c06fdc6d96832"><td class="memItemLeft" align="right" valign="top"><a id="ae31e09c55df46c89f52c06fdc6d96832" name="ae31e09c55df46c89f52c06fdc6d96832"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>MemoryState</b> (const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">SValuePtr</a> &amp;addrProtoval, const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">SValuePtr</a> &amp;valProtoval)</td></tr>
 <tr class="separator:ae31e09c55df46c89f52c06fdc6d96832"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,7 +327,7 @@ Protected Member Functions</h2></td></tr>
 <p>Virtual allocating constructor. </p>
 <p>Allocates and constructs a new <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState.html" title="Represents all memory in the state.">MemoryState</a> object having the same dynamic type as this object. A prototypical <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SValue.html" title="Base class for semantic values.">SValue</a> must be supplied and will be used to construct any additional <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SValue.html" title="Base class for semantic values.">SValue</a> objects needed during the operation of a <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState.html" title="Represents all memory in the state.">MemoryState</a>. Two prototypical values are supplied, one for addresses and another for values stored at those addresses, although they will almost always be the same. </p>
 
-<p>Implemented in <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1ConcreteSemantics_1_1MemoryState.html#ad926da87db20826381d5cc52f1e83f1f">Rose::BinaryAnalysis::InstructionSemantics::ConcreteSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1IntervalSemantics_1_1MemoryState.html#afe41e98c013e7c13fde2842d90e234c2">Rose::BinaryAnalysis::InstructionSemantics::IntervalSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1NullSemantics_1_1MemoryState.html#a00f03f319e18e532c2affba1490adf63">Rose::BinaryAnalysis::InstructionSemantics::NullSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1MemoryListState.html#a61f38b81aa18de585f056824cd3dcc7d">Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::MemoryListState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1MemoryMapState.html#a2d89d38823b11999f7304741cfd504ce">Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::MemoryMapState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Semantics_1_1MemoryState.html#a6ea360b4d1598814b82907b1518fbda1">Rose::BinaryAnalysis::Partitioner2::Semantics::MemoryState&lt; Super &gt;</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellList.html#aab4b6d24a0b2e3ab043b763d6347a39b">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellList</a>, and <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SymbolicMemory.html#afa0dc420f8df6bce778c4264e9f84f1a">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::SymbolicMemory</a>.</p>
+<p>Implemented in <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1ConcreteSemantics_1_1MemoryState.html#ad926da87db20826381d5cc52f1e83f1f">Rose::BinaryAnalysis::InstructionSemantics::ConcreteSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1IntervalSemantics_1_1MemoryState.html#afe41e98c013e7c13fde2842d90e234c2">Rose::BinaryAnalysis::InstructionSemantics::IntervalSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1NullSemantics_1_1MemoryState.html#a00f03f319e18e532c2affba1490adf63">Rose::BinaryAnalysis::InstructionSemantics::NullSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1MemoryListState.html#a61f38b81aa18de585f056824cd3dcc7d">Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::MemoryListState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1MemoryMapState.html#a2d89d38823b11999f7304741cfd504ce">Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::MemoryMapState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Semantics_1_1MemoryState.html#a6ea360b4d1598814b82907b1518fbda1">Rose::BinaryAnalysis::Partitioner2::Semantics::MemoryState&lt; Super &gt;</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1FrameState.html#aa450e9ea14b6e0bae73b5ec10d914e44">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::FrameState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellList.html#aab4b6d24a0b2e3ab043b763d6347a39b">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellList</a>, and <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SymbolicMemory.html#afa0dc420f8df6bce778c4264e9f84f1a">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::SymbolicMemory</a>.</p>
 
 </div>
 </div>
@@ -404,7 +440,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1AddressSpace.html#ac19e45a59e6cfe29b9a7fd4c8239f294">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::AddressSpace</a>.</p>
 
-<p>Implemented in <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellList.html#a0b6dfe572ddb10b0233cda6b1064b2f9">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellList</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellMap.html#a8aa71e52c9df2ec6a0dd18566fe0db50">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellMap</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellState.html#ada67b33bfe88d2cda09141fe5f9814c9">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SymbolicMemory.html#abb8a2c80079c5579f8574537146a096d">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::SymbolicMemory</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1ConcreteSemantics_1_1MemoryState.html#a1e934d60a83e120d98f3cd42268c2e58">Rose::BinaryAnalysis::InstructionSemantics::ConcreteSemantics::MemoryState</a>, and <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1NullSemantics_1_1MemoryState.html#a903026466cee7537182001e6013503a7">Rose::BinaryAnalysis::InstructionSemantics::NullSemantics::MemoryState</a>.</p>
+<p>Implemented in <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1FrameState.html#a38d8e3e2f3d354bfc9e47bd77921088c">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::FrameState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellList.html#a0b6dfe572ddb10b0233cda6b1064b2f9">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellList</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellMap.html#a8aa71e52c9df2ec6a0dd18566fe0db50">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellMap</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellState.html#ada67b33bfe88d2cda09141fe5f9814c9">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SymbolicMemory.html#abb8a2c80079c5579f8574537146a096d">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::SymbolicMemory</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1ConcreteSemantics_1_1MemoryState.html#a1e934d60a83e120d98f3cd42268c2e58">Rose::BinaryAnalysis::InstructionSemantics::ConcreteSemantics::MemoryState</a>, and <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1NullSemantics_1_1MemoryState.html#a903026466cee7537182001e6013503a7">Rose::BinaryAnalysis::InstructionSemantics::NullSemantics::MemoryState</a>.</p>
 
 </div>
 </div>
@@ -501,7 +537,7 @@ Protected Member Functions</h2></td></tr>
 <p>In order to support cases where an address does not match any existing location, the <code>dflt</code> value can be used to initialize a new memory location. The manner in which the default is used depends on the implementation. In any case, the width of the <code>dflt</code> value determines how much to read.</p>
 <p>Footnote 1: A <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState.html#ae0cd8d5213b8cf08b34d9a2fad6fd625" title="Read a value from memory.">MemoryState::readMemory()</a> call is the last in a sequence of delegations starting with <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1RiscOperators.html#aac89759cf1f5d01161a9fae309ce1c32" title="Reads a value from memory.">RiscOperators::readMemory()</a>. The designers of the <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState.html" title="Represents all memory in the state.">MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1State.html" title="Base class for semantics machine states.">State</a>, and <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1RiscOperators.html" title="Base class for most instruction semantics RISC operators.">RiscOperators</a> subclasses will need to coordinate to decide which layer should handle concatenating values from individual memory locations. </p>
 
-<p>Implemented in <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1NullSemantics_1_1MemoryState.html#ae7430623086410bccb4461f016c930cf">Rose::BinaryAnalysis::InstructionSemantics::NullSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1ConcreteSemantics_1_1MemoryState.html#a4703ad17e78df6e2c92dad30b8330596">Rose::BinaryAnalysis::InstructionSemantics::ConcreteSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1IntervalSemantics_1_1MemoryState.html#a8d0f3bf655bb055a3ced4e4d8f92105d">Rose::BinaryAnalysis::InstructionSemantics::IntervalSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1MemoryListState.html#a58ffc4b796c3b7905a669a5a34dfd78a">Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::MemoryListState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Semantics_1_1MemoryState.html#ad2ebee9aa58aaec6d5dbac80a2b225f4">Rose::BinaryAnalysis::Partitioner2::Semantics::MemoryState&lt; Super &gt;</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellList.html#aa633bcb8e4ae27f86f563979e505d263">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellList</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellMap.html#ab6890bd0d79a704467903bc9b8f40a73">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellMap</a>, and <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SymbolicMemory.html#ad36bca71e5c2540326a19b14dd5c3a77">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::SymbolicMemory</a>.</p>
+<p>Implemented in <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1NullSemantics_1_1MemoryState.html#ae7430623086410bccb4461f016c930cf">Rose::BinaryAnalysis::InstructionSemantics::NullSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1ConcreteSemantics_1_1MemoryState.html#a4703ad17e78df6e2c92dad30b8330596">Rose::BinaryAnalysis::InstructionSemantics::ConcreteSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1IntervalSemantics_1_1MemoryState.html#a8d0f3bf655bb055a3ced4e4d8f92105d">Rose::BinaryAnalysis::InstructionSemantics::IntervalSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1MemoryListState.html#a58ffc4b796c3b7905a669a5a34dfd78a">Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::MemoryListState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Semantics_1_1MemoryState.html#ad2ebee9aa58aaec6d5dbac80a2b225f4">Rose::BinaryAnalysis::Partitioner2::Semantics::MemoryState&lt; Super &gt;</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1FrameState.html#a79ab31a94c2be7bc0c24f32667d52444">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::FrameState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellList.html#aa633bcb8e4ae27f86f563979e505d263">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellList</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellMap.html#ab6890bd0d79a704467903bc9b8f40a73">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellMap</a>, and <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SymbolicMemory.html#ad36bca71e5c2540326a19b14dd5c3a77">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::SymbolicMemory</a>.</p>
 
 </div>
 </div>
@@ -554,7 +590,7 @@ Protected Member Functions</h2></td></tr>
 <p>Read a value from memory without side effects. </p>
 <p>This is similar to <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState.html#ae0cd8d5213b8cf08b34d9a2fad6fd625">readMemory</a> except there are no side effects. The memory state is not modified by this function. </p>
 
-<p>Implemented in <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1NullSemantics_1_1MemoryState.html#a0d4411149713d287f9e897a4ee7c6777">Rose::BinaryAnalysis::InstructionSemantics::NullSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1ConcreteSemantics_1_1MemoryState.html#a9ec1590acebcd1873818a61ac26d9ff9">Rose::BinaryAnalysis::InstructionSemantics::ConcreteSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1IntervalSemantics_1_1MemoryState.html#a5590933fdce7a622293fbd68d780a4f4">Rose::BinaryAnalysis::InstructionSemantics::IntervalSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1MemoryListState.html#a7078af194213aa0d795634ed2ff00961">Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::MemoryListState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Semantics_1_1MemoryState.html#af7b8b9dd5c1fecd973b98654d17f50e5">Rose::BinaryAnalysis::Partitioner2::Semantics::MemoryState&lt; Super &gt;</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellList.html#a26ae43599ac1597465d51f15a135a7a5">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellList</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellMap.html#ae35833310cd515bcacf3930f78e6a537">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellMap</a>, and <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SymbolicMemory.html#a4c2b260c56386945bd406a7be71e2ff7">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::SymbolicMemory</a>.</p>
+<p>Implemented in <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1NullSemantics_1_1MemoryState.html#a0d4411149713d287f9e897a4ee7c6777">Rose::BinaryAnalysis::InstructionSemantics::NullSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1ConcreteSemantics_1_1MemoryState.html#a9ec1590acebcd1873818a61ac26d9ff9">Rose::BinaryAnalysis::InstructionSemantics::ConcreteSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1IntervalSemantics_1_1MemoryState.html#a5590933fdce7a622293fbd68d780a4f4">Rose::BinaryAnalysis::InstructionSemantics::IntervalSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1MemoryListState.html#a7078af194213aa0d795634ed2ff00961">Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::MemoryListState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Semantics_1_1MemoryState.html#af7b8b9dd5c1fecd973b98654d17f50e5">Rose::BinaryAnalysis::Partitioner2::Semantics::MemoryState&lt; Super &gt;</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1FrameState.html#a35bb512e7be66a78977a4761c38a8942">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::FrameState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellList.html#a26ae43599ac1597465d51f15a135a7a5">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellList</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellMap.html#ae35833310cd515bcacf3930f78e6a537">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellMap</a>, and <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SymbolicMemory.html#a4c2b260c56386945bd406a7be71e2ff7">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::SymbolicMemory</a>.</p>
 
 </div>
 </div>
@@ -608,7 +644,66 @@ Protected Member Functions</h2></td></tr>
 <p>Consults the memory represented by this <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState.html" title="Represents all memory in the state.">MemoryState</a> object and possibly inserts the specified value. The details of how a value is inserted into a memory state depends entirely on the implementation in a subclass and will probably be different for each semantic domain.</p>
 <p>A <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState.html#a85f6a228a48f3b3e1c4ea4e9c5e95bb9" title="Write a value to memory.">MemoryState::writeMemory()</a> call is the last in a sequence of delegations starting with <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1RiscOperators.html#a1d972c261aab66405c46f711c191a369" title="Writes a value to memory.">RiscOperators::writeMemory()</a>. The designers of the <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryState.html" title="Represents all memory in the state.">MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1State.html" title="Base class for semantics machine states.">State</a>, and <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1RiscOperators.html" title="Base class for most instruction semantics RISC operators.">RiscOperators</a> will need to coordinate to decide which layer (if any) should handle splitting a multi-byte value into multiple memory locations. </p>
 
-<p>Implemented in <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1NullSemantics_1_1MemoryState.html#a9544e64aeae45d5d956f81bf443094ff">Rose::BinaryAnalysis::InstructionSemantics::NullSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1ConcreteSemantics_1_1MemoryState.html#aaa1b7303582a135c7827431bcf1d55cc">Rose::BinaryAnalysis::InstructionSemantics::ConcreteSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1IntervalSemantics_1_1MemoryState.html#af1667cda54a32eab48f474b6fb261125">Rose::BinaryAnalysis::InstructionSemantics::IntervalSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1MemoryListState.html#a16ddb1f66e69d84058a8c84de461c3dd">Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::MemoryListState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Semantics_1_1MemoryState.html#a1b7fadb2652effe0a612d97417d07bab">Rose::BinaryAnalysis::Partitioner2::Semantics::MemoryState&lt; Super &gt;</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellList.html#a9a01e3c64b3a16910c6c96525a879033">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellList</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellMap.html#a3bd2bcb09fbfc9e1daf04ace191756f0">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellMap</a>, and <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SymbolicMemory.html#a90851acf4388459c750906c046475a6e">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::SymbolicMemory</a>.</p>
+<p>Implemented in <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1NullSemantics_1_1MemoryState.html#a9544e64aeae45d5d956f81bf443094ff">Rose::BinaryAnalysis::InstructionSemantics::NullSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1ConcreteSemantics_1_1MemoryState.html#aaa1b7303582a135c7827431bcf1d55cc">Rose::BinaryAnalysis::InstructionSemantics::ConcreteSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1IntervalSemantics_1_1MemoryState.html#af1667cda54a32eab48f474b6fb261125">Rose::BinaryAnalysis::InstructionSemantics::IntervalSemantics::MemoryState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1MemoryListState.html#a16ddb1f66e69d84058a8c84de461c3dd">Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::MemoryListState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Semantics_1_1MemoryState.html#a1b7fadb2652effe0a612d97417d07bab">Rose::BinaryAnalysis::Partitioner2::Semantics::MemoryState&lt; Super &gt;</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellList.html#a9a01e3c64b3a16910c6c96525a879033">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellList</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1FrameState.html#a19b251e20190b93e01ff4b03bc14e809">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::FrameState</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1MemoryCellMap.html#a3bd2bcb09fbfc9e1daf04ace191756f0">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryCellMap</a>, and <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SymbolicMemory.html#a90851acf4388459c750906c046475a6e">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::SymbolicMemory</a>.</p>
+
+</div>
+</div>
+<a id="aa0d03b57d6cdd41ab629bc48f66a2c8d" name="aa0d03b57d6cdd41ab629bc48f66a2c8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0d03b57d6cdd41ab629bc48f66a2c8d">&#9670;&#160;</a></span>pushOperand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryState::pushOperand </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">SValuePtr</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Push an operand value to a frame. </p>
+
+<p>Reimplemented in <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1FrameState.html#a411319617eb5b1ecadee05bb8cc5381c">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::FrameState</a>.</p>
+
+</div>
+</div>
+<a id="a45e6791e8e9f40759bfe14337419ce50" name="a45e6791e8e9f40759bfe14337419ce50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45e6791e8e9f40759bfe14337419ce50">&#9670;&#160;</a></span>popOperand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#ae281182bb99b033e6087f27309dcf603">SValuePtr</a> Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::MemoryState::popOperand </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pop an operand value from a frame. </p>
+
+<p>Reimplemented in <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1FrameState.html#a7903fb782a97ec307eec44834bf51a0c">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::FrameState</a>.</p>
 
 </div>
 </div>
@@ -618,7 +713,7 @@ Protected Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:48 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:55 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

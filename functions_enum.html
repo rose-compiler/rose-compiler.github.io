@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,15 +40,34 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div class="contents">
 <div class="textblock">Here is a list of all documented enums with links to the class documentation for each member:</div>
 
@@ -79,7 +98,9 @@ $(function() {
 
 
 <h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
+<li>CaseSensitivity&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Strings_1_1FilterSpecification.html#ac4419f1e0200f6161b91a29ebfa491ca">Rose::BinaryAnalysis::Strings::FilterSpecification</a></li>
 <li>cast_type_enum&#160;:&#160;<a class="el" href="classSgCastExp.html#ad72baf36d31e1ed94c6b8ab9e0cfba60">SgCastExp</a></li>
+<li>CilStringKinds&#160;:&#160;<a class="el" href="structRose_1_1BinaryAnalysis_1_1CilStringFinder.html#aa1c0d1e6a8a90ab0c0d15ea3a01a9c1a">Rose::BinaryAnalysis::CilStringFinder</a></li>
 <li>class_types&#160;:&#160;<a class="el" href="classSgClassDeclaration.html#a3bfb7246c918585c3f46e75146bcc085">SgClassDeclaration</a>, <a class="el" href="classSgTemplateClassDeclaration.html#a04247ae6dd0168e12be72b89f7b81800">SgTemplateClassDeclaration</a></li>
 <li>classifier&#160;:&#160;<a class="el" href="classSg__File__Info.html#ac841f2cc3235363907cd185482be30f1">Sg_File_Info</a></li>
 <li>Clobber&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1MemoryMap.html#af9bc4cf22ea8728c97c452f3c0ae4151">Rose::BinaryAnalysis::MemoryMap</a></li>
@@ -117,7 +138,7 @@ $(function() {
 <h3><a id="index_f" name="index_f"></a>- f -</h3><ul>
 <li>Flag&#160;:&#160;<a class="el" href="classSgAsmFloatType.html#ad0f98764e1974f0d0b12d7457e57a7c2">SgAsmFloatType</a></li>
 <li>forall_statement_kind_enum&#160;:&#160;<a class="el" href="classSgForAllStatement.html#a1b9bb418fd8fe3889fbdfcf497a4535a">SgForAllStatement</a></li>
-<li>Format&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8">Rose::BinaryAnalysis::SerialIo</a>, <a class="el" href="classRose_1_1FormattedTable.html#ae8d8607dcf849cf52a3796dd20b59e2e">Rose::FormattedTable</a></li>
+<li>Format&#160;:&#160;<a class="el" href="classRose_1_1FormattedTable.html#ae8d8607dcf849cf52a3796dd20b59e2e">Rose::FormattedTable</a></li>
 <li>function_kind_enum&#160;:&#160;<a class="el" href="classSgAsmFunction.html#acc351d356f26d53bb8532eb8289958da">SgAsmFunction</a></li>
 <li>function_modifier_enum&#160;:&#160;<a class="el" href="classSgFunctionModifier.html#ad31aed08ed24a7e7d77d02b4147573a3">SgFunctionModifier</a></li>
 <li>FunctionReason&#160;:&#160;<a class="el" href="classSgAsmFunction.html#adbeeade0378b1c09170ad8d5d808852c">SgAsmFunction</a></li>
@@ -222,7 +243,6 @@ $(function() {
 
 <h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
 <li>Satisfiable&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SmtSolver.html#a807e813a7a89a77142a200b6621f7ee1">Rose::BinaryAnalysis::SmtSolver</a></li>
-<li>Savable&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150">Rose::BinaryAnalysis::SerialIo</a></li>
 <li>SearchMode&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1FeasiblePath.html#ae59c329d92740feeac32a3e9c976ee78">Rose::BinaryAnalysis::FeasiblePath</a></li>
 <li>SectionFlags&#160;:&#160;<a class="el" href="classSgAsmElfSectionTableEntry.html#af4f9473d0172309fe72c608c2239487e">SgAsmElfSectionTableEntry</a></li>
 <li>SectionPurpose&#160;:&#160;<a class="el" href="classSgAsmGenericSection.html#a7a0f20a22abc6e3e645a6ee57e19b99b">SgAsmGenericSection</a></li>
@@ -253,7 +273,7 @@ $(function() {
 <li>template_specialization_enum&#160;:&#160;<a class="el" href="classSgDeclarationStatement.html#a37033bc2847659b036ac7104d23b07d1">SgDeclarationStatement</a></li>
 <li>template_type_enum&#160;:&#160;<a class="el" href="classSgTemplateDeclaration.html#a9547a6a00dae9d058d15c77557b3423d">SgTemplateDeclaration</a></li>
 <li>Termination&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1BasicBlockCallback.html#af6be690af50f27273f52f9ad130552a6">Rose::BinaryAnalysis::Partitioner2::BasicBlockCallback</a></li>
-<li>Type&#160;:&#160;<a class="el" href="classReachingDef.html#ab6acd065ba6eb4fce66dd7f15e039633">ReachingDef</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1ConcreteLocation.html#aa0fbbb62ea3f7c6682b4098c0b23388e">Rose::BinaryAnalysis::ConcreteLocation</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1HotPatch_1_1Record.html#ab5ac1970a9b2277efc7f99dde30648d8">Rose::BinaryAnalysis::HotPatch::Record</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1DataFlow_1_1DfCfgVertex.html#aedfdc6d3bc4f6447a1899ebf0b78e387">Rose::BinaryAnalysis::Partitioner2::DataFlow::DfCfgVertex</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SmtSolver.html#a4bfdcdf6867258024ec930056b4d74c4">Rose::BinaryAnalysis::SmtSolver</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SRecord.html#afe7b6f800cb2a1bd6766ef6ca36694df">Rose::BinaryAnalysis::SRecord</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SymbolicExpressionParser_1_1Token.html#a8a4a13bf174d1465c2bdf2122268bb31">Rose::BinaryAnalysis::SymbolicExpressionParser::Token</a>, <a class="el" href="classRosebud_1_1Ast_1_1CppStack.html#a3c1f507a806130b42af1cc9a8dcb87b4">Rosebud::Ast::CppStack</a>, <a class="el" href="classssa__unfiltered__cfg_1_1ReachingDef.html#a3ca052803c58383e48eb84b615f4117a">ssa_unfiltered_cfg::ReachingDef</a></li>
+<li>Type&#160;:&#160;<a class="el" href="classReachingDef.html#ab6acd065ba6eb4fce66dd7f15e039633">ReachingDef</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1ConcreteLocation.html#aa0fbbb62ea3f7c6682b4098c0b23388e">Rose::BinaryAnalysis::ConcreteLocation</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1HotPatch_1_1Record.html#ab5ac1970a9b2277efc7f99dde30648d8">Rose::BinaryAnalysis::HotPatch::Record</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1DataFlow_1_1DfCfgVertex.html#aedfdc6d3bc4f6447a1899ebf0b78e387">Rose::BinaryAnalysis::Partitioner2::DataFlow::DfCfgVertex</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SmtSolver.html#a4bfdcdf6867258024ec930056b4d74c4">Rose::BinaryAnalysis::SmtSolver</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SRecord.html#afe7b6f800cb2a1bd6766ef6ca36694df">Rose::BinaryAnalysis::SRecord</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Strings_1_1FilterSpecification.html#ab0e0c7cd2678f507e09ea1056f67b3b1">Rose::BinaryAnalysis::Strings::FilterSpecification</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SymbolicExpressionParser_1_1Token.html#a8a4a13bf174d1465c2bdf2122268bb31">Rose::BinaryAnalysis::SymbolicExpressionParser::Token</a>, <a class="el" href="classRosebud_1_1Ast_1_1CppStack.html#a3c1f507a806130b42af1cc9a8dcb87b4">Rosebud::Ast::CppStack</a>, <a class="el" href="classssa__unfiltered__cfg_1_1ReachingDef.html#a3ca052803c58383e48eb84b615f4117a">ssa_unfiltered_cfg::ReachingDef</a></li>
 <li>type_modifier_enum&#160;:&#160;<a class="el" href="classSgTypeModifier.html#a16269be2fc3fe608998847fa80a30c43">SgTypeModifier</a></li>
 <li>TypeClass&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SymbolicExpression_1_1Type.html#a9c46afbff53ed7847d9aad2be5163696">Rose::BinaryAnalysis::SymbolicExpression::Type</a></li>
 </ul>
@@ -277,7 +297,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:25:22 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:12:29 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

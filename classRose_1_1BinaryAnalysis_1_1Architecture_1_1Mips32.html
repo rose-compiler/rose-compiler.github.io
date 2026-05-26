@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="namespaceRose.html">Rose</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis.html">BinaryAnalysis</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Architecture.html">Architecture</a></li><li class="navelem"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Architecture_1_1Mips32.html">Mips32</a></li>  </ul>
@@ -831,11 +850,11 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="keyword">auto</span> unparser = <a class="code hl_function" href="namespaceRose.html#aa9277534b19b6341fc3d55db97f5f333">notnull</a>(insn-&gt;<a class="code hl_function" href="classSgAsmInstruction.html#a282679b4dbbb1809075c22c1eb8ffaf3">architecture</a>()-&gt;newInstructionUnparser());</div>
 <div class="line">unparser-&gt;settings().colorization.enabled = <a class="code hl_enumvalue" href="namespaceRose_1_1Color.html#aa0f313436cd506df5c48d6d9f83ee956a88559a0cfd8250c9d65970cc145c92d4">Color::Enabled::OFF</a>;</div>
 <div class="line">std::cout &lt;&lt;unparser-&gt;unparse(insn) &lt;&lt;<span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="ttc" id="aclassSgAsmInstruction_html"><div class="ttname"><a href="classSgAsmInstruction.html">SgAsmInstruction</a></div><div class="ttdoc">Base class for machine instructions.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l44628">binaryInstruction.C:44628</a></div></div>
+<div class="ttc" id="aclassSgAsmInstruction_html"><div class="ttname"><a href="classSgAsmInstruction.html">SgAsmInstruction</a></div><div class="ttdoc">Base class for machine instructions.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l44876">binaryInstruction.C:44876</a></div></div>
 <div class="ttc" id="aclassSgAsmInstruction_html_a282679b4dbbb1809075c22c1eb8ffaf3"><div class="ttname"><a href="classSgAsmInstruction.html#a282679b4dbbb1809075c22c1eb8ffaf3">SgAsmInstruction::architecture</a></div><div class="ttdeci">Rose::BinaryAnalysis::Architecture::BaseConstPtr architecture() const</div><div class="ttdoc">Architecture for instruction.</div></div>
 <div class="ttc" id="aclassSgAsmInstruction_html_a86e23cc0305636d76bc043ba439bbd23"><div class="ttname"><a href="classSgAsmInstruction.html#a86e23cc0305636d76bc043ba439bbd23">SgAsmInstruction::toString</a></div><div class="ttdeci">virtual std::string toString() const</div><div class="ttdoc">Converts the instruction to a string.</div></div>
 <div class="ttc" id="anamespaceRose_1_1Color_html_aa0f313436cd506df5c48d6d9f83ee956a88559a0cfd8250c9d65970cc145c92d4"><div class="ttname"><a href="namespaceRose_1_1Color.html#aa0f313436cd506df5c48d6d9f83ee956a88559a0cfd8250c9d65970cc145c92d4">Rose::Color::Enabled::OFF</a></div><div class="ttdeci">@ OFF</div><div class="ttdoc">Disable colored output.</div></div>
-<div class="ttc" id="anamespaceRose_html_aa9277534b19b6341fc3d55db97f5f333"><div class="ttname"><a href="namespaceRose.html#aa9277534b19b6341fc3d55db97f5f333">Rose::notnull</a></div><div class="ttdeci">Pointer &amp; notnull(Pointer &amp;&amp;pointer)</div><div class="ttdoc">Check for non-null pointer.</div><div class="ttdef"><b>Definition</b> <a href="Affirm_8h_source.html#l00195">Affirm.h:195</a></div></div>
+<div class="ttc" id="anamespaceRose_html_aa9277534b19b6341fc3d55db97f5f333"><div class="ttname"><a href="namespaceRose.html#aa9277534b19b6341fc3d55db97f5f333">Rose::notnull</a></div><div class="ttdeci">Pointer &amp; notnull(Pointer &amp;&amp;pointer)</div><div class="ttdoc">Check for non-null pointer.</div><div class="ttdef"><b>Definition</b> <a href="Affirm_8h_source.html#l00196">Affirm.h:196</a></div></div>
 </div><!-- fragment --><p>Thread safety: Thread safe. </p>
 
 <p>Implements <a class="el" href="classRose_1_1BinaryAnalysis_1_1Architecture_1_1Base.html#a59df18db2baae88452946dc47fa28a66">Rose::BinaryAnalysis::Architecture::Base</a>.</p>
@@ -913,7 +932,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:47 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:54 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

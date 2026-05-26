@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,10 +40,8 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
@@ -53,6 +51,27 @@ $(function() {
 $(document).ready(function() { init_codefold(0); });
 /* @license-end */
 </script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_9e62d0ec1b5e35066c963e582c20357f.html">Rose</a></li><li class="navelem"><a class="el" href="dir_b6b36e208517412b6f28695766cc080b.html">BinaryAnalysis</a></li><li class="navelem"><a class="el" href="dir_883cc49ac4cf1e96c39eda43120fa8e8.html">Concolic</a></li>  </ul>
@@ -81,7 +100,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keyword">using </span><a class="code hl_typedef" href="namespaceRose_1_1BinaryAnalysis_1_1SymbolicExpression.html#a357a1787c84ab11ac04ffa566345e57c">Ptr</a> = ExecutionEventPtr;</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keyword">enum class</span> <a class="code hl_function" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic_1_1ExecutionEvent.html#a77808bf694ec239e587c0b0c61896fb4">Action</a> {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keyword">enum class</span> <a class="code hl_function" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1FeasiblePath_1_1PathProcessor.html#a2c2eb0de9e82049fe6fe1c2e8319b4cd">Action</a> {</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        NONE,</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        BULK_MEMORY_MAP,</div>
@@ -115,7 +134,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <a class="code hl_typedef" href="namespaceRose_1_1BinaryAnalysis.html#a96dea8c577b1f630cffa84eee5cb03db">Address</a> ip_ = 0;                                    <span class="comment">// address of instruction associated with event</span></div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="comment">// These data members map to properties, but not necessarily 1:1. It&#39;s done this way for efficiency in the database.</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <a class="code hl_function" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic_1_1ExecutionEvent.html#a77808bf694ec239e587c0b0c61896fb4">Action</a> action_ = Action::NONE;                      <span class="comment">// type of action</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <a class="code hl_function" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1FeasiblePath_1_1PathProcessor.html#a2c2eb0de9e82049fe6fe1c2e8319b4cd">Action</a> action_ = Action::NONE;                      <span class="comment">// type of action</span></div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <a class="code hl_typedef" href="namespaceRose_1_1BinaryAnalysis.html#aa3ce7a7c9a79d236c3de26532f25bbf5">AddressInterval</a> memoryVas_;                         <span class="comment">// affected memory</span></div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keywordtype">unsigned</span> u_ = 0;                                    <span class="comment">// permission bits, register, or syscall function number</span></div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    std::vector&lt;uint8_t&gt; bytes_;                        <span class="comment">// byte data, hash digest, or syscall arguments</span></div>
@@ -181,7 +200,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    <span class="keywordtype">void</span> location(<span class="keyword">const</span> ExecutionLocation&amp;);</div>
 <div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    <a class="code hl_typedef" href="namespaceRose_1_1BinaryAnalysis.html#a96dea8c577b1f630cffa84eee5cb03db">Address</a> instructionPointer() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    <span class="keywordtype">void</span> instructionPointer(Address);</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    <a class="code hl_function" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic_1_1ExecutionEvent.html#a77808bf694ec239e587c0b0c61896fb4">Action</a> action() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    <a class="code hl_function" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1FeasiblePath_1_1PathProcessor.html#a2c2eb0de9e82049fe6fe1c2e8319b4cd">Action</a> action() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    <span class="keywordtype">void</span> action(Action);</div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    <span class="comment">// Properties specific to certain types of events.</span></div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span> </div>
@@ -249,19 +268,19 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassSawyer_1_1SharedFromThis_html"><div class="ttname"><a href="classSawyer_1_1SharedFromThis.html">Sawyer::SharedFromThis</a></div><div class="ttdoc">Creates SharedPointer from this.</div><div class="ttdef"><b>Definition</b> <a href="SharedPointer_8h_source.html#l00398">SharedPointer.h:398</a></div></div>
 <div class="ttc" id="aclassSawyer_1_1SharedObject_html"><div class="ttname"><a href="classSawyer_1_1SharedObject.html">Sawyer::SharedObject</a></div><div class="ttdoc">Base class for reference counted objects.</div><div class="ttdef"><b>Definition</b> <a href="SharedObject_8h_source.html#l00064">SharedObject.h:64</a></div></div>
 <div class="ttc" id="aclassvariable_html"><div class="ttname"><a href="classvariable.html">variable</a></div><div class="ttdef"><b>Definition</b> <a href="variables_8h_source.html#l00040">variables.h:41</a></div></div>
-<div class="ttc" id="anamespaceRose_1_1BinaryAnalysis_1_1SymbolicExpression_html_a357a1787c84ab11ac04ffa566345e57c"><div class="ttname"><a href="namespaceRose_1_1BinaryAnalysis_1_1SymbolicExpression.html#a357a1787c84ab11ac04ffa566345e57c">Rose::BinaryAnalysis::SymbolicExpression::Ptr</a></div><div class="ttdeci">Sawyer::SharedPointer&lt; Node &gt; Ptr</div><div class="ttdoc">Reference counting pointer.</div><div class="ttdef"><b>Definition</b> <a href="Rose_2BinaryAnalysis_2BasicTypes_8h_source.html#l00114">Rose/BinaryAnalysis/BasicTypes.h:114</a></div></div>
+<div class="ttc" id="anamespaceRose_1_1BinaryAnalysis_1_1SymbolicExpression_html_a357a1787c84ab11ac04ffa566345e57c"><div class="ttname"><a href="namespaceRose_1_1BinaryAnalysis_1_1SymbolicExpression.html#a357a1787c84ab11ac04ffa566345e57c">Rose::BinaryAnalysis::SymbolicExpression::Ptr</a></div><div class="ttdeci">Sawyer::SharedPointer&lt; Node &gt; Ptr</div><div class="ttdoc">Reference counting pointer.</div><div class="ttdef"><b>Definition</b> <a href="Rose_2BinaryAnalysis_2BasicTypes_8h_source.html#l00166">Rose/BinaryAnalysis/BasicTypes.h:166</a></div></div>
 <div class="ttc" id="anamespaceRose_1_1BinaryAnalysis_1_1SymbolicExpression_html_a86976fbdf5d2570451256f78c324f772"><div class="ttname"><a href="namespaceRose_1_1BinaryAnalysis_1_1SymbolicExpression.html#a86976fbdf5d2570451256f78c324f772">Rose::BinaryAnalysis::SymbolicExpression::hash</a></div><div class="ttdeci">Hash hash(const std::vector&lt; Ptr &gt; &amp;)</div><div class="ttdoc">Hash zero or more expressions.</div></div>
 <div class="ttc" id="anamespaceRose_1_1BinaryAnalysis_html_a96dea8c577b1f630cffa84eee5cb03db"><div class="ttname"><a href="namespaceRose_1_1BinaryAnalysis.html#a96dea8c577b1f630cffa84eee5cb03db">Rose::BinaryAnalysis::Address</a></div><div class="ttdeci">std::uint64_t Address</div><div class="ttdoc">Address.</div><div class="ttdef"><b>Definition</b> <a href="Address_8h_source.html#l00011">Address.h:11</a></div></div>
 <div class="ttc" id="anamespaceRose_1_1BinaryAnalysis_html_aa3ce7a7c9a79d236c3de26532f25bbf5"><div class="ttname"><a href="namespaceRose_1_1BinaryAnalysis.html#aa3ce7a7c9a79d236c3de26532f25bbf5">Rose::BinaryAnalysis::AddressInterval</a></div><div class="ttdeci">Sawyer::Container::Interval&lt; Address &gt; AddressInterval</div><div class="ttdoc">An interval of addresses.</div><div class="ttdef"><b>Definition</b> <a href="AddressInterval_8h_source.html#l00013">AddressInterval.h:13</a></div></div>
 <div class="ttc" id="anamespaceRose_html"><div class="ttname"><a href="namespaceRose.html">Rose</a></div><div class="ttdoc">The ROSE library.</div><div class="ttdef"><b>Definition</b> <a href="BinaryTutorial_8dox_source.html#l00003">BinaryTutorial.dox:3</a></div></div>
 <div class="ttc" id="anamespaceRose_html_a40bc915018a8c6733abb60f0a025ed9b"><div class="ttname"><a href="namespaceRose.html#a40bc915018a8c6733abb60f0a025ed9b">Rose::INVALID_INDEX</a></div><div class="ttdeci">const size_t INVALID_INDEX</div><div class="ttdoc">Invalid array index.</div><div class="ttdef"><b>Definition</b> <a href="Constants_8h_source.html#l00025">Constants.h:25</a></div></div>
 <div class="ttc" id="anamespaceSawyer_1_1Container_1_1BitVectorSupport_html_aff6810c441e283e64b214bd4d9bbc0a6"><div class="ttname"><a href="namespaceSawyer_1_1Container_1_1BitVectorSupport.html#aff6810c441e283e64b214bd4d9bbc0a6">Sawyer::Container::BitVectorSupport::copy</a></div><div class="ttdeci">void copy(const Word *src, const BitRange &amp;srcRange, Word *dst, const BitRange &amp;dstRange)</div><div class="ttdoc">Copy some bits.</div><div class="ttdef"><b>Definition</b> <a href="BitVectorSupport_8h_source.html#l00448">BitVectorSupport.h:448</a></div></div>
-<div class="ttc" id="anamespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic_1_1ExecutionEvent_html_a77808bf694ec239e587c0b0c61896fb4"><div class="ttname"><a href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic_1_1ExecutionEvent.html#a77808bf694ec239e587c0b0c61896fb4">stringify::Rose::BinaryAnalysis::Concolic::ExecutionEvent::Action</a></div><div class="ttdeci">const char * Action(int64_t)</div><div class="ttdoc">Convert Rose::BinaryAnalysis::Concolic::ExecutionEvent::Action enum constant to a string.</div></div>
 <div class="ttc" id="anamespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic_html_adb4f06cfaab9faf6b29d773401338db1"><div class="ttname"><a href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Concolic.html#adb4f06cfaab9faf6b29d773401338db1">stringify::Rose::BinaryAnalysis::Concolic::InputType</a></div><div class="ttdeci">const char * InputType(int64_t)</div><div class="ttdoc">Convert Rose::BinaryAnalysis::Concolic::InputType enum constant to a string.</div></div>
+<div class="ttc" id="anamespacestringify_1_1Rose_1_1BinaryAnalysis_1_1FeasiblePath_1_1PathProcessor_html_a2c2eb0de9e82049fe6fe1c2e8319b4cd"><div class="ttname"><a href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1FeasiblePath_1_1PathProcessor.html#a2c2eb0de9e82049fe6fe1c2e8319b4cd">stringify::Rose::BinaryAnalysis::FeasiblePath::PathProcessor::Action</a></div><div class="ttdeci">const char * Action(int64_t)</div><div class="ttdoc">Convert Rose::BinaryAnalysis::FeasiblePath::PathProcessor::Action enum constant to a string.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:23:54 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:00 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

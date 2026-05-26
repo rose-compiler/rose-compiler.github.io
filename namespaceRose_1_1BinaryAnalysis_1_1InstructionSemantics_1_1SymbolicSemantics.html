@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="namespaceRose.html">Rose</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis.html">BinaryAnalysis</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics.html">InstructionSemantics</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics.html">SymbolicSemantics</a></li>  </ul>
@@ -74,6 +93,8 @@ MemoryCell: an address-expression/value-expression pair for memory. </li>
 MemoryState: the collection of MemoryCells that form a complete memory state. </li>
 <li>
 RegisterState: the collection of registers that form a complete register state. </li>
+<li>
+FrameState: the collection operands and local variables that form a complete frame state. </li>
 <li>
 State: represents the state of the virtual machine&mdash;its registers and memory. </li>
 <li>
@@ -134,6 +155,10 @@ Typedefs</h2></td></tr>
 <tr class="separator:a593ea27d5e7ba0bc96e7a02d394b1f93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ffbf9132276ca6c82082307f0999245" id="r_a4ffbf9132276ca6c82082307f0999245"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#abf9e6c73019d8141b36898b24c422ee9">BaseSemantics::RegisterStateGenericPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics.html#a4ffbf9132276ca6c82082307f0999245">RegisterStatePtr</a></td></tr>
 <tr class="separator:a4ffbf9132276ca6c82082307f0999245"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2ccf25974694febdad1a980f26d125c" id="r_ab2ccf25974694febdad1a980f26d125c"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1FrameState.html">BaseSemantics::FrameState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics.html#ab2ccf25974694febdad1a980f26d125c">FrameState</a></td></tr>
+<tr class="separator:ab2ccf25974694febdad1a980f26d125c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a824f00dba6dcb9b6d06c1b78b749b2d2" id="r_a824f00dba6dcb9b6d06c1b78b749b2d2"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#adb81de9a5b3b6bba7bfa1dd85da4dba7">BaseSemantics::FrameStatePtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics.html#a824f00dba6dcb9b6d06c1b78b749b2d2">FrameStatePtr</a></td></tr>
+<tr class="separator:a824f00dba6dcb9b6d06c1b78b749b2d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85a54167791d80a8c406f8b209c9558a" id="r_a85a54167791d80a8c406f8b209c9558a"><td class="memItemLeft" align="right" valign="top">typedef boost::shared_ptr&lt; class <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1MemoryListState.html">MemoryListState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics.html#a85a54167791d80a8c406f8b209c9558a">MemoryListStatePtr</a></td></tr>
 <tr class="memdesc:a85a54167791d80a8c406f8b209c9558a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared-ownership pointer for symbolic list-based memory state.  <br /></td></tr>
 <tr class="separator:a85a54167791d80a8c406f8b209c9558a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,7 +213,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00055">55</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00057">57</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -204,7 +229,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00056">56</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00058">58</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -220,7 +245,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00057">57</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00059">59</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -236,7 +261,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00058">58</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00060">60</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -252,7 +277,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00059">59</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00061">61</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -268,7 +293,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00060">60</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00062">62</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -284,7 +309,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00061">61</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00063">63</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -302,7 +327,7 @@ Enumerations</h2></td></tr>
 
 <p>Shared-ownership pointer for a merge control object. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00078">78</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00080">80</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -320,7 +345,7 @@ Enumerations</h2></td></tr>
 
 <p>Shared-ownership pointer for symbolic semantic value. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00119">119</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00121">121</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -336,7 +361,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00375">375</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00377">377</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -352,7 +377,39 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00376">376</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00378">378</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+
+</div>
+</div>
+<a id="ab2ccf25974694febdad1a980f26d125c" name="ab2ccf25974694febdad1a980f26d125c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2ccf25974694febdad1a980f26d125c">&#9670;&#160;</a></span>FrameState</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1FrameState.html">BaseSemantics::FrameState</a> <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1FrameState.html">Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::FrameState</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00385">385</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+
+</div>
+</div>
+<a id="a824f00dba6dcb9b6d06c1b78b749b2d2" name="a824f00dba6dcb9b6d06c1b78b749b2d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a824f00dba6dcb9b6d06c1b78b749b2d2">&#9670;&#160;</a></span>FrameStatePtr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics.html#adb81de9a5b3b6bba7bfa1dd85da4dba7">BaseSemantics::FrameStatePtr</a> Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::FrameStatePtr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00386">386</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -370,7 +427,7 @@ Enumerations</h2></td></tr>
 
 <p>Shared-ownership pointer for symbolic list-based memory state. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00384">384</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00394">394</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -388,7 +445,7 @@ Enumerations</h2></td></tr>
 
 <p>Shared-ownership pointer to symbolic memory state. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00592">592</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00602">602</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -404,7 +461,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00689">689</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00699">699</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -420,7 +477,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00690">690</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00700">700</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -436,7 +493,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00696">696</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00706">706</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -452,7 +509,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00697">697</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00707">707</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -470,7 +527,7 @@ Enumerations</h2></td></tr>
 
 <p>Shared-ownership pointer to symbolic RISC operations. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00719">719</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00729">729</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -497,7 +554,7 @@ Enumerations</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00705">705</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00715">715</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -523,14 +580,14 @@ Enumerations</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00712">712</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00722">722</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:49 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:56 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

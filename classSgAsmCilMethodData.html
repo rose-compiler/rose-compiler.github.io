@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 </div><!-- top -->
 <div class="header">
   <div class="summary">
@@ -62,7 +81,7 @@ $(function() {
 <div class="textblock"><p>Property class representing CIL Extra Sections (II.25.4.5). </p>
 <dl class="section note"><dt>Note</dt><dd>parsing/unparsing is handled by the using class (i.e., SgAsmCilMethoDef) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35432">35432</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35654">35654</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 </div><div class="dynheader">
 Inheritance diagram for SgAsmCilMethodData:</div>
 <div class="dyncontent">
@@ -86,7 +105,7 @@ Collaboration diagram for SgAsmCilMethodData:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:adaef87adce748cab6fbe540374c63745" id="r_adaef87adce748cab6fbe540374c63745"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
+<tr class="memitem:afbbf7ddc34087eaa332504ad92fd85a9" id="r_afbbf7ddc34087eaa332504ad92fd85a9"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
 &#160;&#160;<b>CorILMethod_Sect_EHTable</b> = 0x01
 , <br />
 &#160;&#160;<b>CorILMethod_Sect_OptILTable</b> = 0x02
@@ -96,7 +115,7 @@ Public Types</h2></td></tr>
 &#160;&#160;<b>CorILMethod_Sect_MoreSects</b> = 0x80
 <br />
  }</td></tr>
-<tr class="separator:adaef87adce748cab6fbe540374c63745"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:afbbf7ddc34087eaa332504ad92fd85a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classSgNode"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSgNode')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSgNode.html">SgNode</a></td></tr>
 <tr class="memitem:a55d8b091c53268f6ce031fe0d04d0cb0 inherit pub_types_classSgNode" id="r_a55d8b091c53268f6ce031fe0d04d0cb0"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>static_variant</b> = V_SgNode
  }</td></tr>
@@ -892,8 +911,8 @@ static VariantT&#160;</td><td class="memItemRight" valign="bottom"><b>variantFro
 <tr class="separator:a21445c0463dacde6c20a2a2a9ab813d0 inherit pro_static_attribs_classSgNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="adaef87adce748cab6fbe540374c63745" name="adaef87adce748cab6fbe540374c63745"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adaef87adce748cab6fbe540374c63745">&#9670;&#160;</a></span>anonymous enum</h2>
+<a id="afbbf7ddc34087eaa332504ad92fd85a9" name="afbbf7ddc34087eaa332504ad92fd85a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbbf7ddc34087eaa332504ad92fd85a9">&#9670;&#160;</a></span>anonymous enum</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -904,7 +923,7 @@ static VariantT&#160;</td><td class="memItemRight" valign="bottom"><b>variantFro
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35472">35472</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35694">35694</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -932,7 +951,7 @@ static VariantT&#160;</td><td class="memItemRight" valign="bottom"><b>variantFro
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35493">35493</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35715">35715</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -959,7 +978,7 @@ static VariantT&#160;</td><td class="memItemRight" valign="bottom"><b>variantFro
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35498">35498</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35720">35720</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -986,7 +1005,7 @@ static VariantT&#160;</td><td class="memItemRight" valign="bottom"><b>variantFro
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35506">35506</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35728">35728</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -1013,7 +1032,7 @@ static VariantT&#160;</td><td class="memItemRight" valign="bottom"><b>variantFro
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35511">35511</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
+<p class="definition">Definition at line <a class="el" href="binaryInstruction_8C_source.html#l35733">35733</a> of file <a class="el" href="binaryInstruction_8C_source.html">binaryInstruction.C</a>.</p>
 
 </div>
 </div>
@@ -1051,7 +1070,7 @@ static VariantT&#160;</td><td class="memItemRight" valign="bottom"><b>variantFro
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:17 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:23 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

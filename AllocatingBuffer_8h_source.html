@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,10 +40,8 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
@@ -53,6 +51,27 @@ $(function() {
 $(document).ready(function() { init_codefold(0); });
 /* @license-end */
 </script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_859fdbd7312fa6fbda59c78acaef4f65.html">Sawyer</a></li>  </ul>
@@ -156,70 +175,77 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <span class="keywordflow">return</span> newBuffer;</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    }</div>
 </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
 <div class="foldopen" id="foldopen00101" data-start="{" data-end="}">
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ae7d52f16642207474065588b7313e9f7">  101</a></span>    <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> <a class="code hl_function" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ae7d52f16642207474065588b7313e9f7">available</a>(<a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> start) <span class="keyword">const</span> <span class="comment">/*override*/</span> {</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keywordflow">return</span> start &lt; values_.size() ? values_.size() - start : 0;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a17eae32acaf9aae99948d6e2ac0b543a">  101</a></span>    std::vector&lt;T&gt; <a class="code hl_function" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a17eae32acaf9aae99948d6e2ac0b543a">to_vector</a>() const <span class="comment">/*override*/</span> {</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keywordflow">return</span> std::vector&lt;T&gt;{values_};</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    }</div>
 </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    </div>
 <div class="foldopen" id="foldopen00105" data-start="{" data-end="}">
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#aa48a6347074b4466235035a6f3c0ac63">  105</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#aa48a6347074b4466235035a6f3c0ac63">resize</a>(<a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> newSize) <span class="comment">/*override*/</span> {</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        values_.resize(newSize);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ae7d52f16642207474065588b7313e9f7">  105</a></span>    <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> <a class="code hl_function" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ae7d52f16642207474065588b7313e9f7">available</a>(<a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> start) <span class="keyword">const</span> <span class="comment">/*override*/</span> {</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <span class="keywordflow">return</span> start &lt; values_.size() ? values_.size() - start : 0;</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    }</div>
 </div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 <div class="foldopen" id="foldopen00109" data-start="{" data-end="}">
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a19235fcc616385cb30016c6577880cb4">  109</a></span>    <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> <a class="code hl_function" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a19235fcc616385cb30016c6577880cb4">read</a>(<a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ab2d5ce6337aafd645bbf30dc69b94736">Value</a> *buf, <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> address, <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> n) <span class="keyword">const</span> <span class="comment">/*override*/</span> {</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        n = std::min(n, <a class="code hl_function" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ae7d52f16642207474065588b7313e9f7">available</a>(address));</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        <span class="keywordflow">if</span> (buf &amp;&amp; n&gt;0)</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>            memcpy(buf, &amp;values_[address], n*<span class="keyword">sizeof</span>(values_[0]));</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keywordflow">return</span> n;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    }</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#aa48a6347074b4466235035a6f3c0ac63">  109</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#aa48a6347074b4466235035a6f3c0ac63">resize</a>(<a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> newSize) <span class="comment">/*override*/</span> {</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        values_.resize(newSize);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    }</div>
 </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="foldopen" id="foldopen00116" data-start="{" data-end="}">
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a7ac39d13157c9bc6f23f0faa94304cfe">  116</a></span>    <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> <a class="code hl_function" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a7ac39d13157c9bc6f23f0faa94304cfe">write</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ab2d5ce6337aafd645bbf30dc69b94736">Value</a> *buf, <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> address, <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> n) <span class="comment">/*override*/</span> {</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        n = std::min(n, <a class="code hl_function" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ae7d52f16642207474065588b7313e9f7">available</a>(address));</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keywordflow">if</span> (buf &amp;&amp; n&gt;0)</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>            memcpy(&amp;values_[address], buf, n*<span class="keyword">sizeof</span>(values_[0]));</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="keywordflow">return</span> n;</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    }</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="foldopen" id="foldopen00113" data-start="{" data-end="}">
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a19235fcc616385cb30016c6577880cb4">  113</a></span>    <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> <a class="code hl_function" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a19235fcc616385cb30016c6577880cb4">read</a>(<a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ab2d5ce6337aafd645bbf30dc69b94736">Value</a> *buf, <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> address, <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> n) <span class="keyword">const</span> <span class="comment">/*override*/</span> {</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        n = std::min(n, <a class="code hl_function" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ae7d52f16642207474065588b7313e9f7">available</a>(address));</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        <span class="keywordflow">if</span> (buf &amp;&amp; n&gt;0)</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            memcpy(buf, &amp;values_[address], n*<span class="keyword">sizeof</span>(values_[0]));</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keywordflow">return</span> n;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    }</div>
 </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
-<div class="foldopen" id="foldopen00123" data-start="{" data-end="}">
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a6b90a0fde8b6fc1e962e4013217b5b88">  123</a></span>    <span class="keyword">const</span> <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ab2d5ce6337aafd645bbf30dc69b94736">Value</a>* <a class="code hl_function" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a6b90a0fde8b6fc1e962e4013217b5b88">data</a>() const <span class="comment">/*override*/</span> {</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <span class="keywordflow">return</span> values_.size() &gt; 0 ? &amp;values_[0] : NULL;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="foldopen" id="foldopen00120" data-start="{" data-end="}">
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a7ac39d13157c9bc6f23f0faa94304cfe">  120</a></span>    <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> <a class="code hl_function" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a7ac39d13157c9bc6f23f0faa94304cfe">write</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ab2d5ce6337aafd645bbf30dc69b94736">Value</a> *buf, <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> address, <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Address</a> n) <span class="comment">/*override*/</span> {</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        n = std::min(n, <a class="code hl_function" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ae7d52f16642207474065588b7313e9f7">available</a>(address));</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <span class="keywordflow">if</span> (buf &amp;&amp; n&gt;0)</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>            memcpy(&amp;values_[address], buf, n*<span class="keyword">sizeof</span>(values_[0]));</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <span class="keywordflow">return</span> n;</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    }</div>
 </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>};</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="foldopen" id="foldopen00127" data-start="{" data-end="}">
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a6b90a0fde8b6fc1e962e4013217b5b88">  127</a></span>    <span class="keyword">const</span> <a class="code hl_typedef" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ab2d5ce6337aafd645bbf30dc69b94736">Value</a>* <a class="code hl_function" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a6b90a0fde8b6fc1e962e4013217b5b88">data</a>() const <span class="comment">/*override*/</span> {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keywordflow">return</span> values_.size() &gt; 0 ? &amp;values_[0] : NULL;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    }</div>
 </div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>} <span class="comment">// namespace</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>} <span class="comment">// namespace</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>};</div>
+</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>} <span class="comment">// namespace</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>} <span class="comment">// namespace</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html">Sawyer::Container::AllocatingBuffer</a></div><div class="ttdoc">Allocates memory as needed.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00035">AllocatingBuffer.h:35</a></div></div>
 <div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_a159c80cfdda969c9b76138c481d41f72"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a159c80cfdda969c9b76138c481d41f72">Sawyer::Container::AllocatingBuffer::copy</a></div><div class="ttdeci">Buffer&lt; A, T &gt;::Ptr copy() const</div><div class="ttdoc">Create a new copy of buffer data.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00089">AllocatingBuffer.h:89</a></div></div>
-<div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_a19235fcc616385cb30016c6577880cb4"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a19235fcc616385cb30016c6577880cb4">Sawyer::Container::AllocatingBuffer::read</a></div><div class="ttdeci">Address read(Value *buf, Address address, Address n) const</div><div class="ttdoc">Reads data from a buffer.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00109">AllocatingBuffer.h:109</a></div></div>
+<div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_a17eae32acaf9aae99948d6e2ac0b543a"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a17eae32acaf9aae99948d6e2ac0b543a">Sawyer::Container::AllocatingBuffer::to_vector</a></div><div class="ttdeci">std::vector&lt; T &gt; to_vector() const</div><div class="ttdoc">Create a std::vector copy of the data.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00101">AllocatingBuffer.h:101</a></div></div>
+<div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_a19235fcc616385cb30016c6577880cb4"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a19235fcc616385cb30016c6577880cb4">Sawyer::Container::AllocatingBuffer::read</a></div><div class="ttdeci">Address read(Value *buf, Address address, Address n) const</div><div class="ttdoc">Reads data from a buffer.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00113">AllocatingBuffer.h:113</a></div></div>
 <div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_a2ee720fa19d9ebdf3a35115cf68d8b69"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a2ee720fa19d9ebdf3a35115cf68d8b69">Sawyer::Container::AllocatingBuffer::Address</a></div><div class="ttdeci">A Address</div><div class="ttdoc">Type of addresses used to index the stored data.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00037">AllocatingBuffer.h:37</a></div></div>
-<div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_a6b90a0fde8b6fc1e962e4013217b5b88"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a6b90a0fde8b6fc1e962e4013217b5b88">Sawyer::Container::AllocatingBuffer::data</a></div><div class="ttdeci">const Value * data() const</div><div class="ttdoc">Data for the buffer.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00123">AllocatingBuffer.h:123</a></div></div>
+<div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_a6b90a0fde8b6fc1e962e4013217b5b88"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a6b90a0fde8b6fc1e962e4013217b5b88">Sawyer::Container::AllocatingBuffer::data</a></div><div class="ttdeci">const Value * data() const</div><div class="ttdoc">Data for the buffer.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00127">AllocatingBuffer.h:127</a></div></div>
 <div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_a725b1edccd202c32ed75d1b5f1e43466"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a725b1edccd202c32ed75d1b5f1e43466">Sawyer::Container::AllocatingBuffer::instance</a></div><div class="ttdeci">static Buffer&lt; A, T &gt;::Ptr instance(const std::string &amp;s)</div><div class="ttdoc">Allocating constructor.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00083">AllocatingBuffer.h:83</a></div></div>
-<div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_a7ac39d13157c9bc6f23f0faa94304cfe"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a7ac39d13157c9bc6f23f0faa94304cfe">Sawyer::Container::AllocatingBuffer::write</a></div><div class="ttdeci">Address write(const Value *buf, Address address, Address n)</div><div class="ttdoc">Writes data to a buffer.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00116">AllocatingBuffer.h:116</a></div></div>
+<div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_a7ac39d13157c9bc6f23f0faa94304cfe"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a7ac39d13157c9bc6f23f0faa94304cfe">Sawyer::Container::AllocatingBuffer::write</a></div><div class="ttdeci">Address write(const Value *buf, Address address, Address n)</div><div class="ttdoc">Writes data to a buffer.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00120">AllocatingBuffer.h:120</a></div></div>
 <div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_a99d7bfbed62a99c476b5ee12d5cbeece"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a99d7bfbed62a99c476b5ee12d5cbeece">Sawyer::Container::AllocatingBuffer::instance</a></div><div class="ttdeci">static Buffer&lt; A, T &gt;::Ptr instance(Address size)</div><div class="ttdoc">Allocating constructor.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00076">AllocatingBuffer.h:76</a></div></div>
-<div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_aa48a6347074b4466235035a6f3c0ac63"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#aa48a6347074b4466235035a6f3c0ac63">Sawyer::Container::AllocatingBuffer::resize</a></div><div class="ttdeci">void resize(Address newSize)</div><div class="ttdoc">Change the size of the buffer.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00105">AllocatingBuffer.h:105</a></div></div>
+<div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_aa48a6347074b4466235035a6f3c0ac63"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#aa48a6347074b4466235035a6f3c0ac63">Sawyer::Container::AllocatingBuffer::resize</a></div><div class="ttdeci">void resize(Address newSize)</div><div class="ttdoc">Change the size of the buffer.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00109">AllocatingBuffer.h:109</a></div></div>
 <div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_ab2d5ce6337aafd645bbf30dc69b94736"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ab2d5ce6337aafd645bbf30dc69b94736">Sawyer::Container::AllocatingBuffer::Value</a></div><div class="ttdeci">T Value</div><div class="ttdoc">Type of data that is stored.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00038">AllocatingBuffer.h:38</a></div></div>
-<div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_ae7d52f16642207474065588b7313e9f7"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ae7d52f16642207474065588b7313e9f7">Sawyer::Container::AllocatingBuffer::available</a></div><div class="ttdeci">Address available(Address start) const</div><div class="ttdoc">Distance to end of buffer.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00101">AllocatingBuffer.h:101</a></div></div>
+<div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_ae7d52f16642207474065588b7313e9f7"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ae7d52f16642207474065588b7313e9f7">Sawyer::Container::AllocatingBuffer::available</a></div><div class="ttdeci">Address available(Address start) const</div><div class="ttdoc">Distance to end of buffer.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00105">AllocatingBuffer.h:105</a></div></div>
 <div class="ttc" id="aclassSawyer_1_1Container_1_1AllocatingBuffer_html_aedcd1a69d07765902bdccfd1c86eec4a"><div class="ttname"><a href="classSawyer_1_1Container_1_1AllocatingBuffer.html#aedcd1a69d07765902bdccfd1c86eec4a">Sawyer::Container::AllocatingBuffer::Super</a></div><div class="ttdeci">Buffer&lt; A, T &gt; Super</div><div class="ttdoc">Type of base class.</div><div class="ttdef"><b>Definition</b> <a href="AllocatingBuffer_8h_source.html#l00039">AllocatingBuffer.h:39</a></div></div>
 <div class="ttc" id="aclassSawyer_1_1Container_1_1Buffer_html"><div class="ttname"><a href="classSawyer_1_1Container_1_1Buffer.html">Sawyer::Container::Buffer</a></div><div class="ttdoc">Base class for all buffers.</div><div class="ttdef"><b>Definition</b> <a href="Buffer_8h_source.html#l00023">Buffer.h:23</a></div></div>
-<div class="ttc" id="aclassSawyer_1_1Container_1_1Buffer_html_a4c86f9391c62633b138a09a6ede81b02"><div class="ttname"><a href="classSawyer_1_1Container_1_1Buffer.html#a4c86f9391c62633b138a09a6ede81b02">Sawyer::Container::Buffer::size</a></div><div class="ttdeci">virtual Address size() const</div><div class="ttdoc">Size of buffer.</div><div class="ttdef"><b>Definition</b> <a href="Buffer_8h_source.html#l00093">Buffer.h:93</a></div></div>
+<div class="ttc" id="aclassSawyer_1_1Container_1_1Buffer_html_a4c86f9391c62633b138a09a6ede81b02"><div class="ttname"><a href="classSawyer_1_1Container_1_1Buffer.html#a4c86f9391c62633b138a09a6ede81b02">Sawyer::Container::Buffer::size</a></div><div class="ttdeci">virtual Address size() const</div><div class="ttdoc">Size of buffer.</div><div class="ttdef"><b>Definition</b> <a href="Buffer_8h_source.html#l00098">Buffer.h:98</a></div></div>
 <div class="ttc" id="aclassSawyer_1_1Container_1_1Buffer_html_a51d7578c5e6fb3d634ad1299c8754857"><div class="ttname"><a href="classSawyer_1_1Container_1_1Buffer.html#a51d7578c5e6fb3d634ad1299c8754857">Sawyer::Container::Buffer::Ptr</a></div><div class="ttdeci">SharedPointer&lt; Buffer &gt; Ptr</div><div class="ttdoc">Reference counting smart pointer.</div><div class="ttdef"><b>Definition</b> <a href="Buffer_8h_source.html#l00062">Buffer.h:62</a></div></div>
 <div class="ttc" id="aclassSawyer_1_1SharedPointer_html"><div class="ttname"><a href="classSawyer_1_1SharedPointer.html">Sawyer::SharedPointer</a></div><div class="ttdoc">Reference-counting intrusive smart pointer.</div><div class="ttdef"><b>Definition</b> <a href="SharedPointer_8h_source.html#l00065">SharedPointer.h:65</a></div></div>
 <div class="ttc" id="anamespaceSawyer_html"><div class="ttname"><a href="namespaceSawyer.html">Sawyer</a></div><div class="ttdoc">Sawyer support library.</div><div class="ttdef"><b>Definition</b> <a href="FeasiblePath_8h_source.html#l00767">FeasiblePath.h:767</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:23:58 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:03 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

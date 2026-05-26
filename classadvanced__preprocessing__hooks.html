@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 </div><!-- top -->
 <div class="header">
   <div class="summary">
@@ -92,9 +111,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a09dc0548834defa8ca2ee5aeffce766d" id="r_a09dc0548834defa8ca2ee5aeffce766d"><td class="memTemplParams" colspan="2">template&lt;typename ContextT , typename TokenT , typename ContainerT , typename IteratorT &gt; </td></tr>
 <tr class="memitem:a09dc0548834defa8ca2ee5aeffce766d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classadvanced__preprocessing__hooks.html#a09dc0548834defa8ca2ee5aeffce766d">expanding_function_like_macro</a> (ContextT const &amp;, TokenT const &amp;macrodef, std::vector&lt; TokenT &gt; const &amp;formal_args, ContainerT const &amp;definition, TokenT const &amp;macrocall, std::vector&lt; ContainerT &gt; const &amp;arguments, IteratorT const &amp;, IteratorT const &amp;)</td></tr>
 <tr class="separator:a09dc0548834defa8ca2ee5aeffce766d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7a8e0083a463a600023a661e370af75" id="r_af7a8e0083a463a600023a661e370af75"><td class="memTemplParams" colspan="2">template&lt;typename ContextT , typename TokenT , typename ContainerT &gt; </td></tr>
-<tr class="memitem:af7a8e0083a463a600023a661e370af75"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classadvanced__preprocessing__hooks.html#af7a8e0083a463a600023a661e370af75">expanding_object_like_macro</a> (ContextT const &amp;ctx, TokenT const &amp;macro, ContainerT const &amp;definition, TokenT const &amp;macrocall)</td></tr>
-<tr class="separator:af7a8e0083a463a600023a661e370af75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaae63fc811024c2650b50a667c62dfef" id="r_aaae63fc811024c2650b50a667c62dfef"><td class="memTemplParams" colspan="2">template&lt;typename ContextT , typename TokenT , typename ContainerT &gt; </td></tr>
+<tr class="memitem:aaae63fc811024c2650b50a667c62dfef"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classadvanced__preprocessing__hooks.html#aaae63fc811024c2650b50a667c62dfef">expanding_object_like_macro</a> (ContextT const &amp;, TokenT const &amp;macro, ContainerT const &amp;definition, TokenT const &amp;macrocall)</td></tr>
+<tr class="separator:aaae63fc811024c2650b50a667c62dfef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a252ad5e6ff3aa0de5b4ee52a663b7999" id="r_a252ad5e6ff3aa0de5b4ee52a663b7999"><td class="memTemplParams" colspan="2">template&lt;typename ContextT , typename ContainerT &gt; </td></tr>
 <tr class="memitem:a252ad5e6ff3aa0de5b4ee52a663b7999"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classadvanced__preprocessing__hooks.html#a252ad5e6ff3aa0de5b4ee52a663b7999">expanded_macro</a> (ContextT const &amp;, ContainerT const &amp;result)</td></tr>
 <tr class="separator:a252ad5e6ff3aa0de5b4ee52a663b7999"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -279,8 +298,8 @@ template&lt;typename ContextT , typename TokenT , typename ContainerT , typename
 
 </div>
 </div>
-<a id="af7a8e0083a463a600023a661e370af75" name="af7a8e0083a463a600023a661e370af75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7a8e0083a463a600023a661e370af75">&#9670;&#160;</a></span>expanding_object_like_macro()</h2>
+<a id="aaae63fc811024c2650b50a667c62dfef" name="aaae63fc811024c2650b50a667c62dfef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaae63fc811024c2650b50a667c62dfef">&#9670;&#160;</a></span>expanding_object_like_macro()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -294,7 +313,7 @@ template&lt;typename ContextT , typename TokenT , typename ContainerT &gt; </div
           <td class="memname">bool advanced_preprocessing_hooks::expanding_object_like_macro </td>
           <td>(</td>
           <td class="paramtype">ContextT const &amp;&#160;</td>
-          <td class="paramname"><em>ctx</em>, </td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1334,7 +1353,7 @@ template&lt;typename ContextT , typename ContainerT &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:11 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:17 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

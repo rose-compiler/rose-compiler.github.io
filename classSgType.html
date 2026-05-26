@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 </div><!-- top -->
 <div class="header">
   <div class="summary">
@@ -70,7 +89,7 @@ $(function() {
 </ol>
 <p>Note that the typedefs for which the current <a class="el" href="classSgType.html" title="This class represents the base class for all types.">SgType</a> is the base type are stored in a list. There is a special IR node (<a class="el" href="classSgTypedefSeq.html" title="This class represents a list of associated typedefs for the SgType IR nodes which reference this list...">SgTypedefSeq</a>) to maintain this list (which is internally an STL list). We could also store pointers to other <a class="el" href="classSgType.html" title="This class represents the base class for all types.">SgType</a> IR nodes where pointers and references have been taken to the current IR node, but currently only typedefs are stored explicitly. As a result of storing the typedefs, the builtin types store the list for most <a class="el" href="classSgType.html" title="This class represents the base class for all types.">SgType</a> IR nodes (since ther is only a single <a class="el" href="classSgType.html" title="This class represents the base class for all types.">SgType</a> IR node for most <a class="el" href="classSgType.html" title="This class represents the base class for all types.">SgType</a> derived classes). We could imagine storing the <a class="el" href="classSgTypedefSeq.html" title="This class represents a list of associated typedefs for the SgType IR nodes which reference this list...">SgTypedefSeq</a> as static data members of the derived <a class="el" href="classSgType.html" title="This class represents the base class for all types.">SgType</a> classes, but this would not work since then all <a class="el" href="classSgNamedType.html">SgNamedType</a> IR nodes would share the same list of typedefs. So this is the correct location for this list. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85438">85438</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85170">85170</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 </div><div class="dynheader">
 Inheritance diagram for SgType:</div>
 <div class="dyncontent">
@@ -1173,7 +1192,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l86109">86109</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85841">85841</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -1190,7 +1209,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85579">85579</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85311">85311</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -1208,7 +1227,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>static variant value </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85730">85730</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85462">85462</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -1420,7 +1439,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Generate a container of types hidden in the input type. </p>
 <p>Returns a vector of types hidden in the input type (pointer, array, etc.). </p>
 
-<p class="reference">Referenced by <a class="el" href="sageBuilder_8C_source.html#l16326">SageBuilder::fixupCopyOfNodeFromSeparateFileInNewTargetAst()</a>, <a class="el" href="sageBuilder_8C_source.html#l15733">SageBuilder::getTargetFileType()</a>, and <a class="el" href="sageInterface_8C_source.html#l26049">SageInterface::isEquivalentType()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageBuilder_8C_source.html#l16326">SageBuilder::fixupCopyOfNodeFromSeparateFileInNewTargetAst()</a>, <a class="el" href="sageBuilder_8C_source.html#l15733">SageBuilder::getTargetFileType()</a>, and <a class="el" href="sageInterface_8C_source.html#l25604">SageInterface::isEquivalentType()</a>.</p>
 
 </div>
 </div>
@@ -1728,7 +1747,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSgTypeUnknown.html#ae3b4cd589f114a45a4856e12496a6d0e">SgTypeUnknown</a>, <a class="el" href="classSgTypeVoid.html#a4735acb0f4d86844d313119bc7be3b38">SgTypeVoid</a>, <a class="el" href="classSgTypeGlobalVoid.html#a550dd85c34507e6d68257b5792494773">SgTypeGlobalVoid</a>, <a class="el" href="classSgTypeTuple.html#a38d2d5a7e2117c3829717391df21f4ce">SgTypeTuple</a>, <a class="el" href="classSgTypeString.html#a98be7f291cfe8466268a463ab4f11600">SgTypeString</a>, <a class="el" href="classSgRangeType.html#a363375447036660cb4b9abb54c343585">SgRangeType</a>, <a class="el" href="classSgPointerType.html#af17b64d8f547a471377f08591861e00b">SgPointerType</a>, <a class="el" href="classSgPointerMemberType.html#a389296e2f8e170caae6572b25fbc7e6c">SgPointerMemberType</a>, <a class="el" href="classSgJovialBitType.html#a7cf81d3f11229ac9e658fb15b3154e05">SgJovialBitType</a>, <a class="el" href="classSgReferenceType.html#af775fc5ff4c6b4fe484b4028ac99828f">SgReferenceType</a>, <a class="el" href="classSgNamedType.html#a0e2870ebed7e2b0a4c68cac32c0186db">SgNamedType</a>, <a class="el" href="classSgClassType.html#a00a05de958431945d3f1fcd4e9f2f244">SgClassType</a>, <a class="el" href="classSgJavaParameterType.html#a9488ee1890a3b31b7ceb273f68fd2bcc">SgJavaParameterType</a>, <a class="el" href="classSgJovialTableType.html#a3513fc0c622e3160a1b6892d9d84bab7">SgJovialTableType</a>, <a class="el" href="classSgEnumType.html#a1a7f735768ba7ec714a4fe48ef3006a7">SgEnumType</a>, <a class="el" href="classSgTypedefType.html#a05280a47ff845265705a4239e98985cd">SgTypedefType</a>, <a class="el" href="classSgNonrealType.html#a9283a76b489f6874995e885de0d80dc5">SgNonrealType</a>, <a class="el" href="classSgJavaParameterizedType.html#a387f7693f1a36bcc2b427d3d30ff6293">SgJavaParameterizedType</a>, <a class="el" href="classSgJavaQualifiedType.html#a34514701bc94fed8c90b1af62b769586">SgJavaQualifiedType</a>, <a class="el" href="classSgJavaWildcardType.html#a5269df8dc29d5d6a9b9d5a43acd1d3a1">SgJavaWildcardType</a>, <a class="el" href="classSgAdaTaskType.html#ab0f5831f26376d6e10cb6b65b7740740">SgAdaTaskType</a>, <a class="el" href="classSgAdaProtectedType.html#a379ba8b7d89bc1ebcae65a8272f3a9b4">SgAdaProtectedType</a>, <a class="el" href="classSgAdaFormalType.html#a1445ec40edac6e09559989c39202df00">SgAdaFormalType</a>, <a class="el" href="classSgAdaDiscriminatedType.html#abb75705c06b3fece3b2c7d1703ff5fad">SgAdaDiscriminatedType</a>, <a class="el" href="classSgScopedType.html#a56267c93c33a0980a27390c195c74b6d">SgScopedType</a>, <a class="el" href="classSgModifierType.html#afa1260b38331ad243aecdd5e17179875">SgModifierType</a>, <a class="el" href="classSgFunctionType.html#a415e25768c353e1c3fef86b71b27e139">SgFunctionType</a>, <a class="el" href="classSgMemberFunctionType.html#a11ba2a9ec850a852fdbd57b06c48aa6e">SgMemberFunctionType</a>, <a class="el" href="classSgPartialFunctionType.html#aa98d0d64da15c5fe7bb28b2029d68479">SgPartialFunctionType</a>, <a class="el" href="classSgPartialFunctionModifierType.html#a6e7c58e5390133768cd1bb42de720c62">SgPartialFunctionModifierType</a>, <a class="el" href="classSgArrayType.html#ab2e88082e501693fd257c8ea18a99c8d">SgArrayType</a>, <a class="el" href="classSgTypeEllipse.html#aed3ca016ec49404c54f4d02befbcb687">SgTypeEllipse</a>, <a class="el" href="classSgTemplateType.html#adabc1954dc31ded2a4c1023d156eca9a">SgTemplateType</a>, <a class="el" href="classSgQualifiedNameType.html#a2b42162cf973d6d54e66c815758b6be8">SgQualifiedNameType</a>, <a class="el" href="classSgTypeComplex.html#adcb4e1917a523ffd43f0a5b972fc6b35">SgTypeComplex</a>, <a class="el" href="classSgTypeImaginary.html#a9d931bf4fd5ca3258ba695c06f0b0c09">SgTypeImaginary</a>, <a class="el" href="classSgTypeDefault.html#a2c79388190da3abd6d5bf2aa49af2088">SgTypeDefault</a>, <a class="el" href="classSgTypeCAFTeam.html#a61f26163e41d618441c9651d023251e4">SgTypeCAFTeam</a>, <a class="el" href="classSgTypeCrayPointer.html#a4cb95d1b7d742b291225c429a8e8df13">SgTypeCrayPointer</a>, <a class="el" href="classSgTypeLabel.html#a0bc1bb1d14dd6cd1879212978df22fd8">SgTypeLabel</a>, <a class="el" href="classSgJavaUnionType.html#ae09dca21019872ae5c8aa40f4bdf8437">SgJavaUnionType</a>, <a class="el" href="classSgRvalueReferenceType.html#a922ef6bed02f468e29d0851b139ac958">SgRvalueReferenceType</a>, <a class="el" href="classSgTypeNullptr.html#ab4af113a227377f883d3d55cb8798701">SgTypeNullptr</a>, <a class="el" href="classSgDeclType.html#a974f701161de09fa219c4bc38e308d87">SgDeclType</a>, <a class="el" href="classSgTypeOfType.html#af42b61b4dab9e227f158a9e5ae7f965e">SgTypeOfType</a>, <a class="el" href="classSgTypeMatrix.html#a5c69807fe5c5fd14fbdb0af1592b51cc">SgTypeMatrix</a>, <a class="el" href="classSgTypeFixed.html#af4d56a8e9da3d81fa566db8b14b1a0c9">SgTypeFixed</a>, <a class="el" href="classSgAutoType.html#a75e87e34a782eb77200624e02fe07616">SgAutoType</a>, <a class="el" href="classSgAdaAccessType.html#a83000cdc2dbf41891d6e56230b581cb4">SgAdaAccessType</a>, <a class="el" href="classSgAdaSubtype.html#afdbd06db9ce4011fb403ca18dad39899">SgAdaSubtype</a>, <a class="el" href="classSgAdaDiscreteType.html#a24f81c6d90ff9e561f76be206eafa2fa">SgAdaDiscreteType</a>, <a class="el" href="classSgAdaDerivedType.html#af1bdff77c00233a675b3fb00320ef569">SgAdaDerivedType</a>, <a class="el" href="classSgAdaSubroutineType.html#abe61015769fcdd63363fe572490ede5e">SgAdaSubroutineType</a>, <a class="el" href="classSgIntegralType.html#a563e6f9a6bd2e379a328e58a9f0121b7">SgIntegralType</a>, <a class="el" href="classSgSignedIntegralType.html#a0ff088f10e25637d8e8fffd4e6c665b1">SgSignedIntegralType</a>, <a class="el" href="classSgTypeInt.html#a63ae204880202e96c8ca198de5536855">SgTypeInt</a>, <a class="el" href="classSgTypeLong.html#a0723e063c42ac91d88ea5aac969d083a">SgTypeLong</a>, <a class="el" href="classSgTypeLongLong.html#a55ee98ca1d0950eef0a820ef764ca94b">SgTypeLongLong</a>, <a class="el" href="classSgTypeShort.html#abcc816100cccef8a5808c6b54c2bedfb">SgTypeShort</a>, <a class="el" href="classSgTypeSigned128bitInteger.html#a0314f3f54958bba163260633bec60fee">SgTypeSigned128bitInteger</a>, <a class="el" href="classSgTypeSignedChar.html#a618d4e0d360c77cb236838175df1036a">SgTypeSignedChar</a>, <a class="el" href="classSgTypeSignedInt.html#a50cee56e7d46cd2beeff40dd82479d50">SgTypeSignedInt</a>, <a class="el" href="classSgTypeSignedLong.html#a1f23a31fad7a46301f498df3d83be6b7">SgTypeSignedLong</a>, <a class="el" href="classSgTypeSignedLongLong.html#a18a16b04563ec05ce1d1ccc99836a614">SgTypeSignedLongLong</a>, <a class="el" href="classSgTypeSignedShort.html#ac03dcf2ff9e3f85a9eb9e496fdba7351">SgTypeSignedShort</a>, <a class="el" href="classSgUnsignedIntegralType.html#a71f80d53b46d8460ec3090f1087d5ce4">SgUnsignedIntegralType</a>, <a class="el" href="classSgTypeUnsigned128bitInteger.html#a8a37184972cbdef22150c499d5ab3215">SgTypeUnsigned128bitInteger</a>, <a class="el" href="classSgTypeUnsignedChar.html#a5016f84bb7b89a69297a8be48da27bed">SgTypeUnsignedChar</a>, <a class="el" href="classSgTypeUnsignedInt.html#a2f7ddbe2317c9f7f488b18cdd29e1699">SgTypeUnsignedInt</a>, <a class="el" href="classSgTypeUnsignedLong.html#a3df865de9f85453eca23fd9c5d9e3656">SgTypeUnsignedLong</a>, <a class="el" href="classSgTypeUnsignedLongLong.html#a68b73cd17e9ebe88d540cf2d4b1bf3f4">SgTypeUnsignedLongLong</a>, <a class="el" href="classSgTypeUnsignedShort.html#aea51b0ed138dbcac42963e968f1b8a5e">SgTypeUnsignedShort</a>, <a class="el" href="classSgTypeChar.html#ad2068a348cda06ca2eb87dda2cc9dc20">SgTypeChar</a>, <a class="el" href="classSgTypeWchar.html#ae0c1106fc5a7381239f1165747d698e6">SgTypeWchar</a>, <a class="el" href="classSgTypeChar16.html#a62babcb62d0dcc52cb1ad401bf8b6184">SgTypeChar16</a>, <a class="el" href="classSgTypeChar32.html#aba1620da91886a5309d0a61770b66026">SgTypeChar32</a>, <a class="el" href="classSgAdaModularType.html#a1c1decb59b9e32f717c0c050e49b58af">SgAdaModularType</a>, <a class="el" href="classSgTypeBool.html#a1e79e51e31b2c0d995f428d0d11409da">SgTypeBool</a>, <a class="el" href="classSgFloatingPointType.html#a6a29bf9bf8855b6c6e95839199325081">SgFloatingPointType</a>, <a class="el" href="classSgTypeFloat.html#a8d7960d3d7d19590d480a2f4fca85531">SgTypeFloat</a>, <a class="el" href="classSgTypeFloat128.html#a6b6b2f9fa50dec7dcc457c8743140195">SgTypeFloat128</a>, <a class="el" href="classSgTypeFloat80.html#a2e715d8ae1c726ea25a300d4c74db1ee">SgTypeFloat80</a>, <a class="el" href="classSgTypeDouble.html#ad16a75a927882438e9669dc9c77a7052">SgTypeDouble</a>, <a class="el" href="classSgTypeLongDouble.html#a7e005baeb962575172ecc972742fe270">SgTypeLongDouble</a>, <a class="el" href="classSgTypeFloat16.html#ae5886963087118f46aede352c423391e">SgTypeFloat16</a>, <a class="el" href="classSgTypeBFloat16.html#adccd269c1202fe80a28611470b9556a3">SgTypeBFloat16</a>, <a class="el" href="classSgTypeFp16.html#aa3850912186021a9dbff33c9b5b81afa">SgTypeFp16</a>, <a class="el" href="classSgTypeFloat32x.html#a7381438aa2ce72ac1984ff5f404e5a12">SgTypeFloat32x</a>, <a class="el" href="classSgTypeFloat64x.html#ac157880df1cb1f0efb3b5733cf219600">SgTypeFloat64x</a>, <a class="el" href="classSgTypeFloat32.html#a448cde32a8facd9c6534e25fd566b27f">SgTypeFloat32</a>, and <a class="el" href="classSgTypeFloat64.html#a382ef43d0a28c7a5e13ae216d75a3874">SgTypeFloat64</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sageBuilder_8C_source.html#l00408">SageBuilder::appendTemplateArgumentsToName()</a>, <a class="el" href="sageBuilder_8C_source.html#l08825">SageBuilder::buildConstVolatileType()</a>, <a class="el" href="sageBuilder_8C_source.html#l08906">SageBuilder::buildRestrictType()</a>, <a class="el" href="sageBuilder_8C_source.html#l02046">SageBuilder::buildTemplateInstantiationTypedefDeclaration_nfi()</a>, <a class="el" href="sageBuilder_8C_source.html#l01727">SageBuilder::buildTemplateVariableInstantiation_nfi()</a>, <a class="el" href="sageBuilder_8C_source.html#l08296">SageBuilder::buildTypeOfType()</a>, <a class="el" href="sageInterface_8C_source.html#l26894">SageInterface::detectCycleInType()</a>, <a class="el" href="sageBuilder_8C_source.html#l16326">SageBuilder::fixupCopyOfNodeFromSeparateFileInNewTargetAst()</a>, <a class="el" href="sageInterface_8C_source.html#l02656">SageInterface::get_name()</a>, <a class="el" href="sageInterface_8C_source.html#l08810">SageInterface::getClassTypeChainForMemberReference()</a>, <a class="el" href="sageBuilder_8C_source.html#l15733">SageBuilder::getTargetFileType()</a>, <a class="el" href="sageBuilder_8C_source.html#l15435">SageBuilder::getTargetFileTypeSupport()</a>, <a class="el" href="sageInterface_8C_source.html#l26049">SageInterface::isEquivalentType()</a>, <a class="el" href="sageInterface_8C_source.html#l07998">SageInterface::templateArgumentEquivalence()</a>, and <a class="el" href="sageInterface_8C_source.html#l19025">CollectDependentDeclarationsTraversal::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageBuilder_8C_source.html#l00408">SageBuilder::appendTemplateArgumentsToName()</a>, <a class="el" href="sageBuilder_8C_source.html#l08825">SageBuilder::buildConstVolatileType()</a>, <a class="el" href="sageBuilder_8C_source.html#l08906">SageBuilder::buildRestrictType()</a>, <a class="el" href="sageBuilder_8C_source.html#l02046">SageBuilder::buildTemplateInstantiationTypedefDeclaration_nfi()</a>, <a class="el" href="sageBuilder_8C_source.html#l01727">SageBuilder::buildTemplateVariableInstantiation_nfi()</a>, <a class="el" href="sageBuilder_8C_source.html#l08296">SageBuilder::buildTypeOfType()</a>, <a class="el" href="sageInterface_8C_source.html#l26449">SageInterface::detectCycleInType()</a>, <a class="el" href="sageBuilder_8C_source.html#l16326">SageBuilder::fixupCopyOfNodeFromSeparateFileInNewTargetAst()</a>, <a class="el" href="sageInterface_8C_source.html#l02543">SageInterface::get_name()</a>, <a class="el" href="sageInterface_8C_source.html#l08697">SageInterface::getClassTypeChainForMemberReference()</a>, <a class="el" href="sageBuilder_8C_source.html#l15733">SageBuilder::getTargetFileType()</a>, <a class="el" href="sageBuilder_8C_source.html#l15435">SageBuilder::getTargetFileTypeSupport()</a>, <a class="el" href="sageInterface_8C_source.html#l25604">SageInterface::isEquivalentType()</a>, <a class="el" href="sageInterface_8C_source.html#l07885">SageInterface::templateArgumentEquivalence()</a>, and <a class="el" href="sageInterface_8C_source.html#l18912">CollectDependentDeclarationsTraversal::visit()</a>.</p>
 
 </div>
 </div>
@@ -1761,7 +1780,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSgTypeUnknown.html#abec63c123416d6e85e24ae27590ac781">SgTypeUnknown</a>, <a class="el" href="classSgTypeVoid.html#a57a20d3bc7ea0e13964aa125e10c6b76">SgTypeVoid</a>, <a class="el" href="classSgTypeGlobalVoid.html#a971634f1d2873cb98ec233238c6ac3db">SgTypeGlobalVoid</a>, <a class="el" href="classSgTypeTuple.html#a02725e47f9d67ef110059a5d11087cbf">SgTypeTuple</a>, <a class="el" href="classSgTypeString.html#a52bd9e996e2f16c658a1d1fbeb9b6f12">SgTypeString</a>, <a class="el" href="classSgRangeType.html#a4304f04140766ba8307a77c35929e70a">SgRangeType</a>, <a class="el" href="classSgPointerType.html#aaa92bf1f776b51cbc2dd525e1dcf221d">SgPointerType</a>, <a class="el" href="classSgPointerMemberType.html#a605be630afb2e38efa4ba427e4d95d0c">SgPointerMemberType</a>, <a class="el" href="classSgJovialBitType.html#ac5716ebe15e46221cdf8cbbb327508a1">SgJovialBitType</a>, <a class="el" href="classSgReferenceType.html#a9aee7f67e09050703308d5d1f16222e1">SgReferenceType</a>, <a class="el" href="classSgNamedType.html#adf0b3124c8211680b5b1809c78e111c1">SgNamedType</a>, <a class="el" href="classSgClassType.html#a364020a992e771794d271c2567de3b8b">SgClassType</a>, <a class="el" href="classSgJavaParameterType.html#aa5649dc5e74a5b2edb16cec0b39acf18">SgJavaParameterType</a>, <a class="el" href="classSgJovialTableType.html#aef42ee982ca63d1979dda16c3e8a39a6">SgJovialTableType</a>, <a class="el" href="classSgEnumType.html#a48781ec4454ec5ae47923d80f848a4bc">SgEnumType</a>, <a class="el" href="classSgTypedefType.html#a161a2e92777dd282a80fae2c8bcb5696">SgTypedefType</a>, <a class="el" href="classSgNonrealType.html#aa320b4934ad79d4e88a0879cbbbb7c82">SgNonrealType</a>, <a class="el" href="classSgJavaParameterizedType.html#a6117a9a443b58f47ca2304d93f009d2f">SgJavaParameterizedType</a>, <a class="el" href="classSgJavaQualifiedType.html#a71f1c8e228eb1fe4cd7a15ac3e9ae7a7">SgJavaQualifiedType</a>, <a class="el" href="classSgJavaWildcardType.html#a1ffdaaa4f7b47cd5400e77e0dcc1e801">SgJavaWildcardType</a>, <a class="el" href="classSgAdaTaskType.html#a416fd819e01b770881cf19b156ca80fe">SgAdaTaskType</a>, <a class="el" href="classSgAdaProtectedType.html#a7acf1f2c00c9e266ec1257d0030f8f5e">SgAdaProtectedType</a>, <a class="el" href="classSgAdaFormalType.html#a72c8332416c2fd1724aa26004beb29cc">SgAdaFormalType</a>, <a class="el" href="classSgAdaDiscriminatedType.html#a6483e13a509ab0864639df06a9d578f4">SgAdaDiscriminatedType</a>, <a class="el" href="classSgScopedType.html#a9b7b078d86ab87a6195815096c06da76">SgScopedType</a>, <a class="el" href="classSgModifierType.html#a10af72f284ec89b5c04bdc9609456acd">SgModifierType</a>, <a class="el" href="classSgFunctionType.html#a25e66df366165ee2076d5636bf3e51c2">SgFunctionType</a>, <a class="el" href="classSgMemberFunctionType.html#ace8ebef44625735652f646d443eb395c">SgMemberFunctionType</a>, <a class="el" href="classSgPartialFunctionType.html#acbe07e5aaeffb60d8d3d149ab5c4ecf9">SgPartialFunctionType</a>, <a class="el" href="classSgPartialFunctionModifierType.html#af52b2453cc6ccfd95746bcc2bab9a520">SgPartialFunctionModifierType</a>, <a class="el" href="classSgArrayType.html#ad7287456aab0afab45583d16a4255622">SgArrayType</a>, <a class="el" href="classSgTypeEllipse.html#a4d1d231fadbcb67c839db831dd706346">SgTypeEllipse</a>, <a class="el" href="classSgTemplateType.html#ac8059e8c0294e7bac92b4ee2dc897d5b">SgTemplateType</a>, <a class="el" href="classSgQualifiedNameType.html#a946eb8d6311406846effb4599948a91c">SgQualifiedNameType</a>, <a class="el" href="classSgTypeComplex.html#ab04385f7c294734f4935cc9688b29c68">SgTypeComplex</a>, <a class="el" href="classSgTypeImaginary.html#a04a6f02ec546b6c146f05ad58474f2d8">SgTypeImaginary</a>, <a class="el" href="classSgTypeDefault.html#a8fa452ef36fbffe2151453f1dc8f0731">SgTypeDefault</a>, <a class="el" href="classSgTypeCAFTeam.html#ab096b37f004f12be0481a6c95b1ad8bc">SgTypeCAFTeam</a>, <a class="el" href="classSgTypeCrayPointer.html#a03e2450a55e40312dc6d271e95e4495d">SgTypeCrayPointer</a>, <a class="el" href="classSgTypeLabel.html#adef72e21a1cb422078b61a943f09e2cd">SgTypeLabel</a>, <a class="el" href="classSgJavaUnionType.html#a8a64e08e812507778e01cc85122e36bd">SgJavaUnionType</a>, <a class="el" href="classSgRvalueReferenceType.html#ae6eb261918587f058600e3c39ebfd901">SgRvalueReferenceType</a>, <a class="el" href="classSgTypeNullptr.html#a477eeba1dd851934d7a1a6ded1af2415">SgTypeNullptr</a>, <a class="el" href="classSgDeclType.html#af2dd5dbb977c5d1c1525e8c5235ead2b">SgDeclType</a>, <a class="el" href="classSgTypeOfType.html#a8175dfc9c9d84e2be48d45c4a95d467b">SgTypeOfType</a>, <a class="el" href="classSgTypeMatrix.html#a207967568d53f52f03d7ce8753fdd959">SgTypeMatrix</a>, <a class="el" href="classSgTypeFixed.html#af2287910994e1da7aa3c376f6bce58a4">SgTypeFixed</a>, <a class="el" href="classSgAutoType.html#a0a97d90bc660501a3e4c5918f9d0546d">SgAutoType</a>, <a class="el" href="classSgAdaAccessType.html#adc46516994dd43ca9f0c0cd660a00491">SgAdaAccessType</a>, <a class="el" href="classSgAdaSubtype.html#ab1950ed18fba3a640f454fa7b8dfa066">SgAdaSubtype</a>, <a class="el" href="classSgAdaDiscreteType.html#a38abbe536f35741cc877bf210eddfa58">SgAdaDiscreteType</a>, <a class="el" href="classSgAdaDerivedType.html#a6cd4397dc8a326f7248922bcacddcb7d">SgAdaDerivedType</a>, <a class="el" href="classSgAdaSubroutineType.html#a5530f2ba87378d5afff1f5e2e19b8823">SgAdaSubroutineType</a>, <a class="el" href="classSgIntegralType.html#a3e03c1a835972b9909fb12200fe6583a">SgIntegralType</a>, <a class="el" href="classSgSignedIntegralType.html#a8adfbe5f045f48825d23ad6322b6dcce">SgSignedIntegralType</a>, <a class="el" href="classSgTypeInt.html#a18df9743466ca7ee5661b62de7ff1090">SgTypeInt</a>, <a class="el" href="classSgTypeLong.html#a712df2141cdd33b847c63b688dbbb664">SgTypeLong</a>, <a class="el" href="classSgTypeLongLong.html#a6a27590a264f407aa9daf3e014ac444e">SgTypeLongLong</a>, <a class="el" href="classSgTypeShort.html#ad3c8c9886a5afedf9fe1e155ee0d869f">SgTypeShort</a>, <a class="el" href="classSgTypeSigned128bitInteger.html#a620336e2771316e467a09ee262c055a3">SgTypeSigned128bitInteger</a>, <a class="el" href="classSgTypeSignedChar.html#a95f23e4d3a00a3ed1d395dbd1001a590">SgTypeSignedChar</a>, <a class="el" href="classSgTypeSignedInt.html#ac4a5c4f867566899747bb61e825d1540">SgTypeSignedInt</a>, <a class="el" href="classSgTypeSignedLong.html#ae8b561c0e5d0076648f46c78a665a97f">SgTypeSignedLong</a>, <a class="el" href="classSgTypeSignedLongLong.html#af8aa71cf12af432ab354d0450de6a2cb">SgTypeSignedLongLong</a>, <a class="el" href="classSgTypeSignedShort.html#af8ab0d9ba3edc5c9ebaf6f6fbb5dace1">SgTypeSignedShort</a>, <a class="el" href="classSgUnsignedIntegralType.html#aa4ee0aee71f112c4b631a3a88dbcb471">SgUnsignedIntegralType</a>, <a class="el" href="classSgTypeUnsigned128bitInteger.html#a19ea8f9602e65a59ae2cf2cbe439464b">SgTypeUnsigned128bitInteger</a>, <a class="el" href="classSgTypeUnsignedChar.html#a84a7ebb0518c665f6d1291a8a44862dd">SgTypeUnsignedChar</a>, <a class="el" href="classSgTypeUnsignedInt.html#acd3cc57a05b028f8138082020302af65">SgTypeUnsignedInt</a>, <a class="el" href="classSgTypeUnsignedLong.html#a1e4a312d674fee259fc051068e50e434">SgTypeUnsignedLong</a>, <a class="el" href="classSgTypeUnsignedLongLong.html#ad3a9ad224cd31ec8da5e31aae8341b4f">SgTypeUnsignedLongLong</a>, <a class="el" href="classSgTypeUnsignedShort.html#a6ea5570b38510d5e336c063ddcea84e4">SgTypeUnsignedShort</a>, <a class="el" href="classSgTypeChar.html#a0be4dcb20be6c3d623d8175539004437">SgTypeChar</a>, <a class="el" href="classSgTypeWchar.html#ab57af644103b517508bfa3e50c743ca6">SgTypeWchar</a>, <a class="el" href="classSgTypeChar16.html#a892107ba473aa3933263f8d4d47ebbe8">SgTypeChar16</a>, <a class="el" href="classSgTypeChar32.html#a9beb08721aea6cb92025fe566951e9c4">SgTypeChar32</a>, <a class="el" href="classSgAdaModularType.html#a37ce58772f174fd1c3084eb4e3a7efc6">SgAdaModularType</a>, <a class="el" href="classSgTypeBool.html#ad9aae10194a9877742a926928343effa">SgTypeBool</a>, <a class="el" href="classSgFloatingPointType.html#ac9bb6e321954ccf9d914623529725e9e">SgFloatingPointType</a>, <a class="el" href="classSgTypeFloat.html#a37c6b51d08869f799d938ef361164070">SgTypeFloat</a>, <a class="el" href="classSgTypeFloat128.html#ae532ee1acf4bd24e8ec733713da9903b">SgTypeFloat128</a>, <a class="el" href="classSgTypeFloat80.html#a624927977f637cf81111c546c15309c5">SgTypeFloat80</a>, <a class="el" href="classSgTypeDouble.html#a4ad8a31d85e7c6992af9cabeb85ae37c">SgTypeDouble</a>, <a class="el" href="classSgTypeLongDouble.html#a3e79856f862d570d0af0d224d5e47f9c">SgTypeLongDouble</a>, <a class="el" href="classSgTypeFloat16.html#ac5cfc4a4e9b1230113dc55395ba71e73">SgTypeFloat16</a>, <a class="el" href="classSgTypeBFloat16.html#aeb4ba3c7d6567ff616c8368beb9a3c37">SgTypeBFloat16</a>, <a class="el" href="classSgTypeFp16.html#a8967340130313b2add920cb68d504281">SgTypeFp16</a>, <a class="el" href="classSgTypeFloat32x.html#a361543f791f185020910236ed5a8eebe">SgTypeFloat32x</a>, <a class="el" href="classSgTypeFloat64x.html#a24b59ccacefef5904406a113213b9e47">SgTypeFloat64x</a>, <a class="el" href="classSgTypeFloat32.html#a4487d4495ff340e26716e70e150fc553">SgTypeFloat32</a>, and <a class="el" href="classSgTypeFloat64.html#a3f9c690aa43554d4ab2b4c0c270d9053">SgTypeFloat64</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l02656">SageInterface::get_name()</a>, and <a class="el" href="sageInterface_8C_source.html#l26049">SageInterface::isEquivalentType()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l02543">SageInterface::get_name()</a>, and <a class="el" href="sageInterface_8C_source.html#l25604">SageInterface::isEquivalentType()</a>.</p>
 
 </div>
 </div>
@@ -1789,7 +1808,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85785">85785</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85517">85517</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2323,7 +2342,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85516">85516</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85248">85248</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2347,7 +2366,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85517">85517</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85249">85249</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2371,7 +2390,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85518">85518</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85250">85250</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2395,7 +2414,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85519">85519</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85251">85251</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2419,7 +2438,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85520">85520</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85252">85252</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2443,7 +2462,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85521">85521</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85253">85253</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2467,7 +2486,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85527">85527</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85259">85259</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2491,7 +2510,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l86165">86165</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85897">85897</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2517,7 +2536,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>This boolean variable marks if the current type was originally a template parameter. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l86169">86169</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85901">85901</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2543,7 +2562,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>This holds the pointer to a <a class="el" href="classSgReferenceType.html">SgReferenceType</a> if this type is a reference to another type. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l86173">86173</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85905">85905</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2569,7 +2588,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>This holds the pointer to a <a class="el" href="classSgPointerType.html">SgPointerType</a> if this type is a pointer to another type. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l86177">86177</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85909">85909</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2595,7 +2614,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>This points to any <a class="el" href="classSgModifierNodes.html" title="This class is not used in ROSE, but is intended to represent a list of SgModifierTypes (similar to th...">SgModifierNodes</a> if this type contains type modifiers. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l86181">86181</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85913">85913</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2622,7 +2641,7 @@ Additional Inherited Members</h2></td></tr>
 <p>This points to IR node which holds a list of typedefs where the base_type if this <a class="el" href="classSgType.html" title="This class represents the base class for all types.">SgType</a>. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSgTypedefSeq.html" title="This class represents a list of associated typedefs for the SgType IR nodes which reference this list...">SgTypedefSeq</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l86185">86185</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85917">85917</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2646,7 +2665,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l86189">86189</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85921">85921</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2670,7 +2689,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l86193">86193</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85925">85925</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2694,7 +2713,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l86197">86197</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85929">85929</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2718,7 +2737,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l86201">86201</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85933">85933</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2742,7 +2761,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l86205">86205</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85937">85937</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2766,7 +2785,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l86209">86209</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l85941">85941</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2777,7 +2796,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:41 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:48 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 </div><!-- top -->
 <div class="header">
   <div class="summary">
@@ -77,7 +96,7 @@ $(function() {
 </div><!-- fragment --><p>In these cases "struct" and "class" can be used interchangablily. Internally "struct" and "class" are he same (but with a different enum to classify them, see SgNameType and <a class="el" href="classSgClassType.html">SgClassType</a>). Clearly most C++ code uses autonomous declarations.</p>
 <p>There are no uses of this IR node anywhere. All statements are derived from this <a class="el" href="classSgDeclarationStatement.html" title="This class represents the concept of a declaration statement.">SgDeclarationStatement</a> class. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280322">280322</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l279700">279700</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 </div><div class="dynheader">
 Inheritance diagram for SgDeclarationStatement:</div>
 <div class="dyncontent">
@@ -724,9 +743,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isOutputInCodeGenerat
 <tr class="memitem:a9b2c0ffcfed4ea7784e397fcb16fa0aa inherit pub_methods_classSgLocatedNode" id="r_a9b2c0ffcfed4ea7784e397fcb16fa0aa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSgLocatedNode.html#a9b2c0ffcfed4ea7784e397fcb16fa0aa">get_physical_file_id</a> ()</td></tr>
 <tr class="memdesc:a9b2c0ffcfed4ea7784e397fcb16fa0aa inherit pub_methods_classSgLocatedNode"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allow IR nodes (mostly <a class="el" href="classSgLocatedNode.html" title="This class represents the notion of an expression or statement which has a position within the source...">SgLocatedNode</a>) to be queried for there physical file ID.  <br /></td></tr>
 <tr class="separator:a9b2c0ffcfed4ea7784e397fcb16fa0aa inherit pub_methods_classSgLocatedNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc6d185eed028f62e61f50b90e114be7 inherit pub_methods_classSgLocatedNode" id="r_afc6d185eed028f62e61f50b90e114be7"><td class="memItemLeft" align="right" valign="top">AttachedPreprocessingInfoType *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSgLocatedNode.html#afc6d185eed028f62e61f50b90e114be7">getAttachedPreprocessingInfo</a> (void)</td></tr>
-<tr class="memdesc:afc6d185eed028f62e61f50b90e114be7 inherit pub_methods_classSgLocatedNode"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the number of nodes in the defined subtree of the AST.  <br /></td></tr>
-<tr class="separator:afc6d185eed028f62e61f50b90e114be7 inherit pub_methods_classSgLocatedNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeba402ebe7d71c7cf3b901e3bc695e7a inherit pub_methods_classSgLocatedNode" id="r_aeba402ebe7d71c7cf3b901e3bc695e7a"><td class="memItemLeft" align="right" valign="top">AttachedPreprocessingInfoType *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSgLocatedNode.html#aeba402ebe7d71c7cf3b901e3bc695e7a">getAttachedPreprocessingInfo</a> ()</td></tr>
+<tr class="memdesc:aeba402ebe7d71c7cf3b901e3bc695e7a inherit pub_methods_classSgLocatedNode"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function gets the adds comment or CPP directives to the current IR node.  <br /></td></tr>
+<tr class="separator:aeba402ebe7d71c7cf3b901e3bc695e7a inherit pub_methods_classSgLocatedNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12e84e59e5f788cbf291875bae3bb87c inherit pub_methods_classSgLocatedNode" id="r_a12e84e59e5f788cbf291875bae3bb87c"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="classSg__File__Info.html">Sg_File_Info</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>generateMatchingFileInfo</b> ()</td></tr>
 <tr class="separator:a12e84e59e5f788cbf291875bae3bb87c inherit pub_methods_classSgLocatedNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1512,7 +1531,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280892">280892</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280270">280270</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -1544,7 +1563,7 @@ Additional Inherited Members</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280339">280339</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l279717">279717</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -1577,7 +1596,7 @@ Additional Inherited Members</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280354">280354</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l279732">279732</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -1595,7 +1614,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>static variant value </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280513">280513</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l279891">279891</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -1702,7 +1721,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Returns boolean value indicating if this is a forward declaration. </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns bool. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l03957">SageInterface::buildForwardFunctionDeclaration()</a>, <a class="el" href="sageInterface_8C_source.html#l00869">SageInterface::isPrototypeInScope()</a>, and <a class="el" href="sageInterface_8C_source.html#l04263">SageInterface::rebuildSymbolTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l03844">SageInterface::buildForwardFunctionDeclaration()</a>, <a class="el" href="sageInterface_8C_source.html#l00756">SageInterface::isPrototypeInScope()</a>, and <a class="el" href="sageInterface_8C_source.html#l04150">SageInterface::rebuildSymbolTable()</a>.</p>
 
 </div>
 </div>
@@ -1919,7 +1938,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSgEnumDeclaration.html#a4c72b19b286a38b4db5eb00326c63686">SgEnumDeclaration</a>, <a class="el" href="classSgTemplateDeclaration.html#afb4fdaf3791435e31d0e561d357e4824">SgTemplateDeclaration</a>, <a class="el" href="classSgNamespaceDeclarationStatement.html#a0792ef52f8a3471a94146b924ed907ef">SgNamespaceDeclarationStatement</a>, <a class="el" href="classSgNamespaceAliasDeclarationStatement.html#a938cad57dbac479defb1edd2f1763f31">SgNamespaceAliasDeclarationStatement</a>, <a class="el" href="classSgTypedefDeclaration.html#a70184cbbfa541a81f7383e8e2bc369d2">SgTypedefDeclaration</a>, <a class="el" href="classSgTemplateInstantiationTypedefDeclaration.html#ae051a3e0b54aa801f556b7c2e3061de3">SgTemplateInstantiationTypedefDeclaration</a>, <a class="el" href="classSgClassDeclaration.html#ad6d57c2f3a62ffc5ddd479257830c854">SgClassDeclaration</a>, <a class="el" href="classSgTemplateInstantiationDecl.html#a254943b106ddcc4f329a3e33cc6ae465">SgTemplateInstantiationDecl</a>, <a class="el" href="classSgFunctionDeclaration.html#a1d81725d252f2e11ba681b95fd733f1c">SgFunctionDeclaration</a>, <a class="el" href="classSgMemberFunctionDeclaration.html#ad58205f10c28b8d75792aa98c9840c60">SgMemberFunctionDeclaration</a>, <a class="el" href="classSgTemplateInstantiationMemberFunctionDecl.html#afc8a36faab915a9bde1a4342b12d9b8e">SgTemplateInstantiationMemberFunctionDecl</a>, <a class="el" href="classSgTemplateInstantiationFunctionDecl.html#a160ab8b409624a426cac09a169f4edbe">SgTemplateInstantiationFunctionDecl</a>, <a class="el" href="classSgNonrealDecl.html#aae0cc56903ef81831b78d4f309c5230e">SgNonrealDecl</a>, <a class="el" href="classSgAdaPackageBodyDecl.html#a688fbc9ca741d1952b2dc6c715bd8e1a">SgAdaPackageBodyDecl</a>, <a class="el" href="classSgAdaPackageSpecDecl.html#a04620f8d1bc05066e712771fdf109578">SgAdaPackageSpecDecl</a>, <a class="el" href="classSgAdaRenamingDecl.html#a6c6f6f9c8c1250abb7ff66ac7af1f51c">SgAdaRenamingDecl</a>, <a class="el" href="classSgAdaTaskSpecDecl.html#a314c9c2370aea7dd1c500f68d38d8338">SgAdaTaskSpecDecl</a>, <a class="el" href="classSgAdaTaskBodyDecl.html#ab9ba9bbb8927b9da057cb4208dc9f8a8">SgAdaTaskBodyDecl</a>, <a class="el" href="classSgAdaTaskTypeDecl.html#ae23d9bc5c57dc5f330ef2a0cbc52537e">SgAdaTaskTypeDecl</a>, <a class="el" href="classSgAdaProtectedSpecDecl.html#a5af0ef17e25d7bb7280ccb5e66c87d8a">SgAdaProtectedSpecDecl</a>, <a class="el" href="classSgAdaProtectedBodyDecl.html#a668b65723afe136b8f67c970fcc6010c">SgAdaProtectedBodyDecl</a>, <a class="el" href="classSgAdaProtectedTypeDecl.html#adab2a585e15d52358f4e5ab683ab6d05">SgAdaProtectedTypeDecl</a>, <a class="el" href="classSgAdaGenericDecl.html#a14b1bc8219a525560a2386d1b601ac24">SgAdaGenericDecl</a>, <a class="el" href="classSgAdaFormalTypeDecl.html#a8d78390d56d9ffb1655bf674ba012f30">SgAdaFormalTypeDecl</a>, <a class="el" href="classSgAdaDiscriminatedTypeDecl.html#abb1b1df21ad0ed6dbe1c10d5dc82bbd5">SgAdaDiscriminatedTypeDecl</a>, <a class="el" href="classSgAdaGenericInstanceDecl.html#a90b4b3b9b78c302635fab76babd8840e">SgAdaGenericInstanceDecl</a>, <a class="el" href="classSgAdaFormalPackageDecl.html#af455ea6db3005053aada7f2a9f8589e9">SgAdaFormalPackageDecl</a>, and <a class="el" href="classSgAdaVariantDecl.html#a90cbb89ca167014e13ce6e015d081fde">SgAdaVariantDecl</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l20215">SageInterface::appendStatementWithDependentDeclaration()</a>, <a class="el" href="sageBuilder_8C_source.html#l06081">SageBuilder::buildFunctionRefExp()</a>, <a class="el" href="sageBuilder_8C_source.html#l03330">SageBuilder::buildNondefiningTemplateFunctionDeclaration()</a>, <a class="el" href="sageBuilder_8C_source.html#l03435">SageBuilder::buildNondefiningTemplateMemberFunctionDeclaration()</a>, and <a class="el" href="sageInterface_8C_source.html#l19025">CollectDependentDeclarationsTraversal::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l20103">SageInterface::appendStatementWithDependentDeclaration()</a>, <a class="el" href="sageBuilder_8C_source.html#l06081">SageBuilder::buildFunctionRefExp()</a>, <a class="el" href="sageBuilder_8C_source.html#l03330">SageBuilder::buildNondefiningTemplateFunctionDeclaration()</a>, <a class="el" href="sageBuilder_8C_source.html#l03435">SageBuilder::buildNondefiningTemplateMemberFunctionDeclaration()</a>, and <a class="el" href="sageInterface_8C_source.html#l18912">CollectDependentDeclarationsTraversal::visit()</a>.</p>
 
 </div>
 </div>
@@ -1941,7 +1960,7 @@ Additional Inherited Members</h2></td></tr>
 <p>User interface for retrieving the associated symbol from the declaration. </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="classSgSymbol.html" title="This class represents the concept of a name within the compiler.">SgSymbol</a> pointer. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="sageBuilder_8C_source.html#l02046">SageBuilder::buildTemplateInstantiationTypedefDeclaration_nfi()</a>, <a class="el" href="sageBuilder_8C_source.html#l01921">SageBuilder::buildTemplateTypedefDeclaration_nfi()</a>, <a class="el" href="sageBuilder_8C_source.html#l01807">SageBuilder::buildTypedefDeclaration_nfi()</a>, <a class="el" href="sageBuilder_8C_source.html#l16326">SageBuilder::fixupCopyOfNodeFromSeparateFileInNewTargetAst()</a>, and <a class="el" href="sageInterface_8C_source.html#l19025">CollectDependentDeclarationsTraversal::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageBuilder_8C_source.html#l02046">SageBuilder::buildTemplateInstantiationTypedefDeclaration_nfi()</a>, <a class="el" href="sageBuilder_8C_source.html#l01921">SageBuilder::buildTemplateTypedefDeclaration_nfi()</a>, <a class="el" href="sageBuilder_8C_source.html#l01807">SageBuilder::buildTypedefDeclaration_nfi()</a>, <a class="el" href="sageBuilder_8C_source.html#l16326">SageBuilder::fixupCopyOfNodeFromSeparateFileInNewTargetAst()</a>, and <a class="el" href="sageInterface_8C_source.html#l18912">CollectDependentDeclarationsTraversal::visit()</a>.</p>
 
 </div>
 </div>
@@ -1963,7 +1982,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Returns boolean value true of this type of declaration has an associated sysmbol. </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns bool. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l19025">CollectDependentDeclarationsTraversal::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l18912">CollectDependentDeclarationsTraversal::visit()</a>.</p>
 
 </div>
 </div>
@@ -1996,7 +2015,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSgFunctionParameterList.html#a9ac3071a2eb2965243d5fc495d30cc9f">SgFunctionParameterList</a>, <a class="el" href="classSgVariableDeclaration.html#a7162d1723c6db6fc96309b7814fbc02d">SgVariableDeclaration</a>, <a class="el" href="classSgTemplateVariableDeclaration.html#ae74c03173a0e7489926cf6db346155a6">SgTemplateVariableDeclaration</a>, <a class="el" href="classSgTemplateVariableInstantiation.html#a775a6b9d5c425022703e1d5c0901a2d6">SgTemplateVariableInstantiation</a>, <a class="el" href="classSgVariableDefinition.html#a7ed55605312c565d04a71bea1b15256c">SgVariableDefinition</a>, <a class="el" href="classSgClinkageDeclarationStatement.html#a47d24e3024947f233ae17fdbc7289033">SgClinkageDeclarationStatement</a>, <a class="el" href="classSgClinkageStartStatement.html#a319e4789919c6ba5f2a265ed51573449">SgClinkageStartStatement</a>, <a class="el" href="classSgClinkageEndStatement.html#a349443ef4a7ab2cda58befe1cccfda4c">SgClinkageEndStatement</a>, <a class="el" href="classSgEnumDeclaration.html#a3f9d6c76af66ae2bafd3b4cd71f39842">SgEnumDeclaration</a>, <a class="el" href="classSgAsmStmt.html#aa130744fd7afcacd484b6c22abcadb02">SgAsmStmt</a>, <a class="el" href="classSgAttributeSpecificationStatement.html#a6d08d1981dc33d19c36c299289d330e1">SgAttributeSpecificationStatement</a>, <a class="el" href="classSgFormatStatement.html#a439199a0d96117c92f764017eff332d0">SgFormatStatement</a>, <a class="el" href="classSgTemplateDeclaration.html#a8129dab31858f5532149574ec40f52e4">SgTemplateDeclaration</a>, <a class="el" href="classSgTemplateInstantiationDirectiveStatement.html#a0dd6c3f47e83de967cd08c7fc453b1c7">SgTemplateInstantiationDirectiveStatement</a>, <a class="el" href="classSgUseStatement.html#a598246ff73f4133bf67c324037efa6c3">SgUseStatement</a>, <a class="el" href="classSgParameterStatement.html#ac67a763e61ac9b0f7f8fa49ff8c1eb25">SgParameterStatement</a>, <a class="el" href="classSgNamespaceDeclarationStatement.html#aa78e4ada8f7a26f2d7e82e27d11ee8eb">SgNamespaceDeclarationStatement</a>, <a class="el" href="classSgEquivalenceStatement.html#ab1e65e999b4f0ecf8d5e7f88caddb980">SgEquivalenceStatement</a>, <a class="el" href="classSgInterfaceStatement.html#ab63f98debe2adaad25a136544add4707">SgInterfaceStatement</a>, <a class="el" href="classSgNamespaceAliasDeclarationStatement.html#a18f55a491299eedef4d6259e57e1888e">SgNamespaceAliasDeclarationStatement</a>, <a class="el" href="classSgCommonBlock.html#a9d8fc584e3a69353667e0504d228f474">SgCommonBlock</a>, <a class="el" href="classSgTypedefDeclaration.html#a3431cacd964f2c1e3135e5012cd2dba3">SgTypedefDeclaration</a>, <a class="el" href="classSgTemplateTypedefDeclaration.html#a2d021ec5b6f324ff59dc70f0cfc83681">SgTemplateTypedefDeclaration</a>, <a class="el" href="classSgTemplateInstantiationTypedefDeclaration.html#afcdf3207b9fe6ab76aee229e5e87cf1b">SgTemplateInstantiationTypedefDeclaration</a>, <a class="el" href="classSgStatementFunctionStatement.html#ada7c5f5fd84a4a63674af8ac3d3b1315">SgStatementFunctionStatement</a>, <a class="el" href="classSgCtorInitializerList.html#a7795a2ca137aee28c7ba5df43ac009ae">SgCtorInitializerList</a>, <a class="el" href="classSgPragmaDeclaration.html#a3c63a190ffc484c5e1146dd12fe2fea0">SgPragmaDeclaration</a>, <a class="el" href="classSgUsingDirectiveStatement.html#a27adc773190bf168ae8c2b445fa2eb7f">SgUsingDirectiveStatement</a>, <a class="el" href="classSgClassDeclaration.html#a711df7288229a77f46b4b6ebcf5df53a">SgClassDeclaration</a>, <a class="el" href="classSgTemplateClassDeclaration.html#adeb370db4b30bbd53baf63f8160d6f18">SgTemplateClassDeclaration</a>, <a class="el" href="classSgTemplateInstantiationDecl.html#a11720dccff8552ba474fc2df8e99ab29">SgTemplateInstantiationDecl</a>, <a class="el" href="classSgDerivedTypeStatement.html#ac0df663805bb4422c979b7d9471e6e0b">SgDerivedTypeStatement</a>, <a class="el" href="classSgModuleStatement.html#afa7ca4a86aa372bf2f4c32962173d37b">SgModuleStatement</a>, <a class="el" href="classSgJavaPackageDeclaration.html#a830697dc2cd404c7743ba6f0db0f1624">SgJavaPackageDeclaration</a>, <a class="el" href="classSgJovialTableStatement.html#a5e7c4f083ae792e067581b7e797cd2da">SgJovialTableStatement</a>, <a class="el" href="classSgImplicitStatement.html#a8da9c83d873c22075f2fabdace1255f0">SgImplicitStatement</a>, <a class="el" href="classSgUsingDeclarationStatement.html#a2ca0250d546ba512ee81e527761025fc">SgUsingDeclarationStatement</a>, <a class="el" href="classSgNamelistStatement.html#a9f5e0493cfdee011c8b9b852a72c43ff">SgNamelistStatement</a>, <a class="el" href="classSgImportStatement.html#a2fbd2f0ad0332197bc004af4f7b0e483">SgImportStatement</a>, <a class="el" href="classSgFunctionDeclaration.html#a4b1ac9a9c0f5de3917f9ffb35bd4b789">SgFunctionDeclaration</a>, <a class="el" href="classSgTemplateFunctionDeclaration.html#a2707a8445b222b77bbe77c15031894c1">SgTemplateFunctionDeclaration</a>, <a class="el" href="classSgMemberFunctionDeclaration.html#a3bc1024a2e7c522a15bd7c46cbd06600">SgMemberFunctionDeclaration</a>, <a class="el" href="classSgTemplateMemberFunctionDeclaration.html#a54fb5971820f7df8b416c78c5d4c6915">SgTemplateMemberFunctionDeclaration</a>, <a class="el" href="classSgTemplateInstantiationMemberFunctionDecl.html#a4909804b0969542dd712da7b09890d40">SgTemplateInstantiationMemberFunctionDecl</a>, <a class="el" href="classSgTemplateInstantiationFunctionDecl.html#a1478f22618cd3fa79092f41da3141cfd">SgTemplateInstantiationFunctionDecl</a>, <a class="el" href="classSgProgramHeaderStatement.html#a80638ca5d11f9d969eb0bd92d29d121b">SgProgramHeaderStatement</a>, <a class="el" href="classSgProcedureHeaderStatement.html#af8cdde0c98153ab47e5de015b3015a81">SgProcedureHeaderStatement</a>, <a class="el" href="classSgEntryStatement.html#a9cb3806d18a9b728d34d434a19082b40">SgEntryStatement</a>, <a class="el" href="classSgAdaEntryDecl.html#a7efe62931a3746e04105745e96b56111">SgAdaEntryDecl</a>, <a class="el" href="classSgAdaFunctionRenamingDecl.html#a6e8abbe9783a84a09804219cfd55d5ff">SgAdaFunctionRenamingDecl</a>, <a class="el" href="classSgContainsStatement.html#ab8f07521c23d3656c587a1e109898361">SgContainsStatement</a>, <a class="el" href="classSgC__PreprocessorDirectiveStatement.html#ab235564c981309489ce8cbf8df04f049">SgC_PreprocessorDirectiveStatement</a>, <a class="el" href="classSgIncludeDirectiveStatement.html#ad6cb84204669f9f21322ae8f1dd2636e">SgIncludeDirectiveStatement</a>, <a class="el" href="classSgDefineDirectiveStatement.html#ab5fb82f224e5f390d4b9f64e96b9f855">SgDefineDirectiveStatement</a>, <a class="el" href="classSgUndefDirectiveStatement.html#a636eecc5d156d8e2c7686f0933ffe979">SgUndefDirectiveStatement</a>, <a class="el" href="classSgIfdefDirectiveStatement.html#abefbb66fe8db2eb6b200931705ac45f1">SgIfdefDirectiveStatement</a>, <a class="el" href="classSgIfndefDirectiveStatement.html#a8736fd9f96e04e36a38c28df69372e67">SgIfndefDirectiveStatement</a>, <a class="el" href="classSgIfDirectiveStatement.html#abeb39b6b10ca7e18744ddcc7b84c62c4">SgIfDirectiveStatement</a>, <a class="el" href="classSgDeadIfDirectiveStatement.html#aad89b40b1863258c083321130560fcda">SgDeadIfDirectiveStatement</a>, <a class="el" href="classSgElseDirectiveStatement.html#a452ccc1e7704e46c063694b089c85e26">SgElseDirectiveStatement</a>, <a class="el" href="classSgElseifDirectiveStatement.html#aa4a95b8043ee030d20f72a4170ef951d">SgElseifDirectiveStatement</a>, <a class="el" href="classSgEndifDirectiveStatement.html#a62ddef76335b7543c0f6c0ec4e52d21d">SgEndifDirectiveStatement</a>, <a class="el" href="classSgLineDirectiveStatement.html#a5ce1f3abc8af4dcb7a06c384710b4d3a">SgLineDirectiveStatement</a>, <a class="el" href="classSgWarningDirectiveStatement.html#acaf3bc1e40384b01c7b092e227ce7f24">SgWarningDirectiveStatement</a>, <a class="el" href="classSgErrorDirectiveStatement.html#a6dc50f413be118a5f7def162c7b846be">SgErrorDirectiveStatement</a>, <a class="el" href="classSgEmptyDirectiveStatement.html#abfff4bdd7be7c52bc2ea9b12f639e2d8">SgEmptyDirectiveStatement</a>, <a class="el" href="classSgIncludeNextDirectiveStatement.html#a181a26c9b77d410e24a9e9adf4d2f13d">SgIncludeNextDirectiveStatement</a>, <a class="el" href="classSgIdentDirectiveStatement.html#a03945ff4805f9a68bc611a640d30a7d1">SgIdentDirectiveStatement</a>, <a class="el" href="classSgLinemarkerDirectiveStatement.html#ab95950a7ee3dadf2e695cece3a242cdc">SgLinemarkerDirectiveStatement</a>, <a class="el" href="classSgOmpThreadprivateStatement.html#aebcd877619dab6c33afcf3aea282acaf">SgOmpThreadprivateStatement</a>, <a class="el" href="classSgFortranIncludeLine.html#afb5e27ff81a4dd159a1ed074221e4581">SgFortranIncludeLine</a>, <a class="el" href="classSgJavaImportStatement.html#a570d2027e5f5aeba9772590edfb3e17a">SgJavaImportStatement</a>, <a class="el" href="classSgJavaPackageStatement.html#a2aebeda21c2bdd60778f77729970769b">SgJavaPackageStatement</a>, <a class="el" href="classSgStmtDeclarationStatement.html#a5e2700e3e83c7f599be0b93504016aa5">SgStmtDeclarationStatement</a>, <a class="el" href="classSgStaticAssertionDeclaration.html#a5a8893e9c7d5fee8c977caf92b97f85b">SgStaticAssertionDeclaration</a>, <a class="el" href="classSgOmpDeclareSimdStatement.html#aaaeb9f886106d8bf2f10cd46af40aaed">SgOmpDeclareSimdStatement</a>, <a class="el" href="classSgMicrosoftAttributeDeclaration.html#af6ec623f4aad6bf3deaa481145b62aec">SgMicrosoftAttributeDeclaration</a>, <a class="el" href="classSgJovialCompoolStatement.html#a7292ed8c6252d49511c5bf755e14d978">SgJovialCompoolStatement</a>, <a class="el" href="classSgJovialDirectiveStatement.html#a46158e0559e9b5fb1b1438f4f60ee096">SgJovialDirectiveStatement</a>, <a class="el" href="classSgJovialDefineDeclaration.html#a5efe35dc0fc85347ea42e1872827ff30">SgJovialDefineDeclaration</a>, <a class="el" href="classSgJovialLabelDeclaration.html#abdd3a2623c2e153d31b468ae81bc69ff">SgJovialLabelDeclaration</a>, <a class="el" href="classSgJovialOverlayDeclaration.html#abdd95cc2fdce05cf0080a2cdc4827207">SgJovialOverlayDeclaration</a>, <a class="el" href="classSgNonrealDecl.html#a59e6b338ab63702528873448dcb797bf">SgNonrealDecl</a>, <a class="el" href="classSgEmptyDeclaration.html#a9091c0ffab83a9e34d18a5c95f6ce006">SgEmptyDeclaration</a>, <a class="el" href="classSgAdaPackageBodyDecl.html#ad49e457a360e0c3c4f6e310e0d9fd89f">SgAdaPackageBodyDecl</a>, <a class="el" href="classSgAdaPackageSpecDecl.html#a6ce6a7c63ae25a690cf3d8123a830eb3">SgAdaPackageSpecDecl</a>, <a class="el" href="classSgAdaRenamingDecl.html#a2f949bd4b1f907ef15d1a4613f128471">SgAdaRenamingDecl</a>, <a class="el" href="classSgAdaTaskSpecDecl.html#a41c7067f2da3c786e7ab50e7b24ca8c8">SgAdaTaskSpecDecl</a>, <a class="el" href="classSgAdaTaskBodyDecl.html#aaa0c6cb74e8ce4582134afd2d13318fa">SgAdaTaskBodyDecl</a>, <a class="el" href="classSgAdaTaskTypeDecl.html#a7fe54b2a1f2cbfc3dc72387805a68e1d">SgAdaTaskTypeDecl</a>, <a class="el" href="classSgAdaProtectedSpecDecl.html#a41c394232d2a8f09c587e8d32faa9d91">SgAdaProtectedSpecDecl</a>, <a class="el" href="classSgAdaProtectedBodyDecl.html#ae5607a7730558ece7a1b0db3130076c4">SgAdaProtectedBodyDecl</a>, <a class="el" href="classSgAdaProtectedTypeDecl.html#aae1e4b5b61319b495e9a0521ed2a8053">SgAdaProtectedTypeDecl</a>, <a class="el" href="classSgAdaRepresentationClause.html#af6ce1c5857d7001453d3564fd7ab7b88">SgAdaRepresentationClause</a>, <a class="el" href="classSgAdaComponentClause.html#ab2c3d41ba2b25d94122b51bf66a6f38f">SgAdaComponentClause</a>, <a class="el" href="classSgAdaAttributeClause.html#aacbc7b839ef739d39f080cdaddb6af81">SgAdaAttributeClause</a>, <a class="el" href="classSgAdaEnumRepresentationClause.html#a364d11524fd004a010a8dd188b825b5c">SgAdaEnumRepresentationClause</a>, <a class="el" href="classSgAdaGenericDecl.html#a4a00652a9780edc1ba6fc33f549e6718">SgAdaGenericDecl</a>, <a class="el" href="classSgAdaFormalTypeDecl.html#a363e0b46bc6dc5f798981ff9b24189f2">SgAdaFormalTypeDecl</a>, <a class="el" href="classSgAdaDiscriminatedTypeDecl.html#abf61fda267bfd379fe404a96d6bc9564">SgAdaDiscriminatedTypeDecl</a>, <a class="el" href="classSgAdaGenericInstanceDecl.html#abd44f602a77b995dc6b67b3c5871bfa2">SgAdaGenericInstanceDecl</a>, <a class="el" href="classSgAdaFormalPackageDecl.html#a6df973d084051cffd4ba841f30004c06">SgAdaFormalPackageDecl</a>, <a class="el" href="classSgAdaParameterList.html#a6d7a4aa5d6e0e27a26f9cf537a4edd81">SgAdaParameterList</a>, and <a class="el" href="classSgAdaVariantDecl.html#aa9c5341956145a17547181f99ab3f1b4">SgAdaVariantDecl</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l20215">SageInterface::appendStatementWithDependentDeclaration()</a>, <a class="el" href="sageBuilder_8C_source.html#l00408">SageBuilder::appendTemplateArgumentsToName()</a>, <a class="el" href="sageBuilder_8C_source.html#l10810">SageBuilder::buildClassDeclaration_nfi()</a>, <a class="el" href="sageBuilder_8C_source.html#l13487">SageBuilder::buildFile()</a>, <a class="el" href="sageBuilder_8C_source.html#l02046">SageBuilder::buildTemplateInstantiationTypedefDeclaration_nfi()</a>, <a class="el" href="sageBuilder_8C_source.html#l01807">SageBuilder::buildTypedefDeclaration_nfi()</a>, <a class="el" href="sageInterface_8C_source.html#l19601">SageInterface::checkAccessPermissions()</a>, <a class="el" href="sageInterface_8C_source.html#l06102">SageInterface::declarationPreceedsDefinition()</a>, <a class="el" href="sageBuilder_8C_source.html#l15038">SageBuilder::findAssociatedDeclarationInTargetAST()</a>, <a class="el" href="sageBuilder_8C_source.html#l14773">SageBuilder::findAssociatedSymbolInTargetAST()</a>, <a class="el" href="sageInterface_8C_source.html#l15234">SageInterface::fixStructDeclaration()</a>, <a class="el" href="sageInterface_8C_source.html#l03293">SageInterface::generateUniqueNameForUseAsIdentifier()</a>, <a class="el" href="sageInterface_8C_source.html#l03091">SageInterface::generateUniqueNameForUseAsIdentifier_support()</a>, <a class="el" href="sageInterface_8C_source.html#l01592">SageInterface::get_name()</a>, <a class="el" href="sageInterface_8C_source.html#l08810">SageInterface::getClassTypeChainForMemberReference()</a>, <a class="el" href="sageBuilder_8C_source.html#l15733">SageBuilder::getTargetFileType()</a>, <a class="el" href="sageBuilder_8C_source.html#l15435">SageBuilder::getTargetFileTypeSupport()</a>, <a class="el" href="sageBuilder_8C_source.html#l00745">SageBuilder::getTemplateArgumentList()</a>, <a class="el" href="sageBuilder_8C_source.html#l00857">SageBuilder::getTemplateParameterList()</a>, <a class="el" href="sageInterface_8C_source.html#l16577">SageInterface::insertHeader()</a>, <a class="el" href="sageInterface_8C_source.html#l10688">SageInterface::moveDeclarationToAssociatedNamespace()</a>, <a class="el" href="sageInterface_8C_source.html#l04263">SageInterface::rebuildSymbolTable()</a>, <a class="el" href="sageBuilder_8C_source.html#l00944">SageBuilder::setTemplateArgumentParents()</a>, <a class="el" href="sageBuilder_8C_source.html#l01041">SageBuilder::testTemplateArgumentParents()</a>, <a class="el" href="sageBuilder_8C_source.html#l01074">SageBuilder::testTemplateParameterParents()</a>, and <a class="el" href="sageInterface_8C_source.html#l16156">SageInterface::updateDefiningNondefiningLinks()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l20103">SageInterface::appendStatementWithDependentDeclaration()</a>, <a class="el" href="sageBuilder_8C_source.html#l00408">SageBuilder::appendTemplateArgumentsToName()</a>, <a class="el" href="sageBuilder_8C_source.html#l10810">SageBuilder::buildClassDeclaration_nfi()</a>, <a class="el" href="sageBuilder_8C_source.html#l13487">SageBuilder::buildFile()</a>, <a class="el" href="sageBuilder_8C_source.html#l02046">SageBuilder::buildTemplateInstantiationTypedefDeclaration_nfi()</a>, <a class="el" href="sageBuilder_8C_source.html#l01807">SageBuilder::buildTypedefDeclaration_nfi()</a>, <a class="el" href="sageInterface_8C_source.html#l19488">SageInterface::checkAccessPermissions()</a>, <a class="el" href="sageInterface_8C_source.html#l05989">SageInterface::declarationPreceedsDefinition()</a>, <a class="el" href="sageBuilder_8C_source.html#l15038">SageBuilder::findAssociatedDeclarationInTargetAST()</a>, <a class="el" href="sageBuilder_8C_source.html#l14773">SageBuilder::findAssociatedSymbolInTargetAST()</a>, <a class="el" href="sageInterface_8C_source.html#l15121">SageInterface::fixStructDeclaration()</a>, <a class="el" href="sageInterface_8C_source.html#l03180">SageInterface::generateUniqueNameForUseAsIdentifier()</a>, <a class="el" href="sageInterface_8C_source.html#l02978">SageInterface::generateUniqueNameForUseAsIdentifier_support()</a>, <a class="el" href="sageInterface_8C_source.html#l01479">SageInterface::get_name()</a>, <a class="el" href="sageInterface_8C_source.html#l08697">SageInterface::getClassTypeChainForMemberReference()</a>, <a class="el" href="sageBuilder_8C_source.html#l15733">SageBuilder::getTargetFileType()</a>, <a class="el" href="sageBuilder_8C_source.html#l15435">SageBuilder::getTargetFileTypeSupport()</a>, <a class="el" href="sageBuilder_8C_source.html#l00745">SageBuilder::getTemplateArgumentList()</a>, <a class="el" href="sageBuilder_8C_source.html#l00857">SageBuilder::getTemplateParameterList()</a>, <a class="el" href="sageInterface_8C_source.html#l16464">SageInterface::insertHeader()</a>, <a class="el" href="sageInterface_8C_source.html#l10575">SageInterface::moveDeclarationToAssociatedNamespace()</a>, <a class="el" href="sageInterface_8C_source.html#l04150">SageInterface::rebuildSymbolTable()</a>, <a class="el" href="sageBuilder_8C_source.html#l00944">SageBuilder::setTemplateArgumentParents()</a>, <a class="el" href="sageBuilder_8C_source.html#l01041">SageBuilder::testTemplateArgumentParents()</a>, <a class="el" href="sageBuilder_8C_source.html#l01074">SageBuilder::testTemplateParameterParents()</a>, and <a class="el" href="sageInterface_8C_source.html#l16043">SageInterface::updateDefiningNondefiningLinks()</a>.</p>
 
 </div>
 </div>
@@ -2029,7 +2048,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSgFunctionParameterList.html#a550b50cf6edb3f0d84c1fb508c0327ba">SgFunctionParameterList</a>, <a class="el" href="classSgVariableDeclaration.html#a11bd3c58dea47bce11d5c9510f64450e">SgVariableDeclaration</a>, <a class="el" href="classSgTemplateVariableDeclaration.html#a12ddf8a90dde37f77070c02b93a8d898">SgTemplateVariableDeclaration</a>, <a class="el" href="classSgTemplateVariableInstantiation.html#a996a437b30cc1b7c8e43ba03c58257a4">SgTemplateVariableInstantiation</a>, <a class="el" href="classSgVariableDefinition.html#ad0b803916bf9558ea969c9f6fc1b644e">SgVariableDefinition</a>, <a class="el" href="classSgClinkageDeclarationStatement.html#a09627abf4ff46699f5b8f925bea76e19">SgClinkageDeclarationStatement</a>, <a class="el" href="classSgClinkageStartStatement.html#a32d7a5a7f0669d8a21f111b0319a45e5">SgClinkageStartStatement</a>, <a class="el" href="classSgClinkageEndStatement.html#af4ecabbce56a94dd00d7335bb350e1ed">SgClinkageEndStatement</a>, <a class="el" href="classSgEnumDeclaration.html#adcb8ca002da86b8b7b01069a52301183">SgEnumDeclaration</a>, <a class="el" href="classSgAsmStmt.html#a3b708aaa6dd06f1c6e49b28b8b78bea4">SgAsmStmt</a>, <a class="el" href="classSgAttributeSpecificationStatement.html#a80b97710462c75f2a48317795ab10faa">SgAttributeSpecificationStatement</a>, <a class="el" href="classSgFormatStatement.html#a19d335073c35e813cc899adfce8b22c4">SgFormatStatement</a>, <a class="el" href="classSgTemplateDeclaration.html#a5f7b8fd8de750a6392b3d51931a981b3">SgTemplateDeclaration</a>, <a class="el" href="classSgTemplateInstantiationDirectiveStatement.html#aecb9302f7146560a14bd12ac685f7d37">SgTemplateInstantiationDirectiveStatement</a>, <a class="el" href="classSgUseStatement.html#a606f0817f0e573c485fe15f85ea2b88d">SgUseStatement</a>, <a class="el" href="classSgParameterStatement.html#ae5b999c92336c8716a621350ad4b501b">SgParameterStatement</a>, <a class="el" href="classSgNamespaceDeclarationStatement.html#a1df9e4317337b0306379f9b52e8b6216">SgNamespaceDeclarationStatement</a>, <a class="el" href="classSgEquivalenceStatement.html#a0ae04c2bfc0b4ee2596e4a3a565ba33d">SgEquivalenceStatement</a>, <a class="el" href="classSgInterfaceStatement.html#a980875e3d15bde84c44d4abe4db0c0af">SgInterfaceStatement</a>, <a class="el" href="classSgNamespaceAliasDeclarationStatement.html#abb75d08a162b284ecc7e605133b8486e">SgNamespaceAliasDeclarationStatement</a>, <a class="el" href="classSgCommonBlock.html#a8720543604d8f970988fd7a1ebe29234">SgCommonBlock</a>, <a class="el" href="classSgTypedefDeclaration.html#aba30a66e3eae03cdcebab00fa9b07318">SgTypedefDeclaration</a>, <a class="el" href="classSgTemplateTypedefDeclaration.html#ad4d26b82a7bba1aae5fa28a12ceca989">SgTemplateTypedefDeclaration</a>, <a class="el" href="classSgTemplateInstantiationTypedefDeclaration.html#a317a12180be29a9992b48ee6f8b200df">SgTemplateInstantiationTypedefDeclaration</a>, <a class="el" href="classSgStatementFunctionStatement.html#a708d34eb622885ecbef93e107cd48d0f">SgStatementFunctionStatement</a>, <a class="el" href="classSgCtorInitializerList.html#a294d1733c8286e8caeab7148c45d3753">SgCtorInitializerList</a>, <a class="el" href="classSgPragmaDeclaration.html#a01d7c9a7b2bcdc42241136af13bb1f3a">SgPragmaDeclaration</a>, <a class="el" href="classSgUsingDirectiveStatement.html#a1d1b103bce03a3c9af41b93be2151698">SgUsingDirectiveStatement</a>, <a class="el" href="classSgClassDeclaration.html#adc7dc87fcd8d2e7742274fb1b833dfc9">SgClassDeclaration</a>, <a class="el" href="classSgTemplateClassDeclaration.html#a49897480921c8f36c351cba60b130f41">SgTemplateClassDeclaration</a>, <a class="el" href="classSgTemplateInstantiationDecl.html#a8843776753426d2c8642397011222b7d">SgTemplateInstantiationDecl</a>, <a class="el" href="classSgDerivedTypeStatement.html#a3f4a09c18a8986cf48ad6f71bfc073dd">SgDerivedTypeStatement</a>, <a class="el" href="classSgModuleStatement.html#abbdf097f1b5de76cf778709843f07a70">SgModuleStatement</a>, <a class="el" href="classSgJavaPackageDeclaration.html#aa66b2cb08b2a0935f50bae551740c13d">SgJavaPackageDeclaration</a>, <a class="el" href="classSgJovialTableStatement.html#a567bdf47f8d680d27fac5d100ae2560f">SgJovialTableStatement</a>, <a class="el" href="classSgImplicitStatement.html#ad1535284bd69b7bbabae9f365095e205">SgImplicitStatement</a>, <a class="el" href="classSgUsingDeclarationStatement.html#a23bddddc78e2d89774d46610c669cf3a">SgUsingDeclarationStatement</a>, <a class="el" href="classSgNamelistStatement.html#a384aefc153878df19559226360b2d492">SgNamelistStatement</a>, <a class="el" href="classSgImportStatement.html#a278258af58a858b13102e8d086b81d76">SgImportStatement</a>, <a class="el" href="classSgFunctionDeclaration.html#a4bf259cf6d1d1da5d75e9f3d0508e5b0">SgFunctionDeclaration</a>, <a class="el" href="classSgTemplateFunctionDeclaration.html#aa32f485d85a0b8cb9515a43a8a84829f">SgTemplateFunctionDeclaration</a>, <a class="el" href="classSgMemberFunctionDeclaration.html#ae3039c9297882849fb2ac2e98eee74f2">SgMemberFunctionDeclaration</a>, <a class="el" href="classSgTemplateMemberFunctionDeclaration.html#aa2c74391c2f843be51c2ecb5c263d556">SgTemplateMemberFunctionDeclaration</a>, <a class="el" href="classSgTemplateInstantiationMemberFunctionDecl.html#a72a82f64e4f1d45b90bd2c51999a57b4">SgTemplateInstantiationMemberFunctionDecl</a>, <a class="el" href="classSgTemplateInstantiationFunctionDecl.html#ad5dd321a8fd96d08661bebf97ff2013e">SgTemplateInstantiationFunctionDecl</a>, <a class="el" href="classSgProgramHeaderStatement.html#a53d9fd1d17e345031e9724ebeb42219c">SgProgramHeaderStatement</a>, <a class="el" href="classSgProcedureHeaderStatement.html#aedd2b6c1ae9c92c99b0cac46a8a1153d">SgProcedureHeaderStatement</a>, <a class="el" href="classSgEntryStatement.html#aa2d29697c9689f20e3819ec181de638b">SgEntryStatement</a>, <a class="el" href="classSgAdaEntryDecl.html#ae8fedfe5b320a85f67c762d0ad7e68ae">SgAdaEntryDecl</a>, <a class="el" href="classSgAdaFunctionRenamingDecl.html#a252266a7ed37a6a8f76f03df54719aa7">SgAdaFunctionRenamingDecl</a>, <a class="el" href="classSgContainsStatement.html#a301d75fda34164cdfb07008b703e7205">SgContainsStatement</a>, <a class="el" href="classSgC__PreprocessorDirectiveStatement.html#adb6a40eb0b3287c34054f666b097ebcf">SgC_PreprocessorDirectiveStatement</a>, <a class="el" href="classSgIncludeDirectiveStatement.html#a17c3f369def72409f5faccc60d4c950a">SgIncludeDirectiveStatement</a>, <a class="el" href="classSgDefineDirectiveStatement.html#a185fa8a4c4713f9ae794ee7d748d2c9d">SgDefineDirectiveStatement</a>, <a class="el" href="classSgUndefDirectiveStatement.html#a28d97726cd15800ecdfcfa1cac35d51b">SgUndefDirectiveStatement</a>, <a class="el" href="classSgIfdefDirectiveStatement.html#aaaac0a34304616928d187ff8e9013b80">SgIfdefDirectiveStatement</a>, <a class="el" href="classSgIfndefDirectiveStatement.html#a56e86a88a5731b31e52ea04a03c924d0">SgIfndefDirectiveStatement</a>, <a class="el" href="classSgIfDirectiveStatement.html#a761dbd47dbbfc4cde21afc12e4e4e5ec">SgIfDirectiveStatement</a>, <a class="el" href="classSgDeadIfDirectiveStatement.html#aa67a684a1c79ab87112aa0a633fbcd35">SgDeadIfDirectiveStatement</a>, <a class="el" href="classSgElseDirectiveStatement.html#a943eb7e90a0063aee270af7a4598c1f4">SgElseDirectiveStatement</a>, <a class="el" href="classSgElseifDirectiveStatement.html#a04841353829ce2354cb5bf4dc5f10612">SgElseifDirectiveStatement</a>, <a class="el" href="classSgEndifDirectiveStatement.html#a2b10ab4acfc6130206d211545319f1d6">SgEndifDirectiveStatement</a>, <a class="el" href="classSgLineDirectiveStatement.html#a47078b6381c8344a58ecdff12805a55e">SgLineDirectiveStatement</a>, <a class="el" href="classSgWarningDirectiveStatement.html#a970dbf95795948f0fe9c1f6fe87227db">SgWarningDirectiveStatement</a>, <a class="el" href="classSgErrorDirectiveStatement.html#a9d00d05e8e84114483e5dd8edb61cf32">SgErrorDirectiveStatement</a>, <a class="el" href="classSgEmptyDirectiveStatement.html#ae34e68f30184a7833994fdff8fc043ef">SgEmptyDirectiveStatement</a>, <a class="el" href="classSgIncludeNextDirectiveStatement.html#ac18e6acb15731ca0e5e12b5f7ecda506">SgIncludeNextDirectiveStatement</a>, <a class="el" href="classSgIdentDirectiveStatement.html#aa332044abf3dede57b9b8209278bae5d">SgIdentDirectiveStatement</a>, <a class="el" href="classSgLinemarkerDirectiveStatement.html#ab2d8e490b1be54ec6de09684d15535bf">SgLinemarkerDirectiveStatement</a>, <a class="el" href="classSgOmpThreadprivateStatement.html#aa1372864bcff6edb5f040b40181a2d32">SgOmpThreadprivateStatement</a>, <a class="el" href="classSgFortranIncludeLine.html#af38fc4e51f6d83e03f8b14adf604e084">SgFortranIncludeLine</a>, <a class="el" href="classSgJavaImportStatement.html#a6ba612209e8038bb323dafc243f71afe">SgJavaImportStatement</a>, <a class="el" href="classSgJavaPackageStatement.html#a1822d589e72340e9e6b5097b9f542c08">SgJavaPackageStatement</a>, <a class="el" href="classSgStmtDeclarationStatement.html#af7cf419d1885ddf0aa9dab39bb3e0510">SgStmtDeclarationStatement</a>, <a class="el" href="classSgStaticAssertionDeclaration.html#af56606245a8db1ecbb5f1e7ae8062ed1">SgStaticAssertionDeclaration</a>, <a class="el" href="classSgOmpDeclareSimdStatement.html#a61f0f4390f8ec82080f0bfba46d24553">SgOmpDeclareSimdStatement</a>, <a class="el" href="classSgMicrosoftAttributeDeclaration.html#a83e5bf5698ef94638674f4944547d574">SgMicrosoftAttributeDeclaration</a>, <a class="el" href="classSgJovialCompoolStatement.html#a23517cf952ab9da592fbed1c81cd53a9">SgJovialCompoolStatement</a>, <a class="el" href="classSgJovialDirectiveStatement.html#af46569ba465eee2cba26e80a538ace57">SgJovialDirectiveStatement</a>, <a class="el" href="classSgJovialDefineDeclaration.html#abce8846f021aaaf296f2dc6a18f7f495">SgJovialDefineDeclaration</a>, <a class="el" href="classSgJovialLabelDeclaration.html#ad10fc35bbb3cb8ce926dd8663a0c73cf">SgJovialLabelDeclaration</a>, <a class="el" href="classSgJovialOverlayDeclaration.html#ae1856557e7478873d685c10a8b8de93b">SgJovialOverlayDeclaration</a>, <a class="el" href="classSgNonrealDecl.html#a5fa05a50317a30a903e71192bc649539">SgNonrealDecl</a>, <a class="el" href="classSgEmptyDeclaration.html#ad5ca9b28e61195284adb5478669c7205">SgEmptyDeclaration</a>, <a class="el" href="classSgAdaPackageBodyDecl.html#a2522ff42f36bc01fae61c6e2037e731d">SgAdaPackageBodyDecl</a>, <a class="el" href="classSgAdaPackageSpecDecl.html#ac759687e155324be2e395905246ff800">SgAdaPackageSpecDecl</a>, <a class="el" href="classSgAdaRenamingDecl.html#a906fbbcb56173046b640eae1ee7d84de">SgAdaRenamingDecl</a>, <a class="el" href="classSgAdaTaskSpecDecl.html#afc257f6990850869c54ad92e8c7c60fd">SgAdaTaskSpecDecl</a>, <a class="el" href="classSgAdaTaskBodyDecl.html#a623a11885389e1c84c27dc28612c624a">SgAdaTaskBodyDecl</a>, <a class="el" href="classSgAdaTaskTypeDecl.html#a37973f122a6d606c34eb2dcdb16e1dbe">SgAdaTaskTypeDecl</a>, <a class="el" href="classSgAdaProtectedSpecDecl.html#a9a81e84f3952e9086c921a720955362c">SgAdaProtectedSpecDecl</a>, <a class="el" href="classSgAdaProtectedBodyDecl.html#a257dbea176d5bbd6b9ac5f51d6853e20">SgAdaProtectedBodyDecl</a>, <a class="el" href="classSgAdaProtectedTypeDecl.html#a48c59b0b74a99aac524cc21ebfe81217">SgAdaProtectedTypeDecl</a>, <a class="el" href="classSgAdaRepresentationClause.html#a8a24d6d0680528f882799e9585758c9d">SgAdaRepresentationClause</a>, <a class="el" href="classSgAdaComponentClause.html#a3154a3367c1ac719ba5a29300969c076">SgAdaComponentClause</a>, <a class="el" href="classSgAdaAttributeClause.html#abc34accf9d4865d73a217e15e0f5397e">SgAdaAttributeClause</a>, <a class="el" href="classSgAdaEnumRepresentationClause.html#a01abe24b153b6c0e2326837d96bdbb71">SgAdaEnumRepresentationClause</a>, <a class="el" href="classSgAdaGenericDecl.html#a54404f47dac505a6ff4da07c0d1bd52a">SgAdaGenericDecl</a>, <a class="el" href="classSgAdaFormalTypeDecl.html#afb95d9f5bf04bf11e143bec7a49a0c46">SgAdaFormalTypeDecl</a>, <a class="el" href="classSgAdaDiscriminatedTypeDecl.html#a8dd2e49da5f9fec21168ed508e3b8203">SgAdaDiscriminatedTypeDecl</a>, <a class="el" href="classSgAdaGenericInstanceDecl.html#a553bb9c9249ad1d2a95feb2a39263bc9">SgAdaGenericInstanceDecl</a>, <a class="el" href="classSgAdaFormalPackageDecl.html#a3ec463335f22a0c093ba88ca4ba3ed96">SgAdaFormalPackageDecl</a>, <a class="el" href="classSgAdaParameterList.html#a643cc81b4bcd8f8fe32a9722dbd68a28">SgAdaParameterList</a>, and <a class="el" href="classSgAdaVariantDecl.html#abea5a9b4a1d98d92db1b8ee522f8144b">SgAdaVariantDecl</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l20215">SageInterface::appendStatementWithDependentDeclaration()</a>, <a class="el" href="sageBuilder_8C_source.html#l00408">SageBuilder::appendTemplateArgumentsToName()</a>, <a class="el" href="sageBuilder_8C_source.html#l15038">SageBuilder::findAssociatedDeclarationInTargetAST()</a>, <a class="el" href="sageBuilder_8C_source.html#l14773">SageBuilder::findAssociatedSymbolInTargetAST()</a>, <a class="el" href="sageInterface_8C_source.html#l03091">SageInterface::generateUniqueNameForUseAsIdentifier_support()</a>, <a class="el" href="sageInterface_8C_source.html#l01592">SageInterface::get_name()</a>, <a class="el" href="sageBuilder_8C_source.html#l00745">SageBuilder::getTemplateArgumentList()</a>, <a class="el" href="sageBuilder_8C_source.html#l00857">SageBuilder::getTemplateParameterList()</a>, <a class="el" href="sageInterface_8C_source.html#l04263">SageInterface::rebuildSymbolTable()</a>, <a class="el" href="sageInterface_8C_source.html#l01173">SageInterface::set_name()</a>, <a class="el" href="sageBuilder_8C_source.html#l01107">SageBuilder::setTemplateArgumentsInDeclaration()</a>, <a class="el" href="sageBuilder_8C_source.html#l01156">SageBuilder::setTemplateParametersInDeclaration()</a>, and <a class="el" href="sageBuilder_8C_source.html#l01133">SageBuilder::setTemplateSpecializationArgumentsInDeclaration()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l20103">SageInterface::appendStatementWithDependentDeclaration()</a>, <a class="el" href="sageBuilder_8C_source.html#l00408">SageBuilder::appendTemplateArgumentsToName()</a>, <a class="el" href="sageBuilder_8C_source.html#l15038">SageBuilder::findAssociatedDeclarationInTargetAST()</a>, <a class="el" href="sageBuilder_8C_source.html#l14773">SageBuilder::findAssociatedSymbolInTargetAST()</a>, <a class="el" href="sageInterface_8C_source.html#l02978">SageInterface::generateUniqueNameForUseAsIdentifier_support()</a>, <a class="el" href="sageInterface_8C_source.html#l01479">SageInterface::get_name()</a>, <a class="el" href="sageBuilder_8C_source.html#l00745">SageBuilder::getTemplateArgumentList()</a>, <a class="el" href="sageBuilder_8C_source.html#l00857">SageBuilder::getTemplateParameterList()</a>, <a class="el" href="sageInterface_8C_source.html#l04150">SageInterface::rebuildSymbolTable()</a>, <a class="el" href="sageInterface_8C_source.html#l01060">SageInterface::set_name()</a>, <a class="el" href="sageBuilder_8C_source.html#l01107">SageBuilder::setTemplateArgumentsInDeclaration()</a>, <a class="el" href="sageBuilder_8C_source.html#l01156">SageBuilder::setTemplateParametersInDeclaration()</a>, and <a class="el" href="sageBuilder_8C_source.html#l01133">SageBuilder::setTemplateSpecializationArgumentsInDeclaration()</a>.</p>
 
 </div>
 </div>
@@ -2057,7 +2076,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280568">280568</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l279946">279946</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2583,7 +2602,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>This is old and used to be used to hold modifiers. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280962">280962</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280340">280340</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2610,7 +2629,7 @@ Additional Inherited Members</h2></td></tr>
 <p>This string stores the value "C", "C++", or "fortran" to define the external linkage for generating linkable names. </p>
 <p>The only values that make sense here are "C", "C++" is the assumed default and requires a NULL pointer value. And the use of "fortran" would be backend specific (may be rejected by some backend vendor compilers). </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280966">280966</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280344">280344</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2637,7 +2656,7 @@ Additional Inherited Members</h2></td></tr>
 <p>This is the mechanism to handle declaration modifiers. </p>
 <p>See Stroustrup 3rd edition, Appendix A, for details of how modifiers are represented in ROSE. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280970">280970</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280348">280348</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2663,7 +2682,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>I think this is somewhat redundant with the purpose of specifying a forward declaration. Either that or it is information used by the unparser (Oh, I hope not!). </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280974">280974</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280352">280352</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2690,7 +2709,7 @@ Additional Inherited Members</h2></td></tr>
 <p>This marks a declaration as being an explicit forward declaration. </p>
 <p>All non-defining declaations are marked as forward declarations, while a defining declaration is NOT a marked as a forward declaration. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280978">280978</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280356">280356</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2718,7 +2737,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Note that I think this is also set even if it appears between "extern {" and "}". It might be that this is a way to specify the first "extern {", but I don't think it is used interanlly and it is not clear if attaching the "extern {" to a declaration is a great way to handle this problem generally (appears to be overlly sensative to transformations that would add, remove, or move declarations (e.g in inlining and outlining transformations).</p>
 <p>Currently the lex pass saves all "extern \"C\" {" declarations and treats them as CPP directive (along with comments), they are then woven back into the AST as a separate pass.</p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280982">280982</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280360">280360</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2745,7 +2764,7 @@ Additional Inherited Members</h2></td></tr>
 <p>This marks "type elaboration" which is the use of the keyword "class" before variables of type class. </p>
 <p>This is not often required, but is routinely output by the unparser to be conservative. The support for hidden lists allows the unparser to more precisely output the type elaboration, and so this variable is redundant.</p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280986">280986</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280364">280364</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2772,7 +2791,7 @@ Additional Inherited Members</h2></td></tr>
 <p>This pointer is valid only if a defining declaration exists, and stores the defining declaration where the declaration was defined. </p>
 <p>It is important to note that this is the only defining declaration as opposed to the non-defining declarations (where there can, depending on IR node, often be many). </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280990">280990</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280368">280368</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2799,7 +2818,7 @@ Additional Inherited Members</h2></td></tr>
 <p>This pointer is valid if there is a non-defining declaration, and stores the first non-defining declaration where a declaration was made explicitly (as in forward declaration) or implicitly as in the case of a few IR nodes (e.g. <a class="el" href="classSgClassDeclaration.html" title="This class represents the concept of a class declaration statement. It includes the concept of an ins...">SgClassDeclaration</a>). See description of <a class="el" href="classSgDeclarationStatement.html" title="This class represents the concept of a declaration statement.">SgDeclarationStatement</a>. </p>
 <p>It is important to note that this is the first non-defining declaration as opposed to the defining declaration. Thus it is usually the first forward declaration. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280994">280994</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280372">280372</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2823,7 +2842,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280998">280998</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280376">280376</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2847,7 +2866,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l281002">281002</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280380">280380</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2871,7 +2890,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l281006">281006</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280384">280384</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2895,7 +2914,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l281010">281010</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280388">280388</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2919,7 +2938,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l281014">281014</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l280392">280392</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2930,7 +2949,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:26 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:32 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

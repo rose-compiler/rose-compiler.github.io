@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,10 +40,8 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
@@ -53,6 +51,27 @@ $(function() {
 $(document).ready(function() { init_codefold(0); });
 /* @license-end */
 </script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_8509b06bafa958d2011203a730bf5778.html">frontend</a></li><li class="navelem"><a class="el" href="dir_d8cbe4daedd4c946d5ea1f8c5b6ae301.html">SageIII</a></li>  </ul>
@@ -621,12 +640,12 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassOmpSupport_1_1OmpAttribute_html_aed2fde0c3cb16ba1ed14196fc8040c91"><div class="ttname"><a href="classOmpSupport_1_1OmpAttribute.html#aed2fde0c3cb16ba1ed14196fc8040c91">OmpSupport::OmpAttribute::print</a></div><div class="ttdeci">void print()</div><div class="ttdoc">Pretty print the OmpAttribute.</div></div>
 <div class="ttc" id="aclassOmpSupport_1_1OmpAttribute_html_afc8302a6d36b026f643560f424d864a3"><div class="ttname"><a href="classOmpSupport_1_1OmpAttribute.html#afc8302a6d36b026f643560f424d864a3">OmpSupport::OmpAttribute::addVariable</a></div><div class="ttdeci">SgVariableSymbol * addVariable(omp_construct_enum targetConstruct, SgExpression *varExp)</div><div class="ttdoc">Add a variable ref expression to a clause: this is useful for array reference expression....</div></div>
 <div class="ttc" id="aclassPreprocessingInfo_html"><div class="ttname"><a href="classPreprocessingInfo.html">PreprocessingInfo</a></div><div class="ttdoc">For preprocessing information including source comments, include , if, define, etc.</div><div class="ttdef"><b>Definition</b> <a href="rose__attributes__list_8h_source.html#l00127">rose_attributes_list.h:128</a></div></div>
-<div class="ttc" id="aclassSgExpression_html"><div class="ttname"><a href="classSgExpression.html">SgExpression</a></div><div class="ttdoc">This class represents the notion of an expression. Expressions are derived from SgLocatedNodes,...</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l487636">Cxx_Grammar.h:487637</a></div></div>
-<div class="ttc" id="aclassSgInitializedName_html"><div class="ttname"><a href="classSgInitializedName.html">SgInitializedName</a></div><div class="ttdoc">This class represents the notion of a declared variable.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l187210">Cxx_Grammar.h:187211</a></div></div>
-<div class="ttc" id="aclassSgLocatedNode_html"><div class="ttname"><a href="classSgLocatedNode.html">SgLocatedNode</a></div><div class="ttdoc">This class represents the notion of an expression or statement which has a position within the source...</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l181906">Cxx_Grammar.h:181907</a></div></div>
+<div class="ttc" id="aclassSgExpression_html"><div class="ttname"><a href="classSgExpression.html">SgExpression</a></div><div class="ttdoc">This class represents the notion of an expression. Expressions are derived from SgLocatedNodes,...</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l486290">Cxx_Grammar.h:486291</a></div></div>
+<div class="ttc" id="aclassSgInitializedName_html"><div class="ttname"><a href="classSgInitializedName.html">SgInitializedName</a></div><div class="ttdoc">This class represents the notion of a declared variable.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l186832">Cxx_Grammar.h:186833</a></div></div>
+<div class="ttc" id="aclassSgLocatedNode_html"><div class="ttname"><a href="classSgLocatedNode.html">SgLocatedNode</a></div><div class="ttdoc">This class represents the notion of an expression or statement which has a position within the source...</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l181638">Cxx_Grammar.h:181639</a></div></div>
 <div class="ttc" id="aclassSgNode_html"><div class="ttname"><a href="classSgNode.html">SgNode</a></div><div class="ttdoc">This class represents the base class for all IR nodes within Sage III.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l00119">Cxx_Grammar.h:120</a></div></div>
-<div class="ttc" id="aclassSgPragmaDeclaration_html"><div class="ttname"><a href="classSgPragmaDeclaration.html">SgPragmaDeclaration</a></div><div class="ttdoc">This class represents the concept of a C Assembler statement (untested).</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l311263">Cxx_Grammar.h:311264</a></div></div>
-<div class="ttc" id="aclassSgVariableSymbol_html"><div class="ttname"><a href="classSgVariableSymbol.html">SgVariableSymbol</a></div><div class="ttdoc">This class represents the concept of a variable name within the compiler (a shared container for the ...</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l713563">Cxx_Grammar.h:713564</a></div></div>
+<div class="ttc" id="aclassSgPragmaDeclaration_html"><div class="ttname"><a href="classSgPragmaDeclaration.html">SgPragmaDeclaration</a></div><div class="ttdoc">This class represents the concept of a C Assembler statement (untested).</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l310103">Cxx_Grammar.h:310104</a></div></div>
+<div class="ttc" id="aclassSgVariableSymbol_html"><div class="ttname"><a href="classSgVariableSymbol.html">SgVariableSymbol</a></div><div class="ttdoc">This class represents the concept of a variable name within the compiler (a shared container for the ...</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l712217">Cxx_Grammar.h:712218</a></div></div>
 <div class="ttc" id="aclassvariable_html"><div class="ttname"><a href="classvariable.html">variable</a></div><div class="ttdef"><b>Definition</b> <a href="variables_8h_source.html#l00040">variables.h:41</a></div></div>
 <div class="ttc" id="anamespaceOmpSupport_html"><div class="ttname"><a href="namespaceOmpSupport.html">OmpSupport</a></div><div class="ttdoc">Types and functions to support OpenMP.</div><div class="ttdef"><b>Definition</b> <a href="ompAstConstruction_8h_source.html#l00006">ompAstConstruction.h:7</a></div></div>
 <div class="ttc" id="anamespaceOmpSupport_html_a122a3e721998855c128409cca54c023f"><div class="ttname"><a href="namespaceOmpSupport.html#a122a3e721998855c128409cca54c023f">OmpSupport::isDirective</a></div><div class="ttdeci">bool isDirective(omp_construct_enum omp_type)</div><div class="ttdoc">Check if an OpenMP construct is a directive.</div></div>
@@ -651,7 +670,7 @@ $(document).ready(function() { init_codefold(0); });
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:23:12 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:10:18 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="namespacestringify.html">stringify</a></li><li class="navelem"><a class="el" href="namespacestringify_1_1Rose.html">Rose</a></li><li class="navelem"><a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html">BinaryAnalysis</a></li>  </ul>
@@ -140,8 +159,8 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1RegisterDictionary" id="r_namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1RegisterDictionary"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1RegisterDictionary.html">RegisterDictionary</a></td></tr>
 <tr class="memdesc:namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1RegisterDictionary"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stringification. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1SerialIo" id="r_namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1SerialIo"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1SerialIo.html">SerialIo</a></td></tr>
-<tr class="memdesc:namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1SerialIo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stringification. <br /></td></tr>
+<tr class="memitem:namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Serialization" id="r_namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Serialization"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Serialization.html">Serialization</a></td></tr>
+<tr class="memdesc:namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Serialization"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stringification. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1SmtSolver" id="r_namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1SmtSolver"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1SmtSolver.html">SmtSolver</a></td></tr>
 <tr class="memdesc:namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1SmtSolver"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stringification. <br /></td></tr>
@@ -173,102 +192,6 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a81540a2ca7f1376aad4199bdd668c091" id="r_a81540a2ca7f1376aad4199bdd668c091"><td class="memItemLeft" align="right" valign="top"><a id="a81540a2ca7f1376aad4199bdd668c091" name="a81540a2ca7f1376aad4199bdd668c091"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>X86InstructionKind</b> (int64_t)</td></tr>
-<tr class="memdesc:a81540a2ca7f1376aad4199bdd668c091"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a81540a2ca7f1376aad4199bdd668c091" title="Convert Rose::BinaryAnalysis::X86InstructionKind enum constant to a string.">Rose::BinaryAnalysis::X86InstructionKind</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a81540a2ca7f1376aad4199bdd668c091"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d7a78129f0d4776f2154905afe5e860" id="r_a4d7a78129f0d4776f2154905afe5e860"><td class="memItemLeft" align="right" valign="top"><a id="a4d7a78129f0d4776f2154905afe5e860" name="a4d7a78129f0d4776f2154905afe5e860"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>X86InstructionKind</b> (int64_t, const std::string &amp;strip)</td></tr>
-<tr class="memdesc:a4d7a78129f0d4776f2154905afe5e860"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a81540a2ca7f1376aad4199bdd668c091" title="Convert Rose::BinaryAnalysis::X86InstructionKind enum constant to a string.">Rose::BinaryAnalysis::X86InstructionKind</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a4d7a78129f0d4776f2154905afe5e860"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add28e9d9e1e5b912aafb53384b413230" id="r_add28e9d9e1e5b912aafb53384b413230"><td class="memItemLeft" align="right" valign="top"><a id="add28e9d9e1e5b912aafb53384b413230" name="add28e9d9e1e5b912aafb53384b413230"></a>
-const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>X86InstructionKind</b> ()</td></tr>
-<tr class="memdesc:add28e9d9e1e5b912aafb53384b413230"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a81540a2ca7f1376aad4199bdd668c091" title="Convert Rose::BinaryAnalysis::X86InstructionKind enum constant to a string.">Rose::BinaryAnalysis::X86InstructionKind</a> member values as a vector. <br /></td></tr>
-<tr class="separator:add28e9d9e1e5b912aafb53384b413230"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f7d2f350e4f76fbcf32bcc65d866105" id="r_a4f7d2f350e4f76fbcf32bcc65d866105"><td class="memItemLeft" align="right" valign="top"><a id="a4f7d2f350e4f76fbcf32bcc65d866105" name="a4f7d2f350e4f76fbcf32bcc65d866105"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>MipsRegisterClass</b> (int64_t)</td></tr>
-<tr class="memdesc:a4f7d2f350e4f76fbcf32bcc65d866105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a4f7d2f350e4f76fbcf32bcc65d866105" title="Convert Rose::BinaryAnalysis::MipsRegisterClass enum constant to a string.">Rose::BinaryAnalysis::MipsRegisterClass</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a4f7d2f350e4f76fbcf32bcc65d866105"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a614caaf95be3713c7e6457bbeeb4d437" id="r_a614caaf95be3713c7e6457bbeeb4d437"><td class="memItemLeft" align="right" valign="top"><a id="a614caaf95be3713c7e6457bbeeb4d437" name="a614caaf95be3713c7e6457bbeeb4d437"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>MipsRegisterClass</b> (int64_t, const std::string &amp;strip)</td></tr>
-<tr class="memdesc:a614caaf95be3713c7e6457bbeeb4d437"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a4f7d2f350e4f76fbcf32bcc65d866105" title="Convert Rose::BinaryAnalysis::MipsRegisterClass enum constant to a string.">Rose::BinaryAnalysis::MipsRegisterClass</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a614caaf95be3713c7e6457bbeeb4d437"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7807d3c28c0126e936d59cadecdb3213" id="r_a7807d3c28c0126e936d59cadecdb3213"><td class="memItemLeft" align="right" valign="top"><a id="a7807d3c28c0126e936d59cadecdb3213" name="a7807d3c28c0126e936d59cadecdb3213"></a>
-const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MipsRegisterClass</b> ()</td></tr>
-<tr class="memdesc:a7807d3c28c0126e936d59cadecdb3213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a4f7d2f350e4f76fbcf32bcc65d866105" title="Convert Rose::BinaryAnalysis::MipsRegisterClass enum constant to a string.">Rose::BinaryAnalysis::MipsRegisterClass</a> member values as a vector. <br /></td></tr>
-<tr class="separator:a7807d3c28c0126e936d59cadecdb3213"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a688470a5c50d3c35f7d1e43a40109c12" id="r_a688470a5c50d3c35f7d1e43a40109c12"><td class="memItemLeft" align="right" valign="top"><a id="a688470a5c50d3c35f7d1e43a40109c12" name="a688470a5c50d3c35f7d1e43a40109c12"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>MipsFcsrMinors</b> (int64_t)</td></tr>
-<tr class="memdesc:a688470a5c50d3c35f7d1e43a40109c12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a688470a5c50d3c35f7d1e43a40109c12" title="Convert Rose::BinaryAnalysis::MipsFcsrMinors enum constant to a string.">Rose::BinaryAnalysis::MipsFcsrMinors</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a688470a5c50d3c35f7d1e43a40109c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f1e991a3280d811baad7e890d75feda" id="r_a9f1e991a3280d811baad7e890d75feda"><td class="memItemLeft" align="right" valign="top"><a id="a9f1e991a3280d811baad7e890d75feda" name="a9f1e991a3280d811baad7e890d75feda"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>MipsFcsrMinors</b> (int64_t, const std::string &amp;strip)</td></tr>
-<tr class="memdesc:a9f1e991a3280d811baad7e890d75feda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a688470a5c50d3c35f7d1e43a40109c12" title="Convert Rose::BinaryAnalysis::MipsFcsrMinors enum constant to a string.">Rose::BinaryAnalysis::MipsFcsrMinors</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a9f1e991a3280d811baad7e890d75feda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79feedc599e43546c4f62cc580d19881" id="r_a79feedc599e43546c4f62cc580d19881"><td class="memItemLeft" align="right" valign="top"><a id="a79feedc599e43546c4f62cc580d19881" name="a79feedc599e43546c4f62cc580d19881"></a>
-const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MipsFcsrMinors</b> ()</td></tr>
-<tr class="memdesc:a79feedc599e43546c4f62cc580d19881"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a688470a5c50d3c35f7d1e43a40109c12" title="Convert Rose::BinaryAnalysis::MipsFcsrMinors enum constant to a string.">Rose::BinaryAnalysis::MipsFcsrMinors</a> member values as a vector. <br /></td></tr>
-<tr class="separator:a79feedc599e43546c4f62cc580d19881"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31c6db15bd0a948ae87b54378f4023c5" id="r_a31c6db15bd0a948ae87b54378f4023c5"><td class="memItemLeft" align="right" valign="top"><a id="a31c6db15bd0a948ae87b54378f4023c5" name="a31c6db15bd0a948ae87b54378f4023c5"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>MipsSpecialPurposeRegister</b> (int64_t)</td></tr>
-<tr class="memdesc:a31c6db15bd0a948ae87b54378f4023c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a31c6db15bd0a948ae87b54378f4023c5" title="Convert Rose::BinaryAnalysis::MipsSpecialPurposeRegister enum constant to a string.">Rose::BinaryAnalysis::MipsSpecialPurposeRegister</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a31c6db15bd0a948ae87b54378f4023c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4378343f5d806dffc614d228d10eb029" id="r_a4378343f5d806dffc614d228d10eb029"><td class="memItemLeft" align="right" valign="top"><a id="a4378343f5d806dffc614d228d10eb029" name="a4378343f5d806dffc614d228d10eb029"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>MipsSpecialPurposeRegister</b> (int64_t, const std::string &amp;strip)</td></tr>
-<tr class="memdesc:a4378343f5d806dffc614d228d10eb029"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a31c6db15bd0a948ae87b54378f4023c5" title="Convert Rose::BinaryAnalysis::MipsSpecialPurposeRegister enum constant to a string.">Rose::BinaryAnalysis::MipsSpecialPurposeRegister</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a4378343f5d806dffc614d228d10eb029"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a059dcf03cf333550f682832b15578e30" id="r_a059dcf03cf333550f682832b15578e30"><td class="memItemLeft" align="right" valign="top"><a id="a059dcf03cf333550f682832b15578e30" name="a059dcf03cf333550f682832b15578e30"></a>
-const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MipsSpecialPurposeRegister</b> ()</td></tr>
-<tr class="memdesc:a059dcf03cf333550f682832b15578e30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a31c6db15bd0a948ae87b54378f4023c5" title="Convert Rose::BinaryAnalysis::MipsSpecialPurposeRegister enum constant to a string.">Rose::BinaryAnalysis::MipsSpecialPurposeRegister</a> member values as a vector. <br /></td></tr>
-<tr class="separator:a059dcf03cf333550f682832b15578e30"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4df5b1e2f7c30a5417c59f95fb502647" id="r_a4df5b1e2f7c30a5417c59f95fb502647"><td class="memItemLeft" align="right" valign="top"><a id="a4df5b1e2f7c30a5417c59f95fb502647" name="a4df5b1e2f7c30a5417c59f95fb502647"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInterruptMajor</b> (int64_t)</td></tr>
-<tr class="memdesc:a4df5b1e2f7c30a5417c59f95fb502647"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a4df5b1e2f7c30a5417c59f95fb502647" title="Convert Rose::BinaryAnalysis::MipsInterruptMajor enum constant to a string.">Rose::BinaryAnalysis::MipsInterruptMajor</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a4df5b1e2f7c30a5417c59f95fb502647"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a4a58dcb8e4cb00a6223f65f0b06908" id="r_a5a4a58dcb8e4cb00a6223f65f0b06908"><td class="memItemLeft" align="right" valign="top"><a id="a5a4a58dcb8e4cb00a6223f65f0b06908" name="a5a4a58dcb8e4cb00a6223f65f0b06908"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInterruptMajor</b> (int64_t, const std::string &amp;strip)</td></tr>
-<tr class="memdesc:a5a4a58dcb8e4cb00a6223f65f0b06908"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a4df5b1e2f7c30a5417c59f95fb502647" title="Convert Rose::BinaryAnalysis::MipsInterruptMajor enum constant to a string.">Rose::BinaryAnalysis::MipsInterruptMajor</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a5a4a58dcb8e4cb00a6223f65f0b06908"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36643c7d0415ff661541760931c57bcc" id="r_a36643c7d0415ff661541760931c57bcc"><td class="memItemLeft" align="right" valign="top"><a id="a36643c7d0415ff661541760931c57bcc" name="a36643c7d0415ff661541760931c57bcc"></a>
-const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInterruptMajor</b> ()</td></tr>
-<tr class="memdesc:a36643c7d0415ff661541760931c57bcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a4df5b1e2f7c30a5417c59f95fb502647" title="Convert Rose::BinaryAnalysis::MipsInterruptMajor enum constant to a string.">Rose::BinaryAnalysis::MipsInterruptMajor</a> member values as a vector. <br /></td></tr>
-<tr class="separator:a36643c7d0415ff661541760931c57bcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18be3855aba7155eaef14f793d631105" id="r_a18be3855aba7155eaef14f793d631105"><td class="memItemLeft" align="right" valign="top"><a id="a18be3855aba7155eaef14f793d631105" name="a18be3855aba7155eaef14f793d631105"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInterruptMinor</b> (int64_t)</td></tr>
-<tr class="memdesc:a18be3855aba7155eaef14f793d631105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a18be3855aba7155eaef14f793d631105" title="Convert Rose::BinaryAnalysis::MipsInterruptMinor enum constant to a string.">Rose::BinaryAnalysis::MipsInterruptMinor</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a18be3855aba7155eaef14f793d631105"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7f62b7142376b5a5381d25350239145" id="r_ad7f62b7142376b5a5381d25350239145"><td class="memItemLeft" align="right" valign="top"><a id="ad7f62b7142376b5a5381d25350239145" name="ad7f62b7142376b5a5381d25350239145"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInterruptMinor</b> (int64_t, const std::string &amp;strip)</td></tr>
-<tr class="memdesc:ad7f62b7142376b5a5381d25350239145"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a18be3855aba7155eaef14f793d631105" title="Convert Rose::BinaryAnalysis::MipsInterruptMinor enum constant to a string.">Rose::BinaryAnalysis::MipsInterruptMinor</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:ad7f62b7142376b5a5381d25350239145"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af757c4fa4d69f4a21c6ff4204513da01" id="r_af757c4fa4d69f4a21c6ff4204513da01"><td class="memItemLeft" align="right" valign="top"><a id="af757c4fa4d69f4a21c6ff4204513da01" name="af757c4fa4d69f4a21c6ff4204513da01"></a>
-const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInterruptMinor</b> ()</td></tr>
-<tr class="memdesc:af757c4fa4d69f4a21c6ff4204513da01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a18be3855aba7155eaef14f793d631105" title="Convert Rose::BinaryAnalysis::MipsInterruptMinor enum constant to a string.">Rose::BinaryAnalysis::MipsInterruptMinor</a> member values as a vector. <br /></td></tr>
-<tr class="separator:af757c4fa4d69f4a21c6ff4204513da01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cd44c245b96bbcefc05f52cf431b53f" id="r_a8cd44c245b96bbcefc05f52cf431b53f"><td class="memItemLeft" align="right" valign="top"><a id="a8cd44c245b96bbcefc05f52cf431b53f" name="a8cd44c245b96bbcefc05f52cf431b53f"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>MipsDataFormat</b> (int64_t)</td></tr>
-<tr class="memdesc:a8cd44c245b96bbcefc05f52cf431b53f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a8cd44c245b96bbcefc05f52cf431b53f" title="Convert Rose::BinaryAnalysis::MipsDataFormat enum constant to a string.">Rose::BinaryAnalysis::MipsDataFormat</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a8cd44c245b96bbcefc05f52cf431b53f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c9a8c78be269d141f37c89facf39b06" id="r_a6c9a8c78be269d141f37c89facf39b06"><td class="memItemLeft" align="right" valign="top"><a id="a6c9a8c78be269d141f37c89facf39b06" name="a6c9a8c78be269d141f37c89facf39b06"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>MipsDataFormat</b> (int64_t, const std::string &amp;strip)</td></tr>
-<tr class="memdesc:a6c9a8c78be269d141f37c89facf39b06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a8cd44c245b96bbcefc05f52cf431b53f" title="Convert Rose::BinaryAnalysis::MipsDataFormat enum constant to a string.">Rose::BinaryAnalysis::MipsDataFormat</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a6c9a8c78be269d141f37c89facf39b06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb59ddec20812feb7a0f2b529ac7d07b" id="r_afb59ddec20812feb7a0f2b529ac7d07b"><td class="memItemLeft" align="right" valign="top"><a id="afb59ddec20812feb7a0f2b529ac7d07b" name="afb59ddec20812feb7a0f2b529ac7d07b"></a>
-const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MipsDataFormat</b> ()</td></tr>
-<tr class="memdesc:afb59ddec20812feb7a0f2b529ac7d07b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a8cd44c245b96bbcefc05f52cf431b53f" title="Convert Rose::BinaryAnalysis::MipsDataFormat enum constant to a string.">Rose::BinaryAnalysis::MipsDataFormat</a> member values as a vector. <br /></td></tr>
-<tr class="separator:afb59ddec20812feb7a0f2b529ac7d07b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8ae3fd15c10c82c7fa41ecb4481266e" id="r_ac8ae3fd15c10c82c7fa41ecb4481266e"><td class="memItemLeft" align="right" valign="top"><a id="ac8ae3fd15c10c82c7fa41ecb4481266e" name="ac8ae3fd15c10c82c7fa41ecb4481266e"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInstructionKind</b> (int64_t)</td></tr>
-<tr class="memdesc:ac8ae3fd15c10c82c7fa41ecb4481266e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ac8ae3fd15c10c82c7fa41ecb4481266e" title="Convert Rose::BinaryAnalysis::MipsInstructionKind enum constant to a string.">Rose::BinaryAnalysis::MipsInstructionKind</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:ac8ae3fd15c10c82c7fa41ecb4481266e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b7a2db2cb9500fd478cf6ef07006d83" id="r_a6b7a2db2cb9500fd478cf6ef07006d83"><td class="memItemLeft" align="right" valign="top"><a id="a6b7a2db2cb9500fd478cf6ef07006d83" name="a6b7a2db2cb9500fd478cf6ef07006d83"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInstructionKind</b> (int64_t, const std::string &amp;strip)</td></tr>
-<tr class="memdesc:a6b7a2db2cb9500fd478cf6ef07006d83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ac8ae3fd15c10c82c7fa41ecb4481266e" title="Convert Rose::BinaryAnalysis::MipsInstructionKind enum constant to a string.">Rose::BinaryAnalysis::MipsInstructionKind</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a6b7a2db2cb9500fd478cf6ef07006d83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0dd30339638c44819188c6849b66e0ff" id="r_a0dd30339638c44819188c6849b66e0ff"><td class="memItemLeft" align="right" valign="top"><a id="a0dd30339638c44819188c6849b66e0ff" name="a0dd30339638c44819188c6849b66e0ff"></a>
-const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInstructionKind</b> ()</td></tr>
-<tr class="memdesc:a0dd30339638c44819188c6849b66e0ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ac8ae3fd15c10c82c7fa41ecb4481266e" title="Convert Rose::BinaryAnalysis::MipsInstructionKind enum constant to a string.">Rose::BinaryAnalysis::MipsInstructionKind</a> member values as a vector. <br /></td></tr>
-<tr class="separator:a0dd30339638c44819188c6849b66e0ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5324d739ce80fe0ee4bcbbf3fea6cd68" id="r_a5324d739ce80fe0ee4bcbbf3fea6cd68"><td class="memItemLeft" align="right" valign="top"><a id="a5324d739ce80fe0ee4bcbbf3fea6cd68" name="a5324d739ce80fe0ee4bcbbf3fea6cd68"></a>
 const char *&#160;</td><td class="memItemRight" valign="bottom"><b>M68kFamily</b> (int64_t)</td></tr>
 <tr class="memdesc:a5324d739ce80fe0ee4bcbbf3fea6cd68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a5324d739ce80fe0ee4bcbbf3fea6cd68" title="Convert Rose::BinaryAnalysis::M68kFamily enum constant to a string.">Rose::BinaryAnalysis::M68kFamily</a> enum constant to a string. <br /></td></tr>
@@ -377,6 +300,30 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>M68kInstructio
 const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>M68kInstructionKind</b> ()</td></tr>
 <tr class="memdesc:ad9eb8808c578d1e191ada96d0f299e37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#addef48f2b45acc628578c2f1ab71c456" title="Convert Rose::BinaryAnalysis::M68kInstructionKind enum constant to a string.">Rose::BinaryAnalysis::M68kInstructionKind</a> member values as a vector. <br /></td></tr>
 <tr class="separator:ad9eb8808c578d1e191ada96d0f299e37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99f0bcad1fdfe43aa4eb932c7998782e" id="r_a99f0bcad1fdfe43aa4eb932c7998782e"><td class="memItemLeft" align="right" valign="top"><a id="a99f0bcad1fdfe43aa4eb932c7998782e" name="a99f0bcad1fdfe43aa4eb932c7998782e"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>CilFamily</b> (int64_t)</td></tr>
+<tr class="memdesc:a99f0bcad1fdfe43aa4eb932c7998782e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a99f0bcad1fdfe43aa4eb932c7998782e" title="Convert Rose::BinaryAnalysis::CilFamily enum constant to a string.">Rose::BinaryAnalysis::CilFamily</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a99f0bcad1fdfe43aa4eb932c7998782e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e37d41b079edd696bfc0b449e45bdb0" id="r_a6e37d41b079edd696bfc0b449e45bdb0"><td class="memItemLeft" align="right" valign="top"><a id="a6e37d41b079edd696bfc0b449e45bdb0" name="a6e37d41b079edd696bfc0b449e45bdb0"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CilFamily</b> (int64_t, const std::string &amp;strip)</td></tr>
+<tr class="memdesc:a6e37d41b079edd696bfc0b449e45bdb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a99f0bcad1fdfe43aa4eb932c7998782e" title="Convert Rose::BinaryAnalysis::CilFamily enum constant to a string.">Rose::BinaryAnalysis::CilFamily</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a6e37d41b079edd696bfc0b449e45bdb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d797a5b5bf9d077c9f2465d5e01223c" id="r_a7d797a5b5bf9d077c9f2465d5e01223c"><td class="memItemLeft" align="right" valign="top"><a id="a7d797a5b5bf9d077c9f2465d5e01223c" name="a7d797a5b5bf9d077c9f2465d5e01223c"></a>
+const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>CilFamily</b> ()</td></tr>
+<tr class="memdesc:a7d797a5b5bf9d077c9f2465d5e01223c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a99f0bcad1fdfe43aa4eb932c7998782e" title="Convert Rose::BinaryAnalysis::CilFamily enum constant to a string.">Rose::BinaryAnalysis::CilFamily</a> member values as a vector. <br /></td></tr>
+<tr class="separator:a7d797a5b5bf9d077c9f2465d5e01223c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1f04f7e00302ddfd9ce1e3995a5d607" id="r_ac1f04f7e00302ddfd9ce1e3995a5d607"><td class="memItemLeft" align="right" valign="top"><a id="ac1f04f7e00302ddfd9ce1e3995a5d607" name="ac1f04f7e00302ddfd9ce1e3995a5d607"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>CilInstructionKind</b> (int64_t)</td></tr>
+<tr class="memdesc:ac1f04f7e00302ddfd9ce1e3995a5d607"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ac1f04f7e00302ddfd9ce1e3995a5d607" title="Convert Rose::BinaryAnalysis::CilInstructionKind enum constant to a string.">Rose::BinaryAnalysis::CilInstructionKind</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:ac1f04f7e00302ddfd9ce1e3995a5d607"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb1a22e18acf7faea1ec957144657598" id="r_afb1a22e18acf7faea1ec957144657598"><td class="memItemLeft" align="right" valign="top"><a id="afb1a22e18acf7faea1ec957144657598" name="afb1a22e18acf7faea1ec957144657598"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CilInstructionKind</b> (int64_t, const std::string &amp;strip)</td></tr>
+<tr class="memdesc:afb1a22e18acf7faea1ec957144657598"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ac1f04f7e00302ddfd9ce1e3995a5d607" title="Convert Rose::BinaryAnalysis::CilInstructionKind enum constant to a string.">Rose::BinaryAnalysis::CilInstructionKind</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:afb1a22e18acf7faea1ec957144657598"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb2b6fa8a89eb98787d29fd39d259535" id="r_aeb2b6fa8a89eb98787d29fd39d259535"><td class="memItemLeft" align="right" valign="top"><a id="aeb2b6fa8a89eb98787d29fd39d259535" name="aeb2b6fa8a89eb98787d29fd39d259535"></a>
+const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>CilInstructionKind</b> ()</td></tr>
+<tr class="memdesc:aeb2b6fa8a89eb98787d29fd39d259535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ac1f04f7e00302ddfd9ce1e3995a5d607" title="Convert Rose::BinaryAnalysis::CilInstructionKind enum constant to a string.">Rose::BinaryAnalysis::CilInstructionKind</a> member values as a vector. <br /></td></tr>
+<tr class="separator:aeb2b6fa8a89eb98787d29fd39d259535"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5058fce6c1603c8ca838f438286ff2cd" id="r_a5058fce6c1603c8ca838f438286ff2cd"><td class="memItemLeft" align="right" valign="top"><a id="a5058fce6c1603c8ca838f438286ff2cd" name="a5058fce6c1603c8ca838f438286ff2cd"></a>
 const char *&#160;</td><td class="memItemRight" valign="bottom"><b>X86InstructionSize</b> (int64_t)</td></tr>
 <tr class="memdesc:a5058fce6c1603c8ca838f438286ff2cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a5058fce6c1603c8ca838f438286ff2cd" title="Convert Rose::BinaryAnalysis::X86InstructionSize enum constant to a string.">Rose::BinaryAnalysis::X86InstructionSize</a> enum constant to a string. <br /></td></tr>
@@ -557,66 +504,6 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch32SystemR
 const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch32SystemRegister</b> ()</td></tr>
 <tr class="memdesc:ace7e061fdfd9c45504036a45d62a2a53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a507971253145f1c21cac4dab9b53d2bc" title="Convert Rose::BinaryAnalysis::Aarch32SystemRegister enum constant to a string.">Rose::BinaryAnalysis::Aarch32SystemRegister</a> member values as a vector. <br /></td></tr>
 <tr class="separator:ace7e061fdfd9c45504036a45d62a2a53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d976a3c52efba16fb188e7793d075d6" id="r_a6d976a3c52efba16fb188e7793d075d6"><td class="memItemLeft" align="right" valign="top"><a id="a6d976a3c52efba16fb188e7793d075d6" name="a6d976a3c52efba16fb188e7793d075d6"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64Exception</b> (int64_t)</td></tr>
-<tr class="memdesc:a6d976a3c52efba16fb188e7793d075d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a6d976a3c52efba16fb188e7793d075d6" title="Convert Rose::BinaryAnalysis::Aarch64Exception enum constant to a string.">Rose::BinaryAnalysis::Aarch64Exception</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a6d976a3c52efba16fb188e7793d075d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ce6113719bab3d6f3ca033bc5d25055" id="r_a2ce6113719bab3d6f3ca033bc5d25055"><td class="memItemLeft" align="right" valign="top"><a id="a2ce6113719bab3d6f3ca033bc5d25055" name="a2ce6113719bab3d6f3ca033bc5d25055"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64Exception</b> (int64_t, const std::string &amp;strip)</td></tr>
-<tr class="memdesc:a2ce6113719bab3d6f3ca033bc5d25055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a6d976a3c52efba16fb188e7793d075d6" title="Convert Rose::BinaryAnalysis::Aarch64Exception enum constant to a string.">Rose::BinaryAnalysis::Aarch64Exception</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a2ce6113719bab3d6f3ca033bc5d25055"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1add39b8e7b58c93093dfbeb9f2bb302" id="r_a1add39b8e7b58c93093dfbeb9f2bb302"><td class="memItemLeft" align="right" valign="top"><a id="a1add39b8e7b58c93093dfbeb9f2bb302" name="a1add39b8e7b58c93093dfbeb9f2bb302"></a>
-const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64Exception</b> ()</td></tr>
-<tr class="memdesc:a1add39b8e7b58c93093dfbeb9f2bb302"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a6d976a3c52efba16fb188e7793d075d6" title="Convert Rose::BinaryAnalysis::Aarch64Exception enum constant to a string.">Rose::BinaryAnalysis::Aarch64Exception</a> member values as a vector. <br /></td></tr>
-<tr class="separator:a1add39b8e7b58c93093dfbeb9f2bb302"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae203046a4e765590cb42b3bce51aa376" id="r_ae203046a4e765590cb42b3bce51aa376"><td class="memItemLeft" align="right" valign="top"><a id="ae203046a4e765590cb42b3bce51aa376" name="ae203046a4e765590cb42b3bce51aa376"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64RegisterClass</b> (int64_t)</td></tr>
-<tr class="memdesc:ae203046a4e765590cb42b3bce51aa376"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ae203046a4e765590cb42b3bce51aa376" title="Convert Rose::BinaryAnalysis::Aarch64RegisterClass enum constant to a string.">Rose::BinaryAnalysis::Aarch64RegisterClass</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:ae203046a4e765590cb42b3bce51aa376"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa14375a02837e0c79712f8bb22384ca4" id="r_aa14375a02837e0c79712f8bb22384ca4"><td class="memItemLeft" align="right" valign="top"><a id="aa14375a02837e0c79712f8bb22384ca4" name="aa14375a02837e0c79712f8bb22384ca4"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64RegisterClass</b> (int64_t, const std::string &amp;strip)</td></tr>
-<tr class="memdesc:aa14375a02837e0c79712f8bb22384ca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ae203046a4e765590cb42b3bce51aa376" title="Convert Rose::BinaryAnalysis::Aarch64RegisterClass enum constant to a string.">Rose::BinaryAnalysis::Aarch64RegisterClass</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:aa14375a02837e0c79712f8bb22384ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5e87ad01824fcf00c1c835286394de5" id="r_ae5e87ad01824fcf00c1c835286394de5"><td class="memItemLeft" align="right" valign="top"><a id="ae5e87ad01824fcf00c1c835286394de5" name="ae5e87ad01824fcf00c1c835286394de5"></a>
-const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64RegisterClass</b> ()</td></tr>
-<tr class="memdesc:ae5e87ad01824fcf00c1c835286394de5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ae203046a4e765590cb42b3bce51aa376" title="Convert Rose::BinaryAnalysis::Aarch64RegisterClass enum constant to a string.">Rose::BinaryAnalysis::Aarch64RegisterClass</a> member values as a vector. <br /></td></tr>
-<tr class="separator:ae5e87ad01824fcf00c1c835286394de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a623b4ef77957b8e8201c0feb39940261" id="r_a623b4ef77957b8e8201c0feb39940261"><td class="memItemLeft" align="right" valign="top"><a id="a623b4ef77957b8e8201c0feb39940261" name="a623b4ef77957b8e8201c0feb39940261"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64SystemRegisters</b> (int64_t)</td></tr>
-<tr class="memdesc:a623b4ef77957b8e8201c0feb39940261"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a623b4ef77957b8e8201c0feb39940261" title="Convert Rose::BinaryAnalysis::Aarch64SystemRegisters enum constant to a string.">Rose::BinaryAnalysis::Aarch64SystemRegisters</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a623b4ef77957b8e8201c0feb39940261"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a705c41e4212061392c467560580f276a" id="r_a705c41e4212061392c467560580f276a"><td class="memItemLeft" align="right" valign="top"><a id="a705c41e4212061392c467560580f276a" name="a705c41e4212061392c467560580f276a"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64SystemRegisters</b> (int64_t, const std::string &amp;strip)</td></tr>
-<tr class="memdesc:a705c41e4212061392c467560580f276a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a623b4ef77957b8e8201c0feb39940261" title="Convert Rose::BinaryAnalysis::Aarch64SystemRegisters enum constant to a string.">Rose::BinaryAnalysis::Aarch64SystemRegisters</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a705c41e4212061392c467560580f276a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b1926d068a389febfc624473bef6487" id="r_a5b1926d068a389febfc624473bef6487"><td class="memItemLeft" align="right" valign="top"><a id="a5b1926d068a389febfc624473bef6487" name="a5b1926d068a389febfc624473bef6487"></a>
-const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64SystemRegisters</b> ()</td></tr>
-<tr class="memdesc:a5b1926d068a389febfc624473bef6487"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a623b4ef77957b8e8201c0feb39940261" title="Convert Rose::BinaryAnalysis::Aarch64SystemRegisters enum constant to a string.">Rose::BinaryAnalysis::Aarch64SystemRegisters</a> member values as a vector. <br /></td></tr>
-<tr class="separator:a5b1926d068a389febfc624473bef6487"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99f0bcad1fdfe43aa4eb932c7998782e" id="r_a99f0bcad1fdfe43aa4eb932c7998782e"><td class="memItemLeft" align="right" valign="top"><a id="a99f0bcad1fdfe43aa4eb932c7998782e" name="a99f0bcad1fdfe43aa4eb932c7998782e"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>CilFamily</b> (int64_t)</td></tr>
-<tr class="memdesc:a99f0bcad1fdfe43aa4eb932c7998782e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a99f0bcad1fdfe43aa4eb932c7998782e" title="Convert Rose::BinaryAnalysis::CilFamily enum constant to a string.">Rose::BinaryAnalysis::CilFamily</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a99f0bcad1fdfe43aa4eb932c7998782e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e37d41b079edd696bfc0b449e45bdb0" id="r_a6e37d41b079edd696bfc0b449e45bdb0"><td class="memItemLeft" align="right" valign="top"><a id="a6e37d41b079edd696bfc0b449e45bdb0" name="a6e37d41b079edd696bfc0b449e45bdb0"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CilFamily</b> (int64_t, const std::string &amp;strip)</td></tr>
-<tr class="memdesc:a6e37d41b079edd696bfc0b449e45bdb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a99f0bcad1fdfe43aa4eb932c7998782e" title="Convert Rose::BinaryAnalysis::CilFamily enum constant to a string.">Rose::BinaryAnalysis::CilFamily</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:a6e37d41b079edd696bfc0b449e45bdb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d797a5b5bf9d077c9f2465d5e01223c" id="r_a7d797a5b5bf9d077c9f2465d5e01223c"><td class="memItemLeft" align="right" valign="top"><a id="a7d797a5b5bf9d077c9f2465d5e01223c" name="a7d797a5b5bf9d077c9f2465d5e01223c"></a>
-const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>CilFamily</b> ()</td></tr>
-<tr class="memdesc:a7d797a5b5bf9d077c9f2465d5e01223c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a99f0bcad1fdfe43aa4eb932c7998782e" title="Convert Rose::BinaryAnalysis::CilFamily enum constant to a string.">Rose::BinaryAnalysis::CilFamily</a> member values as a vector. <br /></td></tr>
-<tr class="separator:a7d797a5b5bf9d077c9f2465d5e01223c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1f04f7e00302ddfd9ce1e3995a5d607" id="r_ac1f04f7e00302ddfd9ce1e3995a5d607"><td class="memItemLeft" align="right" valign="top"><a id="ac1f04f7e00302ddfd9ce1e3995a5d607" name="ac1f04f7e00302ddfd9ce1e3995a5d607"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>CilInstructionKind</b> (int64_t)</td></tr>
-<tr class="memdesc:ac1f04f7e00302ddfd9ce1e3995a5d607"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ac1f04f7e00302ddfd9ce1e3995a5d607" title="Convert Rose::BinaryAnalysis::CilInstructionKind enum constant to a string.">Rose::BinaryAnalysis::CilInstructionKind</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:ac1f04f7e00302ddfd9ce1e3995a5d607"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb1a22e18acf7faea1ec957144657598" id="r_afb1a22e18acf7faea1ec957144657598"><td class="memItemLeft" align="right" valign="top"><a id="afb1a22e18acf7faea1ec957144657598" name="afb1a22e18acf7faea1ec957144657598"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CilInstructionKind</b> (int64_t, const std::string &amp;strip)</td></tr>
-<tr class="memdesc:afb1a22e18acf7faea1ec957144657598"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ac1f04f7e00302ddfd9ce1e3995a5d607" title="Convert Rose::BinaryAnalysis::CilInstructionKind enum constant to a string.">Rose::BinaryAnalysis::CilInstructionKind</a> enum constant to a string. <br /></td></tr>
-<tr class="separator:afb1a22e18acf7faea1ec957144657598"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb2b6fa8a89eb98787d29fd39d259535" id="r_aeb2b6fa8a89eb98787d29fd39d259535"><td class="memItemLeft" align="right" valign="top"><a id="aeb2b6fa8a89eb98787d29fd39d259535" name="aeb2b6fa8a89eb98787d29fd39d259535"></a>
-const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>CilInstructionKind</b> ()</td></tr>
-<tr class="memdesc:aeb2b6fa8a89eb98787d29fd39d259535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ac1f04f7e00302ddfd9ce1e3995a5d607" title="Convert Rose::BinaryAnalysis::CilInstructionKind enum constant to a string.">Rose::BinaryAnalysis::CilInstructionKind</a> member values as a vector. <br /></td></tr>
-<tr class="separator:aeb2b6fa8a89eb98787d29fd39d259535"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ea6ad44b17a8f11a3a3d0ad129dbd1b" id="r_a6ea6ad44b17a8f11a3a3d0ad129dbd1b"><td class="memItemLeft" align="right" valign="top"><a id="a6ea6ad44b17a8f11a3a3d0ad129dbd1b" name="a6ea6ad44b17a8f11a3a3d0ad129dbd1b"></a>
 const char *&#160;</td><td class="memItemRight" valign="bottom"><b>PowerpcCapability</b> (int64_t)</td></tr>
 <tr class="memdesc:a6ea6ad44b17a8f11a3a3d0ad129dbd1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a6ea6ad44b17a8f11a3a3d0ad129dbd1b" title="Convert Rose::BinaryAnalysis::PowerpcCapability enum constant to a string.">Rose::BinaryAnalysis::PowerpcCapability</a> enum constant to a string. <br /></td></tr>
@@ -701,6 +588,42 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>PowerpcTimeBas
 const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>PowerpcTimeBaseRegister</b> ()</td></tr>
 <tr class="memdesc:a14d9075f58d0afcafde6191578326062"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a737a6e144d6732b40a1ea77a01ba9b66" title="Convert Rose::BinaryAnalysis::PowerpcTimeBaseRegister enum constant to a string.">Rose::BinaryAnalysis::PowerpcTimeBaseRegister</a> member values as a vector. <br /></td></tr>
 <tr class="separator:a14d9075f58d0afcafde6191578326062"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d976a3c52efba16fb188e7793d075d6" id="r_a6d976a3c52efba16fb188e7793d075d6"><td class="memItemLeft" align="right" valign="top"><a id="a6d976a3c52efba16fb188e7793d075d6" name="a6d976a3c52efba16fb188e7793d075d6"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64Exception</b> (int64_t)</td></tr>
+<tr class="memdesc:a6d976a3c52efba16fb188e7793d075d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a6d976a3c52efba16fb188e7793d075d6" title="Convert Rose::BinaryAnalysis::Aarch64Exception enum constant to a string.">Rose::BinaryAnalysis::Aarch64Exception</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a6d976a3c52efba16fb188e7793d075d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ce6113719bab3d6f3ca033bc5d25055" id="r_a2ce6113719bab3d6f3ca033bc5d25055"><td class="memItemLeft" align="right" valign="top"><a id="a2ce6113719bab3d6f3ca033bc5d25055" name="a2ce6113719bab3d6f3ca033bc5d25055"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64Exception</b> (int64_t, const std::string &amp;strip)</td></tr>
+<tr class="memdesc:a2ce6113719bab3d6f3ca033bc5d25055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a6d976a3c52efba16fb188e7793d075d6" title="Convert Rose::BinaryAnalysis::Aarch64Exception enum constant to a string.">Rose::BinaryAnalysis::Aarch64Exception</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a2ce6113719bab3d6f3ca033bc5d25055"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1add39b8e7b58c93093dfbeb9f2bb302" id="r_a1add39b8e7b58c93093dfbeb9f2bb302"><td class="memItemLeft" align="right" valign="top"><a id="a1add39b8e7b58c93093dfbeb9f2bb302" name="a1add39b8e7b58c93093dfbeb9f2bb302"></a>
+const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64Exception</b> ()</td></tr>
+<tr class="memdesc:a1add39b8e7b58c93093dfbeb9f2bb302"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a6d976a3c52efba16fb188e7793d075d6" title="Convert Rose::BinaryAnalysis::Aarch64Exception enum constant to a string.">Rose::BinaryAnalysis::Aarch64Exception</a> member values as a vector. <br /></td></tr>
+<tr class="separator:a1add39b8e7b58c93093dfbeb9f2bb302"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae203046a4e765590cb42b3bce51aa376" id="r_ae203046a4e765590cb42b3bce51aa376"><td class="memItemLeft" align="right" valign="top"><a id="ae203046a4e765590cb42b3bce51aa376" name="ae203046a4e765590cb42b3bce51aa376"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64RegisterClass</b> (int64_t)</td></tr>
+<tr class="memdesc:ae203046a4e765590cb42b3bce51aa376"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ae203046a4e765590cb42b3bce51aa376" title="Convert Rose::BinaryAnalysis::Aarch64RegisterClass enum constant to a string.">Rose::BinaryAnalysis::Aarch64RegisterClass</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:ae203046a4e765590cb42b3bce51aa376"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa14375a02837e0c79712f8bb22384ca4" id="r_aa14375a02837e0c79712f8bb22384ca4"><td class="memItemLeft" align="right" valign="top"><a id="aa14375a02837e0c79712f8bb22384ca4" name="aa14375a02837e0c79712f8bb22384ca4"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64RegisterClass</b> (int64_t, const std::string &amp;strip)</td></tr>
+<tr class="memdesc:aa14375a02837e0c79712f8bb22384ca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ae203046a4e765590cb42b3bce51aa376" title="Convert Rose::BinaryAnalysis::Aarch64RegisterClass enum constant to a string.">Rose::BinaryAnalysis::Aarch64RegisterClass</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:aa14375a02837e0c79712f8bb22384ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5e87ad01824fcf00c1c835286394de5" id="r_ae5e87ad01824fcf00c1c835286394de5"><td class="memItemLeft" align="right" valign="top"><a id="ae5e87ad01824fcf00c1c835286394de5" name="ae5e87ad01824fcf00c1c835286394de5"></a>
+const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64RegisterClass</b> ()</td></tr>
+<tr class="memdesc:ae5e87ad01824fcf00c1c835286394de5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ae203046a4e765590cb42b3bce51aa376" title="Convert Rose::BinaryAnalysis::Aarch64RegisterClass enum constant to a string.">Rose::BinaryAnalysis::Aarch64RegisterClass</a> member values as a vector. <br /></td></tr>
+<tr class="separator:ae5e87ad01824fcf00c1c835286394de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a623b4ef77957b8e8201c0feb39940261" id="r_a623b4ef77957b8e8201c0feb39940261"><td class="memItemLeft" align="right" valign="top"><a id="a623b4ef77957b8e8201c0feb39940261" name="a623b4ef77957b8e8201c0feb39940261"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64SystemRegisters</b> (int64_t)</td></tr>
+<tr class="memdesc:a623b4ef77957b8e8201c0feb39940261"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a623b4ef77957b8e8201c0feb39940261" title="Convert Rose::BinaryAnalysis::Aarch64SystemRegisters enum constant to a string.">Rose::BinaryAnalysis::Aarch64SystemRegisters</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a623b4ef77957b8e8201c0feb39940261"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a705c41e4212061392c467560580f276a" id="r_a705c41e4212061392c467560580f276a"><td class="memItemLeft" align="right" valign="top"><a id="a705c41e4212061392c467560580f276a" name="a705c41e4212061392c467560580f276a"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64SystemRegisters</b> (int64_t, const std::string &amp;strip)</td></tr>
+<tr class="memdesc:a705c41e4212061392c467560580f276a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a623b4ef77957b8e8201c0feb39940261" title="Convert Rose::BinaryAnalysis::Aarch64SystemRegisters enum constant to a string.">Rose::BinaryAnalysis::Aarch64SystemRegisters</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a705c41e4212061392c467560580f276a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b1926d068a389febfc624473bef6487" id="r_a5b1926d068a389febfc624473bef6487"><td class="memItemLeft" align="right" valign="top"><a id="a5b1926d068a389febfc624473bef6487" name="a5b1926d068a389febfc624473bef6487"></a>
+const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Aarch64SystemRegisters</b> ()</td></tr>
+<tr class="memdesc:a5b1926d068a389febfc624473bef6487"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a623b4ef77957b8e8201c0feb39940261" title="Convert Rose::BinaryAnalysis::Aarch64SystemRegisters enum constant to a string.">Rose::BinaryAnalysis::Aarch64SystemRegisters</a> member values as a vector. <br /></td></tr>
+<tr class="separator:a5b1926d068a389febfc624473bef6487"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90a6b82ac87f5ef5228799e44f2c6f0e" id="r_a90a6b82ac87f5ef5228799e44f2c6f0e"><td class="memItemLeft" align="right" valign="top"><a id="a90a6b82ac87f5ef5228799e44f2c6f0e" name="a90a6b82ac87f5ef5228799e44f2c6f0e"></a>
 const char *&#160;</td><td class="memItemRight" valign="bottom"><b>JvmInstructionKind</b> (int64_t)</td></tr>
 <tr class="memdesc:a90a6b82ac87f5ef5228799e44f2c6f0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a90a6b82ac87f5ef5228799e44f2c6f0e" title="Convert Rose::BinaryAnalysis::JvmInstructionKind enum constant to a string.">Rose::BinaryAnalysis::JvmInstructionKind</a> enum constant to a string. <br /></td></tr>
@@ -713,11 +636,107 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>JvmInstruction
 const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>JvmInstructionKind</b> ()</td></tr>
 <tr class="memdesc:a039c76ebf4b77b69c88ecc51680d4f24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a90a6b82ac87f5ef5228799e44f2c6f0e" title="Convert Rose::BinaryAnalysis::JvmInstructionKind enum constant to a string.">Rose::BinaryAnalysis::JvmInstructionKind</a> member values as a vector. <br /></td></tr>
 <tr class="separator:a039c76ebf4b77b69c88ecc51680d4f24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f7d2f350e4f76fbcf32bcc65d866105" id="r_a4f7d2f350e4f76fbcf32bcc65d866105"><td class="memItemLeft" align="right" valign="top"><a id="a4f7d2f350e4f76fbcf32bcc65d866105" name="a4f7d2f350e4f76fbcf32bcc65d866105"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>MipsRegisterClass</b> (int64_t)</td></tr>
+<tr class="memdesc:a4f7d2f350e4f76fbcf32bcc65d866105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a4f7d2f350e4f76fbcf32bcc65d866105" title="Convert Rose::BinaryAnalysis::MipsRegisterClass enum constant to a string.">Rose::BinaryAnalysis::MipsRegisterClass</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a4f7d2f350e4f76fbcf32bcc65d866105"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a614caaf95be3713c7e6457bbeeb4d437" id="r_a614caaf95be3713c7e6457bbeeb4d437"><td class="memItemLeft" align="right" valign="top"><a id="a614caaf95be3713c7e6457bbeeb4d437" name="a614caaf95be3713c7e6457bbeeb4d437"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>MipsRegisterClass</b> (int64_t, const std::string &amp;strip)</td></tr>
+<tr class="memdesc:a614caaf95be3713c7e6457bbeeb4d437"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a4f7d2f350e4f76fbcf32bcc65d866105" title="Convert Rose::BinaryAnalysis::MipsRegisterClass enum constant to a string.">Rose::BinaryAnalysis::MipsRegisterClass</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a614caaf95be3713c7e6457bbeeb4d437"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7807d3c28c0126e936d59cadecdb3213" id="r_a7807d3c28c0126e936d59cadecdb3213"><td class="memItemLeft" align="right" valign="top"><a id="a7807d3c28c0126e936d59cadecdb3213" name="a7807d3c28c0126e936d59cadecdb3213"></a>
+const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MipsRegisterClass</b> ()</td></tr>
+<tr class="memdesc:a7807d3c28c0126e936d59cadecdb3213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a4f7d2f350e4f76fbcf32bcc65d866105" title="Convert Rose::BinaryAnalysis::MipsRegisterClass enum constant to a string.">Rose::BinaryAnalysis::MipsRegisterClass</a> member values as a vector. <br /></td></tr>
+<tr class="separator:a7807d3c28c0126e936d59cadecdb3213"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a688470a5c50d3c35f7d1e43a40109c12" id="r_a688470a5c50d3c35f7d1e43a40109c12"><td class="memItemLeft" align="right" valign="top"><a id="a688470a5c50d3c35f7d1e43a40109c12" name="a688470a5c50d3c35f7d1e43a40109c12"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>MipsFcsrMinors</b> (int64_t)</td></tr>
+<tr class="memdesc:a688470a5c50d3c35f7d1e43a40109c12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a688470a5c50d3c35f7d1e43a40109c12" title="Convert Rose::BinaryAnalysis::MipsFcsrMinors enum constant to a string.">Rose::BinaryAnalysis::MipsFcsrMinors</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a688470a5c50d3c35f7d1e43a40109c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f1e991a3280d811baad7e890d75feda" id="r_a9f1e991a3280d811baad7e890d75feda"><td class="memItemLeft" align="right" valign="top"><a id="a9f1e991a3280d811baad7e890d75feda" name="a9f1e991a3280d811baad7e890d75feda"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>MipsFcsrMinors</b> (int64_t, const std::string &amp;strip)</td></tr>
+<tr class="memdesc:a9f1e991a3280d811baad7e890d75feda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a688470a5c50d3c35f7d1e43a40109c12" title="Convert Rose::BinaryAnalysis::MipsFcsrMinors enum constant to a string.">Rose::BinaryAnalysis::MipsFcsrMinors</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a9f1e991a3280d811baad7e890d75feda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79feedc599e43546c4f62cc580d19881" id="r_a79feedc599e43546c4f62cc580d19881"><td class="memItemLeft" align="right" valign="top"><a id="a79feedc599e43546c4f62cc580d19881" name="a79feedc599e43546c4f62cc580d19881"></a>
+const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MipsFcsrMinors</b> ()</td></tr>
+<tr class="memdesc:a79feedc599e43546c4f62cc580d19881"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a688470a5c50d3c35f7d1e43a40109c12" title="Convert Rose::BinaryAnalysis::MipsFcsrMinors enum constant to a string.">Rose::BinaryAnalysis::MipsFcsrMinors</a> member values as a vector. <br /></td></tr>
+<tr class="separator:a79feedc599e43546c4f62cc580d19881"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31c6db15bd0a948ae87b54378f4023c5" id="r_a31c6db15bd0a948ae87b54378f4023c5"><td class="memItemLeft" align="right" valign="top"><a id="a31c6db15bd0a948ae87b54378f4023c5" name="a31c6db15bd0a948ae87b54378f4023c5"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>MipsSpecialPurposeRegister</b> (int64_t)</td></tr>
+<tr class="memdesc:a31c6db15bd0a948ae87b54378f4023c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a31c6db15bd0a948ae87b54378f4023c5" title="Convert Rose::BinaryAnalysis::MipsSpecialPurposeRegister enum constant to a string.">Rose::BinaryAnalysis::MipsSpecialPurposeRegister</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a31c6db15bd0a948ae87b54378f4023c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4378343f5d806dffc614d228d10eb029" id="r_a4378343f5d806dffc614d228d10eb029"><td class="memItemLeft" align="right" valign="top"><a id="a4378343f5d806dffc614d228d10eb029" name="a4378343f5d806dffc614d228d10eb029"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>MipsSpecialPurposeRegister</b> (int64_t, const std::string &amp;strip)</td></tr>
+<tr class="memdesc:a4378343f5d806dffc614d228d10eb029"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a31c6db15bd0a948ae87b54378f4023c5" title="Convert Rose::BinaryAnalysis::MipsSpecialPurposeRegister enum constant to a string.">Rose::BinaryAnalysis::MipsSpecialPurposeRegister</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a4378343f5d806dffc614d228d10eb029"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a059dcf03cf333550f682832b15578e30" id="r_a059dcf03cf333550f682832b15578e30"><td class="memItemLeft" align="right" valign="top"><a id="a059dcf03cf333550f682832b15578e30" name="a059dcf03cf333550f682832b15578e30"></a>
+const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MipsSpecialPurposeRegister</b> ()</td></tr>
+<tr class="memdesc:a059dcf03cf333550f682832b15578e30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a31c6db15bd0a948ae87b54378f4023c5" title="Convert Rose::BinaryAnalysis::MipsSpecialPurposeRegister enum constant to a string.">Rose::BinaryAnalysis::MipsSpecialPurposeRegister</a> member values as a vector. <br /></td></tr>
+<tr class="separator:a059dcf03cf333550f682832b15578e30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4df5b1e2f7c30a5417c59f95fb502647" id="r_a4df5b1e2f7c30a5417c59f95fb502647"><td class="memItemLeft" align="right" valign="top"><a id="a4df5b1e2f7c30a5417c59f95fb502647" name="a4df5b1e2f7c30a5417c59f95fb502647"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInterruptMajor</b> (int64_t)</td></tr>
+<tr class="memdesc:a4df5b1e2f7c30a5417c59f95fb502647"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a4df5b1e2f7c30a5417c59f95fb502647" title="Convert Rose::BinaryAnalysis::MipsInterruptMajor enum constant to a string.">Rose::BinaryAnalysis::MipsInterruptMajor</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a4df5b1e2f7c30a5417c59f95fb502647"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a4a58dcb8e4cb00a6223f65f0b06908" id="r_a5a4a58dcb8e4cb00a6223f65f0b06908"><td class="memItemLeft" align="right" valign="top"><a id="a5a4a58dcb8e4cb00a6223f65f0b06908" name="a5a4a58dcb8e4cb00a6223f65f0b06908"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInterruptMajor</b> (int64_t, const std::string &amp;strip)</td></tr>
+<tr class="memdesc:a5a4a58dcb8e4cb00a6223f65f0b06908"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a4df5b1e2f7c30a5417c59f95fb502647" title="Convert Rose::BinaryAnalysis::MipsInterruptMajor enum constant to a string.">Rose::BinaryAnalysis::MipsInterruptMajor</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a5a4a58dcb8e4cb00a6223f65f0b06908"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36643c7d0415ff661541760931c57bcc" id="r_a36643c7d0415ff661541760931c57bcc"><td class="memItemLeft" align="right" valign="top"><a id="a36643c7d0415ff661541760931c57bcc" name="a36643c7d0415ff661541760931c57bcc"></a>
+const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInterruptMajor</b> ()</td></tr>
+<tr class="memdesc:a36643c7d0415ff661541760931c57bcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a4df5b1e2f7c30a5417c59f95fb502647" title="Convert Rose::BinaryAnalysis::MipsInterruptMajor enum constant to a string.">Rose::BinaryAnalysis::MipsInterruptMajor</a> member values as a vector. <br /></td></tr>
+<tr class="separator:a36643c7d0415ff661541760931c57bcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18be3855aba7155eaef14f793d631105" id="r_a18be3855aba7155eaef14f793d631105"><td class="memItemLeft" align="right" valign="top"><a id="a18be3855aba7155eaef14f793d631105" name="a18be3855aba7155eaef14f793d631105"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInterruptMinor</b> (int64_t)</td></tr>
+<tr class="memdesc:a18be3855aba7155eaef14f793d631105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a18be3855aba7155eaef14f793d631105" title="Convert Rose::BinaryAnalysis::MipsInterruptMinor enum constant to a string.">Rose::BinaryAnalysis::MipsInterruptMinor</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a18be3855aba7155eaef14f793d631105"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7f62b7142376b5a5381d25350239145" id="r_ad7f62b7142376b5a5381d25350239145"><td class="memItemLeft" align="right" valign="top"><a id="ad7f62b7142376b5a5381d25350239145" name="ad7f62b7142376b5a5381d25350239145"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInterruptMinor</b> (int64_t, const std::string &amp;strip)</td></tr>
+<tr class="memdesc:ad7f62b7142376b5a5381d25350239145"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a18be3855aba7155eaef14f793d631105" title="Convert Rose::BinaryAnalysis::MipsInterruptMinor enum constant to a string.">Rose::BinaryAnalysis::MipsInterruptMinor</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:ad7f62b7142376b5a5381d25350239145"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af757c4fa4d69f4a21c6ff4204513da01" id="r_af757c4fa4d69f4a21c6ff4204513da01"><td class="memItemLeft" align="right" valign="top"><a id="af757c4fa4d69f4a21c6ff4204513da01" name="af757c4fa4d69f4a21c6ff4204513da01"></a>
+const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInterruptMinor</b> ()</td></tr>
+<tr class="memdesc:af757c4fa4d69f4a21c6ff4204513da01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a18be3855aba7155eaef14f793d631105" title="Convert Rose::BinaryAnalysis::MipsInterruptMinor enum constant to a string.">Rose::BinaryAnalysis::MipsInterruptMinor</a> member values as a vector. <br /></td></tr>
+<tr class="separator:af757c4fa4d69f4a21c6ff4204513da01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cd44c245b96bbcefc05f52cf431b53f" id="r_a8cd44c245b96bbcefc05f52cf431b53f"><td class="memItemLeft" align="right" valign="top"><a id="a8cd44c245b96bbcefc05f52cf431b53f" name="a8cd44c245b96bbcefc05f52cf431b53f"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>MipsDataFormat</b> (int64_t)</td></tr>
+<tr class="memdesc:a8cd44c245b96bbcefc05f52cf431b53f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a8cd44c245b96bbcefc05f52cf431b53f" title="Convert Rose::BinaryAnalysis::MipsDataFormat enum constant to a string.">Rose::BinaryAnalysis::MipsDataFormat</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a8cd44c245b96bbcefc05f52cf431b53f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c9a8c78be269d141f37c89facf39b06" id="r_a6c9a8c78be269d141f37c89facf39b06"><td class="memItemLeft" align="right" valign="top"><a id="a6c9a8c78be269d141f37c89facf39b06" name="a6c9a8c78be269d141f37c89facf39b06"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>MipsDataFormat</b> (int64_t, const std::string &amp;strip)</td></tr>
+<tr class="memdesc:a6c9a8c78be269d141f37c89facf39b06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a8cd44c245b96bbcefc05f52cf431b53f" title="Convert Rose::BinaryAnalysis::MipsDataFormat enum constant to a string.">Rose::BinaryAnalysis::MipsDataFormat</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a6c9a8c78be269d141f37c89facf39b06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb59ddec20812feb7a0f2b529ac7d07b" id="r_afb59ddec20812feb7a0f2b529ac7d07b"><td class="memItemLeft" align="right" valign="top"><a id="afb59ddec20812feb7a0f2b529ac7d07b" name="afb59ddec20812feb7a0f2b529ac7d07b"></a>
+const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MipsDataFormat</b> ()</td></tr>
+<tr class="memdesc:afb59ddec20812feb7a0f2b529ac7d07b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a8cd44c245b96bbcefc05f52cf431b53f" title="Convert Rose::BinaryAnalysis::MipsDataFormat enum constant to a string.">Rose::BinaryAnalysis::MipsDataFormat</a> member values as a vector. <br /></td></tr>
+<tr class="separator:afb59ddec20812feb7a0f2b529ac7d07b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8ae3fd15c10c82c7fa41ecb4481266e" id="r_ac8ae3fd15c10c82c7fa41ecb4481266e"><td class="memItemLeft" align="right" valign="top"><a id="ac8ae3fd15c10c82c7fa41ecb4481266e" name="ac8ae3fd15c10c82c7fa41ecb4481266e"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInstructionKind</b> (int64_t)</td></tr>
+<tr class="memdesc:ac8ae3fd15c10c82c7fa41ecb4481266e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ac8ae3fd15c10c82c7fa41ecb4481266e" title="Convert Rose::BinaryAnalysis::MipsInstructionKind enum constant to a string.">Rose::BinaryAnalysis::MipsInstructionKind</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:ac8ae3fd15c10c82c7fa41ecb4481266e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b7a2db2cb9500fd478cf6ef07006d83" id="r_a6b7a2db2cb9500fd478cf6ef07006d83"><td class="memItemLeft" align="right" valign="top"><a id="a6b7a2db2cb9500fd478cf6ef07006d83" name="a6b7a2db2cb9500fd478cf6ef07006d83"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInstructionKind</b> (int64_t, const std::string &amp;strip)</td></tr>
+<tr class="memdesc:a6b7a2db2cb9500fd478cf6ef07006d83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ac8ae3fd15c10c82c7fa41ecb4481266e" title="Convert Rose::BinaryAnalysis::MipsInstructionKind enum constant to a string.">Rose::BinaryAnalysis::MipsInstructionKind</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a6b7a2db2cb9500fd478cf6ef07006d83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dd30339638c44819188c6849b66e0ff" id="r_a0dd30339638c44819188c6849b66e0ff"><td class="memItemLeft" align="right" valign="top"><a id="a0dd30339638c44819188c6849b66e0ff" name="a0dd30339638c44819188c6849b66e0ff"></a>
+const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MipsInstructionKind</b> ()</td></tr>
+<tr class="memdesc:a0dd30339638c44819188c6849b66e0ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#ac8ae3fd15c10c82c7fa41ecb4481266e" title="Convert Rose::BinaryAnalysis::MipsInstructionKind enum constant to a string.">Rose::BinaryAnalysis::MipsInstructionKind</a> member values as a vector. <br /></td></tr>
+<tr class="separator:a0dd30339638c44819188c6849b66e0ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81540a2ca7f1376aad4199bdd668c091" id="r_a81540a2ca7f1376aad4199bdd668c091"><td class="memItemLeft" align="right" valign="top"><a id="a81540a2ca7f1376aad4199bdd668c091" name="a81540a2ca7f1376aad4199bdd668c091"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>X86InstructionKind</b> (int64_t)</td></tr>
+<tr class="memdesc:a81540a2ca7f1376aad4199bdd668c091"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a81540a2ca7f1376aad4199bdd668c091" title="Convert Rose::BinaryAnalysis::X86InstructionKind enum constant to a string.">Rose::BinaryAnalysis::X86InstructionKind</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a81540a2ca7f1376aad4199bdd668c091"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d7a78129f0d4776f2154905afe5e860" id="r_a4d7a78129f0d4776f2154905afe5e860"><td class="memItemLeft" align="right" valign="top"><a id="a4d7a78129f0d4776f2154905afe5e860" name="a4d7a78129f0d4776f2154905afe5e860"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>X86InstructionKind</b> (int64_t, const std::string &amp;strip)</td></tr>
+<tr class="memdesc:a4d7a78129f0d4776f2154905afe5e860"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a81540a2ca7f1376aad4199bdd668c091" title="Convert Rose::BinaryAnalysis::X86InstructionKind enum constant to a string.">Rose::BinaryAnalysis::X86InstructionKind</a> enum constant to a string. <br /></td></tr>
+<tr class="separator:a4d7a78129f0d4776f2154905afe5e860"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add28e9d9e1e5b912aafb53384b413230" id="r_add28e9d9e1e5b912aafb53384b413230"><td class="memItemLeft" align="right" valign="top"><a id="add28e9d9e1e5b912aafb53384b413230" name="add28e9d9e1e5b912aafb53384b413230"></a>
+const std::vector&lt; int64_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>X86InstructionKind</b> ()</td></tr>
+<tr class="memdesc:add28e9d9e1e5b912aafb53384b413230"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return all <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis.html#a81540a2ca7f1376aad4199bdd668c091" title="Convert Rose::BinaryAnalysis::X86InstructionKind enum constant to a string.">Rose::BinaryAnalysis::X86InstructionKind</a> member values as a vector. <br /></td></tr>
+<tr class="separator:add28e9d9e1e5b912aafb53384b413230"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:25:20 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:12:27 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

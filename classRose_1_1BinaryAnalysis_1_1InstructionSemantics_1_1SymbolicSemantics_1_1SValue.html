@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="namespaceRose.html">Rose</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis.html">BinaryAnalysis</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics.html">InstructionSemantics</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics.html">SymbolicSemantics</a></li><li class="navelem"><a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1SValue.html">SValue</a></li>  </ul>
@@ -79,7 +98,7 @@ Unknown versus Uninitialized Values</h1>
 <p>Step 2: Execute an x86 "I1: MOV EAX, EBX" instruction that moves the value stored in EBX into the EAX register. After this instruction executes, EAX contains v2[32]{I1}, EBX contains v2[32]{}, and ECX contains v3[32]{}. Registers EBX and ECX continue to have empty sets of defining instructions and thus contain their initial values. Reigister EAX refers to the same variable (v2) as EBX and therefore must have the same value as EBX, although that value can be any 32-bit value. We can also tell that EAX no longer contains its initial value because the set of defining instructions is non-empty ({I1}).</p>
 <p>Step 3: Execute the imaginary "I2: FOO ECX, EAX" instruction and presume that it performs an operation using ECX and EAX and stores the result in ECX. The operation is implemented by a new user-defined RISC operation called "doFoo(A,B)". Furthermore, presume that the operation encoded by doFoo(A,B) cannot be represented by ROSE's expression trees either directly or indirectly via other expression tree operations. Therefore, the implementation of doFoo(A,B) is such that it always returns an unconstrained value (i.e., a new variable): doFoo(A,B) returns C. After this instruction executes, EAX and EBX continue to contain the results they had after step 2, and ECX now contains v4[32]{I2}. We can tell that ECX contains an unknown value (because its value is a variable) that is 32-bits wide. We can also tell that ECX no longer contains its initial value because its set of defining instructions is non-empty ({I2}). </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00195">195</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00197">197</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 </div>
 <p><code>#include &lt;<a class="el" href="SymbolicSemantics_8h_source.html">Rose/BinaryAnalysis/InstructionSemantics/SymbolicSemantics.h</a>&gt;</code></p>
 <div class="dynheader">
@@ -389,7 +408,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Base type. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00198">198</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00200">200</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -407,7 +426,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Shared-ownership pointer. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00201">201</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00203">203</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -709,7 +728,7 @@ Protected Attributes</h2></td></tr>
 <div class="line">     std::cout &lt;&lt;<span class="stringliteral">&quot;v1 and v2 are equal in some sense (no merge necessary)\n&quot;</span>;</div>
 <div class="line"> }</div>
 <div class="ttc" id="aclassSawyer_1_1SharedPointer_html"><div class="ttname"><a href="classSawyer_1_1SharedPointer.html">Sawyer::SharedPointer</a></div><div class="ttdoc">Reference-counting intrusive smart pointer.</div><div class="ttdef"><b>Definition</b> <a href="SharedPointer_8h_source.html#l00065">SharedPointer.h:65</a></div></div>
-<div class="ttc" id="anamespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_html_acc48f9fd1f86a6920ec0c00307941292"><div class="ttname"><a href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics.html#acc48f9fd1f86a6920ec0c00307941292">Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::SValuePtr</a></div><div class="ttdeci">Sawyer::SharedPointer&lt; class SValue &gt; SValuePtr</div><div class="ttdoc">Shared-ownership pointer for symbolic semantic value.</div><div class="ttdef"><b>Definition</b> <a href="SymbolicSemantics_8h_source.html#l00119">SymbolicSemantics.h:119</a></div></div>
+<div class="ttc" id="anamespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_html_acc48f9fd1f86a6920ec0c00307941292"><div class="ttname"><a href="namespaceRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics.html#acc48f9fd1f86a6920ec0c00307941292">Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::SValuePtr</a></div><div class="ttdeci">Sawyer::SharedPointer&lt; class SValue &gt; SValuePtr</div><div class="ttdoc">Shared-ownership pointer for symbolic semantic value.</div><div class="ttdef"><b>Definition</b> <a href="SymbolicSemantics_8h_source.html#l00121">SymbolicSemantics.h:121</a></div></div>
 </div><!-- fragment --><p>If you always want a copy regardless of whether the merge is necessary, then use the <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SValue.html#a25a232bdac5105bed94df6490fb0fbc9">createMerged</a> convenience function instead. </p>
 
 <p>Implements <a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SValue.html#a0bba2d0b58edb1e6c807fa84ed200417">Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::SValue</a>.</p>
@@ -1559,7 +1578,7 @@ Protected Attributes</h2></td></tr>
 <p>The symbolic expression for this value. </p>
 <p>Symbolic expressions are reference counted. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00205">205</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00207">207</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1586,7 +1605,7 @@ Protected Attributes</h2></td></tr>
 <p>Instructions defining this value. </p>
 <p>Any instruction that saves the value to a register or memory location adds itself to the saved value. </p>
 
-<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00209">209</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SymbolicSemantics_8h_source.html#l00211">211</a> of file <a class="el" href="SymbolicSemantics_8h_source.html">SymbolicSemantics.h</a>.</p>
 
 </div>
 </div>
@@ -1596,7 +1615,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:49 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:56 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

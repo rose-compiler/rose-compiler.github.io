@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,10 +40,8 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
@@ -53,6 +51,27 @@ $(function() {
 $(document).ready(function() { init_codefold(0); });
 /* @license-end */
 </script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_ab44dd72236d16e0efa23643a9299efc.html">midend</a></li><li class="navelem"><a class="el" href="dir_3031fe5c1916cbc97c47638b2519d932.html">programAnalysis</a></li><li class="navelem"><a class="el" href="dir_f8ec9af86efbd8bfe56d07b0597a060a.html">staticSingleAssignment</a></li>  </ul>
@@ -350,22 +369,22 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00478" name="l00478"></a><span class="lineno">  478</span> </div>
 <div class="ttc" id="aclassClassHierarchyWrapper_html"><div class="ttname"><a href="classClassHierarchyWrapper.html">ClassHierarchyWrapper</a></div><div class="ttdef"><b>Definition</b> <a href="ClassHierarchyGraph_8h_source.html#l00008">ClassHierarchyGraph.h:9</a></div></div>
 <div class="ttc" id="aclassSgDeclarationStatement_html_a513421834e1f61e1cc936b02f9562363"><div class="ttname"><a href="classSgDeclarationStatement.html#a513421834e1f61e1cc936b02f9562363">SgDeclarationStatement::get_definingDeclaration</a></div><div class="ttdeci">SgDeclarationStatement * get_definingDeclaration() const</div><div class="ttdoc">This is an access function for the SgDeclarationStatement::p_definingDeclaration data member (see tha...</div></div>
-<div class="ttc" id="aclassSgExpression_html"><div class="ttname"><a href="classSgExpression.html">SgExpression</a></div><div class="ttdoc">This class represents the notion of an expression. Expressions are derived from SgLocatedNodes,...</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l487636">Cxx_Grammar.h:487637</a></div></div>
-<div class="ttc" id="aclassSgFunctionCallExp_html"><div class="ttname"><a href="classSgFunctionCallExp.html">SgFunctionCallExp</a></div><div class="ttdoc">This class represents the concept of a C++ function call (which is an expression).</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l614373">Cxx_Grammar.h:614374</a></div></div>
-<div class="ttc" id="aclassSgFunctionDeclaration_html"><div class="ttname"><a href="classSgFunctionDeclaration.html">SgFunctionDeclaration</a></div><div class="ttdoc">This class represents the concept of a function declaration statement.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l325486">Cxx_Grammar.h:325487</a></div></div>
+<div class="ttc" id="aclassSgExpression_html"><div class="ttname"><a href="classSgExpression.html">SgExpression</a></div><div class="ttdoc">This class represents the notion of an expression. Expressions are derived from SgLocatedNodes,...</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l486290">Cxx_Grammar.h:486291</a></div></div>
+<div class="ttc" id="aclassSgFunctionCallExp_html"><div class="ttname"><a href="classSgFunctionCallExp.html">SgFunctionCallExp</a></div><div class="ttdoc">This class represents the concept of a C++ function call (which is an expression).</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l613027">Cxx_Grammar.h:613028</a></div></div>
+<div class="ttc" id="aclassSgFunctionDeclaration_html"><div class="ttname"><a href="classSgFunctionDeclaration.html">SgFunctionDeclaration</a></div><div class="ttdoc">This class represents the concept of a function declaration statement.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l324326">Cxx_Grammar.h:324327</a></div></div>
 <div class="ttc" id="aclassSgFunctionDeclaration_html_a4b1ac9a9c0f5de3917f9ffb35bd4b789"><div class="ttname"><a href="classSgFunctionDeclaration.html#a4b1ac9a9c0f5de3917f9ffb35bd4b789">SgFunctionDeclaration::class_name</a></div><div class="ttdeci">virtual std::string class_name() const override</div><div class="ttdoc">returns a string representing the class name</div></div>
-<div class="ttc" id="aclassSgFunctionDefinition_html"><div class="ttname"><a href="classSgFunctionDefinition.html">SgFunctionDefinition</a></div><div class="ttdoc">This class represents the concept of a scope in C++ (e.g. global scope, fuction scope,...</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l244803">Cxx_Grammar.h:244804</a></div></div>
-<div class="ttc" id="aclassSgIncidenceDirectedGraph_html"><div class="ttname"><a href="classSgIncidenceDirectedGraph.html">SgIncidenceDirectedGraph</a></div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l61719">Cxx_Grammar.h:61720</a></div></div>
-<div class="ttc" id="aclassSgInitializedName_html"><div class="ttname"><a href="classSgInitializedName.html">SgInitializedName</a></div><div class="ttdoc">This class represents the notion of a declared variable.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l187210">Cxx_Grammar.h:187211</a></div></div>
+<div class="ttc" id="aclassSgFunctionDefinition_html"><div class="ttname"><a href="classSgFunctionDefinition.html">SgFunctionDefinition</a></div><div class="ttdoc">This class represents the concept of a scope in C++ (e.g. global scope, fuction scope,...</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l244221">Cxx_Grammar.h:244222</a></div></div>
+<div class="ttc" id="aclassSgIncidenceDirectedGraph_html"><div class="ttname"><a href="classSgIncidenceDirectedGraph.html">SgIncidenceDirectedGraph</a></div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l61451">Cxx_Grammar.h:61452</a></div></div>
+<div class="ttc" id="aclassSgInitializedName_html"><div class="ttname"><a href="classSgInitializedName.html">SgInitializedName</a></div><div class="ttdoc">This class represents the notion of a declared variable.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l186832">Cxx_Grammar.h:186833</a></div></div>
 <div class="ttc" id="aclassSgLocatedNode_html_a94ec7bb9d23da666e10be4f91eb5a806"><div class="ttname"><a href="classSgLocatedNode.html#a94ec7bb9d23da666e10be4f91eb5a806">SgLocatedNode::isCompilerGenerated</a></div><div class="ttdeci">bool isCompilerGenerated() const</div><div class="ttdoc">Simple test for if this is a compiler generated node.</div></div>
 <div class="ttc" id="aclassSgLocatedNode_html_ae6050c6b50e3b07b5483ff7a8ca7daa2"><div class="ttname"><a href="classSgLocatedNode.html#ae6050c6b50e3b07b5483ff7a8ca7daa2">SgLocatedNode::get_file_info</a></div><div class="ttdeci">virtual Sg_File_Info * get_file_info() const override</div><div class="ttdoc">Interface function to implement original SAGE interface to SgFile_Info objects.</div></div>
-<div class="ttc" id="aclassSgMemberFunctionDeclaration_html"><div class="ttname"><a href="classSgMemberFunctionDeclaration.html">SgMemberFunctionDeclaration</a></div><div class="ttdoc">This class represents the concept of a member function declaration statement.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l328438">Cxx_Grammar.h:328439</a></div></div>
+<div class="ttc" id="aclassSgMemberFunctionDeclaration_html"><div class="ttname"><a href="classSgMemberFunctionDeclaration.html">SgMemberFunctionDeclaration</a></div><div class="ttdoc">This class represents the concept of a member function declaration statement.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l327248">Cxx_Grammar.h:327249</a></div></div>
 <div class="ttc" id="aclassSgNode_html"><div class="ttname"><a href="classSgNode.html">SgNode</a></div><div class="ttdoc">This class represents the base class for all IR nodes within Sage III.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l00119">Cxx_Grammar.h:120</a></div></div>
-<div class="ttc" id="aclassSgProject_html"><div class="ttname"><a href="classSgProject.html">SgProject</a></div><div class="ttdoc">This class represents a source project, with a list of SgFile objects and global information about th...</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l39192">Cxx_Grammar.h:39193</a></div></div>
+<div class="ttc" id="aclassSgProject_html"><div class="ttname"><a href="classSgProject.html">SgProject</a></div><div class="ttdoc">This class represents a source project, with a list of SgFile objects and global information about th...</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l38948">Cxx_Grammar.h:38949</a></div></div>
 <div class="ttc" id="aclassSgProject_html_acc4f5deea195f1967735d804d21cf379"><div class="ttname"><a href="classSgProject.html#acc4f5deea195f1967735d804d21cf379">SgProject::get_verbose</a></div><div class="ttdeci">static int get_verbose(void)</div><div class="ttdoc">DQ: Modified to accept a value on the command line (no longer a boolean variable) value of 0 means qu...</div></div>
-<div class="ttc" id="aclassSgScopeStatement_html"><div class="ttname"><a href="classSgScopeStatement.html">SgScopeStatement</a></div><div class="ttdoc">This class represents the concept of a scope in C++ (e.g. global scope, fuction scope,...</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l238372">Cxx_Grammar.h:238373</a></div></div>
-<div class="ttc" id="aclassSgSourceFile_html"><div class="ttname"><a href="classSgSourceFile.html">SgSourceFile</a></div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l34644">Cxx_Grammar.h:34645</a></div></div>
-<div class="ttc" id="aclassSgType_html"><div class="ttname"><a href="classSgType.html">SgType</a></div><div class="ttdoc">This class represents the base class for all types.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l85438">Cxx_Grammar.h:85439</a></div></div>
+<div class="ttc" id="aclassSgScopeStatement_html"><div class="ttname"><a href="classSgScopeStatement.html">SgScopeStatement</a></div><div class="ttdoc">This class represents the concept of a scope in C++ (e.g. global scope, fuction scope,...</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l237880">Cxx_Grammar.h:237881</a></div></div>
+<div class="ttc" id="aclassSgSourceFile_html"><div class="ttname"><a href="classSgSourceFile.html">SgSourceFile</a></div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l34400">Cxx_Grammar.h:34401</a></div></div>
+<div class="ttc" id="aclassSgType_html"><div class="ttname"><a href="classSgType.html">SgType</a></div><div class="ttdoc">This class represents the base class for all types.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l85170">Cxx_Grammar.h:85171</a></div></div>
 <div class="ttc" id="aclassSg__File__Info_html_a324279507bbb92935bbbd49a1fc62241"><div class="ttname"><a href="classSg__File__Info.html#a324279507bbb92935bbbd49a1fc62241">Sg_File_Info::get_filename</a></div><div class="ttdeci">const char * get_filename() const</div><div class="ttdoc">Returns filename of source code associated with IR node.</div></div>
 <div class="ttc" id="aclassStaticSingleAssignment_html"><div class="ttname"><a href="classStaticSingleAssignment.html">StaticSingleAssignment</a></div><div class="ttdoc">Static single assignment analysis.</div><div class="ttdef"><b>Definition</b> <a href="staticSingleAssignment_8h_source.html#l00100">staticSingleAssignment.h:101</a></div></div>
 <div class="ttc" id="aclassStaticSingleAssignment_html_a019e51da21fd909ef647f9692239751c"><div class="ttname"><a href="classStaticSingleAssignment.html#a019e51da21fd909ef647f9692239751c">StaticSingleAssignment::varnameToString</a></div><div class="ttdeci">static std::string varnameToString(const VarName &amp;vec)</div><div class="ttdoc">Get a string representation of a varName.</div></div>
@@ -399,7 +418,7 @@ $(document).ready(function() { init_codefold(0); });
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:23:54 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:10:59 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

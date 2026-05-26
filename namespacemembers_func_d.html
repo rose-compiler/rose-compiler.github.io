@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,15 +40,34 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div class="contents">
 <div class="textblock">Here is a list of all documented namespace functions with links to the namespaces they belong to:</div>
 
@@ -94,7 +113,7 @@ $(function() {
 <li>Dir_ection()&#160;:&#160;<a class="el" href="namespacestringify_1_1DominatorTreesAndDominanceFrontiers.html#aa327d92f4bea72f3fe7216167e98b8b8">stringify::DominatorTreesAndDominanceFrontiers</a></li>
 <li>Direction()&#160;:&#160;<a class="el" href="namespacestringify_1_1AstUtilInterface_1_1CollectTransitiveDependences.html#aec04e5fc0f0f380cb793f863c07d2f34">stringify::AstUtilInterface::CollectTransitiveDependences</a></li>
 <li>direction()&#160;:&#160;<a class="el" href="namespacestringify_1_1CGFunction_1_1iterator.html#aa58a9711a8e3388082222e63708db0fc">stringify::CGFunction::iterator</a></li>
-<li>Direction()&#160;:&#160;<a class="el" href="namespacestringify_1_1DominatorTreesAndDominanceFrontiers_1_1DominatorTree.html#a30ea3db1c49e8577a386f27114c15968">stringify::DominatorTreesAndDominanceFrontiers::DominatorTree</a>, <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1PointerDetection_1_1PointerDescriptor.html#a6f8f233150466243c40bb0038afe682c">stringify::Rose::BinaryAnalysis::PointerDetection::PointerDescriptor</a>, <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1RegisterDictionary_1_1SortBySize.html#a233ef7ec079d3727bedf12a7e03c2537">stringify::Rose::BinaryAnalysis::RegisterDictionary::SortBySize</a>, <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Variables_1_1StackFrame.html#ae9c1e86581562260f221a08ff370c45e">stringify::Rose::BinaryAnalysis::Variables::StackFrame</a>, <a class="el" href="namespacestringify_1_1Rose_1_1Callbacks.html#a687c6b451e7e6057e2c7df441012a695">stringify::Rose::Callbacks</a></li>
+<li>Direction()&#160;:&#160;<a class="el" href="namespacestringify_1_1DominatorTreesAndDominanceFrontiers_1_1DominatorTree.html#a30ea3db1c49e8577a386f27114c15968">stringify::DominatorTreesAndDominanceFrontiers::DominatorTree</a>, <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1PointerDetection_1_1PointerDescriptor.html#a6f8f233150466243c40bb0038afe682c">stringify::Rose::BinaryAnalysis::PointerDetection::PointerDescriptor</a>, <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1RegisterDictionary_1_1SortBySize.html#a7abf9aac47efac0227f3b4909ad328ab">stringify::Rose::BinaryAnalysis::RegisterDictionary::SortBySize</a>, <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Variables_1_1StackFrame.html#a6b9e0cbc0e11aa0cc8f4f799ee466965">stringify::Rose::BinaryAnalysis::Variables::StackFrame</a>, <a class="el" href="namespacestringify_1_1Rose_1_1Callbacks.html#a9d9ae43fa08a73930abfe383e392957a">stringify::Rose::Callbacks</a></li>
 <li>directive_types()&#160;:&#160;<a class="el" href="namespacestringify_1_1SgJovialDirectiveStatement.html#af9f2a39839097aaeed046046e07680ed">stringify::SgJovialDirectiveStatement</a></li>
 <li>DirectiveType()&#160;:&#160;<a class="el" href="namespacestringify_1_1PreprocessingInfo.html#a6fd6cfb6b5b83ed725d60eb70b67b3a3">stringify::PreprocessingInfo</a></li>
 <li>directoryDistance()&#160;:&#160;<a class="el" href="namespaceRose_1_1StringUtility.html#a2a21cf61077a6ac9d8c24c63484c96cf">Rose::StringUtility</a></li>
@@ -121,7 +140,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:25:21 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:12:28 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

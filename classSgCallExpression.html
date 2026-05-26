@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 </div><!-- top -->
 <div class="header">
   <div class="summary">
@@ -64,7 +83,7 @@ $(function() {
 <p>This IR node is intended for use with languages that allow calls of arbitary expressions, even when the called expression does not resolve to a function type. For statically-typed languages, use <a class="el" href="classSgFunctionCallExp.html" title="This class represents the concept of a C++ function call (which is an expression).">SgFunctionCallExp</a>.</p>
 <p>Note that a function call is assembled from a function expression and arguments. The two are bound together in a function call, function expressions are never called directly (the function call argument list can be empty). </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l613300">613300</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l611954">611954</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 </div><div class="dynheader">
 Inheritance diagram for SgCallExpression:</div>
 <div class="dyncontent">
@@ -464,9 +483,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isOutputInCodeGenerat
 <tr class="memitem:a9b2c0ffcfed4ea7784e397fcb16fa0aa inherit pub_methods_classSgLocatedNode" id="r_a9b2c0ffcfed4ea7784e397fcb16fa0aa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSgLocatedNode.html#a9b2c0ffcfed4ea7784e397fcb16fa0aa">get_physical_file_id</a> ()</td></tr>
 <tr class="memdesc:a9b2c0ffcfed4ea7784e397fcb16fa0aa inherit pub_methods_classSgLocatedNode"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allow IR nodes (mostly <a class="el" href="classSgLocatedNode.html" title="This class represents the notion of an expression or statement which has a position within the source...">SgLocatedNode</a>) to be queried for there physical file ID.  <br /></td></tr>
 <tr class="separator:a9b2c0ffcfed4ea7784e397fcb16fa0aa inherit pub_methods_classSgLocatedNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc6d185eed028f62e61f50b90e114be7 inherit pub_methods_classSgLocatedNode" id="r_afc6d185eed028f62e61f50b90e114be7"><td class="memItemLeft" align="right" valign="top">AttachedPreprocessingInfoType *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSgLocatedNode.html#afc6d185eed028f62e61f50b90e114be7">getAttachedPreprocessingInfo</a> (void)</td></tr>
-<tr class="memdesc:afc6d185eed028f62e61f50b90e114be7 inherit pub_methods_classSgLocatedNode"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the number of nodes in the defined subtree of the AST.  <br /></td></tr>
-<tr class="separator:afc6d185eed028f62e61f50b90e114be7 inherit pub_methods_classSgLocatedNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeba402ebe7d71c7cf3b901e3bc695e7a inherit pub_methods_classSgLocatedNode" id="r_aeba402ebe7d71c7cf3b901e3bc695e7a"><td class="memItemLeft" align="right" valign="top">AttachedPreprocessingInfoType *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSgLocatedNode.html#aeba402ebe7d71c7cf3b901e3bc695e7a">getAttachedPreprocessingInfo</a> ()</td></tr>
+<tr class="memdesc:aeba402ebe7d71c7cf3b901e3bc695e7a inherit pub_methods_classSgLocatedNode"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function gets the adds comment or CPP directives to the current IR node.  <br /></td></tr>
+<tr class="separator:aeba402ebe7d71c7cf3b901e3bc695e7a inherit pub_methods_classSgLocatedNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12e84e59e5f788cbf291875bae3bb87c inherit pub_methods_classSgLocatedNode" id="r_a12e84e59e5f788cbf291875bae3bb87c"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="classSg__File__Info.html">Sg_File_Info</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>generateMatchingFileInfo</b> ()</td></tr>
 <tr class="separator:a12e84e59e5f788cbf291875bae3bb87c inherit pub_methods_classSgLocatedNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1208,7 +1227,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l613729">613729</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l612383">612383</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -1227,7 +1246,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>static variant value </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l613350">613350</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l612004">612004</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -1416,7 +1435,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l613405">613405</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l612059">612059</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -1956,7 +1975,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Note that this is not always a <a class="el" href="classSgFunctionRefExp.html" title="This class represents the function being called and must be assembled in the SgFunctionCall with the ...">SgFunctionRefExp</a> or a <a class="el" href="classSgMemberFunctionRefExp.html" title="This class represents the member function being called and must be assembled in the SgFunctionCall wi...">SgMemberFunctionRefExp</a> and can be quite complex where pointers are referenced and function calls assembled using pointers to functions and member functions.</p>
 <p>This member is named 'p_function' for historical reasons, but it can point to any arbitrary expression. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l613768">613768</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l612422">612422</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -1982,7 +2001,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>This is a pointer to a <a class="el" href="classSgExprListExp.html" title="This class represents the concept of a C and C++ expression list.">SgExprListExp</a> (list of function arguments) </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l613772">613772</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l612426">612426</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2008,7 +2027,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>This is the type of the return value of the function. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l613776">613776</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l612430">612430</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2019,7 +2038,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:24 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:30 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

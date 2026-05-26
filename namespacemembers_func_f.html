@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,15 +40,34 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div class="contents">
 <div class="textblock">Here is a list of all documented namespace functions with links to the namespaces they belong to:</div>
 
@@ -154,18 +173,18 @@ $(function() {
 <li>fixupSourcePositionFileSpecification()&#160;:&#160;<a class="el" href="namespaceSageBuilder.html#aa39fafb1c5ca1599ff178d6ec83a446d">SageBuilder</a></li>
 <li>fixVariableDeclaration()&#160;:&#160;<a class="el" href="namespaceSageInterface.html#ac56e358f18815a86ca4c9ad738733d37">SageInterface</a></li>
 <li>fixVariableReferences()&#160;:&#160;<a class="el" href="namespaceSageInterface.html#ab83754ab3f55e7426978751140f19720">SageInterface</a></li>
-<li>Flag()&#160;:&#160;<a class="el" href="namespacestringify.html#a9bb5da44235c1aff7751bfb5cfba72b2">stringify</a>, <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Debugger_1_1Linux.html#a33a3504189b9c058484ddf953353c713">stringify::Rose::BinaryAnalysis::Debugger::Linux</a>, <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SaveLink.html#a3edcef5b32644527fd630a2ee56260fb">stringify::Rose::BinaryAnalysis::InstructionSemantics::SaveLink</a>, <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1AllowSideEffects.html#a47f5e22a52d18767c836430d12e3a227">stringify::Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::AllowSideEffects</a>, <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1UpdateCr.html#a812e2fd9cc26e5c6b3e7709bf340d3a3">stringify::Rose::BinaryAnalysis::InstructionSemantics::UpdateCr</a>, <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1SymbolicExpression_1_1TypeStyle.html#aeaf606c2f3adf9a067eb4fb9226d9e64">stringify::Rose::BinaryAnalysis::SymbolicExpression::TypeStyle</a>, <a class="el" href="namespacestringify_1_1SgAsmFloatType.html#a8c68818d15643eab0b7285515557791a">stringify::SgAsmFloatType</a></li>
+<li>Flag()&#160;:&#160;<a class="el" href="namespacestringify.html#a9bb5da44235c1aff7751bfb5cfba72b2">stringify</a>, <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Debugger_1_1Linux.html#a33a3504189b9c058484ddf953353c713">stringify::Rose::BinaryAnalysis::Debugger::Linux</a>, <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SaveLink.html#a5629c263b8125b8a2ed23db4bc221aae">stringify::Rose::BinaryAnalysis::InstructionSemantics::SaveLink</a>, <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SymbolicSemantics_1_1AllowSideEffects.html#a47f5e22a52d18767c836430d12e3a227">stringify::Rose::BinaryAnalysis::InstructionSemantics::SymbolicSemantics::AllowSideEffects</a>, <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1UpdateCr.html#a2b2e762c259422e26161348e1dee1ba7">stringify::Rose::BinaryAnalysis::InstructionSemantics::UpdateCr</a>, <a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1SymbolicExpression_1_1TypeStyle.html#a9d52b1d8c8356ce3944db4076760e390">stringify::Rose::BinaryAnalysis::SymbolicExpression::TypeStyle</a>, <a class="el" href="namespacestringify_1_1SgAsmFloatType.html#af20e8891888916b56530ff10a5259525">stringify::SgAsmFloatType</a></li>
 <li>flattenIfExpressions()&#160;:&#160;<a class="el" href="namespaceSageInterface_1_1Ada.html#a286f4088bc7dd9035b8a747c7a10b586">SageInterface::Ada</a></li>
 <li>flattenIfStatements()&#160;:&#160;<a class="el" href="namespaceSageInterface_1_1Ada.html#a9e974cf29582e59c77f3bb28be3136e0">SageInterface::Ada</a></li>
 <li>flip_coin()&#160;:&#160;<a class="el" href="namespaceRose_1_1Combinatorics.html#a1cd407f8196e0329cbe403940c19c9c0">Rose::Combinatorics</a></li>
 <li>forall_statement_kind_enum()&#160;:&#160;<a class="el" href="namespacestringify_1_1SgForAllStatement.html#ae9815d8936228736e1381aaf048e6380">stringify::SgForAllStatement</a></li>
 <li>forallMaskExpression()&#160;:&#160;<a class="el" href="namespaceSageInterface.html#ad2d3067d880395acbf57abc6ba5fae7a">SageInterface</a></li>
 <li>forLoopNormalization()&#160;:&#160;<a class="el" href="namespaceSageInterface.html#a7b980f6f04a15a9256eb3ddd6fdcc5b1">SageInterface</a></li>
-<li>Format()&#160;:&#160;<a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1SerialIo.html#a1010b6e0ccd469f967cafb9dcae487fd">stringify::Rose::BinaryAnalysis::SerialIo</a>, <a class="el" href="namespacestringify_1_1Rose_1_1FormattedTable.html#a89e90632be7a55cfc8cdb01d8a482d23">stringify::Rose::FormattedTable</a></li>
+<li>Format()&#160;:&#160;<a class="el" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Serialization.html#a5afae62aa4367bbc844811318c0f2b6d">stringify::Rose::BinaryAnalysis::Serialization</a>, <a class="el" href="namespacestringify_1_1Rose_1_1FormattedTable.html#a370cff569afdc434879c4944e3ab33f4">stringify::Rose::FormattedTable</a></li>
 <li>Format_Opt()&#160;:&#160;<a class="el" href="namespacestringify.html#a2366e2f5e87f0ee478db1dfb4f161fc3">stringify</a></li>
 <li>fortran_attribute_specifiers_enum()&#160;:&#160;<a class="el" href="namespacestringify_1_1SgType.html#acbc04e50d9629fc764aff25df65b7540">stringify::SgType</a></li>
 <li>forward()&#160;:&#160;<a class="el" href="namespaceRose_1_1AST_1_1Traversal.html#a125247a0240bdc1f1efd6ad04ada4036">Rose::AST::Traversal</a></li>
-<li>ForwardBackward()&#160;:&#160;<a class="el" href="namespacestringify_1_1RIFG.html#a6059c460a95df47a7fa60ee33756fce0">stringify::RIFG</a></li>
+<li>ForwardBackward()&#160;:&#160;<a class="el" href="namespacestringify_1_1RIFG.html#aca5b986e68657f74817359deeb106241">stringify::RIFG</a></li>
 <li>forwardMapped()&#160;:&#160;<a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a141f20b9c066d754a766ae3adf82bad3">Rose::BinaryAnalysis::Partitioner2</a></li>
 <li>forwardPost()&#160;:&#160;<a class="el" href="namespaceRose_1_1AST_1_1Traversal.html#a8e97423ae9767a7826695adeb177c315">Rose::AST::Traversal</a></li>
 <li>forwardPre()&#160;:&#160;<a class="el" href="namespaceRose_1_1AST_1_1Traversal.html#aa5492338197001ddb0d0d00cd39cf9f3">Rose::AST::Traversal</a></li>
@@ -193,7 +212,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:25:21 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:12:28 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

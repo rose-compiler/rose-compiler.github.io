@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="namespaceRose.html">Rose</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis.html">BinaryAnalysis</a></li><li class="navelem"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html">SerialInput</a></li>  </ul>
@@ -67,7 +86,7 @@ $(function() {
 <div class="textblock"><p>Input binary analysis state. </p>
 <p>Reads a previously saved binary analysis state file to re-initialize ROSE to a previous state. </p>
 
-<p class="definition">Definition at line <a class="el" href="SerialIo_8h_source.html#l00425">425</a> of file <a class="el" href="SerialIo_8h_source.html">SerialIo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SerialIo_8h_source.html#l00430">430</a> of file <a class="el" href="SerialIo_8h_source.html">SerialIo.h</a>.</p>
 </div>
 <p><code>#include &lt;<a class="el" href="SerialIo_8h_source.html">Rose/BinaryAnalysis/SerialIo.h</a>&gt;</code></p>
 <div class="dynheader">
@@ -76,7 +95,7 @@ Inheritance diagram for Rose::BinaryAnalysis::SerialInput:</div>
 <div class="center"><img src="classRose_1_1BinaryAnalysis_1_1SerialInput__inherit__graph.png" border="0" usemap="#aRose_1_1BinaryAnalysis_1_1SerialInput_inherit__map" alt="Inheritance graph"/></div>
 <map name="aRose_1_1BinaryAnalysis_1_1SerialInput_inherit__map" id="aRose_1_1BinaryAnalysis_1_1SerialInput_inherit__map">
 <area shape="rect" title="Input binary analysis state." alt="" coords="5,93,153,133"/>
-<area shape="rect" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html" title="Base class for binary state input and output." alt="" coords="5,5,153,45"/>
+<area shape="rect" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html" title="Extension of the base SerialIo class defined in BasicTypes.h." alt="" coords="5,5,153,45"/>
 <area shape="poly" title=" " alt="" coords="82,59,82,93,77,93,77,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -86,48 +105,22 @@ Collaboration diagram for Rose::BinaryAnalysis::SerialInput:</div>
 <div class="center"><img src="classRose_1_1BinaryAnalysis_1_1SerialInput__coll__graph.png" border="0" usemap="#aRose_1_1BinaryAnalysis_1_1SerialInput_coll__map" alt="Collaboration graph"/></div>
 <map name="aRose_1_1BinaryAnalysis_1_1SerialInput_coll__map" id="aRose_1_1BinaryAnalysis_1_1SerialInput_coll__map">
 <area shape="rect" title="Input binary analysis state." alt="" coords="5,93,153,133"/>
-<area shape="rect" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html" title="Base class for binary state input and output." alt="" coords="5,5,153,45"/>
+<area shape="rect" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html" title="Extension of the base SerialIo class defined in BasicTypes.h." alt="" coords="5,5,153,45"/>
 <area shape="poly" title=" " alt="" coords="82,59,82,93,77,93,77,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a065658418b1898db49d96cd8ba302e3d" id="r_a065658418b1898db49d96cd8ba302e3d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a065658418b1898db49d96cd8ba302e3d">Ptr</a> = <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#a89469528cfe0a3c8f9c548cfba53da4d">SerialInputPtr</a></td></tr>
+<tr class="memitem:a065658418b1898db49d96cd8ba302e3d" id="r_a065658418b1898db49d96cd8ba302e3d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a065658418b1898db49d96cd8ba302e3d">Ptr</a> = <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#a0da67b02430e0a77d9a227dc32523ea4">SerialInputPtr</a></td></tr>
 <tr class="memdesc:a065658418b1898db49d96cd8ba302e3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference counting pointer.  <br /></td></tr>
 <tr class="separator:a065658418b1898db49d96cd8ba302e3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classRose_1_1BinaryAnalysis_1_1SerialIo"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classRose_1_1BinaryAnalysis_1_1SerialIo')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html">Rose::BinaryAnalysis::SerialIo</a></td></tr>
-<tr class="memitem:a342cb143c541ac8553230113560945f8 inherit pub_types_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_a342cb143c541ac8553230113560945f8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8">Format</a> { <br />
-&#160;&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8a51a55d05550a5796c20099ab8c442c64">BINARY</a>
-, <br />
-&#160;&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8a305797aedd4d5931451d2812e8a228b6">TEXT</a>
-, <br />
-&#160;&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8a01ea3dce85f6774b9d681206e1a6299e">XML</a>
-<br />
- }</td></tr>
-<tr class="memdesc:a342cb143c541ac8553230113560945f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Format of the state file.  <a href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8">More...</a><br /></td></tr>
-<tr class="separator:a342cb143c541ac8553230113560945f8 inherit pub_types_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f89024e4e26565b2485f17f941da150 inherit pub_types_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_a7f89024e4e26565b2485f17f941da150"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150">Savable</a> { <br />
-&#160;&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150af69ded954ffd2dc0b8ae411bbc12d3cb">NO_OBJECT</a> = 0x00000000
-, <br />
-&#160;&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150ae3fa4d4b23fb2f01fbc5d25b71602235">PARTITIONER</a> = 0x00000001
-, <br />
-&#160;&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150ae67a60847a570427eb25e8f618992ec9">AST</a> = 0x00000002
-, <br />
-&#160;&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150aaad8c22c2037e1ef4ed3030d63edcc08">END_OF_DATA</a> = 0x0000fffe
-, <br />
-&#160;&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150acc6dfdd9a61d46329b7f347bfa2a2185">ERROR</a> = 0x0000ffff
-, <br />
-&#160;&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150ab67a8b91175760afc758dcef2ba2443d">USER_DEFINED</a> = 0x00010000
-, <br />
-&#160;&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150ab8ab1e03f979fd4b44e106d4ae627145">USER_DEFINED_LAST</a> = 0xffffffff
-<br />
- }</td></tr>
-<tr class="memdesc:a7f89024e4e26565b2485f17f941da150"><td class="mdescLeft">&#160;</td><td class="mdescRight">Types of objects that can be saved.  <a href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150">More...</a><br /></td></tr>
-<tr class="separator:a7f89024e4e26565b2485f17f941da150 inherit pub_types_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0962ed19e43e31472a2fc8a9a1b772b inherit pub_types_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_ac0962ed19e43e31472a2fc8a9a1b772b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#ac0962ed19e43e31472a2fc8a9a1b772b">Ptr</a> = <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#a59442ac5435f535c0238f47750690da0">SerialIoPtr</a></td></tr>
+<tr class="memitem:ac0962ed19e43e31472a2fc8a9a1b772b inherit pub_types_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_ac0962ed19e43e31472a2fc8a9a1b772b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#ac0962ed19e43e31472a2fc8a9a1b772b">Ptr</a> = <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#ac4c8f6c913cd09dce3c576e35b032734">SerialIoPtr</a></td></tr>
 <tr class="memdesc:ac0962ed19e43e31472a2fc8a9a1b772b inherit pub_types_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference counting pointer.  <br /></td></tr>
 <tr class="separator:ac0962ed19e43e31472a2fc8a9a1b772b inherit pub_types_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e357a1311962f693629dfb7e085cda1 inherit pub_types_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_a2e357a1311962f693629dfb7e085cda1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a2e357a1311962f693629dfb7e085cda1">Format</a> = Serialization::Format</td></tr>
+<tr class="separator:a2e357a1311962f693629dfb7e085cda1 inherit pub_types_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -137,9 +130,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a777f8e9aa6f99c4e4e0c1699a7cf4184" id="r_a777f8e9aa6f99c4e4e0c1699a7cf4184"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a777f8e9aa6f99c4e4e0c1699a7cf4184">close</a> () override</td></tr>
 <tr class="memdesc:a777f8e9aa6f99c4e4e0c1699a7cf4184"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detach a file.  <br /></td></tr>
 <tr class="separator:a777f8e9aa6f99c4e4e0c1699a7cf4184"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0346606d801ab7e6354e0885a06f8472" id="r_a0346606d801ab7e6354e0885a06f8472"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150">Savable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a0346606d801ab7e6354e0885a06f8472">nextObjectType</a> ()</td></tr>
-<tr class="memdesc:a0346606d801ab7e6354e0885a06f8472"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of next object in the input stream.  <br /></td></tr>
-<tr class="separator:a0346606d801ab7e6354e0885a06f8472"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9804d512bfc026c6b6bf4870910ada21" id="r_a9804d512bfc026c6b6bf4870910ada21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Serialization_1_1FrameRecord.html">Serialization::FrameRecord</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a9804d512bfc026c6b6bf4870910ada21">readAndValidateRecord</a> (Serialization::Savable expectedType)</td></tr>
+<tr class="memdesc:a9804d512bfc026c6b6bf4870910ada21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a frame record from the container and validate its metadata.  <br /></td></tr>
+<tr class="separator:a9804d512bfc026c6b6bf4870910ada21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83640f62e664bf658203d1dc068d9d53" id="r_a83640f62e664bf658203d1dc068d9d53"><td class="memItemLeft" align="right" valign="top">Serialization::Savable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a83640f62e664bf658203d1dc068d9d53">nextObjectType</a> ()</td></tr>
+<tr class="memdesc:a83640f62e664bf658203d1dc068d9d53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of next object in the input stream.  <br /></td></tr>
+<tr class="separator:a83640f62e664bf658203d1dc068d9d53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01d3b48cd6d076d27dbb5ae0cf72d6b5" id="r_a01d3b48cd6d076d27dbb5ae0cf72d6b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a30252e56f3ed8c058c29b65be2f92b83">Partitioner2::PartitionerPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a01d3b48cd6d076d27dbb5ae0cf72d6b5">loadPartitioner</a> ()</td></tr>
 <tr class="memdesc:a01d3b48cd6d076d27dbb5ae0cf72d6b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a partitioner from the input stream.  <br /></td></tr>
 <tr class="separator:a01d3b48cd6d076d27dbb5ae0cf72d6b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,14 +143,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a701ae407523e85c3ac2d33dbfe9efa1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an <a class="el" href="namespaceRose_1_1AST.html" title="Collection of functionalities performing global operations on the AST.">AST</a> from the input stream.  <br /></td></tr>
 <tr class="separator:a701ae407523e85c3ac2d33dbfe9efa1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:a53dee6a1eb25e20a8598d596d37bd1f2" id="r_a53dee6a1eb25e20a8598d596d37bd1f2"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a53dee6a1eb25e20a8598d596d37bd1f2"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a53dee6a1eb25e20a8598d596d37bd1f2">loadObject</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150">Savable</a> objectTypeId)</td></tr>
-<tr class="memdesc:a53dee6a1eb25e20a8598d596d37bd1f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an object from the input stream.  <br /></td></tr>
-<tr class="separator:a53dee6a1eb25e20a8598d596d37bd1f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a294862bc86e3330e5771e533f862271d" id="r_a294862bc86e3330e5771e533f862271d"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a294862bc86e3330e5771e533f862271d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a294862bc86e3330e5771e533f862271d">loadObject</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150">Savable</a> objectTypeId, T &amp;object)</td></tr>
-<tr class="memdesc:a294862bc86e3330e5771e533f862271d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an object from the input stream.  <br /></td></tr>
-<tr class="separator:a294862bc86e3330e5771e533f862271d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02209738b3ecf33eb5fde52a96db1831" id="r_a02209738b3ecf33eb5fde52a96db1831"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a02209738b3ecf33eb5fde52a96db1831"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a02209738b3ecf33eb5fde52a96db1831">loadObject</a> (Serialization::Savable objectTypeId)</td></tr>
+<tr class="memdesc:a02209738b3ecf33eb5fde52a96db1831"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an object from the input stream.  <br /></td></tr>
+<tr class="separator:a02209738b3ecf33eb5fde52a96db1831"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44e1c87267e6f30ddbec93621fb16535" id="r_a44e1c87267e6f30ddbec93621fb16535"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a44e1c87267e6f30ddbec93621fb16535"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a44e1c87267e6f30ddbec93621fb16535">loadObject</a> (Serialization::Savable objectTypeId, T &amp;object)</td></tr>
+<tr class="memdesc:a44e1c87267e6f30ddbec93621fb16535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an object from the input stream.  <br /></td></tr>
+<tr class="separator:a44e1c87267e6f30ddbec93621fb16535"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html">Rose::BinaryAnalysis::SerialIo</a></td></tr>
 <tr class="memitem:a28ce264025ae00204802e5b7d3c73a40 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_a28ce264025ae00204802e5b7d3c73a40"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a28ce264025ae00204802e5b7d3c73a40">~SerialIo</a> ()</td></tr>
 <tr class="memdesc:a28ce264025ae00204802e5b7d3c73a40 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
@@ -162,34 +158,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae99590b6ad6c1ad0918c3b1f8395a6f5 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_ae99590b6ad6c1ad0918c3b1f8395a6f5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#ae99590b6ad6c1ad0918c3b1f8395a6f5">isOpen</a> () const</td></tr>
 <tr class="memdesc:ae99590b6ad6c1ad0918c3b1f8395a6f5 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether a file is attached.  <br /></td></tr>
 <tr class="separator:ae99590b6ad6c1ad0918c3b1f8395a6f5 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad36db80f704173477924d5aa20d5f031 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_ad36db80f704173477924d5aa20d5f031"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150">Savable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#ad36db80f704173477924d5aa20d5f031">objectType</a> () const</td></tr>
-<tr class="memdesc:ad36db80f704173477924d5aa20d5f031 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type ID for next object.  <br /></td></tr>
-<tr class="separator:ad36db80f704173477924d5aa20d5f031 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a613e3c87aac332145d8f0ceee270b6 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_a6a613e3c87aac332145d8f0ceee270b6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8">Format</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a6a613e3c87aac332145d8f0ceee270b6">format</a> () const</td></tr>
-<tr class="memdesc:a6a613e3c87aac332145d8f0ceee270b6 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property: File format.  <br /></td></tr>
-<tr class="separator:a6a613e3c87aac332145d8f0ceee270b6 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe026eadd130c699e0b9c5b91b2619f2 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_afe026eadd130c699e0b9c5b91b2619f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#afe026eadd130c699e0b9c5b91b2619f2">format</a> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8">Format</a>)</td></tr>
-<tr class="memdesc:afe026eadd130c699e0b9c5b91b2619f2 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property: File format.  <br /></td></tr>
-<tr class="separator:afe026eadd130c699e0b9c5b91b2619f2 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc73d58c641c74ed17fef1809984b0d8 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_adc73d58c641c74ed17fef1809984b0d8"><td class="memItemLeft" align="right" valign="top">Serialization::Savable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#adc73d58c641c74ed17fef1809984b0d8">objectType</a> () const</td></tr>
+<tr class="memdesc:adc73d58c641c74ed17fef1809984b0d8 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type ID for next object.  <br /></td></tr>
+<tr class="separator:adc73d58c641c74ed17fef1809984b0d8 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acac1a81809b5ef18b07966d7374c6444 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_acac1a81809b5ef18b07966d7374c6444"><td class="memItemLeft" align="right" valign="top">Serialization::Format&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#acac1a81809b5ef18b07966d7374c6444">format</a> () const</td></tr>
+<tr class="memdesc:acac1a81809b5ef18b07966d7374c6444 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property: File format.  <br /></td></tr>
+<tr class="separator:acac1a81809b5ef18b07966d7374c6444 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a974d4ebd55a460d05e78faa319074e73 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_a974d4ebd55a460d05e78faa319074e73"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a974d4ebd55a460d05e78faa319074e73">format</a> (Serialization::Format)</td></tr>
+<tr class="memdesc:a974d4ebd55a460d05e78faa319074e73 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property: File format.  <br /></td></tr>
+<tr class="separator:a974d4ebd55a460d05e78faa319074e73 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac10f557b4d85fb4e6bd8990e50e0f656 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_ac10f557b4d85fb4e6bd8990e50e0f656"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRose_1_1Progress.html#aa98a882b66bc733db53c75f0ddf713c1">Progress::Ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#ac10f557b4d85fb4e6bd8990e50e0f656">progress</a> () const</td></tr>
 <tr class="memdesc:ac10f557b4d85fb4e6bd8990e50e0f656 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property: <a class="el" href="classRose_1_1Progress.html" title="A general, thread-safe way to report progress made on some task.">Progress</a> reporter.  <br /></td></tr>
 <tr class="separator:ac10f557b4d85fb4e6bd8990e50e0f656 inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50475fee111ca56eb95cb155d14817ba inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_a50475fee111ca56eb95cb155d14817ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a50475fee111ca56eb95cb155d14817ba">progress</a> (const <a class="el" href="classRose_1_1Progress.html#aa98a882b66bc733db53c75f0ddf713c1">Progress::Ptr</a> &amp;)</td></tr>
 <tr class="memdesc:a50475fee111ca56eb95cb155d14817ba inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property: <a class="el" href="classRose_1_1Progress.html" title="A general, thread-safe way to report progress made on some task.">Progress</a> reporter.  <br /></td></tr>
 <tr class="separator:a50475fee111ca56eb95cb155d14817ba inherit pub_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classSawyer_1_1SharedObject"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSawyer_1_1SharedObject')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSawyer_1_1SharedObject.html">Sawyer::SharedObject</a></td></tr>
-<tr class="memitem:af65fdccd9575d75238c9ce5615b102bb inherit pub_methods_classSawyer_1_1SharedObject" id="r_af65fdccd9575d75238c9ce5615b102bb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSawyer_1_1SharedObject.html#af65fdccd9575d75238c9ce5615b102bb">SharedObject</a> ()</td></tr>
-<tr class="memdesc:af65fdccd9575d75238c9ce5615b102bb inherit pub_methods_classSawyer_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
-<tr class="separator:af65fdccd9575d75238c9ce5615b102bb inherit pub_methods_classSawyer_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f1155ff49f2c62afd307c0168d6f84e inherit pub_methods_classSawyer_1_1SharedObject" id="r_a4f1155ff49f2c62afd307c0168d6f84e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSawyer_1_1SharedObject.html#a4f1155ff49f2c62afd307c0168d6f84e">SharedObject</a> (const <a class="el" href="classSawyer_1_1SharedObject.html">SharedObject</a> &amp;)</td></tr>
-<tr class="memdesc:a4f1155ff49f2c62afd307c0168d6f84e inherit pub_methods_classSawyer_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <br /></td></tr>
-<tr class="separator:a4f1155ff49f2c62afd307c0168d6f84e inherit pub_methods_classSawyer_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a0ad0a0708358bb6a27191dd375b404 inherit pub_methods_classSawyer_1_1SharedObject" id="r_a5a0ad0a0708358bb6a27191dd375b404"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSawyer_1_1SharedObject.html#a5a0ad0a0708358bb6a27191dd375b404">~SharedObject</a> ()</td></tr>
-<tr class="memdesc:a5a0ad0a0708358bb6a27191dd375b404 inherit pub_methods_classSawyer_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <br /></td></tr>
-<tr class="separator:a5a0ad0a0708358bb6a27191dd375b404 inherit pub_methods_classSawyer_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50779eb24667162b6ef1c7604b3b08f5 inherit pub_methods_classSawyer_1_1SharedObject" id="r_a50779eb24667162b6ef1c7604b3b08f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSawyer_1_1SharedObject.html">SharedObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSawyer_1_1SharedObject.html#a50779eb24667162b6ef1c7604b3b08f5">operator=</a> (const <a class="el" href="classSawyer_1_1SharedObject.html">SharedObject</a> &amp;)</td></tr>
-<tr class="memdesc:a50779eb24667162b6ef1c7604b3b08f5 inherit pub_methods_classSawyer_1_1SharedObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment.  <br /></td></tr>
-<tr class="separator:a50779eb24667162b6ef1c7604b3b08f5 inherit pub_methods_classSawyer_1_1SharedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -197,22 +180,34 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:accaed5c52b08f82c645f83b39ae2a6b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory method to create a new instance.  <br /></td></tr>
 <tr class="separator:accaed5c52b08f82c645f83b39ae2a6b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classRose_1_1BinaryAnalysis_1_1SerialIo')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html">Rose::BinaryAnalysis::SerialIo</a></td></tr>
-<tr class="memitem:a5e633706a451448ad8ef3052fe2bdd29 inherit pub_static_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_a5e633706a451448ad8ef3052fe2bdd29"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150">Savable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a5e633706a451448ad8ef3052fe2bdd29">userSavable</a> (unsigned offset)</td></tr>
-<tr class="memdesc:a5e633706a451448ad8ef3052fe2bdd29 inherit pub_static_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new Savable enum constant.  <br /></td></tr>
-<tr class="separator:a5e633706a451448ad8ef3052fe2bdd29 inherit pub_static_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98a263b2941aa6c9dd4b50d6bce7a8ed inherit pub_static_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_a98a263b2941aa6c9dd4b50d6bce7a8ed"><td class="memItemLeft" align="right" valign="top">
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>registerSerialization</b> (<a class="el" href="structRose_1_1BinaryAnalysis_1_1SerialIo_1_1SerializationRegistration.html">SerializationRegistration</a>)</td></tr>
+<tr class="separator:a98a263b2941aa6c9dd4b50d6bce7a8ed inherit pub_static_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafd26d26c5a3acb99fe8f4d1dd970bdd inherit pub_static_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_aafd26d26c5a3acb99fe8f4d1dd970bdd"><td class="memItemLeft" align="right" valign="top">
+static const <a class="el" href="classSawyer_1_1Optional.html">Sawyer::Optional</a>&lt; <a class="el" href="structRose_1_1BinaryAnalysis_1_1SerialIo_1_1SerializationRegistration.html">SerializationRegistration</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>findSerialization</b> (Serialization::Format)</td></tr>
+<tr class="separator:aafd26d26c5a3acb99fe8f4d1dd970bdd inherit pub_static_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a978d1156c8bd187cc025d19aba2bf24f inherit pub_static_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_a978d1156c8bd187cc025d19aba2bf24f"><td class="memItemLeft" align="right" valign="top">static Serialization::Savable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a978d1156c8bd187cc025d19aba2bf24f">userSavable</a> (unsigned offset)</td></tr>
+<tr class="memdesc:a978d1156c8bd187cc025d19aba2bf24f inherit pub_static_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new Savable enum constant.  <br /></td></tr>
+<tr class="separator:a978d1156c8bd187cc025d19aba2bf24f inherit pub_static_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a2f0de2cb5fddfd6d8a01f5b6d1c65580" id="r_a2f0de2cb5fddfd6d8a01f5b6d1c65580"><td class="memItemLeft" align="right" valign="top"><a id="a2f0de2cb5fddfd6d8a01f5b6d1c65580" name="a2f0de2cb5fddfd6d8a01f5b6d1c65580"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>advanceObjectType</b> ()</td></tr>
 <tr class="separator:a2f0de2cb5fddfd6d8a01f5b6d1c65580"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ca0d84e706d59ce6956b13f626bfce0" id="r_a8ca0d84e706d59ce6956b13f626bfce0"><td class="memItemLeft" align="right" valign="top"><a id="a8ca0d84e706d59ce6956b13f626bfce0" name="a8ca0d84e706d59ce6956b13f626bfce0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>checkCompatibility</b> (const std::string &amp;fileVersion)</td></tr>
+<tr class="separator:a8ca0d84e706d59ce6956b13f626bfce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classRose_1_1BinaryAnalysis_1_1SerialIo')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html">Rose::BinaryAnalysis::SerialIo</a></td></tr>
 <tr class="memitem:a6975521008675333d4402bda1480b51c inherit pro_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_a6975521008675333d4402bda1480b51c"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setIsOpen</b> (bool b)</td></tr>
 <tr class="separator:a6975521008675333d4402bda1480b51c inherit pro_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a992ee6913df9e7e463edf297df5656df inherit pro_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_a992ee6913df9e7e463edf297df5656df"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>objectType</b> (<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150">Savable</a>)</td></tr>
-<tr class="separator:a992ee6913df9e7e463edf297df5656df inherit pro_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8c02cd2ac6ae7faa03046c799585939 inherit pro_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_ab8c02cd2ac6ae7faa03046c799585939"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>objectType</b> (Serialization::Savable)</td></tr>
+<tr class="separator:ab8c02cd2ac6ae7faa03046c799585939 inherit pro_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a119e1e0f14ba10ff00b662f33e2e39a8 inherit pro_methods_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_a119e1e0f14ba10ff00b662f33e2e39a8"><td class="memItemLeft" align="right" valign="top">Serialization::ProgressCallback&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a119e1e0f14ba10ff00b662f33e2e39a8">makeProgressCB</a> (const std::string &amp;phase)</td></tr>
+<tr class="memdesc:a119e1e0f14ba10ff00b662f33e2e39a8 inherit pro_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create progress callbacks that wraps the IO progress reporting.  <br /></td></tr>
+<tr class="separator:a119e1e0f14ba10ff00b662f33e2e39a8 inherit pro_methods_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -220,6 +215,12 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:af2303d54e69159b3ca02911cacf42a8a inherit pub_static_attribs_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_af2303d54e69159b3ca02911cacf42a8a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSawyer_1_1Message_1_1Facility.html">Sawyer::Message::Facility</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#af2303d54e69159b3ca02911cacf42a8a">mlog</a></td></tr>
 <tr class="memdesc:af2303d54e69159b3ca02911cacf42a8a inherit pub_static_attribs_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Message facility.  <br /></td></tr>
 <tr class="separator:af2303d54e69159b3ca02911cacf42a8a inherit pub_static_attribs_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79dc29ef2e9a44db123efd1d295b8565 inherit pub_static_attribs_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_a79dc29ef2e9a44db123efd1d295b8565"><td class="memItemLeft" align="right" valign="top">static constexpr Format&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a79dc29ef2e9a44db123efd1d295b8565">BINARY</a> = Serialization::BINARY</td></tr>
+<tr class="separator:a79dc29ef2e9a44db123efd1d295b8565 inherit pub_static_attribs_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22c050231fc500eb9116cdffc92180f4 inherit pub_static_attribs_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_a22c050231fc500eb9116cdffc92180f4"><td class="memItemLeft" align="right" valign="top">static constexpr Format&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a22c050231fc500eb9116cdffc92180f4">TEXT</a> = Serialization::TEXT</td></tr>
+<tr class="separator:a22c050231fc500eb9116cdffc92180f4 inherit pub_static_attribs_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5f237db33da86abe3eeb552cbb425a8 inherit pub_static_attribs_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_aa5f237db33da86abe3eeb552cbb425a8"><td class="memItemLeft" align="right" valign="top">static constexpr Format&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#aa5f237db33da86abe3eeb552cbb425a8">XML</a> = Serialization::XML</td></tr>
+<tr class="separator:aa5f237db33da86abe3eeb552cbb425a8 inherit pub_static_attribs_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classRose_1_1BinaryAnalysis_1_1SerialIo"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classRose_1_1BinaryAnalysis_1_1SerialIo')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html">Rose::BinaryAnalysis::SerialIo</a></td></tr>
 <tr class="memitem:aa9536521a4b659eeb92060dd75581132 inherit pro_attribs_classRose_1_1BinaryAnalysis_1_1SerialIo" id="r_aa9536521a4b659eeb92060dd75581132"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSawyer_1_1ProgressBar.html">Sawyer::ProgressBar</a>&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#aa9536521a4b659eeb92060dd75581132">progressBar_</a></td></tr>
 <tr class="separator:aa9536521a4b659eeb92060dd75581132 inherit pro_attribs_classRose_1_1BinaryAnalysis_1_1SerialIo"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -234,14 +235,14 @@ Additional Inherited Members</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a065658418b1898db49d96cd8ba302e3d">Rose::BinaryAnalysis::SerialInput::Ptr</a> =  <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#a89469528cfe0a3c8f9c548cfba53da4d">SerialInputPtr</a></td>
+          <td class="memname">using <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a065658418b1898db49d96cd8ba302e3d">Rose::BinaryAnalysis::SerialInput::Ptr</a> =  <a class="el" href="namespaceRose_1_1BinaryAnalysis.html#a0da67b02430e0a77d9a227dc32523ea4">SerialInputPtr</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Reference counting pointer. </p>
 
-<p class="definition">Definition at line <a class="el" href="SerialIo_8h_source.html#l00428">428</a> of file <a class="el" href="SerialIo_8h_source.html">SerialIo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SerialIo_8h_source.html#l00433">433</a> of file <a class="el" href="SerialIo_8h_source.html">SerialIo.h</a>.</p>
 
 </div>
 </div>
@@ -269,7 +270,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SerialIo_8h_source.html#l00442">442</a> of file <a class="el" href="SerialIo_8h_source.html">SerialIo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SerialIo_8h_source.html#l00440">440</a> of file <a class="el" href="SerialIo_8h_source.html">SerialIo.h</a>.</p>
 
 </div>
 </div>
@@ -366,18 +367,53 @@ Additional Inherited Members</h2></td></tr>
 <p>Factory method to create a new instance. </p>
 <p>The returned instance is in a detached state, therefore the <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#ac64c0f58613d21eb87957aaed536e121">open</a> method needs to be called before any I/O operation can be invoked. </p>
 
-<p class="definition">Definition at line <a class="el" href="SerialIo_8h_source.html#l00456">456</a> of file <a class="el" href="SerialIo_8h_source.html">SerialIo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SerialIo_8h_source.html#l00451">451</a> of file <a class="el" href="SerialIo_8h_source.html">SerialIo.h</a>.</p>
 
 </div>
 </div>
-<a id="a0346606d801ab7e6354e0885a06f8472" name="a0346606d801ab7e6354e0885a06f8472"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0346606d801ab7e6354e0885a06f8472">&#9670;&#160;</a></span>nextObjectType()</h2>
+<a id="a9804d512bfc026c6b6bf4870910ada21" name="a9804d512bfc026c6b6bf4870910ada21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9804d512bfc026c6b6bf4870910ada21">&#9670;&#160;</a></span>readAndValidateRecord()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150">Savable</a> Rose::BinaryAnalysis::SerialInput::nextObjectType </td>
+          <td class="memname"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Serialization_1_1FrameRecord.html">Serialization::FrameRecord</a> Rose::BinaryAnalysis::SerialInput::readAndValidateRecord </td>
+          <td>(</td>
+          <td class="paramtype">Serialization::Savable&#160;</td>
+          <td class="paramname"><em>expectedType</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read a frame record from the container and validate its metadata. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">expectedType</td><td>The expected object type for the record </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The validated frame record </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classRose_1_1Exception.html" title="Base class for all ROSE exceptions.">Exception</a></td><td>if the record's metadata doesn't match expectations </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="reference">Referenced by <a class="el" href="SerialIo_8h_source.html#l00504">loadObject()</a>.</p>
+
+</div>
+</div>
+<a id="a83640f62e664bf658203d1dc068d9d53" name="a83640f62e664bf658203d1dc068d9d53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83640f62e664bf658203d1dc068d9d53">&#9670;&#160;</a></span>nextObjectType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Serialization::Savable Rose::BinaryAnalysis::SerialInput::nextObjectType </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -429,13 +465,13 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Load an <a class="el" href="namespaceRose_1_1AST.html" title="Collection of functionalities performing global operations on the AST.">AST</a> from the input stream. </p>
-<p>Loads an <a class="el" href="namespaceRose_1_1AST.html" title="Collection of functionalities performing global operations on the AST.">AST</a> from the intput stream and returns a pointer to its root. If a null <a class="el" href="namespaceRose_1_1AST.html" title="Collection of functionalities performing global operations on the AST.">AST</a> was stored, then a null pointer is returned.</p>
+<p>Loads an <a class="el" href="namespaceRose_1_1AST.html" title="Collection of functionalities performing global operations on the AST.">AST</a> from the input stream and returns a pointer to its root. If a null <a class="el" href="namespaceRose_1_1AST.html" title="Collection of functionalities performing global operations on the AST.">AST</a> was stored, then a null pointer is returned.</p>
 <p>Throws an <a class="el" href="classRose_1_1Exception.html">Exception</a> if no file is attached to this I/O object or if the next object to be read from the input is not an <a class="el" href="namespaceRose_1_1AST.html" title="Collection of functionalities performing global operations on the AST.">AST</a>, or if any other errors occur while reading the <a class="el" href="namespaceRose_1_1AST.html" title="Collection of functionalities performing global operations on the AST.">AST</a>. </p>
 
 </div>
 </div>
-<a id="a53dee6a1eb25e20a8598d596d37bd1f2" name="a53dee6a1eb25e20a8598d596d37bd1f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53dee6a1eb25e20a8598d596d37bd1f2">&#9670;&#160;</a></span>loadObject() <span class="overload">[1/2]</span></h2>
+<a id="a02209738b3ecf33eb5fde52a96db1831" name="a02209738b3ecf33eb5fde52a96db1831"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02209738b3ecf33eb5fde52a96db1831">&#9670;&#160;</a></span>loadObject() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -448,7 +484,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname">T Rose::BinaryAnalysis::SerialInput::loadObject </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150">Savable</a>&#160;</td>
+          <td class="paramtype">Serialization::Savable&#160;</td>
           <td class="paramname"><em>objectTypeId</em></td><td>)</td>
           <td></td>
         </tr>
@@ -463,12 +499,12 @@ template&lt;class T &gt; </div>
 <p>Load an object from the input stream. </p>
 <p>An object with the specified tag must exist as the next item in the stream. Such an object is created, initialized from the stream, and returned. If an object is provided as the second argument, then it's initialized from the stream. </p>
 
-<p class="definition">Definition at line <a class="el" href="SerialIo_8h_source.html#l00491">491</a> of file <a class="el" href="SerialIo_8h_source.html">SerialIo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SerialIo_8h_source.html#l00496">496</a> of file <a class="el" href="SerialIo_8h_source.html">SerialIo.h</a>.</p>
 
 </div>
 </div>
-<a id="a294862bc86e3330e5771e533f862271d" name="a294862bc86e3330e5771e533f862271d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a294862bc86e3330e5771e533f862271d">&#9670;&#160;</a></span>loadObject() <span class="overload">[2/2]</span></h2>
+<a id="a44e1c87267e6f30ddbec93621fb16535" name="a44e1c87267e6f30ddbec93621fb16535"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44e1c87267e6f30ddbec93621fb16535">&#9670;&#160;</a></span>loadObject() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -481,7 +517,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname">void Rose::BinaryAnalysis::SerialInput::loadObject </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a7f89024e4e26565b2485f17f941da150">Savable</a>&#160;</td>
+          <td class="paramtype">Serialization::Savable&#160;</td>
           <td class="paramname"><em>objectTypeId</em>, </td>
         </tr>
         <tr>
@@ -506,9 +542,9 @@ template&lt;class T &gt; </div>
 <p>Load an object from the input stream. </p>
 <p>An object with the specified tag must exist as the next item in the stream. Such an object is created, initialized from the stream, and returned. If an object is provided as the second argument, then it's initialized from the stream. </p>
 
-<p class="definition">Definition at line <a class="el" href="SerialIo_8h_source.html#l00497">497</a> of file <a class="el" href="SerialIo_8h_source.html">SerialIo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SerialIo_8h_source.html#l00504">504</a> of file <a class="el" href="SerialIo_8h_source.html">SerialIo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="SerialIo_8h_source.html#l00118">Rose::BinaryAnalysis::SerialIo::ERROR</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#ae99590b6ad6c1ad0918c3b1f8395a6f5">Rose::BinaryAnalysis::SerialIo::isOpen()</a>, <a class="el" href="namespaceSawyer_1_1ProgressBarSettings.html#a684c4df199309ee61f8df36556174255">Sawyer::ProgressBarSettings::minimumUpdateInterval()</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#ad36db80f704173477924d5aa20d5f031">Rose::BinaryAnalysis::SerialIo::objectType()</a>, <a class="el" href="ProgressBar_8h_source.html#l00290">Sawyer::ProgressBar&lt; T, S &gt;::prefix()</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#ac10f557b4d85fb4e6bd8990e50e0f656">Rose::BinaryAnalysis::SerialIo::progress()</a>, and <a class="el" href="ProgressBar_8h_source.html#l00159">Sawyer::ProgressBar&lt; T, S &gt;::value()</a>.</p>
+<p class="reference">References <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#ae99590b6ad6c1ad0918c3b1f8395a6f5">Rose::BinaryAnalysis::SerialIo::isOpen()</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#adc73d58c641c74ed17fef1809984b0d8">Rose::BinaryAnalysis::SerialIo::objectType()</a>, and <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a9804d512bfc026c6b6bf4870910ada21">readAndValidateRecord()</a>.</p>
 
 </div>
 </div>
@@ -518,7 +554,7 @@ template&lt;class T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:47 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:54 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

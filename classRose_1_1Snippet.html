@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="namespaceRose.html">Rose</a></li><li class="navelem"><a class="el" href="classRose_1_1Snippet.html">Snippet</a></li>  </ul>
@@ -85,9 +104,9 @@ The injection process</h1>
 <div class="line">foo-&gt;insert(cursor);                          <span class="comment">// insert snippet foo() with no arguments</span></div>
 <div class="line">bar-&gt;insert(cursor, var_a);                   <span class="comment">// 1st arg of snippet bar() is bound to var_a</span></div>
 <div class="line">bannana-&gt;insert(cursor, var_a, expr_1, var_b);<span class="comment">// 3 args of bannana() are bound to things</span></div>
-<div class="ttc" id="aclassSgExpression_html"><div class="ttname"><a href="classSgExpression.html">SgExpression</a></div><div class="ttdoc">This class represents the notion of an expression. Expressions are derived from SgLocatedNodes,...</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l487636">Cxx_Grammar.h:487637</a></div></div>
-<div class="ttc" id="aclassSgInitializedName_html"><div class="ttname"><a href="classSgInitializedName.html">SgInitializedName</a></div><div class="ttdoc">This class represents the notion of a declared variable.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l187210">Cxx_Grammar.h:187211</a></div></div>
-<div class="ttc" id="aclassSgStatement_html"><div class="ttname"><a href="classSgStatement.html">SgStatement</a></div><div class="ttdoc">This class represents the notion of a statement.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l236795">Cxx_Grammar.h:236796</a></div></div>
+<div class="ttc" id="aclassSgExpression_html"><div class="ttname"><a href="classSgExpression.html">SgExpression</a></div><div class="ttdoc">This class represents the notion of an expression. Expressions are derived from SgLocatedNodes,...</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l486290">Cxx_Grammar.h:486291</a></div></div>
+<div class="ttc" id="aclassSgInitializedName_html"><div class="ttname"><a href="classSgInitializedName.html">SgInitializedName</a></div><div class="ttdoc">This class represents the notion of a declared variable.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l186832">Cxx_Grammar.h:186833</a></div></div>
+<div class="ttc" id="aclassSgStatement_html"><div class="ttname"><a href="classSgStatement.html">SgStatement</a></div><div class="ttdoc">This class represents the notion of a statement.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l236423">Cxx_Grammar.h:236424</a></div></div>
 </div><!-- fragment --><p>Two modes of insertion are supported: The INJECT_BODY mode copies the snippet's body scope into the insertion point so that all snippet local variables remain in the same (new) scope as the rest of the inserted snippet statements. This is quick and easy, but doesn't allow two snippets that are inserted at the same level in a function to share any local variables (but they can still both refer to variables at the injection site via argument binding in the <a class="el" href="classRose_1_1Snippet.html#ab06b229b9571e90906b1cff7558ae898" title="Insert a snippet into the project.">insert()</a> method). The alternative is INJECT_STMTS, which doesn't create a new scope for the injected statements, but rather copies each statement individually to the injection site. During INJECT_STMTS mode, snippet local declarations are copied to either the beginning of the injection point's function, or to the end of that function's list of declarations (see <a class="el" href="classRose_1_1Snippet.html#ad4763923b2e058158cebb64c73ed4328" title="Accessor for local declaration insertion position.">setLocalDeclarationPosition()</a>).</p>
 <h1><a class="anchor" id="S3"></a>
 Parameterized data types</h1>
@@ -1142,7 +1161,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>removeIncludeD
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:46 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:53 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

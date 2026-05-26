@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="namespaceSawyer.html">Sawyer</a></li><li class="navelem"><a class="el" href="namespaceSawyer_1_1Container.html">Container</a></li><li class="navelem"><a class="el" href="classSawyer_1_1Container_1_1Buffer.html">Buffer</a></li>  </ul>
@@ -124,6 +143,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a38c6afa322d3d0ceae6d62f69edfe982" id="r_a38c6afa322d3d0ceae6d62f69edfe982"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSawyer_1_1Container_1_1Buffer.html#a51d7578c5e6fb3d634ad1299c8754857">Ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSawyer_1_1Container_1_1Buffer.html#a38c6afa322d3d0ceae6d62f69edfe982">copy</a> () const =0</td></tr>
 <tr class="memdesc:a38c6afa322d3d0ceae6d62f69edfe982"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new copy of buffer data.  <br /></td></tr>
 <tr class="separator:a38c6afa322d3d0ceae6d62f69edfe982"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a433d3b296fa62c98673156ce3b8594ff" id="r_a433d3b296fa62c98673156ce3b8594ff"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="classSawyer_1_1Container_1_1Buffer.html#a99b8f6cfbd98cb722f1533a87eb8c3c5">Value</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSawyer_1_1Container_1_1Buffer.html#a433d3b296fa62c98673156ce3b8594ff">to_vector</a> () const =0</td></tr>
+<tr class="memdesc:a433d3b296fa62c98673156ce3b8594ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a std::vector copy of the data.  <br /></td></tr>
+<tr class="separator:a433d3b296fa62c98673156ce3b8594ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89beefdef8ca4b5cc437692aed7f2ce4" id="r_a89beefdef8ca4b5cc437692aed7f2ce4"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSawyer_1_1Container_1_1Buffer.html#a48522ca1362c5127446ad7e8346b8ff8">Address</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSawyer_1_1Container_1_1Buffer.html#a89beefdef8ca4b5cc437692aed7f2ce4">available</a> (<a class="el" href="classSawyer_1_1Container_1_1Buffer.html#a48522ca1362c5127446ad7e8346b8ff8">Address</a> address) const =0</td></tr>
 <tr class="memdesc:a89beefdef8ca4b5cc437692aed7f2ce4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distance to end of buffer.  <br /></td></tr>
 <tr class="separator:a89beefdef8ca4b5cc437692aed7f2ce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -334,6 +356,38 @@ template&lt;class A , class T &gt; </div>
 
 </div>
 </div>
+<a id="a433d3b296fa62c98673156ce3b8594ff" name="a433d3b296fa62c98673156ce3b8594ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a433d3b296fa62c98673156ce3b8594ff">&#9670;&#160;</a></span>to_vector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class A , class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::vector&lt; <a class="el" href="classSawyer_1_1Container_1_1Buffer.html#a99b8f6cfbd98cb722f1533a87eb8c3c5">Value</a> &gt; <a class="el" href="classSawyer_1_1Container_1_1Buffer.html">Sawyer::Container::Buffer</a>&lt; A, T &gt;::to_vector </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create a std::vector copy of the data. </p>
+<p>Returns a std::vector whose contents are the same as the underlying data. </p>
+
+<p>Implemented in <a class="el" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#a17eae32acaf9aae99948d6e2ac0b543a">Sawyer::Container::AllocatingBuffer&lt; A, T &gt;</a>, <a class="el" href="classSawyer_1_1Container_1_1MappedBuffer.html#afbce53bc2f9aba862ac2bf1644912963">Sawyer::Container::MappedBuffer&lt; A, T &gt;</a>, <a class="el" href="classSawyer_1_1Container_1_1NullBuffer.html#ad68ae05b9b708c9c80b843e8f5dcb388">Sawyer::Container::NullBuffer&lt; A, T &gt;</a>, and <a class="el" href="classSawyer_1_1Container_1_1StaticBuffer.html#ade4b4b2033ff89af27f93a052cca47a5">Sawyer::Container::StaticBuffer&lt; A, T &gt;</a>.</p>
+
+</div>
+</div>
 <a id="a89beefdef8ca4b5cc437692aed7f2ce4" name="a89beefdef8ca4b5cc437692aed7f2ce4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a89beefdef8ca4b5cc437692aed7f2ce4">&#9670;&#160;</a></span>available()</h2>
 
@@ -365,7 +419,7 @@ template&lt;class A , class T &gt; </div>
 
 <p>Implemented in <a class="el" href="classSawyer_1_1Container_1_1MappedBuffer.html#ac83d6a5b42afd90b458deca3f22b3fb2">Sawyer::Container::MappedBuffer&lt; A, T &gt;</a>, <a class="el" href="classSawyer_1_1Container_1_1AllocatingBuffer.html#ae7d52f16642207474065588b7313e9f7">Sawyer::Container::AllocatingBuffer&lt; A, T &gt;</a>, <a class="el" href="classSawyer_1_1Container_1_1NullBuffer.html#ac5b4e2186aa927109eb07ca9fdb87097">Sawyer::Container::NullBuffer&lt; A, T &gt;</a>, and <a class="el" href="classSawyer_1_1Container_1_1StaticBuffer.html#af155a09c580f3c7545cd594d8d2a6cec">Sawyer::Container::StaticBuffer&lt; A, T &gt;</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Buffer_8h_source.html#l00093">Sawyer::Container::Buffer&lt; A, T &gt;::size()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Buffer_8h_source.html#l00098">Sawyer::Container::Buffer&lt; A, T &gt;::size()</a>.</p>
 
 </div>
 </div>
@@ -397,11 +451,11 @@ template&lt;class A , class T &gt; </div>
 <p>Size of buffer. </p>
 <p>Returns the number of <a class="el" href="classSawyer_1_1Container_1_1Buffer.html#a99b8f6cfbd98cb722f1533a87eb8c3c5">Value</a> elements stored in the buffer. In other words, this is the first address beyond the end of the buffer. Note that the return value may overflow to zero if the buffer spans the entire address space. </p>
 
-<p class="definition">Definition at line <a class="el" href="Buffer_8h_source.html#l00093">93</a> of file <a class="el" href="Buffer_8h_source.html">Buffer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Buffer_8h_source.html#l00098">98</a> of file <a class="el" href="Buffer_8h_source.html">Buffer.h</a>.</p>
 
 <p class="reference">References <a class="el" href="classSawyer_1_1Container_1_1Buffer.html#a89beefdef8ca4b5cc437692aed7f2ce4">Sawyer::Container::Buffer&lt; A, T &gt;::available()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="AllocatingBuffer_8h_source.html#l00089">Sawyer::Container::AllocatingBuffer&lt; A, T &gt;::copy()</a>, <a class="el" href="MappedBuffer_8h_source.html#l00182">Sawyer::Container::MappedBuffer&lt; A, T &gt;::copy()</a>, <a class="el" href="AllocatingBuffer_8h_source.html#l00076">Sawyer::Container::AllocatingBuffer&lt; A, T &gt;::instance()</a>, <a class="el" href="NullBuffer_8h_source.html#l00069">Sawyer::Container::NullBuffer&lt; A, T &gt;::instance()</a>, <a class="el" href="StaticBuffer_8h_source.html#l00114">Sawyer::Container::StaticBuffer&lt; A, T &gt;::instance()</a>, <a class="el" href="StaticBuffer_8h_source.html#l00111">Sawyer::Container::StaticBuffer&lt; A, T &gt;::instance()</a>, and <a class="el" href="MappedBuffer_8h_source.html#l00198">Sawyer::Container::MappedBuffer&lt; A, T &gt;::resize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="AllocatingBuffer_8h_source.html#l00089">Sawyer::Container::AllocatingBuffer&lt; A, T &gt;::copy()</a>, <a class="el" href="MappedBuffer_8h_source.html#l00182">Sawyer::Container::MappedBuffer&lt; A, T &gt;::copy()</a>, <a class="el" href="AllocatingBuffer_8h_source.html#l00076">Sawyer::Container::AllocatingBuffer&lt; A, T &gt;::instance()</a>, <a class="el" href="NullBuffer_8h_source.html#l00069">Sawyer::Container::NullBuffer&lt; A, T &gt;::instance()</a>, <a class="el" href="StaticBuffer_8h_source.html#l00114">Sawyer::Container::StaticBuffer&lt; A, T &gt;::instance()</a>, <a class="el" href="StaticBuffer_8h_source.html#l00111">Sawyer::Container::StaticBuffer&lt; A, T &gt;::instance()</a>, <a class="el" href="MappedBuffer_8h_source.html#l00202">Sawyer::Container::MappedBuffer&lt; A, T &gt;::resize()</a>, and <a class="el" href="MappedBuffer_8h_source.html#l00194">Sawyer::Container::MappedBuffer&lt; A, T &gt;::to_vector()</a>.</p>
 
 </div>
 </div>
@@ -466,7 +520,7 @@ template&lt;class A , class T &gt; </div>
 <p>Synchronize buffer with persistent storage. </p>
 <p>If the buffer is backed by a file of some sort, then synchronize the buffer contents with the file by writing to the file any buffer values that have changed. </p>
 
-<p class="definition">Definition at line <a class="el" href="Buffer_8h_source.html#l00104">104</a> of file <a class="el" href="Buffer_8h_source.html">Buffer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Buffer_8h_source.html#l00109">109</a> of file <a class="el" href="Buffer_8h_source.html">Buffer.h</a>.</p>
 
 </div>
 </div>
@@ -498,7 +552,7 @@ template&lt;class A , class T &gt; </div>
 <p>Property: Name. </p>
 <p>An arbitrary string stored as part of the buffer, usually used for debugging. </p>
 
-<p class="definition">Definition at line <a class="el" href="Buffer_8h_source.html#l00111">111</a> of file <a class="el" href="Buffer_8h_source.html">Buffer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Buffer_8h_source.html#l00116">116</a> of file <a class="el" href="Buffer_8h_source.html">Buffer.h</a>.</p>
 
 </div>
 </div>
@@ -531,7 +585,7 @@ template&lt;class A , class T &gt; </div>
 <p>Property: Name. </p>
 <p>An arbitrary string stored as part of the buffer, usually used for debugging. </p>
 
-<p class="definition">Definition at line <a class="el" href="Buffer_8h_source.html#l00112">112</a> of file <a class="el" href="Buffer_8h_source.html">Buffer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Buffer_8h_source.html#l00117">117</a> of file <a class="el" href="Buffer_8h_source.html">Buffer.h</a>.</p>
 
 </div>
 </div>
@@ -694,7 +748,7 @@ template&lt;class A , class T &gt; </div>
 <p>Property: Copy on write. </p>
 <p>This is a bit stored in the buffer and is used by higher layers to implement copy-on-write. The buffer itself does nothing with this bit. </p>
 
-<p class="definition">Definition at line <a class="el" href="Buffer_8h_source.html#l00144">144</a> of file <a class="el" href="Buffer_8h_source.html">Buffer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Buffer_8h_source.html#l00149">149</a> of file <a class="el" href="Buffer_8h_source.html">Buffer.h</a>.</p>
 
 </div>
 </div>
@@ -727,7 +781,7 @@ template&lt;class A , class T &gt; </div>
 <p>Property: Copy on write. </p>
 <p>This is a bit stored in the buffer and is used by higher layers to implement copy-on-write. The buffer itself does nothing with this bit. </p>
 
-<p class="definition">Definition at line <a class="el" href="Buffer_8h_source.html#l00145">145</a> of file <a class="el" href="Buffer_8h_source.html">Buffer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Buffer_8h_source.html#l00150">150</a> of file <a class="el" href="Buffer_8h_source.html">Buffer.h</a>.</p>
 
 </div>
 </div>
@@ -737,7 +791,7 @@ template&lt;class A , class T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:25:19 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:12:26 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

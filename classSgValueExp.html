@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 </div><!-- top -->
 <div class="header">
   <div class="summary">
@@ -62,7 +81,7 @@ $(function() {
 <a name="details" id="details"></a><h2 class="groupheader">Description</h2>
 <div class="textblock"><p>This class represents the notion of an value (expression value). </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l577203">577203</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l575857">575857</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 </div><div class="dynheader">
 Inheritance diagram for SgValueExp:</div>
 <div class="dyncontent">
@@ -497,9 +516,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isOutputInCodeGenerat
 <tr class="memitem:a9b2c0ffcfed4ea7784e397fcb16fa0aa inherit pub_methods_classSgLocatedNode" id="r_a9b2c0ffcfed4ea7784e397fcb16fa0aa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSgLocatedNode.html#a9b2c0ffcfed4ea7784e397fcb16fa0aa">get_physical_file_id</a> ()</td></tr>
 <tr class="memdesc:a9b2c0ffcfed4ea7784e397fcb16fa0aa inherit pub_methods_classSgLocatedNode"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allow IR nodes (mostly <a class="el" href="classSgLocatedNode.html" title="This class represents the notion of an expression or statement which has a position within the source...">SgLocatedNode</a>) to be queried for there physical file ID.  <br /></td></tr>
 <tr class="separator:a9b2c0ffcfed4ea7784e397fcb16fa0aa inherit pub_methods_classSgLocatedNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc6d185eed028f62e61f50b90e114be7 inherit pub_methods_classSgLocatedNode" id="r_afc6d185eed028f62e61f50b90e114be7"><td class="memItemLeft" align="right" valign="top">AttachedPreprocessingInfoType *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSgLocatedNode.html#afc6d185eed028f62e61f50b90e114be7">getAttachedPreprocessingInfo</a> (void)</td></tr>
-<tr class="memdesc:afc6d185eed028f62e61f50b90e114be7 inherit pub_methods_classSgLocatedNode"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the number of nodes in the defined subtree of the AST.  <br /></td></tr>
-<tr class="separator:afc6d185eed028f62e61f50b90e114be7 inherit pub_methods_classSgLocatedNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeba402ebe7d71c7cf3b901e3bc695e7a inherit pub_methods_classSgLocatedNode" id="r_aeba402ebe7d71c7cf3b901e3bc695e7a"><td class="memItemLeft" align="right" valign="top">AttachedPreprocessingInfoType *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSgLocatedNode.html#aeba402ebe7d71c7cf3b901e3bc695e7a">getAttachedPreprocessingInfo</a> ()</td></tr>
+<tr class="memdesc:aeba402ebe7d71c7cf3b901e3bc695e7a inherit pub_methods_classSgLocatedNode"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function gets the adds comment or CPP directives to the current IR node.  <br /></td></tr>
+<tr class="separator:aeba402ebe7d71c7cf3b901e3bc695e7a inherit pub_methods_classSgLocatedNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12e84e59e5f788cbf291875bae3bb87c inherit pub_methods_classSgLocatedNode" id="r_a12e84e59e5f788cbf291875bae3bb87c"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="classSg__File__Info.html">Sg_File_Info</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>generateMatchingFileInfo</b> ()</td></tr>
 <tr class="separator:a12e84e59e5f788cbf291875bae3bb87c inherit pub_methods_classSgLocatedNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1230,7 +1249,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l577629">577629</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l576283">576283</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -1249,7 +1268,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>static variant value </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l577250">577250</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l575904">575904</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -1457,7 +1476,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSgBoolValExp.html#a2f52323d1e6fc884a5be77470f0c7a37">SgBoolValExp</a>, <a class="el" href="classSgStringVal.html#ae282a096adeb5ec0c006d6a25022a988">SgStringVal</a>, <a class="el" href="classSgShortVal.html#a8378fea914acf1d2410e661b573aacef">SgShortVal</a>, <a class="el" href="classSgCharVal.html#ae4c33ce72ce200f01804187f4062f759">SgCharVal</a>, <a class="el" href="classSgUnsignedCharVal.html#a9df9421f7b5ceb02e9956c181f4ac2e7">SgUnsignedCharVal</a>, <a class="el" href="classSgWcharVal.html#a7e7a95060b1ecfb6abba2f662ee0befe">SgWcharVal</a>, <a class="el" href="classSgUnsignedShortVal.html#a85c41a2f001d340ba0829d8d57a24f85">SgUnsignedShortVal</a>, <a class="el" href="classSgIntVal.html#a171c2906ea9c1e60b4ba027deb9fdb22">SgIntVal</a>, <a class="el" href="classSgEnumVal.html#ab2814735b1c455e87ff96b91908f170b">SgEnumVal</a>, <a class="el" href="classSgUnsignedIntVal.html#abee40df3fa7182b0605a78d67296af7c">SgUnsignedIntVal</a>, <a class="el" href="classSgLongIntVal.html#a53d5796f238199e0bffd3d5895e4a88e">SgLongIntVal</a>, <a class="el" href="classSgLongLongIntVal.html#a3d05516dd04502908b7674c80c690ff2">SgLongLongIntVal</a>, <a class="el" href="classSgUnsignedLongLongIntVal.html#a70a3884cb1dbf2a1dc23631ad5d2e9da">SgUnsignedLongLongIntVal</a>, <a class="el" href="classSgUnsignedLongVal.html#ad1d9d68cf59aadd9b6ee8c138b4e6071">SgUnsignedLongVal</a>, <a class="el" href="classSgFloatVal.html#a9759d13aefa21a9f6e819cbaecba3c76">SgFloatVal</a>, <a class="el" href="classSgDoubleVal.html#a6bfdf053e699c0c0216bede64067a8e4">SgDoubleVal</a>, <a class="el" href="classSgLongDoubleVal.html#ab69d508170515020a865eff305f2df5b">SgLongDoubleVal</a>, <a class="el" href="classSgComplexVal.html#ae5f69f9909347c0ed67cc0d808bbe91d">SgComplexVal</a>, <a class="el" href="classSgUpcThreads.html#ac081beaa5b28685e88c3aeb0f1a99f74">SgUpcThreads</a>, <a class="el" href="classSgUpcMythread.html#a76b1a871a27e085933ed4b585357cbbe">SgUpcMythread</a>, <a class="el" href="classSgTemplateParameterVal.html#a111e18ae87055cef8a206686b8d03108">SgTemplateParameterVal</a>, <a class="el" href="classSgNullptrValExp.html#a51ccebcc5fcbe8778a5d90c8428326d7">SgNullptrValExp</a>, <a class="el" href="classSgChar16Val.html#ae0df8624f07e00a04bb3651264d54b09">SgChar16Val</a>, <a class="el" href="classSgChar32Val.html#a34c5e8cc44a7483655ca56d59f8780b5">SgChar32Val</a>, <a class="el" href="classSgFloat80Val.html#a8608979e318274dbcb4f8df9e9a562da">SgFloat80Val</a>, <a class="el" href="classSgFloat128Val.html#a2ddda64d4f683c6bb6184a25d417d12c">SgFloat128Val</a>, <a class="el" href="classSgVoidVal.html#a060d442cd281473d37ee50db8722f9aa">SgVoidVal</a>, <a class="el" href="classSgAdaFloatVal.html#a2aeac38397dd13e12676c19adfa2b6c1">SgAdaFloatVal</a>, <a class="el" href="classSgSignedCharVal.html#a00b6ad64a5c05c554b58be0bb6eec3e8">SgSignedCharVal</a>, <a class="el" href="classSgBFloat16Val.html#ac259f6e2c6dc4430f562298becb93e3e">SgBFloat16Val</a>, <a class="el" href="classSgFloat16Val.html#a26a9d029d01ed174111d708e0c17e7a2">SgFloat16Val</a>, <a class="el" href="classSgFloat32Val.html#ae222ea8d0d9fdff4e5e9e5bbf512c625">SgFloat32Val</a>, and <a class="el" href="classSgFloat64Val.html#a60d106320ab0c8a4a8299b1a86071c00">SgFloat64Val</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l18591">SageInterface::getIntegerConstantValue()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l18478">SageInterface::getIntegerConstantValue()</a>.</p>
 
 </div>
 </div>
@@ -1490,7 +1509,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSgBoolValExp.html#ae4ed3a262e2ea91973aa2f15431c0d08">SgBoolValExp</a>, <a class="el" href="classSgStringVal.html#a43c5c3df6ec1038450609a606a58c9e8">SgStringVal</a>, <a class="el" href="classSgShortVal.html#af056e8fa44a079db03680d1f843b7360">SgShortVal</a>, <a class="el" href="classSgCharVal.html#a75f3a82226810f1ef9b3ec57f878d2e2">SgCharVal</a>, <a class="el" href="classSgUnsignedCharVal.html#a254c0c76d62aa7cd8fe769b2d9bced69">SgUnsignedCharVal</a>, <a class="el" href="classSgWcharVal.html#a5dd5a95e276c3398238eba4c4bfb8054">SgWcharVal</a>, <a class="el" href="classSgUnsignedShortVal.html#ad58f2610ec45bc278951fc700153a14d">SgUnsignedShortVal</a>, <a class="el" href="classSgIntVal.html#ace9293d2cbc04e1ef779d07a64bb5a84">SgIntVal</a>, <a class="el" href="classSgEnumVal.html#ac3006881fa229caf3df9cfeae5c9775c">SgEnumVal</a>, <a class="el" href="classSgUnsignedIntVal.html#a6593b9646a2b539f28179a57e5fa4e97">SgUnsignedIntVal</a>, <a class="el" href="classSgLongIntVal.html#a9af21df4cf9cf0746d21bc6a455a53bb">SgLongIntVal</a>, <a class="el" href="classSgLongLongIntVal.html#ad73f4f69abd8db9834cb302cd7e55335">SgLongLongIntVal</a>, <a class="el" href="classSgUnsignedLongLongIntVal.html#a221c54b1b3e838a1c28c6e90bae4e2aa">SgUnsignedLongLongIntVal</a>, <a class="el" href="classSgUnsignedLongVal.html#a439403ed5cfce0c72fb7f8d4a33c9493">SgUnsignedLongVal</a>, <a class="el" href="classSgFloatVal.html#afb59210e2628fb039387c691246664db">SgFloatVal</a>, <a class="el" href="classSgDoubleVal.html#a053f40c7c7047ae20a5e9d7a661c83d5">SgDoubleVal</a>, <a class="el" href="classSgLongDoubleVal.html#acf87b5f796c9a6ca4b9a6ab9f7ea2939">SgLongDoubleVal</a>, <a class="el" href="classSgComplexVal.html#a5955202fb5c700f1333c4298fd9ea137">SgComplexVal</a>, <a class="el" href="classSgUpcThreads.html#a5eb253a7943bf0612596cdcd58ea2f16">SgUpcThreads</a>, <a class="el" href="classSgUpcMythread.html#abc4ca3617d4a054d75147629967f1983">SgUpcMythread</a>, <a class="el" href="classSgTemplateParameterVal.html#af3e4e84320f77bdd8275c54638aa1bb4">SgTemplateParameterVal</a>, <a class="el" href="classSgNullptrValExp.html#a8ea3599204dc6ed4d6c51b7b47e53069">SgNullptrValExp</a>, <a class="el" href="classSgChar16Val.html#a23ce449f3786791e688df1a9b1b2f763">SgChar16Val</a>, <a class="el" href="classSgChar32Val.html#aeae2f301544267216d43f535486eaf4a">SgChar32Val</a>, <a class="el" href="classSgFloat80Val.html#a5079247052960da1ecb08f0a45baab82">SgFloat80Val</a>, <a class="el" href="classSgFloat128Val.html#ab16837903856f41f6cb5ece94fcec5d2">SgFloat128Val</a>, <a class="el" href="classSgVoidVal.html#a080c10816f5194c01a0c4d6b72d20e6f">SgVoidVal</a>, <a class="el" href="classSgAdaFloatVal.html#afa069b9000bf4472b98beaae9449c134">SgAdaFloatVal</a>, <a class="el" href="classSgSignedCharVal.html#a2336a60666d52d87f4700d9adb5cdab7">SgSignedCharVal</a>, <a class="el" href="classSgBFloat16Val.html#aad499ff1901581c37ab524a9e03af2bb">SgBFloat16Val</a>, <a class="el" href="classSgFloat16Val.html#a8cd9108a2a11a7bdeebd92f0b4c2cc00">SgFloat16Val</a>, <a class="el" href="classSgFloat32Val.html#aa87e307024375bd23cc768bd8be771f0">SgFloat32Val</a>, and <a class="el" href="classSgFloat64Val.html#adff16504c8569b13a428fe121de03703">SgFloat64Val</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l18591">SageInterface::getIntegerConstantValue()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l18478">SageInterface::getIntegerConstantValue()</a>.</p>
 
 </div>
 </div>
@@ -1518,7 +1537,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l577305">577305</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l575959">575959</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2077,7 +2096,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l577656">577656</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l576310">576310</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2088,7 +2107,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:44 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:51 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

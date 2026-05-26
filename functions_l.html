@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,15 +40,34 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div class="contents">
 <div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
 
@@ -85,7 +104,7 @@ $(function() {
 <li>lexeme()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SymbolicExpressionParser_1_1Token.html#a26aabf181a306e30c49114985a8a7f3b">Rose::BinaryAnalysis::SymbolicExpressionParser::Token</a>, <a class="el" href="structRosebud_1_1Ast_1_1CppStack_1_1Directive.html#a27decb4f200b82d2ee7a30ef6bb7bebd">Rosebud::Ast::CppStack::Directive</a>, <a class="el" href="classRosebud_1_1Ast_1_1File.html#a78f7ef33f9d1f406a471517b036c7367">Rosebud::Ast::File</a>, <a class="el" href="classSawyer_1_1Lexer_1_1TokenStream.html#a5c0af0563a967feaa81a4b6c5f8dcd97">Sawyer::Lexer::TokenStream&lt; T &gt;</a></li>
 <li>limit()&#160;:&#160;<a class="el" href="classSawyer_1_1CommandLine_1_1ListParser.html#a51a8c9bcf35110d7289d4d8c30e69c36">Sawyer::CommandLine::ListParser</a>, <a class="el" href="classSawyer_1_1Container_1_1AddressMap.html#ac38bfd2f3963653a29b2c7488225f34b">Sawyer::Container::AddressMap&lt; A, T &gt;</a>, <a class="el" href="classSawyer_1_1Container_1_1AddressMapConstraints.html#a1e7b229039bfde68032769c1fba95a5e">Sawyer::Container::AddressMapConstraints&lt; AddressMap &gt;</a>, <a class="el" href="classSawyer_1_1Message_1_1SequenceFilter.html#a87e220eba3285f2838f9d3bc53d16274">Sawyer::Message::SequenceFilter</a></li>
 <li>line&#160;:&#160;<a class="el" href="structRose_1_1BinaryAnalysis_1_1Unparser_1_1Settings.html#a5f0093966086af531911d658c46029de">Rose::BinaryAnalysis::Unparser::Settings</a>, <a class="el" href="classRose_1_1SourceLocation.html#a612cf860d24b3c04aa1476fb2e018f01">Rose::SourceLocation</a></li>
-<li>LinearCongruentialGenerator()&#160;:&#160;<a class="el" href="classLinearCongruentialGenerator.html#af1c82187fd2ac645b63d6d92add42363">LinearCongruentialGenerator</a></li>
+<li>LinearCongruentialGenerator()&#160;:&#160;<a class="el" href="classLinearCongruentialGenerator.html#a7db78ecd0d9644b4b3f8deb52bb0f0ec">LinearCongruentialGenerator</a></li>
 <li>linearDistance()&#160;:&#160;<a class="el" href="classSawyer_1_1CommandLine_1_1Cursor.html#ad6473a32d663c4a705e98dbaae3f04b9">Sawyer::CommandLine::Cursor</a></li>
 <li>lineBreak()&#160;:&#160;<a class="el" href="classSawyer_1_1Document_1_1Markup_1_1Reflow.html#a70c11c36c42c16fca4e49972165e4326">Sawyer::Document::Markup::Reflow</a></li>
 <li>lineChars()&#160;:&#160;<a class="el" href="classSawyer_1_1Container_1_1LineVector.html#a2382a1d8d459fc9646e280228f6c1057">Sawyer::Container::LineVector</a></li>
@@ -94,7 +113,7 @@ $(function() {
 <li>lineNumber&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SymbolicExpressionParser_1_1SyntaxError.html#a7a56e605c7d5983f19c87563ad9fb89d">Rose::BinaryAnalysis::SymbolicExpressionParser::SyntaxError</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SymbolicExpressionParser_1_1Token.html#a3fe3d8253b93976ca4f85e0d2e4d8fc3">Rose::BinaryAnalysis::SymbolicExpressionParser::Token</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SymbolicExpressionParser_1_1TokenStream.html#a4b3a8d22b1524fa0cb278d360cd7d1c6">Rose::BinaryAnalysis::SymbolicExpressionParser::TokenStream</a></li>
 <li>lineString()&#160;:&#160;<a class="el" href="classSawyer_1_1Container_1_1LineVector.html#a22df16ea1d9816a42098871e987a4319">Sawyer::Container::LineVector</a>, <a class="el" href="classSawyer_1_1Lexer_1_1TokenStream.html#a833b3d1350ccae1124812ed3a0dcc25a">Sawyer::Lexer::TokenStream&lt; T &gt;</a></li>
 <li>lineTermination&#160;:&#160;<a class="el" href="structSawyer_1_1Message_1_1MesgProps.html#ab9b713a93595e340985bb4e5353b782b">Sawyer::Message::MesgProps</a></li>
-<li>LineVector()&#160;:&#160;<a class="el" href="classSawyer_1_1Container_1_1LineVector.html#a6def7a61b2138deea645d804f196bf47">Sawyer::Container::LineVector</a></li>
+<li>LineVector()&#160;:&#160;<a class="el" href="classSawyer_1_1Container_1_1LineVector.html#a5ee70cb6328e3e59120932bd04992836">Sawyer::Container::LineVector</a></li>
 <li>link()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1BinaryLoader.html#a69bff3533e7b0a7ca2fd1c8726d2e1ee">Rose::BinaryAnalysis::BinaryLoader</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1BinaryLoaderPe.html#a2872677b58e669792e139794be8d7c65">Rose::BinaryAnalysis::BinaryLoaderPe</a>, <a class="el" href="classSgProject.html#a2e0f7b5ea2a06aed7617fd23d6a7feef">SgProject</a></li>
 <li>linkage()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SmtSolver.html#a962437597417c76a66825aac16188fa8">Rose::BinaryAnalysis::SmtSolver</a></li>
 <li>linkage_modifier_enum&#160;:&#160;<a class="el" href="classSgLinkageModifier.html#a3a16dad2a3e844737710abadf0f0addf">SgLinkageModifier</a></li>
@@ -102,13 +121,14 @@ $(function() {
 <li>LinkMode&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SmtSolver.html#a780a2c523850a54f01939334bbab8a34">Rose::BinaryAnalysis::SmtSolver</a></li>
 <li>linkObjectFiles&#160;:&#160;<a class="el" href="structRose_1_1BinaryAnalysis_1_1Partitioner2_1_1LoaderSettings.html#a96d2b89d1aa98e779d2641501660f010">Rose::BinaryAnalysis::Partitioner2::LoaderSettings</a></li>
 <li>linkStaticArchives&#160;:&#160;<a class="el" href="structRose_1_1BinaryAnalysis_1_1Partitioner2_1_1LoaderSettings.html#a77569bcb8f0406b70e44d2c35066db54">Rose::BinaryAnalysis::Partitioner2::LoaderSettings</a></li>
-<li>linkTo()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1MemoryMap.html#aaba3ba3e4f0897bf5912fd36b20fecd9">Rose::BinaryAnalysis::MemoryMap</a></li>
+<li>linkTo()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1MemoryMap.html#ab2ddb64d1de9c10f925b4d61c4da5787">Rose::BinaryAnalysis::MemoryMap</a></li>
 <li>list&#160;:&#160;<a class="el" href="structRose_1_1metaprog_1_1tree__traversal__factory__t_1_1preorder__depthfirst__t.html#a2d4db917bdb67e8fb6a7a2ce3bde1a97">Rose::metaprog::tree_traversal_factory_t&lt; Predicate, Extract, Children &gt;::preorder_depthfirst_t&lt; RootTag &gt;</a></li>
 <li>LIST_BASED_MEMORY&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1FeasiblePath.html#ad2483ff221ac84d100e7cab029187114aae8b38b64b05bb80dd03d066320495b1">Rose::BinaryAnalysis::FeasiblePath</a></li>
 <li>listAll()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1RegisterParts.html#aebe0a38f413570f8a12d23d890dd8fe5">Rose::BinaryAnalysis::RegisterParts</a></li>
 <li>listNamed()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1RegisterParts.html#af5e4e67fb6ab492312d9cc9828e436be">Rose::BinaryAnalysis::RegisterParts</a></li>
 <li>ListParser()&#160;:&#160;<a class="el" href="classSawyer_1_1CommandLine_1_1ListParser.html#a97e47c00436fa20d490f3f6ea100b3f1">Sawyer::CommandLine::ListParser</a></li>
 <li>lists()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1FunctionSimilarity.html#acf15645f53de326cb60efa3b8d614b91">Rose::BinaryAnalysis::FunctionSimilarity</a></li>
+<li>literals&#160;:&#160;<a class="el" href="structRose_1_1BinaryAnalysis_1_1CilStringFinder.html#aa1c0d1e6a8a90ab0c0d15ea3a01a9c1aa57f34d80587741f47270cdbad3fe89c8">Rose::BinaryAnalysis::CilStringFinder</a></li>
 <li>llvm_integer_type()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1LlvmSemantics_1_1RiscOperators.html#a1c6b8c3d207f9add0df1e26aab740dd6">Rose::BinaryAnalysis::InstructionSemantics::LlvmSemantics::RiscOperators</a></li>
 <li>llvm_lvalue()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1LlvmSemantics_1_1RiscOperators.html#a9aed02c2b6aed08808f8371b6cf1d657">Rose::BinaryAnalysis::InstructionSemantics::LlvmSemantics::RiscOperators</a></li>
 <li>llvm_term()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1LlvmSemantics_1_1RiscOperators.html#a672c2a9a4ff9d252a69fd03b04cc77a0">Rose::BinaryAnalysis::InstructionSemantics::LlvmSemantics::RiscOperators</a></li>
@@ -119,6 +139,7 @@ $(function() {
 <li>LM_NONE&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SmtSolver.html#a780a2c523850a54f01939334bbab8a34ad6a15e3f1094e828dc01588f1ba8ae8c">Rose::BinaryAnalysis::SmtSolver</a></li>
 <li>load()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1BinaryLoader.html#a0fe0150efaa54124891927b97f262424">Rose::BinaryAnalysis::BinaryLoader</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SRecord.html#a0ec4876dd5c2328535a14899e459e1ed">Rose::BinaryAnalysis::SRecord</a>, <a class="el" href="classSawyer_1_1Container_1_1LineVector.html#aa65155e91dbab44d3abd9b3209a24163">Sawyer::Container::LineVector</a></li>
 <li>loadAllClasses&#160;:&#160;<a class="el" href="structRose_1_1BinaryAnalysis_1_1Partitioner2_1_1JvmSettings.html#a67a2e26c89c0a6f4f5191289778eeb05">Rose::BinaryAnalysis::Partitioner2::JvmSettings</a></li>
+<li>loadAllJars&#160;:&#160;<a class="el" href="structRose_1_1BinaryAnalysis_1_1Partitioner2_1_1JvmSettings.html#a9dc8cde0fb00a9ac4c92b8b44ba3c72c">Rose::BinaryAnalysis::Partitioner2::JvmSettings</a></li>
 <li>loadAst()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a701ae407523e85c3ac2d33dbfe9efa1d">Rose::BinaryAnalysis::SerialInput</a></li>
 <li>loadClass()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1EngineJvm.html#ab09209f688bbde34b0ab95a9bd5a09d4">Rose::BinaryAnalysis::Partitioner2::EngineJvm</a></li>
 <li>loadClassFile()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1EngineJvm.html#a9e47940c4d8970e701d2e9fd39592a94">Rose::BinaryAnalysis::Partitioner2::EngineJvm</a></li>
@@ -130,16 +151,17 @@ $(function() {
 <li>loadFromFile()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Configuration.html#a6132762738a0e9315461debf9dccb2a9">Rose::BinaryAnalysis::Partitioner2::Configuration</a></li>
 <li>loadJarFile()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1EngineJvm.html#acf102a8ed419fdb289d839d959e5a494">Rose::BinaryAnalysis::Partitioner2::EngineJvm</a></li>
 <li>loadNonContainers()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1EngineBinary.html#ad99c554ea353e806ea2cd06c1cf91e8e">Rose::BinaryAnalysis::Partitioner2::EngineBinary</a></li>
-<li>loadObject()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a53dee6a1eb25e20a8598d596d37bd1f2">Rose::BinaryAnalysis::SerialInput</a></li>
-<li>loadPartitioner()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a01d3b48cd6d076d27dbb5ae0cf72d6b5">Rose::BinaryAnalysis::SerialInput</a></li>
+<li>loadObject()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a02209738b3ecf33eb5fde52a96db1831">Rose::BinaryAnalysis::SerialInput</a></li>
+<li>loadPartitioner()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialInput.html#a01d3b48cd6d076d27dbb5ae0cf72d6b5">Rose::BinaryAnalysis::SerialInput</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo_1_1Deserializer.html#acdae66f58e54aa3da92306d0e48d4ab3">Rose::BinaryAnalysis::SerialIo::Deserializer</a></li>
 <li>loadSpecimens()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Engine.html#ae4be5fcd45af5fcdfec6df6a416d7d28">Rose::BinaryAnalysis::Partitioner2::Engine</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1EngineBinary.html#ab4418f0c2482653d053a9968311de0f3">Rose::BinaryAnalysis::Partitioner2::EngineBinary</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1EngineJvm.html#a08d2426746f27ad8d1dcd200cfd61b58">Rose::BinaryAnalysis::Partitioner2::EngineJvm</a></li>
 <li>loadSuperClasses()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1EngineJvm.html#a83ad6e9d28c032a31bb2ef24d6f3cb48">Rose::BinaryAnalysis::Partitioner2::EngineJvm</a></li>
 <li>loadVariableNames()&#160;:&#160;<a class="el" href="classRose_1_1SnippetFile.html#aa30604ad935bca31f4ae0ec26240ccc8">Rose::SnippetFile</a></li>
 <li>loadVxCore()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1EngineBinary.html#af55fe44a08aacc27646d9c2d0e3b988b">Rose::BinaryAnalysis::Partitioner2::EngineBinary</a></li>
+<li>loadWarFile()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1EngineJvm.html#a79d6e39c01aa239e83a6c5e2e50e5c52">Rose::BinaryAnalysis::Partitioner2::EngineJvm</a></li>
 <li>LocalDeclarationPosition&#160;:&#160;<a class="el" href="classRose_1_1Snippet.html#a1a0e6797c4ee210217dc28dca1df3678">Rose::Snippet</a></li>
 <li>LocalDefUseTable&#160;:&#160;<a class="el" href="classStaticSingleAssignment.html#adcb347322834917dd31dd57af44001f8">StaticSingleAssignment</a></li>
 <li>localVariables()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1ReadWriteSets.html#a1b98e866c93d2b3703d9a3f2cffd5173">Rose::BinaryAnalysis::ReadWriteSets</a></li>
-<li>location&#160;:&#160;<a class="el" href="structRose_1_1BinaryAnalysis_1_1FeasiblePath_1_1Expression.html#ac4c5176e4ae31b770b9b74a3706e0c73">Rose::BinaryAnalysis::FeasiblePath::Expression</a>, <a class="el" href="structRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SourceAstSemantics_1_1RiscOperators_1_1SideEffect.html#a35e2db40d8a5ef6deee5ccdee9663cd6">Rose::BinaryAnalysis::InstructionSemantics::SourceAstSemantics::RiscOperators::SideEffect</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1MemoryTable.html#a9f1616e6075f3a7cffd521d0cd9d80ac">Rose::BinaryAnalysis::Partitioner2::MemoryTable</a>, <a class="el" href="classSawyer_1_1CommandLine_1_1Cursor.html#aa0698ac35b6e141b970b216840393de6">Sawyer::CommandLine::Cursor</a></li>
+<li>location&#160;:&#160;<a class="el" href="structRose_1_1BinaryAnalysis_1_1FeasiblePath_1_1Expression.html#ac4c5176e4ae31b770b9b74a3706e0c73">Rose::BinaryAnalysis::FeasiblePath::Expression</a>, <a class="el" href="structRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1SourceAstSemantics_1_1RiscOperators_1_1SideEffect.html#a35e2db40d8a5ef6deee5ccdee9663cd6">Rose::BinaryAnalysis::InstructionSemantics::SourceAstSemantics::RiscOperators::SideEffect</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1MemoryTable.html#a9f1616e6075f3a7cffd521d0cd9d80ac">Rose::BinaryAnalysis::Partitioner2::MemoryTable</a>, <a class="el" href="classSawyer_1_1CommandLine_1_1Cursor.html#a72e795a2416c63530ef3e32d07b1f149">Sawyer::CommandLine::Cursor</a></li>
 <li>Location()&#160;:&#160;<a class="el" href="structSawyer_1_1CommandLine_1_1Location.html#a3870f839e958b79a23e73205aff7a97c">Sawyer::CommandLine::Location</a></li>
 <li>location()&#160;:&#160;<a class="el" href="classSawyer_1_1Container_1_1LineVector.html#a81d389b31f790821cf758c9c5ff3f73a">Sawyer::Container::LineVector</a>, <a class="el" href="classSawyer_1_1Lexer_1_1TokenStream.html#a449dd020456d1453204dd85e68344c89">Sawyer::Lexer::TokenStream&lt; T &gt;</a></li>
 <li>locationEof()&#160;:&#160;<a class="el" href="classSawyer_1_1Lexer_1_1TokenStream.html#a75579d54068445051d5bf5042a95b184">Sawyer::Lexer::TokenStream&lt; T &gt;</a></li>
@@ -151,11 +173,11 @@ $(function() {
 <li>longestEvidenceTime&#160;:&#160;<a class="el" href="structRose_1_1BinaryAnalysis_1_1SmtSolver_1_1Stats.html#a9415aaa1de48d4cf6e4ac5b8774d988d">Rose::BinaryAnalysis::SmtSolver::Stats</a></li>
 <li>longestPrepareTime&#160;:&#160;<a class="el" href="structRose_1_1BinaryAnalysis_1_1SmtSolver_1_1Stats.html#a25301b0ce0f0b29c7b909ffdb876c260">Rose::BinaryAnalysis::SmtSolver::Stats</a></li>
 <li>longestSolveTime&#160;:&#160;<a class="el" href="structRose_1_1BinaryAnalysis_1_1SmtSolver_1_1Stats.html#a47ab4f0126261b1b90f43d36d7f4d500">Rose::BinaryAnalysis::SmtSolver::Stats</a></li>
-<li>longName()&#160;:&#160;<a class="el" href="classSawyer_1_1CommandLine_1_1Switch.html#ab4899b3ba4dd0cb070a41030eec5fb91">Sawyer::CommandLine::Switch</a></li>
+<li>longName()&#160;:&#160;<a class="el" href="classSawyer_1_1CommandLine_1_1Switch.html#af08ee7ea152f8111415074e887bba1f0">Sawyer::CommandLine::Switch</a></li>
 <li>longNames()&#160;:&#160;<a class="el" href="classSawyer_1_1CommandLine_1_1Switch.html#a6f0eb25f3f2846b10f7524d9702a0ee6">Sawyer::CommandLine::Switch</a></li>
 <li>longPrefix()&#160;:&#160;<a class="el" href="classSawyer_1_1CommandLine_1_1Parser.html#a3cfe6cb949af618d8efd91fe9db7b29f">Sawyer::CommandLine::Parser</a>, <a class="el" href="classSawyer_1_1CommandLine_1_1Switch.html#a0bab2ca4fa5601e5a6feef051b849634">Sawyer::CommandLine::Switch</a>, <a class="el" href="classSawyer_1_1CommandLine_1_1SwitchGroup.html#a224b8ece8ff7c25a2a65ca66348a129d">Sawyer::CommandLine::SwitchGroup</a></li>
 <li>longPrefixes()&#160;:&#160;<a class="el" href="classSawyer_1_1CommandLine_1_1Parser.html#af133635a506d60e1dac763a21fd8d3ec">Sawyer::CommandLine::Parser</a>, <a class="el" href="classSawyer_1_1CommandLine_1_1Switch.html#a7d8f5b7cc8e8bbfab38dedf2dff7ecb3">Sawyer::CommandLine::Switch</a>, <a class="el" href="classSawyer_1_1CommandLine_1_1SwitchGroup.html#a609203d21c03a897dc0f1e0f6a7ecf48">Sawyer::CommandLine::SwitchGroup</a></li>
-<li>lookup()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1BinaryLoader.html#ad956aeb0c1e6596252beb38f1841e359">Rose::BinaryAnalysis::BinaryLoader</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1BinaryLoaderElf_1_1SymbolMap.html#abaa63099bcfd3d730f0d2c1453946d8e">Rose::BinaryAnalysis::BinaryLoaderElf::SymbolMap</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1RegisterDictionary.html#a967f382e67abaccca1f790d475568095">Rose::BinaryAnalysis::RegisterDictionary</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SystemCall.html#ae1a73612494fdaad102d68f147ec5d21">Rose::BinaryAnalysis::SystemCall</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1TaintedFlow_1_1State.html#a9b2967ca1e3e2932e1b3cbac07a5922d">Rose::BinaryAnalysis::TaintedFlow::State</a>, <a class="el" href="classRose_1_1SnippetFile.html#aea6a6c92d8485a469c8e6f3ca9ce4884">Rose::SnippetFile</a>, <a class="el" href="classRosebud_1_1Generator.html#a89fde46407dd309f2d4204663e469bab">Rosebud::Generator</a>, <a class="el" href="classRosebud_1_1Serializer.html#aafffe9197be2a3cda694e8c8e82c51d7">Rosebud::Serializer</a>, <a class="el" href="classSawyer_1_1Container_1_1GraphBimapIndex.html#a63c2835ffcc38c4ca87366c313284859">Sawyer::Container::GraphBimapIndex&lt; VertexOrEdgeKey, VertexOrEdgeConstIterator &gt;</a>, <a class="el" href="classSawyer_1_1Container_1_1GraphHashIndex.html#af7049bd21711c28612e63477289d4633">Sawyer::Container::GraphHashIndex&lt; VertexOrEdgeKey, VertexOrEdgeConstIterator &gt;</a>, <a class="el" href="classSawyer_1_1Container_1_1GraphVoidIndex.html#a6d9937d1f2aea35280cbf883fa94717c">Sawyer::Container::GraphVoidIndex&lt; VertexOrEdgeKey, VertexOrEdgeConstIterator &gt;</a></li>
+<li>lookup()&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1BinaryLoader.html#ad956aeb0c1e6596252beb38f1841e359">Rose::BinaryAnalysis::BinaryLoader</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1BinaryLoaderElf_1_1SymbolMap.html#abaa63099bcfd3d730f0d2c1453946d8e">Rose::BinaryAnalysis::BinaryLoaderElf::SymbolMap</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1RegisterDictionary.html#a967f382e67abaccca1f790d475568095">Rose::BinaryAnalysis::RegisterDictionary</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SystemCall.html#ae65db98559e71b10e52eeb23f0ed40d9">Rose::BinaryAnalysis::SystemCall</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1TaintedFlow_1_1State.html#a9b2967ca1e3e2932e1b3cbac07a5922d">Rose::BinaryAnalysis::TaintedFlow::State</a>, <a class="el" href="classRose_1_1SnippetFile.html#aea6a6c92d8485a469c8e6f3ca9ce4884">Rose::SnippetFile</a>, <a class="el" href="classRosebud_1_1Generator.html#a89fde46407dd309f2d4204663e469bab">Rosebud::Generator</a>, <a class="el" href="classRosebud_1_1Serializer.html#aafffe9197be2a3cda694e8c8e82c51d7">Rosebud::Serializer</a>, <a class="el" href="classSawyer_1_1Container_1_1GraphBimapIndex.html#a63c2835ffcc38c4ca87366c313284859">Sawyer::Container::GraphBimapIndex&lt; VertexOrEdgeKey, VertexOrEdgeConstIterator &gt;</a>, <a class="el" href="classSawyer_1_1Container_1_1GraphHashIndex.html#af7049bd21711c28612e63477289d4633">Sawyer::Container::GraphHashIndex&lt; VertexOrEdgeKey, VertexOrEdgeConstIterator &gt;</a>, <a class="el" href="classSawyer_1_1Container_1_1GraphVoidIndex.html#a6d9937d1f2aea35280cbf883fa94717c">Sawyer::Container::GraphVoidIndex&lt; VertexOrEdgeKey, VertexOrEdgeConstIterator &gt;</a></li>
 <li>lookup_symbol()&#160;:&#160;<a class="el" href="classSgScopeStatement.html#a44de8513b3171e9002d4563983f85d15">SgScopeStatement</a></li>
 <li>loop_statement_type_enum&#160;:&#160;<a class="el" href="classSgJovialForThenStatement.html#a0a3141deedd2b7eb8b013aa472a54d7e">SgJovialForThenStatement</a></li>
 <li>lower_bound()&#160;:&#160;<a class="el" href="classRangeMap.html#ad59ac92205fde7c48fb73e6a28ff62c3">RangeMap&lt; R, T &gt;</a></li>
@@ -165,7 +187,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:25:22 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:12:29 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

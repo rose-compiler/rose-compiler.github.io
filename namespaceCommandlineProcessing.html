@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 </div><!-- top -->
 <div class="header">
   <div class="summary">
@@ -196,18 +215,21 @@ ROSE_UTIL_API bool&#160;</td><td class="memItemRight" valign="bottom"><b>isCudaF
 <tr class="memitem:a96c930c210b8a1d16518281bf1f42900" id="r_a96c930c210b8a1d16518281bf1f42900"><td class="memItemLeft" align="right" valign="top"><a id="a96c930c210b8a1d16518281bf1f42900" name="a96c930c210b8a1d16518281bf1f42900"></a>
 ROSE_UTIL_API bool&#160;</td><td class="memItemRight" valign="bottom"><b>isOpenCLFileNameSuffix</b> (const std::string &amp;suffix)</td></tr>
 <tr class="separator:a96c930c210b8a1d16518281bf1f42900"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8729ccfb380780f060b73d4d0d21280d" id="r_a8729ccfb380780f060b73d4d0d21280d"><td class="memItemLeft" align="right" valign="top"><a id="a8729ccfb380780f060b73d4d0d21280d" name="a8729ccfb380780f060b73d4d0d21280d"></a>
-ROSE_UTIL_API bool&#160;</td><td class="memItemRight" valign="bottom"><b>isJavaFile</b> (const std::string &amp;fileName)</td></tr>
-<tr class="separator:a8729ccfb380780f060b73d4d0d21280d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e094f8af326a8dc18bc32e620326d37" id="r_a7e094f8af326a8dc18bc32e620326d37"><td class="memItemLeft" align="right" valign="top"><a id="a7e094f8af326a8dc18bc32e620326d37" name="a7e094f8af326a8dc18bc32e620326d37"></a>
-ROSE_UTIL_API bool&#160;</td><td class="memItemRight" valign="bottom"><b>isJavaClassFile</b> (const std::string &amp;fileName)</td></tr>
-<tr class="separator:a7e094f8af326a8dc18bc32e620326d37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bd6a78ed9bc39cf41fea6066febba80" id="r_a6bd6a78ed9bc39cf41fea6066febba80"><td class="memItemLeft" align="right" valign="top"><a id="a6bd6a78ed9bc39cf41fea6066febba80" name="a6bd6a78ed9bc39cf41fea6066febba80"></a>
-ROSE_UTIL_API bool&#160;</td><td class="memItemRight" valign="bottom"><b>isJavaJarFile</b> (const std::string &amp;fileName)</td></tr>
-<tr class="separator:a6bd6a78ed9bc39cf41fea6066febba80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cc41eebb4d9e2dab91f6db085ebd758" id="r_a8cc41eebb4d9e2dab91f6db085ebd758"><td class="memItemLeft" align="right" valign="top"><a id="a8cc41eebb4d9e2dab91f6db085ebd758" name="a8cc41eebb4d9e2dab91f6db085ebd758"></a>
-ROSE_UTIL_API bool&#160;</td><td class="memItemRight" valign="bottom"><b>isJavaJvmFile</b> (const std::string &amp;fileName)</td></tr>
-<tr class="separator:a8cc41eebb4d9e2dab91f6db085ebd758"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cdbb0410160ce3b679b9de001c909db" id="r_a7cdbb0410160ce3b679b9de001c909db"><td class="memItemLeft" align="right" valign="top">ROSE_UTIL_API bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCommandlineProcessing.html#a7cdbb0410160ce3b679b9de001c909db">isJavaFile</a> (const std::string &amp;filename)</td></tr>
+<tr class="memdesc:a7cdbb0410160ce3b679b9de001c909db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a filename ends with the ".java" extension.  <br /></td></tr>
+<tr class="separator:a7cdbb0410160ce3b679b9de001c909db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54a2e13efb0bfde0d6d299728b703fb5" id="r_a54a2e13efb0bfde0d6d299728b703fb5"><td class="memItemLeft" align="right" valign="top">ROSE_UTIL_API bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCommandlineProcessing.html#a54a2e13efb0bfde0d6d299728b703fb5">isJavaClassFile</a> (const std::string &amp;filename)</td></tr>
+<tr class="memdesc:a54a2e13efb0bfde0d6d299728b703fb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a filename ends with the ".class" extension.  <br /></td></tr>
+<tr class="separator:a54a2e13efb0bfde0d6d299728b703fb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d914d09ce5610a2f5efa415d8653c08" id="r_a6d914d09ce5610a2f5efa415d8653c08"><td class="memItemLeft" align="right" valign="top">ROSE_UTIL_API bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCommandlineProcessing.html#a6d914d09ce5610a2f5efa415d8653c08">isJavaJarFile</a> (const std::string &amp;filename)</td></tr>
+<tr class="memdesc:a6d914d09ce5610a2f5efa415d8653c08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a filename ends with the ".jar" extension.  <br /></td></tr>
+<tr class="separator:a6d914d09ce5610a2f5efa415d8653c08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada5dd4e471530bf353a908ed8d5fb393" id="r_ada5dd4e471530bf353a908ed8d5fb393"><td class="memItemLeft" align="right" valign="top">ROSE_UTIL_API bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCommandlineProcessing.html#ada5dd4e471530bf353a908ed8d5fb393">isJavaWarFile</a> (const std::string &amp;filename)</td></tr>
+<tr class="memdesc:ada5dd4e471530bf353a908ed8d5fb393"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a filename ends with the ".war" extension.  <br /></td></tr>
+<tr class="separator:ada5dd4e471530bf353a908ed8d5fb393"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74e99f3f304e559655351af35b42f99c" id="r_a74e99f3f304e559655351af35b42f99c"><td class="memItemLeft" align="right" valign="top">ROSE_UTIL_API bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCommandlineProcessing.html#a74e99f3f304e559655351af35b42f99c">isJavaJvmFile</a> (const std::string &amp;filename)</td></tr>
+<tr class="memdesc:a74e99f3f304e559655351af35b42f99c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a filename ends with a Jvm file extension.  <br /></td></tr>
+<tr class="separator:a74e99f3f304e559655351af35b42f99c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae19a40181ce60c9dd5456fbaad4eeee8" id="r_ae19a40181ce60c9dd5456fbaad4eeee8"><td class="memItemLeft" align="right" valign="top"><a id="ae19a40181ce60c9dd5456fbaad4eeee8" name="ae19a40181ce60c9dd5456fbaad4eeee8"></a>
 ROSE_UTIL_API void&#160;</td><td class="memItemRight" valign="bottom"><b>initSourceFileSuffixList</b> ()</td></tr>
 <tr class="separator:ae19a40181ce60c9dd5456fbaad4eeee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -528,10 +550,151 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 
 </div>
 </div>
+<a id="a7cdbb0410160ce3b679b9de001c909db" name="a7cdbb0410160ce3b679b9de001c909db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cdbb0410160ce3b679b9de001c909db">&#9670;&#160;</a></span>isJavaFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ROSE_UTIL_API bool CommandlineProcessing::isJavaFile </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determine whether a filename ends with the ".java" extension. </p>
+<p>The check is performed on the string as provided and does not verify that the file exists.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>File name or path to examine. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the name ends with ".java", false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a54a2e13efb0bfde0d6d299728b703fb5" name="a54a2e13efb0bfde0d6d299728b703fb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54a2e13efb0bfde0d6d299728b703fb5">&#9670;&#160;</a></span>isJavaClassFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ROSE_UTIL_API bool CommandlineProcessing::isJavaClassFile </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determine whether a filename ends with the ".class" extension. </p>
+<p>The check is performed on the string as provided and does not verify that the file exists.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>File name or path to examine. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the name ends with ".class", false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a6d914d09ce5610a2f5efa415d8653c08" name="a6d914d09ce5610a2f5efa415d8653c08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d914d09ce5610a2f5efa415d8653c08">&#9670;&#160;</a></span>isJavaJarFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ROSE_UTIL_API bool CommandlineProcessing::isJavaJarFile </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determine whether a filename ends with the ".jar" extension. </p>
+<p>The check is performed on the string as provided and does not verify that the file exists.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>File name or path to examine. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the name ends with ".jar", false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ada5dd4e471530bf353a908ed8d5fb393" name="ada5dd4e471530bf353a908ed8d5fb393"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada5dd4e471530bf353a908ed8d5fb393">&#9670;&#160;</a></span>isJavaWarFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ROSE_UTIL_API bool CommandlineProcessing::isJavaWarFile </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determine whether a filename ends with the ".war" extension. </p>
+<p>The check is performed on the string as provided and does not verify that the file exists.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>File name or path to examine. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the name ends with ".war", false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a74e99f3f304e559655351af35b42f99c" name="a74e99f3f304e559655351af35b42f99c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74e99f3f304e559655351af35b42f99c">&#9670;&#160;</a></span>isJavaJvmFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ROSE_UTIL_API bool CommandlineProcessing::isJavaJvmFile </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determine whether a filename ends with a Jvm file extension. </p>
+<p>Valid Jvm file extensions are: ".class", ".jar", or ".war".</p>
+<p>The check is performed on the string as provided to determine if filename has a Jvm file extension and does not verify that the file exists.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>File name or path to examine. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the name ends with a Jvm file extension, false otherwise. </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:45 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:52 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

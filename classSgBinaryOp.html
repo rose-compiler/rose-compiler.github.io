@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 </div><!-- top -->
 <div class="header">
   <div class="summary">
@@ -63,7 +82,7 @@ $(function() {
 <div class="textblock"><p>This class represents the notion of a binary operator. It is derived from a <a class="el" href="classSgExpression.html" title="This class represents the notion of an expression. Expressions are derived from SgLocatedNodes,...">SgExpression</a> because operators are expressions. </p>
 <p>There are no uses of this IR node anywhere. All expressions are derived from this IR node to build derived classes. Example binary operators include binary minus, binary plus, the address operator, etc. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l507359">507359</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l506013">506013</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 </div><div class="dynheader">
 Inheritance diagram for SgBinaryOp:</div>
 <div class="dyncontent">
@@ -563,9 +582,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isOutputInCodeGenerat
 <tr class="memitem:a9b2c0ffcfed4ea7784e397fcb16fa0aa inherit pub_methods_classSgLocatedNode" id="r_a9b2c0ffcfed4ea7784e397fcb16fa0aa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSgLocatedNode.html#a9b2c0ffcfed4ea7784e397fcb16fa0aa">get_physical_file_id</a> ()</td></tr>
 <tr class="memdesc:a9b2c0ffcfed4ea7784e397fcb16fa0aa inherit pub_methods_classSgLocatedNode"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allow IR nodes (mostly <a class="el" href="classSgLocatedNode.html" title="This class represents the notion of an expression or statement which has a position within the source...">SgLocatedNode</a>) to be queried for there physical file ID.  <br /></td></tr>
 <tr class="separator:a9b2c0ffcfed4ea7784e397fcb16fa0aa inherit pub_methods_classSgLocatedNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc6d185eed028f62e61f50b90e114be7 inherit pub_methods_classSgLocatedNode" id="r_afc6d185eed028f62e61f50b90e114be7"><td class="memItemLeft" align="right" valign="top">AttachedPreprocessingInfoType *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSgLocatedNode.html#afc6d185eed028f62e61f50b90e114be7">getAttachedPreprocessingInfo</a> (void)</td></tr>
-<tr class="memdesc:afc6d185eed028f62e61f50b90e114be7 inherit pub_methods_classSgLocatedNode"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the number of nodes in the defined subtree of the AST.  <br /></td></tr>
-<tr class="separator:afc6d185eed028f62e61f50b90e114be7 inherit pub_methods_classSgLocatedNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeba402ebe7d71c7cf3b901e3bc695e7a inherit pub_methods_classSgLocatedNode" id="r_aeba402ebe7d71c7cf3b901e3bc695e7a"><td class="memItemLeft" align="right" valign="top">AttachedPreprocessingInfoType *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSgLocatedNode.html#aeba402ebe7d71c7cf3b901e3bc695e7a">getAttachedPreprocessingInfo</a> ()</td></tr>
+<tr class="memdesc:aeba402ebe7d71c7cf3b901e3bc695e7a inherit pub_methods_classSgLocatedNode"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function gets the adds comment or CPP directives to the current IR node.  <br /></td></tr>
+<tr class="separator:aeba402ebe7d71c7cf3b901e3bc695e7a inherit pub_methods_classSgLocatedNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12e84e59e5f788cbf291875bae3bb87c inherit pub_methods_classSgLocatedNode" id="r_a12e84e59e5f788cbf291875bae3bb87c"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="classSg__File__Info.html">Sg_File_Info</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>generateMatchingFileInfo</b> ()</td></tr>
 <tr class="separator:a12e84e59e5f788cbf291875bae3bb87c inherit pub_methods_classSgLocatedNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1309,7 +1328,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l507802">507802</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l506456">506456</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -1328,7 +1347,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>static variant value </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l507423">507423</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l506077">506077</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -1544,7 +1563,7 @@ Additional Inherited Members</h2></td></tr>
 <p>returns <a class="el" href="classSgExpression.html" title="This class represents the notion of an expression. Expressions are derived from SgLocatedNodes,...">SgExpression</a> pointer to the lhs operand associated with this binary operator. </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="classSgExpression.html" title="This class represents the notion of an expression. Expressions are derived from SgLocatedNodes,...">SgExpression</a> pointer. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l22127">SageInterface::convertRefToInitializedName()</a>, <a class="el" href="sageBuilder_8C_source.html#l16326">SageBuilder::fixupCopyOfNodeFromSeparateFileInNewTargetAst()</a>, <a class="el" href="sageInterface_8C_source.html#l02726">SageInterface::get_name()</a>, <a class="el" href="sageInterface_8C_source.html#l08810">SageInterface::getClassTypeChainForMemberReference()</a>, <a class="el" href="VariableStateTransfer_8h_source.html#l00032">VariableStateTransfer&lt; LatticeType &gt;::getLattices()</a>, <a class="el" href="sageInterface_8C_source.html#l12674">SageInterface::getLoopIndexVariable()</a>, <a class="el" href="sageInterface_8C_source.html#l13385">SageInterface::isAssignmentStatement()</a>, <a class="el" href="sageInterface_8C_source.html#l12822">SageInterface::isCanonicalDoLoop()</a>, <a class="el" href="sageInterface_8C_source.html#l13003">SageInterface::isCanonicalForLoop()</a>, <a class="el" href="sageInterface_8C_source.html#l13455">SageInterface::mergeAssignmentWithDeclaration()</a>, <a class="el" href="sageInterface_8C_source.html#l13509">SageInterface::mergeDeclarationWithAssignment()</a>, <a class="el" href="sageInterface_8C_source.html#l27743">SageInterface::normalizeArrowExpWithAddressOfLeftOperand()</a>, <a class="el" href="sageInterface_8C_source.html#l11904">SageInterface::normalizeForLoopIncrement()</a>, <a class="el" href="sageInterface_8C_source.html#l11852">SageInterface::normalizeForLoopTest()</a>, <a class="el" href="sageInterface_8C_source.html#l18431">SageInterface::replaceSubexpressionWithStatement()</a>, <a class="el" href="sageInterface_8C_source.html#l13270">SageInterface::setLoopStride()</a>, <a class="el" href="sageInterface_8C_source.html#l15142">SageInterface::setRhsOperand()</a>, and <a class="el" href="sageInterface_8C_source.html#l13756">SageInterface::splitExpression()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l21682">SageInterface::convertRefToInitializedName()</a>, <a class="el" href="sageBuilder_8C_source.html#l16326">SageBuilder::fixupCopyOfNodeFromSeparateFileInNewTargetAst()</a>, <a class="el" href="sageInterface_8C_source.html#l02613">SageInterface::get_name()</a>, <a class="el" href="sageInterface_8C_source.html#l08697">SageInterface::getClassTypeChainForMemberReference()</a>, <a class="el" href="VariableStateTransfer_8h_source.html#l00032">VariableStateTransfer&lt; LatticeType &gt;::getLattices()</a>, <a class="el" href="sageInterface_8C_source.html#l12561">SageInterface::getLoopIndexVariable()</a>, <a class="el" href="sageInterface_8C_source.html#l13272">SageInterface::isAssignmentStatement()</a>, <a class="el" href="sageInterface_8C_source.html#l12709">SageInterface::isCanonicalDoLoop()</a>, <a class="el" href="sageInterface_8C_source.html#l12890">SageInterface::isCanonicalForLoop()</a>, <a class="el" href="sageInterface_8C_source.html#l13342">SageInterface::mergeAssignmentWithDeclaration()</a>, <a class="el" href="sageInterface_8C_source.html#l13396">SageInterface::mergeDeclarationWithAssignment()</a>, <a class="el" href="sageInterface_8C_source.html#l27298">SageInterface::normalizeArrowExpWithAddressOfLeftOperand()</a>, <a class="el" href="sageInterface_8C_source.html#l11791">SageInterface::normalizeForLoopIncrement()</a>, <a class="el" href="sageInterface_8C_source.html#l11739">SageInterface::normalizeForLoopTest()</a>, <a class="el" href="sageInterface_8C_source.html#l18318">SageInterface::replaceSubexpressionWithStatement()</a>, <a class="el" href="sageInterface_8C_source.html#l13157">SageInterface::setLoopStride()</a>, <a class="el" href="sageInterface_8C_source.html#l15029">SageInterface::setRhsOperand()</a>, and <a class="el" href="sageInterface_8C_source.html#l13643">SageInterface::splitExpression()</a>.</p>
 
 </div>
 </div>
@@ -1574,7 +1593,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns void. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l11131">SageInterface::replaceExpression()</a>, <a class="el" href="sageInterface_8C_source.html#l15103">SageInterface::setLhsOperand()</a>, and <a class="el" href="sageInterface_8C_source.html#l13270">SageInterface::setLoopStride()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l11018">SageInterface::replaceExpression()</a>, <a class="el" href="sageInterface_8C_source.html#l14990">SageInterface::setLhsOperand()</a>, and <a class="el" href="sageInterface_8C_source.html#l13157">SageInterface::setLoopStride()</a>.</p>
 
 </div>
 </div>
@@ -1596,7 +1615,7 @@ Additional Inherited Members</h2></td></tr>
 <p>returns <a class="el" href="classSgExpression.html" title="This class represents the notion of an expression. Expressions are derived from SgLocatedNodes,...">SgExpression</a> pointer to the rhs operand associated with this binary operator. </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="classSgExpression.html" title="This class represents the notion of an expression. Expressions are derived from SgLocatedNodes,...">SgExpression</a> pointer. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l22127">SageInterface::convertRefToInitializedName()</a>, <a class="el" href="sageBuilder_8C_source.html#l16326">SageBuilder::fixupCopyOfNodeFromSeparateFileInNewTargetAst()</a>, <a class="el" href="sageInterface_8C_source.html#l02726">SageInterface::get_name()</a>, <a class="el" href="sageInterface_8C_source.html#l05273">SageInterface::getDeclarationOfNamedFunction()</a>, <a class="el" href="sageInterface_8C_source.html#l08750">SageInterface::getFunctionDeclaration()</a>, <a class="el" href="VariableStateTransfer_8h_source.html#l00032">VariableStateTransfer&lt; LatticeType &gt;::getLattices()</a>, <a class="el" href="sageInterface_8C_source.html#l13385">SageInterface::isAssignmentStatement()</a>, <a class="el" href="sageInterface_8C_source.html#l12822">SageInterface::isCanonicalDoLoop()</a>, <a class="el" href="sageInterface_8C_source.html#l13003">SageInterface::isCanonicalForLoop()</a>, <a class="el" href="sageInterface_8C_source.html#l13455">SageInterface::mergeAssignmentWithDeclaration()</a>, <a class="el" href="sageInterface_8C_source.html#l13509">SageInterface::mergeDeclarationWithAssignment()</a>, <a class="el" href="sageInterface_8C_source.html#l24477">SageInterface::moveVariableDeclaration()</a>, <a class="el" href="sageInterface_8C_source.html#l27743">SageInterface::normalizeArrowExpWithAddressOfLeftOperand()</a>, <a class="el" href="sageInterface_8C_source.html#l11904">SageInterface::normalizeForLoopIncrement()</a>, <a class="el" href="sageInterface_8C_source.html#l11852">SageInterface::normalizeForLoopTest()</a>, <a class="el" href="sageInterface_8C_source.html#l15103">SageInterface::setLhsOperand()</a>, <a class="el" href="sageInterface_8C_source.html#l13185">SageInterface::setLoopLowerBound()</a>, and <a class="el" href="sageInterface_8C_source.html#l13270">SageInterface::setLoopStride()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l21682">SageInterface::convertRefToInitializedName()</a>, <a class="el" href="sageBuilder_8C_source.html#l16326">SageBuilder::fixupCopyOfNodeFromSeparateFileInNewTargetAst()</a>, <a class="el" href="sageInterface_8C_source.html#l02613">SageInterface::get_name()</a>, <a class="el" href="sageInterface_8C_source.html#l05160">SageInterface::getDeclarationOfNamedFunction()</a>, <a class="el" href="sageInterface_8C_source.html#l08637">SageInterface::getFunctionDeclaration()</a>, <a class="el" href="VariableStateTransfer_8h_source.html#l00032">VariableStateTransfer&lt; LatticeType &gt;::getLattices()</a>, <a class="el" href="sageInterface_8C_source.html#l13272">SageInterface::isAssignmentStatement()</a>, <a class="el" href="sageInterface_8C_source.html#l12709">SageInterface::isCanonicalDoLoop()</a>, <a class="el" href="sageInterface_8C_source.html#l12890">SageInterface::isCanonicalForLoop()</a>, <a class="el" href="sageInterface_8C_source.html#l13342">SageInterface::mergeAssignmentWithDeclaration()</a>, <a class="el" href="sageInterface_8C_source.html#l13396">SageInterface::mergeDeclarationWithAssignment()</a>, <a class="el" href="sageInterface_8C_source.html#l24032">SageInterface::moveVariableDeclaration()</a>, <a class="el" href="sageInterface_8C_source.html#l27298">SageInterface::normalizeArrowExpWithAddressOfLeftOperand()</a>, <a class="el" href="sageInterface_8C_source.html#l11791">SageInterface::normalizeForLoopIncrement()</a>, <a class="el" href="sageInterface_8C_source.html#l11739">SageInterface::normalizeForLoopTest()</a>, <a class="el" href="sageInterface_8C_source.html#l14990">SageInterface::setLhsOperand()</a>, <a class="el" href="sageInterface_8C_source.html#l13072">SageInterface::setLoopLowerBound()</a>, and <a class="el" href="sageInterface_8C_source.html#l13157">SageInterface::setLoopStride()</a>.</p>
 
 </div>
 </div>
@@ -1626,7 +1645,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns void. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l20139">SageInterface::insertBeforeUsingCommaOp()</a>, <a class="el" href="sageInterface_8C_source.html#l12481">SageInterface::loopTiling()</a>, <a class="el" href="sageInterface_8C_source.html#l12240">SageInterface::loopUnrolling()</a>, <a class="el" href="sageInterface_8C_source.html#l11131">SageInterface::replaceExpression()</a>, <a class="el" href="sageInterface_8C_source.html#l13185">SageInterface::setLoopLowerBound()</a>, <a class="el" href="sageInterface_8C_source.html#l13270">SageInterface::setLoopStride()</a>, <a class="el" href="sageInterface_8C_source.html#l13240">SageInterface::setLoopUpperBound()</a>, and <a class="el" href="sageInterface_8C_source.html#l15142">SageInterface::setRhsOperand()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l20027">SageInterface::insertBeforeUsingCommaOp()</a>, <a class="el" href="sageInterface_8C_source.html#l12368">SageInterface::loopTiling()</a>, <a class="el" href="sageInterface_8C_source.html#l12127">SageInterface::loopUnrolling()</a>, <a class="el" href="sageInterface_8C_source.html#l11018">SageInterface::replaceExpression()</a>, <a class="el" href="sageInterface_8C_source.html#l13072">SageInterface::setLoopLowerBound()</a>, <a class="el" href="sageInterface_8C_source.html#l13157">SageInterface::setLoopStride()</a>, <a class="el" href="sageInterface_8C_source.html#l13127">SageInterface::setLoopUpperBound()</a>, and <a class="el" href="sageInterface_8C_source.html#l15029">SageInterface::setRhsOperand()</a>.</p>
 
 </div>
 </div>
@@ -1818,7 +1837,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSgArrowExp.html#a3a9d5a0ee699a77fe46cb0d3d5d30356">SgArrowExp</a>, <a class="el" href="classSgDotExp.html#a973fa8878ce7436d4ee9305be11e8890">SgDotExp</a>, <a class="el" href="classSgDotStarOp.html#a2dd44f01ba67d2667cab4f80e6a1933a">SgDotStarOp</a>, <a class="el" href="classSgArrowStarOp.html#a3b78c6675bb2bcfb76144d9211e35d0d">SgArrowStarOp</a>, <a class="el" href="classSgEqualityOp.html#a34f8a38d7951ceccd62d617193a27daa">SgEqualityOp</a>, <a class="el" href="classSgLessThanOp.html#a67669b4ff5fe5f063e37f9c3dfd47d3f">SgLessThanOp</a>, <a class="el" href="classSgGreaterThanOp.html#a8be52dc8f11d9abb4a8c6e2a3d8ef492">SgGreaterThanOp</a>, <a class="el" href="classSgNotEqualOp.html#acf2644fcf3e9cd0b00a6c8d0c7ec10f9">SgNotEqualOp</a>, <a class="el" href="classSgLessOrEqualOp.html#acaeab504a1a2d8e7c5ee808b60d25fed">SgLessOrEqualOp</a>, <a class="el" href="classSgGreaterOrEqualOp.html#adcc35baea3771f2471b3aba3191f9c3c">SgGreaterOrEqualOp</a>, <a class="el" href="classSgAddOp.html#ab4ba2942e2d542f9d28e3947a4f2d0e6">SgAddOp</a>, <a class="el" href="classSgSubtractOp.html#a219ac763019ef64e5056f8bd8f0e8338">SgSubtractOp</a>, <a class="el" href="classSgMultiplyOp.html#a60be12ed1de51bc1a2f720d7e96ad597">SgMultiplyOp</a>, <a class="el" href="classSgDivideOp.html#a414de6e07013e440f0747393f5101449">SgDivideOp</a>, <a class="el" href="classSgIntegerDivideOp.html#a358bcbeb5dc9f97d0ad030cb564b81cd">SgIntegerDivideOp</a>, <a class="el" href="classSgModOp.html#a0d5da1768c0c8740244fe7bd4c27c043">SgModOp</a>, <a class="el" href="classSgAndOp.html#a59eb882d4a0d2cc8d0f667d8186457f9">SgAndOp</a>, <a class="el" href="classSgOrOp.html#a5a1371f56ff7f67c20d08379477aca0c">SgOrOp</a>, <a class="el" href="classSgBitXorOp.html#a2a84af9fe89d8484817e08fbfd8bd42c">SgBitXorOp</a>, <a class="el" href="classSgBitAndOp.html#a31347e4e4f95afde21a6b6ef0e4ac3e1">SgBitAndOp</a>, <a class="el" href="classSgBitOrOp.html#a8e8b2aa97af188683bc554bbc0ebb82b">SgBitOrOp</a>, <a class="el" href="classSgBitEqvOp.html#a6fe06c851a39d2d60d1bccb73fc3b8a1">SgBitEqvOp</a>, <a class="el" href="classSgCommaOpExp.html#a5d538307c92641356cd7597b21ad38a7">SgCommaOpExp</a>, <a class="el" href="classSgLshiftOp.html#ac15e1fc21884c6401da4cea6aa6adf78">SgLshiftOp</a>, <a class="el" href="classSgRshiftOp.html#a58daf080619a3ce1c1dd29e12a0b7a7d">SgRshiftOp</a>, <a class="el" href="classSgPntrArrRefExp.html#afea63071eab42dfa5529496edaa12ab2">SgPntrArrRefExp</a>, <a class="el" href="classSgScopeOp.html#a712d96e1c6bb87872c25af954b35a24e">SgScopeOp</a>, <a class="el" href="classSgAssignOp.html#a64010c4a8e38a574deca2f2ba5eac947">SgAssignOp</a>, <a class="el" href="classSgExponentiationOp.html#ae108f6a78859a08193b5fe1fbeb3e486">SgExponentiationOp</a>, <a class="el" href="classSgJavaUnsignedRshiftOp.html#ad3b25694a31bfb5b5d423157fad7f74a">SgJavaUnsignedRshiftOp</a>, <a class="el" href="classSgConcatenationOp.html#a0b4612aae355dffb6191f10395d74b8c">SgConcatenationOp</a>, <a class="el" href="classSgPointerAssignOp.html#acfbc6817ba0a75724375279e5e33a838">SgPointerAssignOp</a>, <a class="el" href="classSgUserDefinedBinaryOp.html#af7aa27afe2acc11a93c5d1c8d4851eee">SgUserDefinedBinaryOp</a>, <a class="el" href="classSgCompoundAssignOp.html#aa02d7d610d5ad3477184fb18d447c599">SgCompoundAssignOp</a>, <a class="el" href="classSgPlusAssignOp.html#a4cdd2b39102254389d540bd12169a9c1">SgPlusAssignOp</a>, <a class="el" href="classSgMinusAssignOp.html#a386c69fe761ae18b0e6caee09ae24b49">SgMinusAssignOp</a>, <a class="el" href="classSgAndAssignOp.html#a0cf44a556cc5e7d4a1cefd123685ba4d">SgAndAssignOp</a>, <a class="el" href="classSgIorAssignOp.html#ad8ab2ae33f0aef6eec0b1d480aecdaad">SgIorAssignOp</a>, <a class="el" href="classSgMultAssignOp.html#a6abbf628f831027cc0adc417ff6d2ebe">SgMultAssignOp</a>, <a class="el" href="classSgDivAssignOp.html#ac384ccd77551bd496cbf19424d8c2d33">SgDivAssignOp</a>, <a class="el" href="classSgModAssignOp.html#ad04b0c0d778bb38933bc5761ba5e59d1">SgModAssignOp</a>, <a class="el" href="classSgXorAssignOp.html#a441d32eda697f2efb02ff2ba4f8f3e3e">SgXorAssignOp</a>, <a class="el" href="classSgLshiftAssignOp.html#a5f859a003f16fc77434057b7c7720a18">SgLshiftAssignOp</a>, <a class="el" href="classSgRshiftAssignOp.html#af8b4b9a48cee6c4f5277b4bb68b82a65">SgRshiftAssignOp</a>, <a class="el" href="classSgJavaUnsignedRshiftAssignOp.html#a2cdd96347942757fe42f0970a0cc5a5b">SgJavaUnsignedRshiftAssignOp</a>, <a class="el" href="classSgIntegerDivideAssignOp.html#ab525c22d72605a4eff4bf928ee31aca9">SgIntegerDivideAssignOp</a>, <a class="el" href="classSgExponentiationAssignOp.html#a27b95bbd81b6653c12963f67eec4a8c6">SgExponentiationAssignOp</a>, <a class="el" href="classSgMembershipOp.html#aa2e874bbeaeaa71158c8b4a82ecb5883">SgMembershipOp</a>, <a class="el" href="classSgSpaceshipOp.html#a54bbcba2d8bc697dac625fa130ef370d">SgSpaceshipOp</a>, <a class="el" href="classSgNonMembershipOp.html#a3aa7d969f6ad126bc06a0abe7ac11416">SgNonMembershipOp</a>, <a class="el" href="classSgIsOp.html#adbbe458f539346adbd4ba7250aef535e">SgIsOp</a>, <a class="el" href="classSgIsNotOp.html#a8cf9b6e73b74400d766c37e6c3f83a53">SgIsNotOp</a>, <a class="el" href="classSgDotDotExp.html#a3f23aed33ac8036eabbcedd5fc1197be">SgDotDotExp</a>, <a class="el" href="classSgElementwiseOp.html#a9d12fe8a2cd8145c8794434deb442379">SgElementwiseOp</a>, <a class="el" href="classSgElementwiseMultiplyOp.html#a953c4cbe422fd196db4c3c400a7cb6f7">SgElementwiseMultiplyOp</a>, <a class="el" href="classSgElementwisePowerOp.html#a6af41192b8aef5f47c5c13de890faf20">SgElementwisePowerOp</a>, <a class="el" href="classSgElementwiseLeftDivideOp.html#ab7e3f8d7366cfcccee11e146b2857b02">SgElementwiseLeftDivideOp</a>, <a class="el" href="classSgElementwiseDivideOp.html#a4279d0b6767657f9d46f854bec3b8408">SgElementwiseDivideOp</a>, <a class="el" href="classSgElementwiseAddOp.html#a857c76e6decc5317753aff3834a39114">SgElementwiseAddOp</a>, <a class="el" href="classSgElementwiseSubtractOp.html#ad905e692bc7f1ddffaad17a30dd13df9">SgElementwiseSubtractOp</a>, <a class="el" href="classSgPowerOp.html#a4222ea0d8e4f2e0362c591f8dd10f4f7">SgPowerOp</a>, <a class="el" href="classSgLeftDivideOp.html#ae4ced309bb1ec408d54774b3970f5819">SgLeftDivideOp</a>, <a class="el" href="classSgRemOp.html#a07cec279a2450063edf804fc7bf1e77d">SgRemOp</a>, <a class="el" href="classSgReplicationOp.html#aa4ea5ff4082c56513ae2e4cfcb206534">SgReplicationOp</a>, and <a class="el" href="classSgAtOp.html#ae09bffaf7930b643c7f16b29756ca448">SgAtOp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l12822">SageInterface::isCanonicalDoLoop()</a>, and <a class="el" href="sageInterface_8C_source.html#l13003">SageInterface::isCanonicalForLoop()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l12709">SageInterface::isCanonicalDoLoop()</a>, and <a class="el" href="sageInterface_8C_source.html#l12890">SageInterface::isCanonicalForLoop()</a>.</p>
 
 </div>
 </div>
@@ -1846,7 +1865,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l507478">507478</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l506132">506132</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2347,7 +2366,7 @@ Additional Inherited Members</h2></td></tr>
 <p>returns <a class="el" href="classSgExpression.html" title="This class represents the notion of an expression. Expressions are derived from SgLocatedNodes,...">SgExpression</a> pointer to the operand associated with this binary operator. </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="classSgExpression.html" title="This class represents the notion of an expression. Expressions are derived from SgLocatedNodes,...">SgExpression</a> pointer. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l23951">SageInterface::getForLoopInformations()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l23506">SageInterface::getForLoopInformations()</a>.</p>
 
 </div>
 </div>
@@ -2397,7 +2416,7 @@ Additional Inherited Members</h2></td></tr>
 <p>returns <a class="el" href="classSgExpression.html" title="This class represents the notion of an expression. Expressions are derived from SgLocatedNodes,...">SgExpression</a> pointer to the operand associated with this binary operator. </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="classSgExpression.html" title="This class represents the notion of an expression. Expressions are derived from SgLocatedNodes,...">SgExpression</a> pointer. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l23951">SageInterface::getForLoopInformations()</a>, and <a class="el" href="sageInterface_8C_source.html#l22559">SageInterface::isUseByAddressVariableRef()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sageInterface_8C_source.html#l23506">SageInterface::getForLoopInformations()</a>, and <a class="el" href="sageInterface_8C_source.html#l22114">SageInterface::isUseByAddressVariableRef()</a>.</p>
 
 </div>
 </div>
@@ -2508,7 +2527,7 @@ Additional Inherited Members</h2></td></tr>
 <p>This is the operand associated with the lhs of the binary operator. </p>
 <p>Every binary operator is applied to two operands, this variable stores the lhs operand to which the binary operator is applied (with the rhs). </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l507838">507838</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l506492">506492</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2535,7 +2554,7 @@ Additional Inherited Members</h2></td></tr>
 <p>This is the operand associated with the rhs of the binary operator. </p>
 <p>Every binary operator is applied to two operands, this variable stores the rhs operand to which the binary operator is applied (with the lhs). </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l507842">507842</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l506496">506496</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2562,7 +2581,7 @@ Additional Inherited Members</h2></td></tr>
 <p>This <a class="el" href="classSgType.html" title="This class represents the base class for all types.">SgType</a> is the type of the operator (function type). </p>
 <p>This value is the return type of the operator, different from a <a class="el" href="classSgFunctionRefExp.html" title="This class represents the function being called and must be assembled in the SgFunctionCall with the ...">SgFunctionRefExp</a>, but similar to a SgFunctionCall. Note that overloaded operators appear in Sage III as functions with a specific name (e.g. operator+, operator-, operator*, etc.). They are not Binary operator, they are <a class="el" href="classSgFunctionRefExp.html" title="This class represents the function being called and must be assembled in the SgFunctionCall with the ...">SgFunctionRefExp</a> objects. Other mechanisms within ROSE provide support for the classification of overloader operators OverloaderOperatorSupport. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l507846">507846</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l506500">506500</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2586,7 +2605,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l507850">507850</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cxx__Grammar_8h_source.html#l506504">506504</a> of file <a class="el" href="Cxx__Grammar_8h_source.html">Cxx_Grammar.h</a>.</p>
 
 </div>
 </div>
@@ -2597,7 +2616,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:23 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:30 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

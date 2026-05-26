@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="namespaceRose.html">Rose</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis.html">BinaryAnalysis</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html">Partitioner2</a></li><li class="navelem"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Engine.html">Engine</a></li>  </ul>
@@ -125,7 +144,7 @@ Basic usage</h1>
 See also</h1>
 <p>See also <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1EngineBinary.html">Partitioner2::EngineBinary</a>, <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1EngineJvm.html">Partitioner2::EngineJvm</a>, and the documentation for non-ROSE engines. </p>
 
-<p class="definition">Definition at line <a class="el" href="Partitioner2_2Engine_8h_source.html#l00156">156</a> of file <a class="el" href="Partitioner2_2Engine_8h_source.html">Partitioner2/Engine.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Partitioner2_2Engine_8h_source.html#l00155">155</a> of file <a class="el" href="Partitioner2_2Engine_8h_source.html">Partitioner2/Engine.h</a>.</p>
 </div>
 <p><code>#include &lt;<a class="el" href="Partitioner2_2Engine_8h_source.html">Rose/BinaryAnalysis/Partitioner2/Engine.h</a>&gt;</code></p>
 <div class="dynheader">
@@ -223,12 +242,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad1c9b0d871777a9bc0e661f2ae02eddd" id="r_ad1c9b0d871777a9bc0e661f2ae02eddd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Engine.html#ad1c9b0d871777a9bc0e661f2ae02eddd">reset</a> ()</td></tr>
 <tr class="memdesc:ad1c9b0d871777a9bc0e661f2ae02eddd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the engine to its initial state.  <br /></td></tr>
 <tr class="separator:ad1c9b0d871777a9bc0e661f2ae02eddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fc475e28fdf2a920aefc74a3fc687dd" id="r_a2fc475e28fdf2a920aefc74a3fc687dd"><td class="memItemLeft" align="right" valign="top"><a id="a2fc475e28fdf2a920aefc74a3fc687dd" name="a2fc475e28fdf2a920aefc74a3fc687dd"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>savePartitioner</b> (const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a461d763e33e7cf0364b64e0af0c267a0">PartitionerConstPtr</a> &amp;, const boost::filesystem::path &amp;, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8">SerialIo::Format</a>=<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8a51a55d05550a5796c20099ab8c442c64">SerialIo::BINARY</a>)</td></tr>
-<tr class="separator:a2fc475e28fdf2a920aefc74a3fc687dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15494ebc5c7683c9c7eb83e7f74f5a20" id="r_a15494ebc5c7683c9c7eb83e7f74f5a20"><td class="memItemLeft" align="right" valign="top"><a id="a15494ebc5c7683c9c7eb83e7f74f5a20" name="a15494ebc5c7683c9c7eb83e7f74f5a20"></a>
-virtual <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a30252e56f3ed8c058c29b65be2f92b83">PartitionerPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><b>loadPartitioner</b> (const boost::filesystem::path &amp;, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8">SerialIo::Format</a>=<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8a51a55d05550a5796c20099ab8c442c64">SerialIo::BINARY</a>)</td></tr>
-<tr class="separator:a15494ebc5c7683c9c7eb83e7f74f5a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a974d2facbcebea0661acfb03f2418ecd" id="r_a974d2facbcebea0661acfb03f2418ecd"><td class="memItemLeft" align="right" valign="top"><a id="a974d2facbcebea0661acfb03f2418ecd" name="a974d2facbcebea0661acfb03f2418ecd"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>savePartitioner</b> (const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a461d763e33e7cf0364b64e0af0c267a0">PartitionerConstPtr</a> &amp;, const boost::filesystem::path &amp;, Serialization::Format=Serialization::BINARY)</td></tr>
+<tr class="separator:a974d2facbcebea0661acfb03f2418ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10340f6e8c7f496160f0704a24321669" id="r_a10340f6e8c7f496160f0704a24321669"><td class="memItemLeft" align="right" valign="top"><a id="a10340f6e8c7f496160f0704a24321669" name="a10340f6e8c7f496160f0704a24321669"></a>
+virtual <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a30252e56f3ed8c058c29b65be2f92b83">PartitionerPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><b>loadPartitioner</b> (const boost::filesystem::path &amp;, Serialization::Format=Serialization::BINARY)</td></tr>
+<tr class="separator:a10340f6e8c7f496160f0704a24321669"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cedac33fe84b58e81691982fd59c044" id="r_a8cedac33fe84b58e81691982fd59c044"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Engine.html#a8cedac33fe84b58e81691982fd59c044">checkSettings</a> ()</td></tr>
 <tr class="memdesc:a8cedac33fe84b58e81691982fd59c044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check settings after command-line is processed.  <br /></td></tr>
 <tr class="separator:a8cedac33fe84b58e81691982fd59c044"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -497,7 +516,7 @@ virtual <a class="el" href="classSgProject.html">SgProject</a> *&#160;</td><td c
 
 <p>Shared ownership pointer. </p>
 
-<p class="definition">Definition at line <a class="el" href="Partitioner2_2Engine_8h_source.html#l00162">162</a> of file <a class="el" href="Partitioner2_2Engine_8h_source.html">Partitioner2/Engine.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Partitioner2_2Engine_8h_source.html#l00161">161</a> of file <a class="el" href="Partitioner2_2Engine_8h_source.html">Partitioner2/Engine.h</a>.</p>
 
 </div>
 </div>
@@ -2939,7 +2958,7 @@ virtual <a class="el" href="classSgProject.html">SgProject</a> *&#160;</td><td c
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:49 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:56 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

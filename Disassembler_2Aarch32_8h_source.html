@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,10 +40,8 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
@@ -53,6 +51,27 @@ $(function() {
 $(document).ready(function() { init_codefold(0); });
 /* @license-end */
 </script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_9e62d0ec1b5e35066c963e582c20357f.html">Rose</a></li><li class="navelem"><a class="el" href="dir_b6b36e208517412b6f28695766cc080b.html">BinaryAnalysis</a></li><li class="navelem"><a class="el" href="dir_67c2f610eb8a6510a38e1ea8d7fcaf18.html">Disassembler</a></li>  </ul>
@@ -80,7 +99,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keyword">using </span><a class="code hl_typedef" href="namespaceRose_1_1BinaryAnalysis_1_1SymbolicExpression.html#a357a1787c84ab11ac04ffa566345e57c">Ptr</a> = Aarch32Ptr;</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keyword">enum class</span> <a class="code hl_function" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Disassembler_1_1Aarch32.html#acbf480494610bb0c4a61b3a80bebbb49">Mode</a> {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keyword">enum class</span> <a class="code hl_function" href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Disassembler_1_1Aarch64.html#ae6c551d0d118cacdb483a0de41016990">Mode</a> {</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        ARM32 = CS_MODE_ARM,                             <span class="comment">// probably zero, not really a bit flag</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        THUMB = CS_MODE_THUMB,                          </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        MCLASS = CS_MODE_MCLASS,                        </div>
@@ -162,16 +181,16 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassSgAsmExpression_html"><div class="ttname"><a href="classSgAsmExpression.html">SgAsmExpression</a></div><div class="ttdoc">Base class for expressions.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l45394">binaryInstruction.C:45394</a></div></div>
-<div class="ttc" id="aclassSgAsmInstruction_html"><div class="ttname"><a href="classSgAsmInstruction.html">SgAsmInstruction</a></div><div class="ttdoc">Base class for machine instructions.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l44628">binaryInstruction.C:44628</a></div></div>
+<div class="ttc" id="aclassSgAsmExpression_html"><div class="ttname"><a href="classSgAsmExpression.html">SgAsmExpression</a></div><div class="ttdoc">Base class for expressions.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l45642">binaryInstruction.C:45642</a></div></div>
+<div class="ttc" id="aclassSgAsmInstruction_html"><div class="ttname"><a href="classSgAsmInstruction.html">SgAsmInstruction</a></div><div class="ttdoc">Base class for machine instructions.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l44876">binaryInstruction.C:44876</a></div></div>
 <div class="ttc" id="aclassSgAsmType_html"><div class="ttname"><a href="classSgAsmType.html">SgAsmType</a></div><div class="ttdoc">Base class for binary types.</div><div class="ttdef"><b>Definition</b> <a href="binaryInstruction_8C_source.html#l18013">binaryInstruction.C:18013</a></div></div>
-<div class="ttc" id="anamespaceRose_1_1BinaryAnalysis_1_1SymbolicExpression_html_a357a1787c84ab11ac04ffa566345e57c"><div class="ttname"><a href="namespaceRose_1_1BinaryAnalysis_1_1SymbolicExpression.html#a357a1787c84ab11ac04ffa566345e57c">Rose::BinaryAnalysis::SymbolicExpression::Ptr</a></div><div class="ttdeci">Sawyer::SharedPointer&lt; Node &gt; Ptr</div><div class="ttdoc">Reference counting pointer.</div><div class="ttdef"><b>Definition</b> <a href="Rose_2BinaryAnalysis_2BasicTypes_8h_source.html#l00114">Rose/BinaryAnalysis/BasicTypes.h:114</a></div></div>
+<div class="ttc" id="anamespaceRose_1_1BinaryAnalysis_1_1SymbolicExpression_html_a357a1787c84ab11ac04ffa566345e57c"><div class="ttname"><a href="namespaceRose_1_1BinaryAnalysis_1_1SymbolicExpression.html#a357a1787c84ab11ac04ffa566345e57c">Rose::BinaryAnalysis::SymbolicExpression::Ptr</a></div><div class="ttdeci">Sawyer::SharedPointer&lt; Node &gt; Ptr</div><div class="ttdoc">Reference counting pointer.</div><div class="ttdef"><b>Definition</b> <a href="Rose_2BinaryAnalysis_2BasicTypes_8h_source.html#l00166">Rose/BinaryAnalysis/BasicTypes.h:166</a></div></div>
 <div class="ttc" id="anamespaceRose_html"><div class="ttname"><a href="namespaceRose.html">Rose</a></div><div class="ttdoc">The ROSE library.</div><div class="ttdef"><b>Definition</b> <a href="BinaryTutorial_8dox_source.html#l00003">BinaryTutorial.dox:3</a></div></div>
-<div class="ttc" id="anamespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Disassembler_1_1Aarch32_html_acbf480494610bb0c4a61b3a80bebbb49"><div class="ttname"><a href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Disassembler_1_1Aarch32.html#acbf480494610bb0c4a61b3a80bebbb49">stringify::Rose::BinaryAnalysis::Disassembler::Aarch32::Mode</a></div><div class="ttdeci">const char * Mode(int64_t)</div><div class="ttdoc">Convert Rose::BinaryAnalysis::Disassembler::Aarch32::Mode enum constant to a string.</div></div>
+<div class="ttc" id="anamespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Disassembler_1_1Aarch64_html_ae6c551d0d118cacdb483a0de41016990"><div class="ttname"><a href="namespacestringify_1_1Rose_1_1BinaryAnalysis_1_1Disassembler_1_1Aarch64.html#ae6c551d0d118cacdb483a0de41016990">stringify::Rose::BinaryAnalysis::Disassembler::Aarch64::Mode</a></div><div class="ttdeci">const char * Mode(int64_t)</div><div class="ttdoc">Convert Rose::BinaryAnalysis::Disassembler::Aarch64::Mode enum constant to a string.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:23:54 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:00 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

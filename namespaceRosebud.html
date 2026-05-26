@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 </div><!-- top -->
 <div class="header">
   <div class="summary">
@@ -240,14 +259,14 @@ Features of the ROSETTA backend</h2>
 <div class="line">        arg2-&gt;set_parent(argList);</div>
 <div class="line">    <span class="keywordflow">return</span> call;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassSgName_html"><div class="ttname"><a href="classSgName.html">SgName</a></div><div class="ttdoc">This class represents strings within the IR nodes.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l20653">Cxx_Grammar.h:20654</a></div></div>
+<div class="ttc" id="aclassSgName_html"><div class="ttname"><a href="classSgName.html">SgName</a></div><div class="ttdoc">This class represents strings within the IR nodes.</div><div class="ttdef"><b>Definition</b> <a href="Cxx__Grammar_8h_source.html#l20585">Cxx_Grammar.h:20586</a></div></div>
 </div><!-- fragment --><p>Since ROSETTA uses raw pointers, it is up to the user to know when an object is no longer part of any tree and no longer pointed to by anything else in ROSE. Sometimes an analysis will cache its results, and thus have pointers into the AST. The best practice with ROSETTA-generated code is to never free any AST vertex.</p>
 <div class="fragment"><div class="line"><span class="keywordflow">if</span> (<span class="keyword">auto</span> child = parent-&gt;get_child()) {</div>
 <div class="line">    parent-&gt;set_child(<span class="keyword">nullptr</span>);</div>
 <div class="line">    child-&gt;set_parent(<span class="keyword">nullptr</span>);</div>
 <div class="line">    <a class="code hl_function" href="namespaceSageInterface.html#a57437bbbb806858dda0cea7444fbafef">SageInterface::deleteAST</a>(child); <span class="comment">// UNSAFE -- never do this!</span></div>
 <div class="line">}</div>
-<div class="ttc" id="anamespaceSageInterface_html_a57437bbbb806858dda0cea7444fbafef"><div class="ttname"><a href="namespaceSageInterface.html#a57437bbbb806858dda0cea7444fbafef">SageInterface::deleteAST</a></div><div class="ttdeci">ROSE_DLL_API void deleteAST(SgNode *node)</div><div class="ttdoc">Function to delete AST subtree's nodes only, users must take care of any dangling pointers,...</div><div class="ttdef"><b>Definition</b> <a href="sageInterface_8C_source.html#l20541">sageInterface.C:20541</a></div></div>
+<div class="ttc" id="anamespaceSageInterface_html_a57437bbbb806858dda0cea7444fbafef"><div class="ttname"><a href="namespaceSageInterface.html#a57437bbbb806858dda0cea7444fbafef">SageInterface::deleteAST</a></div><div class="ttdeci">ROSE_DLL_API void deleteAST(SgNode *node)</div><div class="ttdoc">Function to delete AST subtree's nodes only, users must take care of any dangling pointers,...</div><div class="ttdef"><b>Definition</b> <a href="sageInterface_8C_source.html#l20429">sageInterface.C:20429</a></div></div>
 </div><!-- fragment --><h2><a class="anchor" id="rosebud_backend_sawyer"></a>
 Features of the Sawyer backend</h2>
 <p>The <a class="el" href="namespaceSawyer.html" title="Sawyer support library.">Sawyer</a> backend generates AST vertex classes that inherit from <a class="el" href="classSawyer_1_1Tree_1_1Vertex.html">Sawyer::Tree::Vertex</a>, and it uses smart pointers. The smart pointer types have the names <code>Ptr</code> and <code>ConstPtr</code> both as members of the vertex class and by appending those names to the name of the class. The latter are useful in places like header files where one doesn't want the compiler to spend time parsing the class definition and only incomplete types are needed. Unlike the ROSETTA backend, the smart pointer data members do not need to be explicitly initialized to nullptr (their constructors take care of that). An AST edge is indicated with the type <code><a class="el" href="structEdge.html">Edge</a></code>, like this:</p>
@@ -1727,7 +1746,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>nErrors</b></td></t
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:25:18 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:12:24 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

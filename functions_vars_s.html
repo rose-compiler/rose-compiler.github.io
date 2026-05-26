@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,15 +40,34 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div class="contents">
 <div class="textblock">Here is a list of all documented variables with links to the class documentation for each member:</div>
 
@@ -64,7 +83,7 @@ $(function() {
 <li>savePointerDereferenceValues&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1PointerDetection_1_1Settings.html#a7923e3ba62cde1442d6d63c077dfbf0c">Rose::BinaryAnalysis::PointerDetection::Settings</a></li>
 <li>savePointerVas&#160;:&#160;<a class="el" href="classRose_1_1BinaryAnalysis_1_1PointerDetection_1_1Settings.html#ad70dae99515abc24aafc3a6070b8ff11">Rose::BinaryAnalysis::PointerDetection::Settings</a></li>
 <li>ScalarMaxLength&#160;:&#160;<a class="el" href="structSawyer_1_1Yaml_1_1SerializeConfig.html#af0ee2d1e15c2742d41917686f6763ae5">Sawyer::Yaml::SerializeConfig</a></li>
-<li>scopeStatus&#160;:&#160;<a class="el" href="structFunctionCallInheritedAttribute.html#a2a932f172967c82f1ca7885a21d609f9">FunctionCallInheritedAttribute</a></li>
+<li>scopeStatus&#160;:&#160;<a class="el" href="structFunctionCallInheritedAttribute.html#a0499ac2913f3c9600e076f04515b2753">FunctionCallInheritedAttribute</a></li>
 <li>searchMode&#160;:&#160;<a class="el" href="structRose_1_1BinaryAnalysis_1_1FeasiblePath_1_1Settings.html#a37ef92770aae14e7c412925db8ef3023">Rose::BinaryAnalysis::FeasiblePath::Settings</a></li>
 <li>section&#160;:&#160;<a class="el" href="classSgAsmExecutableFileFormat_1_1ShortRead.html#a941ee49127f7b6ffeb4c7ccc1eecdbbb">SgAsmExecutableFileFormat::ShortRead</a>, <a class="el" href="classSgAsmExecutableFileFormat_1_1ShortWrite.html#a33b712044ba3e8b9bb94f1460b6cc893">SgAsmExecutableFileFormat::ShortWrite</a></li>
 <li>semanticFailureMarker&#160;:&#160;<a class="el" href="structRose_1_1BinaryAnalysis_1_1Unparser_1_1Settings.html#a57803bc8dbc97137950ccfe35a1fafb6">Rose::BinaryAnalysis::Unparser::Settings</a></li>
@@ -141,7 +160,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:25:22 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:12:29 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

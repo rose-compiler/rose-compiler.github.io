@@ -10,8 +10,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="ROSE"/>
 <link href="roseDoxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ROSE<span id="projectnumber">&#160;0.11.145.380</span>
+   <div id="projectname">ROSE<span id="projectnumber">&#160;2.1.0</span>
    </div>
   </td>
  </tr>
@@ -40,14 +40,33 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,true,'search.html','Search');
-  $(document).ready(function() {
-    if ($('.searchresults').length > 0) { searchBox.DOMSearchField().focus(); }
-  });
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id="nav-path" class="navpath">
   <ul>
 <li class="navelem"><a class="el" href="namespaceRose.html">Rose</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis.html">BinaryAnalysis</a></li><li class="navelem"><a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html">Partitioner2</a></li><li class="navelem"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Partitioner.html">Partitioner</a></li>  </ul>
@@ -160,7 +179,7 @@ Frequenctly Asked Questions</h1>
 <p>Q. Why is this class final?</p>
 <p>A. This class represents the low-level operations for partitioning instructions and is responsible for ensuring that certain data structures such as the CFG and AUM are always consistent. The class is final to guarantee these invariants. Its behavior can only be modified by registering callbacks. High-level behavior is implemented above this class such as in module functions (various Module*.h files) or engines derived from the <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Engine.html">Engine</a> class. Additional data can be attached to a partitioner via attributes (see <a class="el" href="namespaceSawyer_1_1Attribute.html">Sawyer::Attribute</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l00259">259</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l00263">263</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
 </div>
 <p><code>#include &lt;<a class="el" href="Partitioner_8h_source.html">Rose/BinaryAnalysis/Partitioner2/Partitioner.h</a>&gt;</code></p>
 <div class="dynheader">
@@ -228,10 +247,10 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa36792bbbe7cfa563ef1d95515d7b5d1" id="r_aa36792bbbe7cfa563ef1d95515d7b5d1"><td class="memItemLeft" align="right" valign="top"><a id="aa36792bbbe7cfa563ef1d95515d7b5d1" name="aa36792bbbe7cfa563ef1d95515d7b5d1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>saveAsRbaFile</b> (const boost::filesystem::path &amp;name, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8">SerialIo::Format</a> fmt) const</td></tr>
-<tr class="memdesc:aa36792bbbe7cfa563ef1d95515d7b5d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save this partitioner as an RBA file. <br /></td></tr>
-<tr class="separator:aa36792bbbe7cfa563ef1d95515d7b5d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af95a9fc7cd1e7bc4a27184fcd2266837" id="r_af95a9fc7cd1e7bc4a27184fcd2266837"><td class="memItemLeft" align="right" valign="top"><a id="af95a9fc7cd1e7bc4a27184fcd2266837" name="af95a9fc7cd1e7bc4a27184fcd2266837"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>saveAsRbaFile</b> (const boost::filesystem::path &amp;name, Serialization::Format fmt) const</td></tr>
+<tr class="memdesc:af95a9fc7cd1e7bc4a27184fcd2266837"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save this partitioner as an RBA file. <br /></td></tr>
+<tr class="separator:af95a9fc7cd1e7bc4a27184fcd2266837"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a891ddef591f4180c85e6f09fdfc07992" id="r_a891ddef591f4180c85e6f09fdfc07992"><td class="memItemLeft" align="right" valign="top"><a id="a891ddef591f4180c85e6f09fdfc07992" name="a891ddef591f4180c85e6f09fdfc07992"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Partitioner</b> (BOOST_RV_REF(<a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Partitioner.html">Partitioner</a>))</td></tr>
 <tr class="memdesc:a891ddef591f4180c85e6f09fdfc07992"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
@@ -1005,9 +1024,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aa94e58c565c5ae1afc52fd01bbfbf956" id="r_aa94e58c565c5ae1afc52fd01bbfbf956"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Partitioner.html#a4fef4ab65e1ce68aced8e1842aa0070b">Ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Partitioner.html#aa94e58c565c5ae1afc52fd01bbfbf956">instance</a> (const <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Architecture.html#aa711fd8ae3f4eb3297e6c8cfacdf952d">Architecture::BaseConstPtr</a> &amp;, const <a class="el" href="classRose_1_1BinaryAnalysis_1_1MemoryMap.html#a0dbb47f6fe164ce6ef8816f28dc93a1f">MemoryMap::Ptr</a> &amp;)</td></tr>
 <tr class="memdesc:aa94e58c565c5ae1afc52fd01bbfbf956"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a partitioner.  <br /></td></tr>
 <tr class="separator:aa94e58c565c5ae1afc52fd01bbfbf956"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afec85d9e187036f771a8bbc90053b0f6" id="r_afec85d9e187036f771a8bbc90053b0f6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a30252e56f3ed8c058c29b65be2f92b83">PartitionerPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Partitioner.html#afec85d9e187036f771a8bbc90053b0f6">instanceFromRbaFile</a> (const boost::filesystem::path &amp;, <a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8">SerialIo::Format</a>=<a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8a51a55d05550a5796c20099ab8c442c64">SerialIo::BINARY</a>)</td></tr>
-<tr class="memdesc:afec85d9e187036f771a8bbc90053b0f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a partitioner by loading it and an <a class="el" href="namespaceRose_1_1AST.html" title="Collection of functionalities performing global operations on the AST.">AST</a> from a file.  <br /></td></tr>
-<tr class="separator:afec85d9e187036f771a8bbc90053b0f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad73c49a09c149082ad3cd52a73eb9dc4" id="r_ad73c49a09c149082ad3cd52a73eb9dc4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceRose_1_1BinaryAnalysis_1_1Partitioner2.html#a30252e56f3ed8c058c29b65be2f92b83">PartitionerPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Partitioner.html#ad73c49a09c149082ad3cd52a73eb9dc4">instanceFromRbaFile</a> (const boost::filesystem::path &amp;, Serialization::Format=Serialization::BINARY)</td></tr>
+<tr class="memdesc:ad73c49a09c149082ad3cd52a73eb9dc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a partitioner by loading it and an <a class="el" href="namespaceRose_1_1AST.html" title="Collection of functionalities performing global operations on the AST.">AST</a> from a file.  <br /></td></tr>
+<tr class="separator:ad73c49a09c149082ad3cd52a73eb9dc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99e4a7482687adc99bd3c208d5cb33f9" id="r_a99e4a7482687adc99bd3c208d5cb33f9"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Partitioner.html#a99e4a7482687adc99bd3c208d5cb33f9">vertexNameEnd</a> (const ControlFlowGraph::Vertex &amp;)</td></tr>
 <tr class="memdesc:a99e4a7482687adc99bd3c208d5cb33f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of last instruction in vertex.  <br /></td></tr>
 <tr class="separator:a99e4a7482687adc99bd3c208d5cb33f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1060,7 +1079,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Shared-ownership pointer. </p>
 
-<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l00274">274</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l00278">278</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
 
 </div>
 </div>
@@ -1078,7 +1097,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Shared-ownership pointer. </p>
 
-<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l00275">275</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l00279">279</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
 
 </div>
 </div>
@@ -1096,7 +1115,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>See <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Partitioner.html#a1d79564686574f7c0340b9aa9a13a7a8">cfgAdjustmentCallbacks</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l00279">279</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l00283">283</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
 
 </div>
 </div>
@@ -1114,7 +1133,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>See <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Partitioner.html#adbee3513586f9d653ad1805e44df8072">basicBlockCallbacks</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l00280">280</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l00284">284</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
 
 </div>
 </div>
@@ -1132,7 +1151,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>See <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Partitioner.html#a0f9d0dafd282a74651166a929ef7bd66">functionPrologueMatchers</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l00281">281</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l00285">285</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
 
 </div>
 </div>
@@ -1150,7 +1169,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>See <a class="el" href="classRose_1_1BinaryAnalysis_1_1Partitioner2_1_1Partitioner.html#af4f90960bc68617c7b20d22b198aa6e1">functionPaddingMatchers</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l00282">282</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l00286">286</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
 
 </div>
 </div>
@@ -1168,7 +1187,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p><a class="el" href="classMap.html" title="Extends std::map with methods that return optional values.">Map</a> address to name. </p>
 
-<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l00293">293</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l00297">297</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
 
 </div>
 </div>
@@ -1241,8 +1260,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="afec85d9e187036f771a8bbc90053b0f6" name="afec85d9e187036f771a8bbc90053b0f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afec85d9e187036f771a8bbc90053b0f6">&#9670;&#160;</a></span>instanceFromRbaFile()</h2>
+<a id="ad73c49a09c149082ad3cd52a73eb9dc4" name="ad73c49a09c149082ad3cd52a73eb9dc4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad73c49a09c149082ad3cd52a73eb9dc4">&#9670;&#160;</a></span>instanceFromRbaFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1259,8 +1278,8 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8">SerialIo::Format</a>&#160;</td>
-          <td class="paramname"> = <code><a class="el" href="classRose_1_1BinaryAnalysis_1_1SerialIo.html#a342cb143c541ac8553230113560945f8a51a55d05550a5796c20099ab8c442c64">SerialIo::BINARY</a></code>&#160;</td>
+          <td class="paramtype">Serialization::Format&#160;</td>
+          <td class="paramname"> = <code>Serialization::BINARY</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -5053,7 +5072,7 @@ template&lt;class Container &gt; </div>
 <p>The returned function will be a function that is attached to the CFG/AUM; detached functions are never returned since the partitioner does not necessarily know about them.</p>
 <p>Thread safety: Not thread safe. </p>
 
-<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l01779">1779</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Partitioner_8h_source.html#l01790">1790</a> of file <a class="el" href="Partitioner_8h_source.html">Partitioner.h</a>.</p>
 
 </div>
 </div>
@@ -6976,7 +6995,7 @@ template&lt;class Container &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 19 2026 17:24:49 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+Generated on Mon May 25 2026 05:11:56 for ROSE by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>
