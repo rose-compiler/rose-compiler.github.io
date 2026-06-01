@@ -21,5 +21,6 @@ var searchData=
   ['trackingcodecoverage_18',['trackingCodeCoverage',['../structRose_1_1BinaryAnalysis_1_1FeasiblePath_1_1Settings.html#ac8fcddf5740a5e4c70b8b1f65cd357f9',1,'Rose::BinaryAnalysis::FeasiblePath::Settings']]],
   ['trailing_19',['trailing',['../structRose_1_1BinaryAnalysis_1_1Unparser_1_1Settings.html#aadbfd2fee48d977d209646a8e1d0f6b8',1,'Rose::BinaryAnalysis::Unparser::Settings']]],
   ['traversed_20',['traversed',['../structRose_1_1Source_1_1AST_1_1Defects_1_1defect__t_3_01Kind_1_1integrity__edges_01_4.html#a6943a14fa755f4a3b4785e2fc1a33f6a',1,'Rose::Source::AST::Defects::defect_t&lt; Kind::integrity_edges &gt;']]],
-  ['type_21',['type',['../structRose_1_1BinaryAnalysis_1_1CodeInserter_1_1Relocation.html#ada9bc2606695b3c7e528a378de93b492',1,'Rose::BinaryAnalysis::CodeInserter::Relocation::type'],['../structRosebud_1_1Ast_1_1CppStack_1_1Directive.html#a8fb409071563164cd2057dda736abe84',1,'Rosebud::Ast::CppStack::Directive::type']]]
+  ['type_21',['type',['../structRose_1_1BinaryAnalysis_1_1CodeInserter_1_1Relocation.html#ada9bc2606695b3c7e528a378de93b492',1,'Rose::BinaryAnalysis::CodeInserter::Relocation::type'],['../structRosebud_1_1Ast_1_1CppStack_1_1Directive.html#a8fb409071563164cd2057dda736abe84',1,'Rosebud::Ast::CppStack::Directive::type']]],
+  ['typedescriptor_5f_22',['typeDescriptor_',['../classRose_1_1BinaryAnalysis_1_1InstructionSemantics_1_1BaseSemantics_1_1SValue.html#a85647a4eddfbc94524605cc476a07247',1,'Rose::BinaryAnalysis::InstructionSemantics::BaseSemantics::SValue']]]
 ];
