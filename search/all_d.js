@@ -28,7 +28,7 @@ var searchData=
   ['hash_5finteger_25',['hash_integer',['../structrose__hash_1_1hash__integer.html',1,'rose_hash']]],
   ['hash_5finteger_5fpair_26',['hash_integer_pair',['../structrose__hash_1_1hash__integer__pair.html',1,'rose_hash']]],
   ['hash_5fname_27',['hash_Name',['../structhash__Name.html',1,'']]],
-  ['hasher_28',['hasher',['../classRose_1_1Combinatorics_1_1Hasher.html',1,'Rose::Combinatorics::Hasher'],['../classSawyer_1_1Container_1_1HashMap.html#a52b464432529c364630704e76cd6c91d',1,'Sawyer::Container::HashMap::Hasher'],['../classRose_1_1BinaryAnalysis_1_1AstHasher.html#a770d0350f41431ec3d53ccb8fc501bca',1,'Rose::BinaryAnalysis::AstHasher::hasher()']]],
+  ['hasher_28',['hasher',['../classRose_1_1Combinatorics_1_1Hasher.html',1,'Rose::Combinatorics::Hasher'],['../classRose_1_1BinaryAnalysis_1_1AstHasher.html#a770d0350f41431ec3d53ccb8fc501bca',1,'Rose::BinaryAnalysis::AstHasher::hasher()'],['../classSawyer_1_1Container_1_1HashMap.html#a52b464432529c364630704e76cd6c91d',1,'Sawyer::Container::HashMap::Hasher']]],
   ['hashercrc32_29',['HasherCrc32',['../namespaceRose_1_1Combinatorics.html#a4f3c2877cbcc020c61e23dd2847f6ecb',1,'Rose::Combinatorics']]],
   ['hasherfactory_30',['HasherFactory',['../classRose_1_1Combinatorics_1_1Hasher_1_1HasherFactory.html',1,'Rose::Combinatorics::Hasher']]],
   ['hasherfnv_31',['HasherFnv',['../classRose_1_1Combinatorics_1_1HasherFnv.html',1,'Rose::Combinatorics']]],
