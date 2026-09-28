@@ -80,7 +80,7 @@ var searchData=
   ['hastrivialassign_77',['HasTrivialAssign',['../namespaceSageInterface.html#a9ebbebd7f04a0ae28452a8337ece00c9',1,'SageInterface']]],
   ['hastrivialconstructor_78',['HasTrivialConstructor',['../namespaceSageInterface.html#a59e04784cdceb8789cec5bcbdada445b',1,'SageInterface']]],
   ['hastrivialcopy_79',['HasTrivialCopy',['../namespaceSageInterface.html#a2dc573cbd8560e17ad7e475587f419d3',1,'SageInterface']]],
-  ['hastrivialdestructor_80',['hastrivialdestructor',['../namespaceSageInterface.html#afa573606fe8b43de23cd85c85c01718a',1,'SageInterface::HasTrivialDestructor(const SgType *const inputType)'],['../namespaceSageInterface.html#a356b50b0063a165f48019e297c83f8b6',1,'SageInterface::hasTrivialDestructor(SgType *t)']]],
+  ['hastrivialdestructor_80',['hastrivialdestructor',['../namespaceSageInterface.html#a356b50b0063a165f48019e297c83f8b6',1,'SageInterface::hasTrivialDestructor(SgType *t)'],['../namespaceSageInterface.html#afa573606fe8b43de23cd85c85c01718a',1,'SageInterface::HasTrivialDestructor(const SgType *const inputType)']]],
   ['hasunknowndiscriminants_81',['hasunknowndiscriminants',['../namespaceSageInterface_1_1Ada.html#ac7e354f2c06592811bbc9f576ec2dc23',1,'SageInterface::Ada::hasUnknownDiscriminants(const SgAdaDiscriminatedTypeDecl *n)'],['../namespaceSageInterface_1_1Ada.html#af7b8f0e79fc0e4aa5e7cd42947f94673',1,'SageInterface::Ada::hasUnknownDiscriminants(const SgAdaDiscriminatedTypeDecl &amp;n)']]],
   ['hasupcsharedtype_82',['hasUpcSharedType',['../namespaceSageInterface.html#a835d4c670de3bf57ee1919d6d919ff1c',1,'SageInterface']]],
   ['hasvariablelist_83',['hasVariableList',['../classOmpSupport_1_1OmpAttribute.html#a7cc8b5b6b6c8c221fc345d21d36cbb92',1,'OmpSupport::OmpAttribute']]],
